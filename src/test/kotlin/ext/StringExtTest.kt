@@ -2,14 +2,14 @@ package ext
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.assertFails
 
 class StringExtTest {
     @Test
     fun testSubstringTo() {
-        assertFailsWith<Exception> { "".substringTo(1) }
-        assertFailsWith<Exception> { "a".substringTo(-1) }
-        assertFailsWith<Exception> { "a b".substringTo(4) }
+        assertFails { "".substringTo(1) }
+        assertFails { "a".substringTo(-1) }
+        assertFails { "a b".substringTo(4) }
 
         var s = ""
         var i = 0

@@ -1,11 +1,11 @@
 package exactfraction
 
+import assertExactFractionOverflow
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 fun runToPairTests() {
     var ef = ExactFraction(0)
@@ -60,13 +60,11 @@ fun runToByteTests() {
 
     ef = ExactFraction(Byte.MAX_VALUE.toInt())
     ef++
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Byte") { ef.toByte() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
 
     ef = ExactFraction(Byte.MIN_VALUE.toInt())
     ef--
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Byte") { ef.toByte() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
 }
 
 // test account for fact that Char can't be negative
@@ -80,16 +78,14 @@ fun runToCharTests() {
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-5)
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Char") { ef.toChar() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(2, 5)
     expected = Char(0)
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-18, 5)
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Char") { ef.toChar() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MAX_VALUE.code)
     expected = Char.MAX_VALUE
@@ -101,13 +97,11 @@ fun runToCharTests() {
 
     ef = ExactFraction(Char.MAX_VALUE.code)
     ef++
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Char") { ef.toChar() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MIN_VALUE.code)
     ef--
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Char") { ef.toChar() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Char", ef) { ef.toChar() }
 }
 
 fun runToShortTests() {
@@ -141,13 +135,11 @@ fun runToShortTests() {
 
     ef = ExactFraction(Short.MAX_VALUE.toInt())
     ef++
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Short") { ef.toShort() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Short", ef) { ef.toShort() }
 
     ef = ExactFraction(Short.MIN_VALUE.toInt())
     ef--
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Short") { ef.toShort() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Short", ef) { ef.toShort() }
 }
 
 fun runToIntTests() {
@@ -181,13 +173,11 @@ fun runToIntTests() {
 
     ef = ExactFraction(Int.MAX_VALUE)
     ef++
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Int") { ef.toInt() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Int", ef) { ef.toInt() }
 
     ef = ExactFraction(Int.MIN_VALUE)
     ef--
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Int") { ef.toInt() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Int", ef) { ef.toInt() }
 }
 
 fun runToLongTests() {
@@ -221,13 +211,11 @@ fun runToLongTests() {
 
     ef = ExactFraction(Long.MAX_VALUE)
     ef++
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Long") { ef.toLong() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Long", ef) { ef.toLong() }
 
     ef = ExactFraction(Long.MIN_VALUE)
     ef--
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Long") { ef.toLong() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Long", ef) { ef.toLong() }
 }
 
 fun runToDoubleTests() {
@@ -268,13 +256,11 @@ fun runToDoubleTests() {
 
     ef = ExactFraction(veryBig)
     ef *= 2
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Double") { ef.toDouble() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 
     ef = ExactFraction(verySmall)
     ef *= 2
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Double") { ef.toDouble() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 }
 
 fun runToFloatTests() {
@@ -315,13 +301,11 @@ fun runToFloatTests() {
 
     ef = ExactFraction(veryBig)
     ef *= 2
-    var error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Float") { ef.toFloat() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Float", ef) { ef.toFloat() }
 
     ef = ExactFraction(verySmall)
     ef *= 2
-    error = assertFailsWith<ExactFractionOverflowException>("Overflow when casting to Float") { ef.toFloat() }
-    assertEquals(ef.toFractionString(), error.overflowValue)
+    assertExactFractionOverflow("Float", ef) { ef.toFloat() }
 }
 
 fun runToBigIntegerTests() {
