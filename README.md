@@ -8,7 +8,7 @@ Therefore, operations with ExactFraction's can be performed without losing preci
 
 ## Project Structure
 ```
-project
+exact-fraction
 │   README.md
 │   build.gradle.kts            <-- build configurations
 │
