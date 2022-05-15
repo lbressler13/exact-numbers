@@ -1,5 +1,6 @@
-# ExactFraction
+# ExactNumbers
 
+### ExactFraction
 ExactFraction is an implementation of the [Number](https://docs.oracle.com/javase/8/docs/api/java/lang/Number.html) class.
 It was inspired by the [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html) class, but fills a slightly different purpose.
 An ExactFraction is an exact representation of a rational number.
