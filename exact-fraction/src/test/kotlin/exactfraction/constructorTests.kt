@@ -19,7 +19,7 @@ private val neg7 = (-7).toBigInteger()
 private val pos18 = 18.toBigInteger()
 private val neg18 = (-18).toBigInteger()
 
-fun runConstructorTests() {
+internal fun runConstructorTests() {
     testSingleValConstructor()
     testPairValConstructor()
     testStringConstructor()

@@ -3,7 +3,7 @@ package exactfraction
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
-fun runUnaryMinusTests() {
+internal fun runUnaryMinusTests() {
     var ef = ExactFraction(0)
     var expected = ExactFraction(0)
     assertEquals(expected, -ef)
@@ -25,7 +25,7 @@ fun runUnaryMinusTests() {
     assertEquals(expected, -ef)
 }
 
-fun runUnaryPlusTests() {
+internal fun runUnaryPlusTests() {
     var ef = ExactFraction(0)
     var expected = ExactFraction(0, 1)
     assertEquals(expected, +ef)
@@ -47,7 +47,7 @@ fun runUnaryPlusTests() {
     assertEquals(expected, +ef)
 }
 
-fun runNotTests() {
+internal fun runNotTests() {
     assert(!ExactFraction(0))
     assert(!ExactFraction(0, -3))
     assertFalse(!ExactFraction(1))
@@ -55,7 +55,7 @@ fun runNotTests() {
     assertFalse(!ExactFraction(1, 3))
 }
 
-fun runIncTests() {
+internal fun runIncTests() {
     var ef = ExactFraction(3)
     ef++
     var expected = ExactFraction(4, 1)
@@ -87,7 +87,7 @@ fun runIncTests() {
     assertEquals(expected, ef)
 }
 
-fun runDecTests() {
+internal fun runDecTests() {
     var ef = ExactFraction(3)
     ef--
     var expected = ExactFraction(2, 1)

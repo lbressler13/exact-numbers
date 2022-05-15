@@ -3,9 +3,9 @@ package utils
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UtilsTest {
+internal class UtilsTest {
     @Test
-    fun testGetGcd() {
+    internal fun testGetGcd() {
         // zero
         runSingleGetGcdTest(0, 0, 1)
         runSingleGetGcdTest(1, 0, 1)

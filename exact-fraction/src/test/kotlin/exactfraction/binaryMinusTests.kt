@@ -2,7 +2,7 @@ package exactfraction
 
 import kotlin.test.assertEquals
 
-fun runMinusTests() {
+internal fun runMinusTests() {
     // zero
     var first = ExactFraction(0)
     var second = ExactFraction(0)
