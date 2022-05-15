@@ -2,7 +2,6 @@ package exactfraction
 
 import ext.toExactFraction
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
 import kotlin.test.assertFailsWith
 
 fun runPowTests() {
