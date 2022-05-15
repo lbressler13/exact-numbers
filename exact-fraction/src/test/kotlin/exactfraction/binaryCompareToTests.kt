@@ -3,7 +3,7 @@ package exactfraction
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
-fun runCompareToTests() {
+internal fun runCompareToTests() {
     // equal values
     var first = ExactFraction(0)
     var second = ExactFraction(0)

@@ -4,9 +4,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
-class StringExtTest {
+internal class StringExtTest {
     @Test
-    fun testSubstringTo() {
+    internal fun testSubstringTo() {
         assertFails { "".substringTo(1) }
         assertFails { "a".substringTo(-1) }
         assertFails { "a b".substringTo(4) }

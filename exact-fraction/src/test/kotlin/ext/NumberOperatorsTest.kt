@@ -5,9 +5,9 @@ import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class NumberOperatorsTest {
+internal class NumberOperatorsTest {
     @Test
-    fun testToExactFraction() {
+    internal fun testToExactFraction() {
         // Int
         var i = 0
         assertEquals(ExactFraction(i), i.toExactFraction())
@@ -58,7 +58,7 @@ class NumberOperatorsTest {
     }
 
     @Test
-    fun testEq() {
+    internal fun testEq() {
         // BigInteger, Int
         var i = 0
         var bi = BigInteger(i.toString())
@@ -103,7 +103,7 @@ class NumberOperatorsTest {
     }
 
     @Test
-    fun testIsNegative() {
+    internal fun testIsNegative() {
         var bi = BigInteger("0")
         assert(!bi.isNegative())
 
@@ -121,7 +121,7 @@ class NumberOperatorsTest {
     }
 
     @Test
-    fun testIsZero() {
+    internal fun testIsZero() {
         var bi = BigInteger("0")
         assert(bi.isZero())
 
@@ -139,7 +139,7 @@ class NumberOperatorsTest {
     }
 
     @Test
-    fun testMax() {
+    internal fun testMax() {
         // zero
         var bi1 = BigInteger("0")
 
@@ -196,7 +196,7 @@ class NumberOperatorsTest {
     }
 
     @Test
-    fun testMin() {
+    internal fun testMin() {
         // zero
         var bi1 = BigInteger("0")
 

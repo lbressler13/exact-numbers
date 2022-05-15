@@ -12,7 +12,7 @@ import java.math.BigInteger
  * @return parsed ExactFraction
  * @throws NumberFormatException in case of improperly formatted number string
  */
-fun parseDecimal(unparsed: String): ExactFraction {
+internal fun parseDecimal(unparsed: String): ExactFraction {
     var currentState: String = unparsed.trim()
 
     val isNegative = unparsed.startsWith("-")
@@ -71,7 +71,7 @@ fun parseDecimal(unparsed: String): ExactFraction {
  * @return parsed ExactFraction
  * @throws NumberFormatException in case of improperly formatted number string
  */
-fun parseEFString(unparsed: String): ExactFraction {
+internal fun parseEFString(unparsed: String): ExactFraction {
     if (!checkIsEFString(unparsed)) {
         throw NumberFormatException("Invalid EF string format")
     }

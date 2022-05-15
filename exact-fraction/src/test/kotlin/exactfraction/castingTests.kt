@@ -7,7 +7,7 @@ import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
 
-fun runToPairTests() {
+internal fun runToPairTests() {
     var ef = ExactFraction(0)
     var expected = Pair(0.toBigInteger(), 1.toBigInteger())
     assertEquals(expected, ef.toPair())
@@ -29,7 +29,7 @@ fun runToPairTests() {
     assertEquals(expected, ef.toPair())
 }
 
-fun runToByteTests() {
+internal fun runToByteTests() {
     var ef = ExactFraction(0)
     var expected: Byte = 0
     assertEquals(expected, ef.toByte())
@@ -68,7 +68,7 @@ fun runToByteTests() {
 }
 
 // test account for fact that Char can't be negative
-fun runToCharTests() {
+internal fun runToCharTests() {
     var ef = ExactFraction(0)
     var expected = Char(0)
     assertEquals(expected, ef.toChar())
@@ -104,7 +104,7 @@ fun runToCharTests() {
     assertExactFractionOverflow("Char", ef) { ef.toChar() }
 }
 
-fun runToShortTests() {
+internal fun runToShortTests() {
     var ef = ExactFraction(0)
     var expected: Short = 0
     assertEquals(expected, ef.toShort())
@@ -142,7 +142,7 @@ fun runToShortTests() {
     assertExactFractionOverflow("Short", ef) { ef.toShort() }
 }
 
-fun runToIntTests() {
+internal fun runToIntTests() {
     var ef = ExactFraction(0)
     var expected = 0
     assertEquals(expected, ef.toInt())
@@ -180,7 +180,7 @@ fun runToIntTests() {
     assertExactFractionOverflow("Int", ef) { ef.toInt() }
 }
 
-fun runToLongTests() {
+internal fun runToLongTests() {
     var ef = ExactFraction(0)
     var expected = 0L
     assertEquals(expected, ef.toLong())
@@ -218,7 +218,7 @@ fun runToLongTests() {
     assertExactFractionOverflow("Long", ef) { ef.toLong() }
 }
 
-fun runToDoubleTests() {
+internal fun runToDoubleTests() {
     var ef = ExactFraction(0)
     var expected = 0.0
     assert(expected == ef.toDouble())
@@ -263,7 +263,7 @@ fun runToDoubleTests() {
     assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 }
 
-fun runToFloatTests() {
+internal fun runToFloatTests() {
     var ef = ExactFraction(0)
     var expected = 0f
     assertEquals(expected, ef.toFloat())
@@ -308,7 +308,7 @@ fun runToFloatTests() {
     assertExactFractionOverflow("Float", ef) { ef.toFloat() }
 }
 
-fun runToBigIntegerTests() {
+internal fun runToBigIntegerTests() {
     var ef = ExactFraction(0)
     var expected = BigInteger.ZERO
     assertEquals(expected, ef.toBigInteger())
@@ -335,7 +335,7 @@ fun runToBigIntegerTests() {
     assertEquals(expected, ef.toBigInteger())
 }
 
-fun runToBigDecimalTests() {
+internal fun runToBigDecimalTests() {
     var ef = ExactFraction(0)
     var bd = BigDecimal(0)
     assertEquals(bd, ef.toBigDecimal())

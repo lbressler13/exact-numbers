@@ -2,55 +2,55 @@ package exactfraction
 
 import kotlin.test.Test
 
-class ExactFractionTest {
+internal class ExactFractionTest {
     // all constructors
-    @Test fun testConstructor() = runConstructorTests()
+    @Test internal fun testConstructor() = runConstructorTests()
 
     // simplify
     // includes all private methods used in simplification
-    @Test fun testSimplify() = runSimplifyTests()
+    @Test internal fun testSimplify() = runSimplifyTests()
 
     // unary operators
-    @Test fun testUnaryMinus() = runUnaryMinusTests()
-    @Test fun testUnaryPlus() = runUnaryPlusTests()
-    @Test fun testNot() = runNotTests()
-    @Test fun testInc() = runIncTests()
-    @Test fun testDec() = runDecTests()
+    @Test internal fun testUnaryMinus() = runUnaryMinusTests()
+    @Test internal fun testUnaryPlus() = runUnaryPlusTests()
+    @Test internal fun testNot() = runNotTests()
+    @Test internal fun testInc() = runIncTests()
+    @Test internal fun testDec() = runDecTests()
 
     // binary operators
-    @Test fun testPlus() = runPlusTests()
-    @Test fun testMinus() = runMinusTests()
-    @Test fun testTimes() = runTimesTests()
-    @Test fun testDiv() = runDivTests()
-    @Test fun testCompareTo() = runCompareToTests()
-    @Test fun testEquals() = runEqualsTests()
-    @Test fun testEq() = runEqTests()
-    @Test fun testPow() = runPowTests()
+    @Test internal fun testPlus() = runPlusTests()
+    @Test internal fun testMinus() = runMinusTests()
+    @Test internal fun testTimes() = runTimesTests()
+    @Test internal fun testDiv() = runDivTests()
+    @Test internal fun testCompareTo() = runCompareToTests()
+    @Test internal fun testEquals() = runEqualsTests()
+    @Test internal fun testEq() = runEqTests()
+    @Test internal fun testPow() = runPowTests()
 
-    // unary non-operator functions
-    @Test fun testInverse() = runInverseTests()
-    @Test fun testAbsoluteValue() = runAbsoluteValueTests()
-    @Test fun testIsNegative() = runIsNegativeTests()
-    @Test fun testIsZero() = runIsZeroTests()
+    // unary non-operator internal functions
+    @Test internal fun testInverse() = runInverseTests()
+    @Test internal fun testAbsoluteValue() = runAbsoluteValueTests()
+    @Test internal fun testIsNegative() = runIsNegativeTests()
+    @Test internal fun testIsZero() = runIsZeroTests()
 
     // parsing + toString
-    @Test fun testParseDecimal() = runParseDecimalTests()
-    @Test fun testParseEFString() = runParseEFStringTests()
-    @Test fun testCheckIsEFString() = runCheckIsEFStringTests()
-    @Test fun testToDecimalString() = runToDecimalStringTests()
-    @Test fun testToFractionString() = runToFractionStringTests()
-    @Test fun testToPairString() = runToPairStringTests()
-    @Test fun testToEFString() = runToEFStringTests()
+    @Test internal fun testParseDecimal() = runParseDecimalTests()
+    @Test internal fun testParseEFString() = runParseEFStringTests()
+    @Test internal fun testCheckIsEFString() = runCheckIsEFStringTests()
+    @Test internal fun testToDecimalString() = runToDecimalStringTests()
+    @Test internal fun testToFractionString() = runToFractionStringTests()
+    @Test internal fun testToPairString() = runToPairStringTests()
+    @Test internal fun testToEFString() = runToEFStringTests()
 
     // casting
-    @Test fun testToPair() = runToPairTests()
-    @Test fun testToByte() = runToByteTests()
-    @Test fun testToChar() = runToCharTests()
-    @Test fun testToShort() = runToShortTests()
-    @Test fun testToInt() = runToIntTests()
-    @Test fun testToLong() = runToLongTests()
-    @Test fun testToFloat() = runToFloatTests()
-    @Test fun testToDouble() = runToDoubleTests()
-    @Test fun testToBigDecimal() = runToBigDecimalTests()
-    @Test fun testToBigInteger() = runToBigIntegerTests()
+    @Test internal fun testToPair() = runToPairTests()
+    @Test internal fun testToByte() = runToByteTests()
+    @Test internal fun testToChar() = runToCharTests()
+    @Test internal fun testToShort() = runToShortTests()
+    @Test internal fun testToInt() = runToIntTests()
+    @Test internal fun testToLong() = runToLongTests()
+    @Test internal fun testToFloat() = runToFloatTests()
+    @Test internal fun testToDouble() = runToDoubleTests()
+    @Test internal fun testToBigDecimal() = runToBigDecimalTests()
+    @Test internal fun testToBigInteger() = runToBigIntegerTests()
 }

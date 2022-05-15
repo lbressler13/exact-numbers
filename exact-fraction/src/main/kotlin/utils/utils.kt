@@ -8,7 +8,7 @@ import java.math.BigInteger
 /**
  * Get positive greatest common divisor of 2 numbers using Euclidean algorithm
  */
-fun getGCD(val1: BigInteger, val2: BigInteger): BigInteger {
+internal fun getGCD(val1: BigInteger, val2: BigInteger): BigInteger {
     val aval1 = val1.abs()
     val aval2 = val2.abs()
 

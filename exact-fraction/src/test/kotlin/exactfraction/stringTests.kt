@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 // parsing
-fun runParseDecimalTests() {
+internal fun runParseDecimalTests() {
     // whole numbers
     var s = "0"
     var expected = ExactFraction(0)
@@ -99,7 +99,7 @@ fun runParseDecimalTests() {
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
 }
 
-fun runParseEFStringTests() {
+internal fun runParseEFStringTests() {
     var s = "EF[0 1]"
     var expected = ExactFraction(0)
     assertEquals(expected, parseEFString(s))
@@ -133,7 +133,7 @@ fun runParseEFStringTests() {
     assertFailsWith<NumberFormatException> { parseEFString(s) }
 }
 
-fun runCheckIsEFStringTests() {
+internal fun runCheckIsEFStringTests() {
     var s = "EF[10 1]"
     assert(checkIsEFString(s))
 
@@ -166,7 +166,7 @@ fun runCheckIsEFStringTests() {
 }
 
 // toString
-fun runToDecimalStringTests() {
+internal fun runToDecimalStringTests() {
     var ef = ExactFraction(0)
     var expected = "0"
     assertEquals(expected, ef.toDecimalString())
@@ -226,7 +226,7 @@ fun runToDecimalStringTests() {
     assertEquals(expected, ef.toDecimalString(6))
 }
 
-fun runToFractionStringTests() {
+internal fun runToFractionStringTests() {
     var ef = ExactFraction(0)
     var expected = "0"
     assertEquals(expected, ef.toFractionString())
@@ -248,7 +248,7 @@ fun runToFractionStringTests() {
     assertEquals(expected, ef.toFractionString())
 }
 
-fun runToPairStringTests() {
+internal fun runToPairStringTests() {
     var ef = ExactFraction(0)
     var expected = "(0, 1)"
     assertEquals(expected, ef.toPairString())
@@ -270,7 +270,7 @@ fun runToPairStringTests() {
     assertEquals(expected, ef.toPairString())
 }
 
-fun runToEFStringTests() {
+internal fun runToEFStringTests() {
     var ef = ExactFraction(0)
     var expected = "EF[0 1]"
     assertEquals(expected, ef.toEFString())

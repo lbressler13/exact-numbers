@@ -2,7 +2,7 @@ package exactfraction
 
 import ext.eq
 
-fun runSimplifyTests() {
+internal fun runSimplifyTests() {
     runSimplifyZeroTests()
     runSimplifyGCDTests()
     runSimplifySignTests()
