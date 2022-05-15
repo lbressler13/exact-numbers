@@ -1,2 +1,2 @@
-rootProject.name = "exact-fraction"
-include("exact-fraction-lib")
+rootProject.name = "exact-numbers"
+include("exact-fraction")
