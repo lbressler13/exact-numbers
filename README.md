@@ -11,18 +11,22 @@ Therefore, operations with ExactFraction's can be performed without losing preci
 ```
 exact-fraction
 │   README.md
-│   build.gradle.kts            <-- build configurations
+│   settings.gradle.kts             <-- project-level gradle settings
 │
-└───src
+└───exact-fraction
     │
-    └───main
-    │   │
-    │   └───kotlin
-    │       │   exactfraction   <-- code for ExactFraction class
-    │       │   ext             <-- extension functions for existing classes
-    │       │   utils           <-- reusable functions
-    │      
-    └───test                    <-- unit tests for all code
+    └───src
+        │
+        │   build.gradle.kts        <-- build configurations
+        │
+        └───main
+        │   │
+        │   └───kotlin
+        │       │   exactfraction   <-- code for ExactFraction class
+        │       │   ext             <-- extension functions for existing classes
+        │       │   utils           <-- reusable functions
+        │      
+        └───test                    <-- unit tests for all code
 ```
 
 ## Testing
