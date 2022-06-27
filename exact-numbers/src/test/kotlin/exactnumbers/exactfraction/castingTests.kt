@@ -240,15 +240,15 @@ internal fun runToDoubleTests() {
     assert(expected == ef.toDouble())
 
     ef = ExactFraction(1, 3)
-    expected = 0.33333333333333333333
+    expected = 0.3333333333333333 // maximum precision of double
     assert(expected == ef.toDouble())
 
     ef = ExactFraction(2, 3)
-    expected = 0.66666666666666666667
+    expected = 0.6666666666666666 // maximum precision of double
     assert(expected == ef.toDouble())
 
     ef = ExactFraction(-4, 19)
-    expected = -0.21052631578947368421
+    expected = -0.21052631578947368 // maximum precision of double
     assert(expected == ef.toDouble())
 
     val veryBig = Double.MAX_VALUE.toBigDecimal().toBigInteger()
@@ -285,15 +285,15 @@ internal fun runToFloatTests() {
     assertEquals(expected, ef.toFloat())
 
     ef = ExactFraction(1, 3)
-    expected = 0.33333333333333333333f
+    expected = 0.33333333f // maximum precision of float
     assertEquals(expected, ef.toFloat())
 
     ef = ExactFraction(2, 3)
-    expected = 0.66666666666666666667f
+    expected = 0.6666667f // maximum precision of float
     assertEquals(expected, ef.toFloat())
 
     ef = ExactFraction(-4, 19)
-    expected = -0.21052631578947368421f
+    expected = -0.21052632f // maximum precision of float
     assertEquals(expected, ef.toFloat())
 
     val veryBig = Float.MAX_VALUE.toBigDecimal().toBigInteger()
