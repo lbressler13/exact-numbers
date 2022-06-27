@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 /**
  * ArithmeticException specifically for ExactFraction casting overflow.

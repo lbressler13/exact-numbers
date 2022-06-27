@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 import java.math.BigInteger
 import kotlin.test.assertEquals

@@ -1,4 +1,4 @@
-package utils
+package exactnumbers.utils
 
 import kotlinutils.biginteger.ext.isZero
 import kotlinutils.biginteger.max

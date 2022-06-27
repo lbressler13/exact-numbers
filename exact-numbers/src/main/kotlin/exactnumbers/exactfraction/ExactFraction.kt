@@ -1,10 +1,10 @@
-package exactfraction
+package exactnumbers.exactfraction
 
-import ext.eq
-import ext.toExactFraction
+import exactnumbers.ext.eq
+import exactnumbers.ext.toExactFraction
+import exactnumbers.utils.getGCD
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
-import utils.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
