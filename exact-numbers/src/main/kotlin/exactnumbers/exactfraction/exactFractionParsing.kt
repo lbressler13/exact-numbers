@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 import kotlinutils.biginteger.ext.isZero
 import kotlinutils.string.ext.substringTo

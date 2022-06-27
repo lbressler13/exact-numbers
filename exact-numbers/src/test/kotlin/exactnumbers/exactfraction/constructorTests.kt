@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 import assertDivByZero
 import java.math.BigInteger
@@ -17,7 +17,6 @@ private val neg4 = (-4).toBigInteger()
 private val pos7 = 7.toBigInteger()
 private val neg7 = (-7).toBigInteger()
 private val pos18 = 18.toBigInteger()
-private val neg18 = (-18).toBigInteger()
 
 internal fun runConstructorTests() {
     testSingleValConstructor()

@@ -1,6 +1,6 @@
-package exactfraction
+package exactnumbers.exactfraction
 
-import ext.eq
+import exactnumbers.ext.eq
 
 internal fun runSimplifyTests() {
     runSimplifyZeroTests()

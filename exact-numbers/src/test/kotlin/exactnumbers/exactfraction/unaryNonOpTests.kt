@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 import assertDivByZero
 import kotlin.test.assertEquals

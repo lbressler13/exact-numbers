@@ -1,4 +1,4 @@
-package exactfraction
+package exactnumbers.exactfraction
 
 import assertExactFractionOverflow
 import java.math.BigDecimal

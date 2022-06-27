@@ -1,6 +1,6 @@
-package ext
+package exactnumbers.ext
 
-import exactfraction.ExactFraction
+import exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 
 // Additional ext methods related to ExactFraction and BigInteger
