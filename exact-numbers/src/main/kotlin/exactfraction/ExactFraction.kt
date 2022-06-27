@@ -1,8 +1,8 @@
 package exactfraction
 
 import ext.eq
-import ext.isNegative
-import ext.isZero
+import kotlinutils.biginteger.ext.isNegative
+import kotlinutils.biginteger.ext.isZero
 import ext.toExactFraction
 import utils.getGCD
 import java.math.BigDecimal

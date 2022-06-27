@@ -11,6 +11,9 @@ repositories {
 }
 
 dependencies {
+    val kotlinUtilsVersion = "0.0.2"
+
     implementation(kotlin("stdlib"))
     testImplementation(kotlin("test"))
+    implementation(files("libs/kotlin-utils-$kotlinUtilsVersion.jar"))
 }
