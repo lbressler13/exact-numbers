@@ -37,13 +37,13 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, v0.0.1.
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
 This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
 The package version can be updated in the module-level build.gradle.
 
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.
-Tests must be written for helper functions and extension functions.
+Tests must be written for all logic in the package.
 
 Tests can be run using an IDE, or with the following command:
 ```./gradlew test```
