@@ -1,9 +1,9 @@
 package exactfraction
 
 import ext.eq
-import ext.isNegative
-import ext.isZero
 import ext.toExactFraction
+import kotlinutils.biginteger.ext.isNegative
+import kotlinutils.biginteger.ext.isZero
 import utils.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -404,7 +404,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
         throw overflowException("Double")
     }
-
 
     /**
      * If value is between min and max Float values, cast to Float, using division with precision of 20.

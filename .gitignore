@@ -1,6 +1,9 @@
 # Build files
 .gradle
 build
+exact-numbers/build
+
+exact-numbers/libs
 
 # IDE
 *.iml

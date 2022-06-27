@@ -1,7 +1,7 @@
 package exactfraction
 
-import ext.isZero
-import ext.substringTo
+import kotlinutils.biginteger.ext.isZero
+import kotlinutils.string.ext.substringTo
 import java.math.BigInteger
 
 /**

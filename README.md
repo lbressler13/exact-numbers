@@ -8,7 +8,7 @@ It stores the number as a pair of BigInteger's, representing the numerator and d
 Therefore, operations with ExactFraction's can be performed without losing precision due to rounding.
 
 ## Project Structure
-```
+```project
 exact-numbers
 │   README.md
 │   settings.gradle.kts             <-- project-level gradle settings
@@ -29,9 +29,31 @@ exact-numbers
         └───test                    <-- unit tests for all code
 ```
 
+## Building
+The package can be built using an IDE, or with the following command:
+```./gradlew build```
+
+When the package is built, a .jar file will be generated in the build/libs folder.
+The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
+
+### Dependencies
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
+This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
+The package version can be updated in the module-level build.gradle.
+
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.
-Tests are written for all logic in the package.
+Tests must be written for all logic in the package.
 
 Tests can be run using an IDE, or with the following command:
-`./gradlew test`
+```./gradlew test```
+
+## Linting
+Linting is done using [ktlint](https://ktlint.github.io/), using [this](https://github.com/jlleitschuh/ktlint-gradle) plugin.
+See [here](https://github.com/pinterest/ktlint#standard-rules) for a list of standard rules.
+
+Linting can be run using an IDE, or with the following command:
+```./gradlew ktlintCheck```
+
+## Importing the package
+In order to import the package, copy the most recent .jar file into your project, and add the file to the list of imports for the project.

@@ -1,8 +1,8 @@
 package utils
 
-import ext.isZero
-import ext.max
-import ext.min
+import kotlinutils.biginteger.ext.isZero
+import kotlinutils.biginteger.max
+import kotlinutils.biginteger.min
 import java.math.BigInteger
 
 /**
