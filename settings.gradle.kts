@@ -1,2 +1,2 @@
 rootProject.name = "exact-numbers"
-include("exact-fraction")
+include("exact-numbers")
