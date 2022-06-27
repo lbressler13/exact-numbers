@@ -29,12 +29,12 @@ exact-numbers
         └───test                    <-- unit tests for all code
 ```
 
-## Build
+## Building
 The package can be built using an IDE, or with the following command:
 ```./gradlew build```
 
 When the package is built, a .jar file will be generated in the build/libs folder.
-The name will be in the format "kotlin-utils-version", where the version is specified in the build.gradle.kts file.
+The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
 This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, v0.0.1.
@@ -43,7 +43,17 @@ The package version can be updated in the module-level build.gradle.
 
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.
-Tests are written for all logic in the package.
+Tests must be written for helper functions and extension functions.
 
 Tests can be run using an IDE, or with the following command:
-`./gradlew test`
+```./gradlew test```
+
+## Linting
+Linting is done using [ktlint](https://ktlint.github.io/), using [this](https://github.com/jlleitschuh/ktlint-gradle) plugin.
+See [here](https://github.com/pinterest/ktlint#standard-rules) for a list of standard rules.
+
+Linting can be run using an IDE, or with the following command:
+```./gradlew ktlintCheck```
+
+## Importing the package
+In order to import the package, copy the most recent .jar file into your project, and add the file to the list of imports for the project.
