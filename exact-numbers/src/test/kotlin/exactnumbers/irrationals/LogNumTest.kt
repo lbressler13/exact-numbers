@@ -153,7 +153,7 @@ internal class LogNumTest {
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(ExactFraction.ONE, 200.toBigInteger())
-        expected = BigDecimal("2.3010299956639812")
+        expected = BigDecimal("2.30102999566398114")
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(ExactFraction.ONE, 3333.toBigInteger())
@@ -169,7 +169,7 @@ internal class LogNumTest {
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(ExactFraction(17, 3), 120.toBigInteger())
-        expected = BigDecimal("11.7820270609365411")
+        expected = BigDecimal("11.7820270609365400")
         assertEquals(expected, logNum.getValue())
     }
 

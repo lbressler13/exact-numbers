@@ -8,50 +8,42 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class ExpressionTest {
+internal class ExpressionTest {
     @Test
-    fun testConstructor() {
+    internal fun testConstructor() {
         // Int
         var int = 0
         var expr = Expression(int)
-        assertEquals(listOf(int.toExactFraction()), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(int.toExactFraction()), listOf())
 
         int = 103
         expr = Expression(int)
-        assertEquals(listOf(int.toExactFraction()), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(int.toExactFraction()), listOf())
 
         int = -200000
         expr = Expression(int)
-        assertEquals(listOf(int.toExactFraction()), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(int.toExactFraction()), listOf())
 
         // ExactFraction
         var ef = ExactFraction.ZERO
         expr = Expression(ef)
-        assertEquals(listOf(ef), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(ef), listOf())
 
         ef = ExactFraction(103)
         expr = Expression(ef)
-        assertEquals(listOf(ef), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(ef), listOf())
 
         ef = ExactFraction(-20000)
         expr = Expression(ef)
-        assertEquals(listOf(ef), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(ef), listOf())
 
         ef = ExactFraction(100, 3)
         expr = Expression(ef)
-        assertEquals(listOf(ef), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(ef), listOf())
 
         ef = ExactFraction(-17, 3087)
         expr = Expression(ef)
-        assertEquals(listOf(ef), expr.numbers)
-        assertEquals(listOf(), expr.logs)
+        checkExpressionValues(expr, listOf(ef), listOf())
 
         // lists
         assertFailsWith<Exception>("Expression must contain at least one value") { Expression(listOf(), listOf()) }
@@ -59,14 +51,12 @@ class ExpressionTest {
         var numbers = listOf(ExactFraction.ZERO)
         var logs = listOf<LogNum>()
         expr = Expression(numbers, logs)
-        assertEquals(numbers, expr.numbers)
-        assertEquals(logs, expr.logs)
+        checkExpressionValues(expr, numbers, logs)
 
         numbers = listOf()
         logs = listOf(LogNum(ExactFraction.HALF, 8.toBigInteger()))
         expr = Expression(numbers, logs)
-        assertEquals(numbers, expr.numbers)
-        assertEquals(logs, expr.logs)
+        checkExpressionValues(expr, numbers, logs)
 
         numbers = listOf(
             ExactFraction.SEVEN,
@@ -80,204 +70,138 @@ class ExpressionTest {
             LogNum(ExactFraction(-12, 13), 100.toBigInteger())
         )
         expr = Expression(numbers, logs)
-        assertEquals(numbers, expr.numbers)
-        assertEquals(logs, expr.logs)
+        checkExpressionValues(expr, numbers, logs)
     }
 
     @Test
-    fun testPlus() {
+    internal fun testSimplify() {
         // just numbers
-        var expr1 = Expression(5)
-        var expr2 = Expression(12)
-        var expectedNumbers = listOf(ExactFraction(5), ExactFraction(12))
         var expectedLogs = listOf<LogNum>()
-        checkExpectedValues(expr1 + expr2, expectedNumbers, expectedLogs)
-        checkExpectedValues(expr2 + expr1, expectedNumbers, expectedLogs)
+
+        var expr = Expression(listOf(ExactFraction.HALF), listOf())
+        var expectedNumbers = listOf(ExactFraction.HALF)
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(listOf(ExactFraction.ZERO, ExactFraction.SEVEN), listOf())
+        expectedNumbers = listOf(ExactFraction.SEVEN)
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(listOf(-ExactFraction.HALF, ExactFraction.EIGHT), listOf())
+        expectedNumbers = listOf(ExactFraction(15, 2))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(
+            listOf(ExactFraction(8, 3), ExactFraction(5, 6), ExactFraction.TWO),
+            listOf()
+        )
+        expectedNumbers = listOf(ExactFraction(11, 2))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
         // just logs
-        expr1 = Expression(listOf(), listOf(LogNum.ZERO))
-        expr2 = Expression(listOf(), listOf(LogNum(ExactFraction.HALF, BigInteger.TWO)))
         expectedNumbers = listOf()
-        expectedLogs = listOf(LogNum.ZERO, LogNum(ExactFraction.HALF, BigInteger.TWO))
-        checkExpectedValues(expr1 + expr2, expectedNumbers, expectedLogs)
-        checkExpectedValues(expr2 + expr1, expectedNumbers, expectedLogs)
 
-        // one logs, one numbers
-        expr1 = Expression(
+        expr = Expression(listOf(), listOf(LogNum.ZERO))
+        expectedLogs = listOf(LogNum.ZERO)
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(listOf(), listOf(LogNum(ExactFraction.FOUR, BigInteger.TWO)))
+        expectedLogs = listOf(LogNum(ExactFraction.FOUR, BigInteger.TWO))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(listOf(), listOf(LogNum.ZERO, LogNum(ExactFraction.FOUR, BigInteger.TWO)))
+        expectedLogs = listOf(LogNum(ExactFraction.FOUR, BigInteger.TWO))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(
+            listOf(),
+            listOf(LogNum(ExactFraction.FOUR, BigInteger.TEN), LogNum(ExactFraction.SIX, BigInteger.TEN))
+        )
+        expectedLogs = listOf(LogNum(ExactFraction.TEN, BigInteger.TEN))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
+
+        expr = Expression(
             listOf(),
             listOf(
                 LogNum(ExactFraction.FOUR, BigInteger.TEN),
-                LogNum.ZERO,
-                LogNum(ExactFraction(-7, 4), 33.toBigInteger())
+                LogNum(-ExactFraction.HALF, BigInteger.TEN),
+                LogNum(ExactFraction.SIX, BigInteger.TWO)
             )
         )
-        expr2 = Expression(listOf(ExactFraction.HALF, ExactFraction(-1000, 2401)), listOf())
-        expectedNumbers = listOf(ExactFraction.HALF, ExactFraction(-1000, 2401))
-        expectedLogs = listOf(
-            LogNum(ExactFraction.FOUR, BigInteger.TEN),
-            LogNum.ZERO,
-            LogNum(ExactFraction(-7, 4), 33.toBigInteger())
-        )
-        checkExpectedValues(expr1 + expr2, expectedNumbers, expectedLogs)
-        checkExpectedValues(expr2 + expr1, expectedNumbers, expectedLogs)
+        expectedLogs = listOf(LogNum(ExactFraction(7, 2), BigInteger.TEN), LogNum(ExactFraction.SIX, BigInteger.TWO))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
-        // both have logs and numbers
-        expr1 = Expression(
-            listOf(ExactFraction.SEVEN, ExactFraction(-106, 17), ExactFraction(14, 31)),
-            listOf(LogNum(ExactFraction(15, 7), 16.toBigInteger()), LogNum(ExactFraction.HALF, 100.toBigInteger()))
-        )
-        expr2 = Expression(
-            listOf(-ExactFraction.HALF, ExactFraction(100), ExactFraction(-12, 25), ExactFraction(33)),
-            listOf(
-                LogNum.ZERO,
-                LogNum(ExactFraction(16, 33), 200.toBigInteger()),
-                LogNum(ExactFraction(18), 18.toBigInteger())
-            )
-        )
-        expectedNumbers = listOf(
-            ExactFraction.SEVEN,
-            ExactFraction(-106, 17),
-            ExactFraction(14, 31),
-            -ExactFraction.HALF,
-            ExactFraction(100),
-            ExactFraction(-12, 25),
-            ExactFraction(33)
-        )
-        expectedLogs = listOf(
-            LogNum(ExactFraction(15, 7), 16.toBigInteger()),
-            LogNum(ExactFraction.HALF, 100.toBigInteger()),
-            LogNum.ZERO,
-            LogNum(ExactFraction(16, 33), 200.toBigInteger()),
-            LogNum(ExactFraction(18), 18.toBigInteger())
-        )
-        checkExpectedValues(expr1 + expr2, expectedNumbers, expectedLogs)
-        checkExpectedValues(expr2 + expr1, expectedNumbers, expectedLogs)
-    }
-
-    @Test
-    fun testMinus() {
-        // just numbers
-        var expr1 = Expression(5)
-        var expr2 = Expression(12)
-        var expectedNumbers = listOf(ExactFraction(5), ExactFraction(-12))
-        var expectedLogs = listOf<LogNum>()
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
-
-        expr1 = Expression(0)
-        expr2 = Expression(12)
-        expectedLogs = listOf()
-
-        expectedNumbers = listOf(ExactFraction(0), ExactFraction(-12))
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
-
-        expectedNumbers = listOf(ExactFraction(12), ExactFraction(0))
-        checkExpectedValues(expr2 - expr1, expectedNumbers, expectedLogs)
-
-        // just logs
-        expr1 = Expression(listOf(), listOf(LogNum(ExactFraction.FOUR, BigInteger.TEN)))
-        expr2 = Expression(listOf(), listOf(LogNum(ExactFraction.HALF, BigInteger.TWO)))
-        expectedNumbers = listOf()
-        expectedLogs = listOf(LogNum(ExactFraction.FOUR, BigInteger.TEN), LogNum(-ExactFraction.HALF, BigInteger.TWO))
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
-
-        expr1 = Expression(listOf(), listOf(LogNum.ZERO))
-        expr2 = Expression(listOf(), listOf(LogNum(ExactFraction.HALF, BigInteger.TWO)))
-        expectedNumbers = listOf()
-
-        expectedLogs = listOf(LogNum.ZERO, LogNum(-ExactFraction.HALF, BigInteger.TWO))
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
-
-        expectedLogs = listOf(LogNum(ExactFraction.HALF, BigInteger.TWO), LogNum.ZERO)
-        checkExpectedValues(expr2 - expr1, expectedNumbers, expectedLogs)
-
-        // one logs, one numbers
-        expr1 = Expression(
+        expr = Expression(
             listOf(),
             listOf(
-                LogNum(ExactFraction.FOUR, BigInteger.TEN),
-                LogNum.ZERO,
-                LogNum(ExactFraction(-7, 4), 33.toBigInteger())
+                LogNum(ExactFraction(8, 3), 104.toBigInteger()),
+                LogNum(ExactFraction(13, 2), 1000.toBigInteger()),
+                LogNum(ExactFraction(-18, 17), 20.toBigInteger()),
+                LogNum(ExactFraction(5, 6), 104.toBigInteger()),
+                LogNum(ExactFraction.TWO, 104.toBigInteger()),
+                LogNum(ExactFraction(-17, 2), 1000.toBigInteger()),
             )
         )
-        expr2 = Expression(listOf(ExactFraction.HALF, ExactFraction(-1000, 2401)), listOf())
-
-        expectedNumbers = listOf(-ExactFraction.HALF, ExactFraction(1000, 2401))
         expectedLogs = listOf(
-            LogNum(ExactFraction.FOUR, BigInteger.TEN),
-            LogNum.ZERO,
-            LogNum(ExactFraction(-7, 4), 33.toBigInteger())
+            LogNum(ExactFraction(11, 2), 104.toBigInteger()),
+            LogNum(-ExactFraction.TWO, 1000.toBigInteger()),
+            LogNum(ExactFraction(-18, 17), 20.toBigInteger())
         )
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
-        expectedNumbers = listOf(ExactFraction.HALF, ExactFraction(-1000, 2401))
-        expectedLogs = listOf(
-            LogNum(-ExactFraction.FOUR, BigInteger.TEN),
-            LogNum.ZERO,
-            LogNum(ExactFraction(7, 4), 33.toBigInteger())
+        // both
+        expr = Expression(
+            listOf(ExactFraction.EIGHT, ExactFraction.HALF, -ExactFraction.SEVEN),
+            listOf(LogNum(ExactFraction.FOUR, BigInteger.TWO), LogNum(ExactFraction.FOUR, BigInteger.TEN))
         )
-        checkExpectedValues(expr2 - expr1, expectedNumbers, expectedLogs)
+        expectedNumbers = listOf(ExactFraction(3, 2))
+        expectedLogs = listOf(LogNum(ExactFraction.FOUR, BigInteger.TWO), LogNum(ExactFraction.FOUR, BigInteger.TEN))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
-        // both have logs and numbers
-        expr1 = Expression(
-            listOf(ExactFraction.SEVEN, ExactFraction(-106, 17), ExactFraction(14, 31)),
-            listOf(LogNum(ExactFraction(15, 7), 16.toBigInteger()), LogNum(ExactFraction.HALF, 100.toBigInteger()))
-        )
-        expr2 = Expression(
-            listOf(-ExactFraction.HALF, ExactFraction(100), ExactFraction(-12, 25), ExactFraction(33)),
+        expr = Expression(
+            listOf(ExactFraction(-17, 42)),
             listOf(
-                LogNum.ZERO,
-                LogNum(ExactFraction(16, 33), 200.toBigInteger()),
-                LogNum(ExactFraction(18), 18.toBigInteger())
+                LogNum(ExactFraction.FOUR, BigInteger.TEN),
+                LogNum(-ExactFraction.HALF, BigInteger.TEN),
+                LogNum(ExactFraction.SIX, BigInteger.TWO)
             )
         )
+        expectedNumbers = listOf(ExactFraction(-17, 42))
+        expectedLogs = listOf(LogNum(ExactFraction(7, 2), BigInteger.TEN), LogNum(ExactFraction.SIX, BigInteger.TWO))
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
-        expectedNumbers = listOf(
-            ExactFraction.SEVEN,
-            ExactFraction(-106, 17),
-            ExactFraction(14, 31),
-            ExactFraction.HALF,
-            -ExactFraction(100),
-            ExactFraction(12, 25),
-            ExactFraction(-33)
+        expr = Expression(
+            listOf(ExactFraction(-21, 4), -ExactFraction.SIX, ExactFraction(9, 2)),
+            listOf(
+                LogNum(ExactFraction(8, 3), 104.toBigInteger()),
+                LogNum(ExactFraction(13, 2), 1000.toBigInteger()),
+                LogNum(ExactFraction(-18, 17), 20.toBigInteger()),
+                LogNum(ExactFraction(5, 6), 104.toBigInteger()),
+                LogNum(ExactFraction.TWO, 104.toBigInteger()),
+                LogNum(ExactFraction(-17, 2), 1000.toBigInteger()),
+            )
         )
+        expectedNumbers = listOf(ExactFraction(-27, 4))
         expectedLogs = listOf(
-            LogNum(ExactFraction(15, 7), 16.toBigInteger()),
-            LogNum(ExactFraction.HALF, 100.toBigInteger()),
-            LogNum.ZERO,
-            LogNum(ExactFraction(-16, 33), 200.toBigInteger()),
-            LogNum(ExactFraction(-18), 18.toBigInteger())
+            LogNum(ExactFraction(11, 2), 104.toBigInteger()),
+            LogNum(-ExactFraction.TWO, 1000.toBigInteger()),
+            LogNum(ExactFraction(-18, 17), 20.toBigInteger())
         )
-        checkExpectedValues(expr1 - expr2, expectedNumbers, expectedLogs)
-
-        expectedNumbers = listOf(
-            -ExactFraction.SEVEN,
-            ExactFraction(106, 17),
-            ExactFraction(-14, 31),
-            -ExactFraction.HALF,
-            ExactFraction(100),
-            ExactFraction(-12, 25),
-            ExactFraction(33)
-        )
-        expectedLogs = listOf(
-            LogNum(ExactFraction(-15, 7), 16.toBigInteger()),
-            LogNum(-ExactFraction.HALF, 100.toBigInteger()),
-            LogNum.ZERO,
-            LogNum(ExactFraction(16, 33), 200.toBigInteger()),
-            LogNum(ExactFraction(18), 18.toBigInteger())
-        )
-        checkExpectedValues(expr2 - expr1, expectedNumbers, expectedLogs)
+        checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
     }
 
-    private fun checkExpectedValues(expr: Expression, expectedNumbers: List<ExactFraction>, expectedLogs: List<LogNum>) {
-        // not a real sort, just something to use for ordering for tests
-        val logSort: (LogNum, LogNum) -> Int = { log1, log2 ->
-            if (log1.coefficient != log2.coefficient) {
-                log1.coefficient.compareTo(log2.coefficient)
-            } else {
-                log1.number.compareTo(log2.number)
-            }
+    @Test internal fun testPlus() = runPlusTests()
+    @Test internal fun testMinus() = runMinusTests()
+}
+
+internal fun checkExpressionValues(expr: Expression, expectedNumbers: List<ExactFraction>, expectedLogs: List<LogNum>) {
+    // not a real sort, just something to use for ordering for tests
+    val logSort: (LogNum, LogNum) -> Int = { log1, log2 ->
+        if (log1.coefficient != log2.coefficient) {
+            log1.coefficient.compareTo(log2.coefficient)
+        } else {
+            log1.number.compareTo(log2.number)
         }
-        assertEquals(expectedNumbers.sorted(), expr.numbers.sorted())
-        assertEquals(expectedLogs.sortedWith(logSort), expr.logs.sortedWith(logSort))
     }
+    assertEquals(expectedNumbers.sorted(), expr.numbers.sorted())
+    assertEquals(expectedLogs.sortedWith(logSort), expr.logs.sortedWith(logSort))
 }

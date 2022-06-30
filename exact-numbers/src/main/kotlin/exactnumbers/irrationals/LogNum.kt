@@ -5,12 +5,14 @@ import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.log
 import kotlin.math.log10
 
 // TODO add base, convert to EF
 class LogNum(coefficient: ExactFraction, number: BigInteger) {
     val coefficient: ExactFraction
     val number: BigInteger
+    private val base: Int = 10
 
     init {
         when {
@@ -47,7 +49,8 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
         val addition = trailingZeros.toBigDecimal() // log(100) = 2
         val remaining = number / BigInteger.TEN.pow(trailingZeros)
 
-        val logNum = log10(remaining.toDouble())
+        // val logNum = log10(remaining.toDouble())
+        val logNum = log(remaining.toDouble(), base.toDouble())
         if (logNum.isNaN()) {
             throw ArithmeticException("Error calculating log of $number")
         }
@@ -62,7 +65,7 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
         } else {
             coefficient.toString()
         }
-        return "$coeffString*log_10($number)"
+        return "$coeffString*log_$base($number)"
     }
 
     override fun hashCode(): Int = Pair(coefficient, number).hashCode()
