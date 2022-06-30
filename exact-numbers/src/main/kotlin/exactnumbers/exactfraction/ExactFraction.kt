@@ -447,6 +447,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         val SEVEN = ExactFraction(7)
         val EIGHT = ExactFraction(8)
         val NINE = ExactFraction(9)
+        val TEN = ExactFraction(10)
         val NEG_ONE = ExactFraction(-1)
         val HALF = ExactFraction(1, 2)
 
