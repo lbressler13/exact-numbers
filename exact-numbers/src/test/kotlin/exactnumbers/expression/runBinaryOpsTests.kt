@@ -1,7 +1,7 @@
 package exactnumbers.expression
 
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.LogNum
+import exactnumbers.irrationals.logs.LogNum
 import java.math.BigInteger
 
 internal fun runPlusTests() {

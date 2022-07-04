@@ -2,12 +2,13 @@ package exactnumbers.expression
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
-import exactnumbers.irrationals.LogNum
+import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.utils.LogList
 import java.math.BigInteger
 
 class Expression {
     val numbers: List<ExactFraction>
-    val logs: List<LogNum>
+    val logs: LogList
 
     constructor(num: ExactFraction) {
         numbers = listOf(num)
@@ -19,7 +20,7 @@ class Expression {
         logs = listOf()
     }
 
-    constructor(numbers: List<ExactFraction>, logs: List<LogNum>) {
+    constructor(numbers: List<ExactFraction>, logs: LogList) {
         if (numbers.isEmpty() && logs.isEmpty()) {
             throw Exception("Expression must contain at least one value")
         }
@@ -39,6 +40,7 @@ class Expression {
         return Expression(newNumbers, newLogs)
     }
 
+    // combine all exact fractions and simplify log by value of number
     fun getSimplified(): Expression {
         val newNumbers = if (numbers.isEmpty()) {
             listOf()
@@ -53,11 +55,13 @@ class Expression {
                 .groupBy { it.number }
                 .map {
                     val number: BigInteger = it.key
-                    val logList: List<LogNum> = it.value
+                    val logList: LogList = it.value
+
+                    // TODO group by base to take advantage of product rule + quotient rule
 
                     // add up coefficients for each log num value
                     val combinedLogs: LogNum =
-                        logList.foldRight(LogNum(ExactFraction.ZERO, number)) { logNum: LogNum, acc: LogNum ->
+                        logList.foldRight(LogNum(ExactFraction.ZERO, number)) { acc, logNum ->
                             val coeff = logNum.coefficient + acc.coefficient
                             LogNum(coeff, number)
                         }
@@ -66,7 +70,10 @@ class Expression {
                 .ifEmpty { listOf(LogNum.ZERO) }
         }
 
-
         return Expression(newNumbers, newLogs)
+    }
+
+    companion object {
+        val ZERO = Expression(0)
     }
 }

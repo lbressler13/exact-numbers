@@ -1,4 +1,4 @@
-package exactnumbers.irrationals
+package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
 import kotlinutils.biginteger.ext.isNegative
@@ -6,13 +6,12 @@ import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
-import kotlin.math.log10
 
 // TODO add base, convert to EF
 class LogNum(coefficient: ExactFraction, number: BigInteger) {
     val coefficient: ExactFraction
     val number: BigInteger
-    private val base: Int = 10
+    val base: Int = 10
 
     init {
         when {
@@ -29,6 +28,9 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
         }
     }
 
+    operator fun unaryMinus(): LogNum = LogNum(-coefficient, number)
+    operator fun unaryPlus(): LogNum = LogNum(coefficient, number)
+
     override operator fun equals(other: Any?): Boolean {
         if (other == null || other !is LogNum) {
             return false
@@ -37,8 +39,7 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
         return coefficient == other.coefficient && number == other.number
     }
 
-    operator fun unaryMinus(): LogNum = LogNum(-coefficient, number)
-    operator fun unaryPlus(): LogNum = LogNum(coefficient, number)
+    operator fun times(other: LogNum): LogProduct = LogProduct(listOf(this, other))
 
     fun isZero(): Boolean = coefficient.isZero()
 
@@ -72,5 +73,6 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
 
     companion object {
         val ZERO = LogNum(ExactFraction.ZERO, BigInteger.ONE)
+        val ONE = LogNum(ExactFraction.ONE, BigInteger.TEN)
     }
 }

@@ -2,7 +2,8 @@ package exactnumbers.expression
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
-import exactnumbers.irrationals.LogNum
+import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.utils.LogList
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -193,7 +194,7 @@ internal class ExpressionTest {
     @Test internal fun testMinus() = runMinusTests()
 }
 
-internal fun checkExpressionValues(expr: Expression, expectedNumbers: List<ExactFraction>, expectedLogs: List<LogNum>) {
+internal fun checkExpressionValues(expr: Expression, expectedNumbers: List<ExactFraction>, expectedLogs: LogList) {
     // not a real sort, just something to use for ordering for tests
     val logSort: (LogNum, LogNum) -> Int = { log1, log2 ->
         if (log1.coefficient != log2.coefficient) {

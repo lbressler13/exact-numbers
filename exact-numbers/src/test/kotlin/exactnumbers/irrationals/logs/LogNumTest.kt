@@ -1,4 +1,4 @@
-package exactnumbers.irrationals
+package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
@@ -125,6 +125,29 @@ internal class LogNumTest {
         other = LogNum(ExactFraction(15), 1000.toBigInteger())
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
+    }
+
+    @Test
+    fun testTimes() {
+        var logNum1 = LogNum.ZERO
+        var logNum2 = LogNum.ZERO
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+
+        logNum1 = LogNum.ZERO
+        logNum2 = LogNum.ONE
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+
+        logNum1 = LogNum(ExactFraction.HALF, BigInteger.TEN)
+        logNum2 = LogNum(ExactFraction.HALF, BigInteger.TEN)
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+
+        logNum1 = LogNum(ExactFraction(-17, 4), 105.toBigInteger())
+        logNum2 = LogNum(ExactFraction(2, 1235), 20.toBigInteger())
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
     }
 
     @Test
