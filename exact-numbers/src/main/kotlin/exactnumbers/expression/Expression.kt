@@ -36,8 +36,10 @@ class Expression {
 
     operator fun minus(other: Expression): Expression {
         val newNumbers = numbers + other.numbers.map { -it }
-        val newLogs = logs + other.logs.map { -it }
-        return Expression(newNumbers, newLogs)
+        // val newLogs = logs + other.logs.map { -it }
+        // return Expression(newNumbers, newLogs)
+        // TODO
+        return Expression(newNumbers, logs)
     }
 
     // combine all exact fractions and simplify log by value of number
@@ -48,29 +50,31 @@ class Expression {
             listOf(numbers.fold(ExactFraction.ZERO, ExactFraction::plus))
         }
 
-        val newLogs = if (logs.isEmpty()) {
-            listOf()
-        } else {
-            logs.filterNot { it.isZero() }
-                .groupBy { it.number }
-                .map {
-                    val number: BigInteger = it.key
-                    val logList: LogList = it.value
+//        val newLogs = if (logs.isEmpty()) {
+//            listOf()
+//        } else {
+//            logs.filterNot { it.isZero() }
+//                .groupBy { it.number }
+//                .map {
+//                    val number: BigInteger = it.key
+//                    val logList: LogList = it.value
+//
+//                    // TODO group by base to take advantage of product rule + quotient rule
+//
+//                    // add up coefficients for each log num value
+//                    val combinedLogs: LogNum =
+//                        logList.foldRight(LogNum(ExactFraction.ZERO, number)) { acc, logNum ->
+//                            val coeff = logNum.coefficient + acc.coefficient
+//                            LogNum(coeff, number)
+//                        }
+//                    combinedLogs
+//                }
+//                .ifEmpty { listOf(LogNum.ZERO) }
+//        }
 
-                    // TODO group by base to take advantage of product rule + quotient rule
-
-                    // add up coefficients for each log num value
-                    val combinedLogs: LogNum =
-                        logList.foldRight(LogNum(ExactFraction.ZERO, number)) { acc, logNum ->
-                            val coeff = logNum.coefficient + acc.coefficient
-                            LogNum(coeff, number)
-                        }
-                    combinedLogs
-                }
-                .ifEmpty { listOf(LogNum.ZERO) }
-        }
-
-        return Expression(newNumbers, newLogs)
+        // return Expression(newNumbers, newLogs)
+        return this
+        // TODO
     }
 
     companion object {

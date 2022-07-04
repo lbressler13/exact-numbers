@@ -1,20 +1,33 @@
 package exactnumbers.irrationals.logs
 
+import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.utils.LogList
 
-class LogProduct(logs: List<LogNum>) {
+class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
     val logs: LogList
+    val coefficient: ExactFraction
 
     init {
         when {
             logs.isEmpty() -> throw Exception("LogProduct must contain at least one value")
-            logs.any { it.isZero() } -> this.logs = listOf(LogNum.ZERO)
-            else -> this.logs = logs
+            coefficient == ExactFraction.ZERO || logs.any { it.isZero() } -> {
+                this.logs = listOf(LogNum.ZERO)
+                this.coefficient = ExactFraction.ZERO
+            }
+            else -> {
+                this.logs = logs
+                this.coefficient = coefficient
+            }
         }
     }
 
-    operator fun times(other: LogProduct): LogProduct = LogProduct(logs + other.logs)
-    operator fun times(other: LogNum): LogProduct = LogProduct(logs + other)
+    constructor(logs: List<LogNum>) : this(logs, ExactFraction.ONE)
+
+    operator fun unaryMinus() = LogProduct(logs, -coefficient)
+    operator fun unaryPlus() = this
+
+    operator fun times(other: LogProduct): LogProduct = LogProduct(logs + other.logs, coefficient * other.coefficient)
+    operator fun times(other: LogNum): LogProduct = LogProduct(logs + other, coefficient)
 
     fun isZero(): Boolean = logs[0].isZero()
 
@@ -25,14 +38,14 @@ class LogProduct(logs: List<LogNum>) {
         }
 
         val logSort: (LogNum, LogNum) -> Int = { logNum1, logNum2 ->
-            if (logNum1.coefficient != logNum2.coefficient) {
-                logNum1.coefficient.compareTo(logNum2.coefficient)
-            } else {
-                logNum1.number.compareTo(logNum2.number)
-            }
+            logNum1.number.compareTo(logNum2.number)
         }
 
-        return logs.sortedWith(logSort) == other.logs.sortedWith(logSort)
+        val simplified = getSimplified()
+        val otherSimplified = other.getSimplified()
+
+        return simplified.coefficient == otherSimplified.coefficient
+                && simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
     }
 
     // TODO update when bases are added
@@ -44,7 +57,14 @@ class LogProduct(logs: List<LogNum>) {
         val newLogs = logs.filter { it != LogNum.ONE }
             .ifEmpty { listOf(LogNum.ONE) }
 
-        return LogProduct(newLogs)
+        return LogProduct(newLogs, coefficient)
+    }
+
+    override fun hashCode(): Int = Pair(logs, coefficient).hashCode()
+
+    override fun toString(): String {
+        val logsString = logs.joinToString("x")
+        return "${coefficient}x$logsString"
     }
 
     companion object {

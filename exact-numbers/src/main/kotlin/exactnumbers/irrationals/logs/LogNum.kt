@@ -8,8 +8,7 @@ import java.math.BigInteger
 import kotlin.math.log
 
 // TODO add base, convert to EF
-class LogNum(coefficient: ExactFraction, number: BigInteger) {
-    val coefficient: ExactFraction
+class LogNum(number: BigInteger) {
     val number: BigInteger
     val base: Int = 10
 
@@ -17,31 +16,21 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
         when {
             number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             number.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
-            coefficient.isZero() || number == BigInteger.ONE -> {
-                this.coefficient = ExactFraction.ZERO
-                this.number = BigInteger.ONE
-            }
-            else -> {
-                this.coefficient = coefficient
-                this.number = number
-            }
+            else -> this.number = number
         }
     }
-
-    operator fun unaryMinus(): LogNum = LogNum(-coefficient, number)
-    operator fun unaryPlus(): LogNum = LogNum(coefficient, number)
 
     override operator fun equals(other: Any?): Boolean {
         if (other == null || other !is LogNum) {
             return false
         }
 
-        return coefficient == other.coefficient && number == other.number
+        return base == other.base && number == other.number
     }
 
     operator fun times(other: LogNum): LogProduct = LogProduct(listOf(this, other))
 
-    fun isZero(): Boolean = coefficient.isZero()
+    fun isZero(): Boolean = number == BigInteger.ONE
 
     fun getValue(): BigDecimal {
         val numString = number.toString()
@@ -56,23 +45,15 @@ class LogNum(coefficient: ExactFraction, number: BigInteger) {
             throw ArithmeticException("Error calculating log of $number")
         }
 
-        val numerator = (logNum.toBigDecimal() + addition) * coefficient.numerator.toBigDecimal()
-        return numerator / coefficient.denominator.toBigDecimal()
+        return logNum.toBigDecimal() + addition
     }
 
-    override fun toString(): String {
-        val coeffString = if (coefficient.denominator == BigInteger.ONE) {
-            coefficient.numerator.toString()
-        } else {
-            coefficient.toString()
-        }
-        return "$coeffString*log_$base($number)"
-    }
+    override fun toString(): String = "log_$base($number)"
 
-    override fun hashCode(): Int = Pair(coefficient, number).hashCode()
+    override fun hashCode(): Int = Pair(number, base).hashCode()
 
     companion object {
-        val ZERO = LogNum(ExactFraction.ZERO, BigInteger.ONE)
-        val ONE = LogNum(ExactFraction.ONE, BigInteger.TEN)
+        val ZERO = LogNum(BigInteger.ONE)
+        val ONE = LogNum(BigInteger.TEN)
     }
 }
