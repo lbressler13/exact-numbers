@@ -1,6 +1,5 @@
 package exactnumbers.irrationals.logs
 
-import exactnumbers.exactfraction.ExactFraction
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal

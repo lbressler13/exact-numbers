@@ -238,7 +238,25 @@ internal class LogProductTest {
 
     @Test
     internal fun testToString() {
-        // TODO
+        var product = LogProduct.ZERO
+        var expected = "0x${LogNum.ZERO}"
+        assertEquals(expected, product.toString())
+
+        product = LogProduct(listOf(LogNum.ONE, LogNum(17.toBigInteger()), LogNum(109.toBigInteger())))
+        expected = "1x${LogNum.ONE}x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        assertEquals(expected, product.toString())
+
+        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), ExactFraction.FOUR)
+        expected = "4x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        assertEquals(expected, product.toString())
+
+        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), -ExactFraction.FOUR)
+        expected = "-4x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        assertEquals(expected, product.toString())
+
+        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), ExactFraction(13, 3))
+        expected = "${ExactFraction(13, 3)}x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        assertEquals(expected, product.toString())
     }
 
     @Test internal fun testGetSimplified() = runGetSimplifiedTests()

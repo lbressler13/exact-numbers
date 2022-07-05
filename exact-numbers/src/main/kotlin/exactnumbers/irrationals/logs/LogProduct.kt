@@ -1,10 +1,10 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.utils.LogList
+import java.math.BigInteger
 
 class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
-    val logs: LogList
+    val logs: List<LogNum>
     val coefficient: ExactFraction
 
     init {
@@ -64,7 +64,12 @@ class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
 
     override fun toString(): String {
         val logsString = logs.joinToString("x")
-        return "${coefficient}x$logsString"
+        val coefficientString = if (coefficient.denominator == BigInteger.ONE) {
+            coefficient.numerator.toString()
+        } else {
+            coefficient.toString()
+        }
+        return "${coefficientString}x$logsString"
     }
 
     companion object {
