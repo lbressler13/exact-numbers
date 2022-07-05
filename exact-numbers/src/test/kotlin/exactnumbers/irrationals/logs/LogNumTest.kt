@@ -25,6 +25,18 @@ internal class LogNumTest {
             LogNum(-BigInteger.TEN)
         }
 
+        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
+            LogNum(BigInteger.TEN, -1)
+        }
+
+        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
+            LogNum(BigInteger.TEN, 0)
+        }
+
+        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
+            LogNum(BigInteger.TEN, 1)
+        }
+
         // zero
         var logNum = LogNum(BigInteger.ONE)
         var expectedNumber = BigInteger.ONE
@@ -108,16 +120,18 @@ internal class LogNumTest {
 
     @Test
     internal fun testGetValue() {
+        // base 10
         var logNum = LogNum(BigInteger.ONE)
-        var expected = 0.0.toBigDecimal()
+        var expected = 0.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(100.toBigInteger())
-        expected = 2.0.toBigDecimal()
+        expected = 2.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(200.toBigInteger())
-        expected = BigDecimal("2.30102999566398114")
+        // expected = BigDecimal("2.30102999566398114")
+        expected = BigDecimal("2.301029995663981")
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(3333.toBigInteger())
@@ -125,11 +139,38 @@ internal class LogNumTest {
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(300.toBigInteger())
-        expected = BigDecimal("2.47712125471966244")
+        // expected = BigDecimal("2.47712125471966244")
+        expected = BigDecimal("2.477121254719662")
         assertEquals(expected, logNum.getValue())
 
         logNum = LogNum(77.toBigInteger())
         expected = BigDecimal("1.8864907251724818")
+        assertEquals(expected, logNum.getValue())
+
+        // base 2
+        logNum = LogNum(BigInteger.ONE, 2)
+        expected = 0.toBigDecimal()
+        assertEquals(expected, logNum.getValue())
+
+        logNum = LogNum(32.toBigInteger(), 2)
+        expected = 5.toBigDecimal()
+        assertEquals(expected, logNum.getValue())
+
+        logNum = LogNum(200.toBigInteger(), 2)
+        expected = BigDecimal("7.643856189774724")
+        assertEquals(expected, logNum.getValue())
+
+        // other
+        logNum = LogNum(BigInteger.ONE, 7)
+        expected = 0.toBigDecimal()
+        assertEquals(expected, logNum.getValue())
+
+        logNum = LogNum(216.toBigInteger(), 6)
+        expected = 3.toBigDecimal()
+        assertEquals(expected, logNum.getValue())
+
+        logNum = LogNum(15151515.toBigInteger(), 24)
+        expected = BigDecimal("5.202432673429519")
         assertEquals(expected, logNum.getValue())
     }
 

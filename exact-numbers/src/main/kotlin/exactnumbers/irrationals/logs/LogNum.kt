@@ -6,18 +6,18 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
 
-// TODO add base, convert to EF
-class LogNum(number: BigInteger) {
-    val number: BigInteger
-    val base: Int = 10
+// TODO number to EF
+class LogNum(val number: BigInteger, val base: Int) {
 
     init {
         when {
             number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             number.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
-            else -> this.number = number
+            base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
         }
     }
+
+    constructor(number: BigInteger) : this(number, base = 10)
 
     override operator fun equals(other: Any?): Boolean {
         if (other == null || other !is LogNum) {
@@ -32,19 +32,25 @@ class LogNum(number: BigInteger) {
     fun isZero(): Boolean = number == BigInteger.ONE
 
     fun getValue(): BigDecimal {
-        val numString = number.toString()
-        val trailingZeros = numString.reversed().indexOfFirst { it != '0' }
+        // val numString = number.toString()
+        // val trailingZeros = numString.reversed().indexOfFirst { it != '0' }
 
-        val addition = trailingZeros.toBigDecimal() // log(100) = 2
-        val remaining = number / BigInteger.TEN.pow(trailingZeros)
+        // val addition = trailingZeros.toBigDecimal() // log(100) = 2
+        // val remaining = number / BigInteger.TEN.pow(trailingZeros)
+        // val logNum = log(remaining.toDouble(), base.toDouble())
 
-        // val logNum = log10(remaining.toDouble())
-        val logNum = log(remaining.toDouble(), base.toDouble())
+        val logNum = log(number.toDouble(), base.toDouble())
         if (logNum.isNaN()) {
             throw ArithmeticException("Error calculating log of $number")
         }
 
-        return logNum.toBigDecimal() + addition
+        // account for imprecision with doubles
+        val intNum = logNum.toInt()
+        if (base.toBigInteger().pow(intNum) == number) {
+            return intNum.toBigDecimal()
+        }
+
+        return logNum.toBigDecimal() // + addition
     }
 
     override fun toString(): String = "log_$base($number)"
