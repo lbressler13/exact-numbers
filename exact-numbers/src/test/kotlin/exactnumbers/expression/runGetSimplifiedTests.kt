@@ -43,10 +43,13 @@ internal fun runGetSimplifiedTests() {
     expectedLogs = listOf(LogProduct(listOf(LogNum(BigInteger.TWO))))
     checkExpressionValues(expr.getSimplified(), expectedNumbers, expectedLogs)
 
-    expr = Expression(listOf(), listOf(
-        LogProduct(listOf(LogNum.ONE)),
-        LogProduct(listOf(LogNum(BigInteger.TWO)))
-    ))
+    expr = Expression(
+        listOf(),
+        listOf(
+            LogProduct(listOf(LogNum.ONE)),
+            LogProduct(listOf(LogNum(BigInteger.TWO)))
+        )
+    )
     expectedLogs = listOf(
         LogProduct(listOf(LogNum.ONE)),
         LogProduct(listOf(LogNum(BigInteger.TWO)))

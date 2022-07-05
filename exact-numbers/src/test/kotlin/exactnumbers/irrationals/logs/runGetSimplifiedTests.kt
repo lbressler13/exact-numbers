@@ -78,7 +78,8 @@ internal fun runGetSimplifiedTests() {
             one,
             LogNum(81.toBigInteger()),
             one, one, one
-        ), ExactFraction(-18, 11)
+        ),
+        ExactFraction(-18, 11)
     )
     expectedCoeff = ExactFraction(-18, 11)
     assertEquals(expectedLogs, product.getSimplified().logs)
@@ -101,30 +102,17 @@ internal fun runGetSimplifiedTests() {
     assertEquals(expectedLogs, product.getSimplified().logs)
     assertEquals(expectedCoeff, product.getSimplified().coefficient)
 
-    product = LogProduct(
-        listOf(
-            LogNum(BigInteger.TWO),
-            LogNum(BigInteger.TWO)
-        )
-    )
-    expectedLogs = listOf(
-        LogNum(BigInteger.TWO),
-        LogNum(BigInteger.TWO)
-    )
+    product = LogProduct(listOf(LogNum(BigInteger.TWO), LogNum(BigInteger.TWO)))
+    expectedLogs = listOf(LogNum(BigInteger.TWO), LogNum(BigInteger.TWO))
     expectedCoeff = ExactFraction.ONE
     assertEquals(expectedLogs, product.getSimplified().logs)
     assertEquals(expectedCoeff, product.getSimplified().coefficient)
 
     product = LogProduct(
-        listOf(
-            LogNum(103.toBigInteger()),
-            LogNum(BigInteger.TWO)
-        ), -ExactFraction.FOUR
+        listOf(LogNum(103.toBigInteger()), LogNum(BigInteger.TWO)),
+        -ExactFraction.FOUR
     )
-    expectedLogs = listOf(
-        LogNum(103.toBigInteger()),
-        LogNum(BigInteger.TWO)
-    )
+    expectedLogs = listOf(LogNum(103.toBigInteger()), LogNum(BigInteger.TWO))
     expectedCoeff = -ExactFraction.FOUR
     assertEquals(expectedLogs, product.getSimplified().logs)
     assertEquals(expectedCoeff, product.getSimplified().coefficient)

@@ -11,7 +11,7 @@ import kotlin.test.assertFailsWith
 
 internal class ExpressionTest {
     @Test
-    fun testConstructor() {
+    internal fun testConstructor() {
         // Int
         var int = 0
         var expr = Expression(int)
@@ -66,13 +66,7 @@ internal class ExpressionTest {
             ExactFraction(-2345)
         )
         logs = listOf(
-            LogProduct(
-                listOf(
-                    LogNum(BigInteger.TWO),
-                    LogNum(17.toBigInteger()),
-                    LogNum(100.toBigInteger())
-                )
-            )
+            LogProduct(listOf(LogNum(BigInteger.TWO), LogNum(17.toBigInteger()), LogNum(100.toBigInteger())))
         )
         expr = Expression(numbers, logs)
         checkExpressionValues(expr, numbers, logs)
@@ -95,7 +89,7 @@ internal class ExpressionTest {
 
     @Test internal fun testPlus() = runPlusTests()
     @Test internal fun testMinus() = runMinusTests()
-    @Test fun testGetSimplified() = runGetSimplifiedTests()
+    @Test internal fun testGetSimplified() = runGetSimplifiedTests()
 
     @Test
     internal fun testToString() {
@@ -117,7 +111,7 @@ internal class ExpressionTest {
         val product2 = LogProduct(listOf(LogNum(15.toBigInteger())), ExactFraction.FOUR)
 
         expr = Expression(listOf(), listOf(product1, product2))
-        expected = "${product1}+${product2}"
+        expected = "$product1+$product2"
         assertEquals(expected, expr.toString())
 
         // both
@@ -126,7 +120,7 @@ internal class ExpressionTest {
         assertEquals(expected, expr.toString())
 
         expr = Expression(listOf(ExactFraction.EIGHT, ExactFraction(-15, 7)), listOf(product1, product2))
-        expected = "${ExactFraction.EIGHT}+${ExactFraction(-15, 7)}+${product1}+${product2}"
+        expected = "${ExactFraction.EIGHT}+${ExactFraction(-15, 7)}+$product1+$product2"
         assertEquals(expected, expr.toString())
     }
 }

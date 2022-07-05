@@ -44,8 +44,8 @@ class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        return simplified.coefficient == otherSimplified.coefficient
-                && simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
+        return simplified.coefficient == otherSimplified.coefficient &&
+            simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
     }
 
     // TODO update when bases are added

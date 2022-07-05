@@ -23,13 +23,15 @@ internal fun runPlusTests() {
     checkExpressionValues(expr2 + expr1, expectedNumbers, expectedLogs)
 
     expr1 = Expression(
-        listOf(), listOf(
+        listOf(),
+        listOf(
             LogProduct.ONE,
             LogProduct(listOf(LogNum(12.toBigInteger())), ExactFraction.FOUR)
         )
     )
     expr2 = Expression(
-        listOf(), listOf(
+        listOf(),
+        listOf(
             LogProduct(listOf(LogNum(BigInteger.TWO))),
             LogProduct(listOf(LogNum.ONE, LogNum(106.toBigInteger())))
         )
@@ -165,15 +167,7 @@ internal fun runMinusTests() {
     // one logs, one numbers
     expr1 = Expression(
         listOf(),
-        listOf(
-            LogProduct(
-                listOf(
-                    LogNum(BigInteger.TEN),
-                    LogNum.ZERO,
-                    LogNum(33.toBigInteger())
-                )
-            )
-        )
+        listOf(LogProduct(listOf(LogNum(BigInteger.TEN), LogNum.ZERO, LogNum(33.toBigInteger()))))
     )
     expr2 = Expression(listOf(ExactFraction.HALF, ExactFraction(-1000, 2401)), listOf())
 
@@ -191,13 +185,7 @@ internal fun runMinusTests() {
 
     expectedNumbers = listOf(ExactFraction.HALF, ExactFraction(-1000, 2401))
     expectedLogs = listOf(
-        LogProduct(
-            listOf(
-                LogNum(BigInteger.TEN),
-                LogNum.ZERO,
-                LogNum(33.toBigInteger())
-            ), ExactFraction.NEG_ONE
-        )
+        LogProduct(listOf(LogNum(BigInteger.TEN), LogNum.ZERO, LogNum(33.toBigInteger())), ExactFraction.NEG_ONE)
     )
     checkExpressionValues(expr2 - expr1, expectedNumbers, expectedLogs)
 

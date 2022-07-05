@@ -69,7 +69,7 @@ internal class LogNumTest {
     }
 
     @Test
-    fun testTimes() {
+    internal fun testTimes() {
         var logNum1 = LogNum.ZERO
         var logNum2 = LogNum.ZERO
         assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
