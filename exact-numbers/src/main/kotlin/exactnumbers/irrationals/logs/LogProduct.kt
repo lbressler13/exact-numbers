@@ -48,7 +48,6 @@ class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
             simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
     }
 
-    // TODO update when bases are added
     fun getSimplified(): LogProduct {
         if (logs.any { it.isZero() }) {
             return ZERO

@@ -4,7 +4,6 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
 import exactnumbers.irrationals.logs.LogNum
 import exactnumbers.irrationals.logs.LogProduct
-import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -55,7 +54,7 @@ internal class ExpressionTest {
         checkExpressionValues(expr, numbers, logs)
 
         numbers = listOf()
-        logs = listOf(LogProduct(listOf(LogNum(8.toBigInteger()))))
+        logs = listOf(LogProduct(listOf(LogNum(ExactFraction.EIGHT))))
         expr = Expression(numbers, logs)
         checkExpressionValues(expr, numbers, logs)
 
@@ -66,7 +65,7 @@ internal class ExpressionTest {
             ExactFraction(-2345)
         )
         logs = listOf(
-            LogProduct(listOf(LogNum(BigInteger.TWO), LogNum(17.toBigInteger()), LogNum(100.toBigInteger())))
+            LogProduct(listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(17)), LogNum(ExactFraction(100))))
         )
         expr = Expression(numbers, logs)
         checkExpressionValues(expr, numbers, logs)
@@ -80,7 +79,7 @@ internal class ExpressionTest {
         )
         logs = listOf(
             LogProduct.ONE,
-            LogProduct(listOf(LogNum(8.toBigInteger()), LogNum(15.toBigInteger())), ExactFraction(-3, 2)),
+            LogProduct(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(15))), ExactFraction(-3, 2)),
             LogProduct(listOf(LogNum.ONE), ExactFraction.FIVE)
         )
         expr = Expression(numbers, logs)
@@ -107,8 +106,8 @@ internal class ExpressionTest {
         expected = "${LogProduct.ZERO}"
         assertEquals(expected, expr.toString())
 
-        val product1 = LogProduct(listOf(LogNum.ONE, LogNum(BigInteger.TEN)))
-        val product2 = LogProduct(listOf(LogNum(15.toBigInteger())), ExactFraction.FOUR)
+        val product1 = LogProduct(listOf(LogNum.ONE, LogNum(ExactFraction.TEN)))
+        val product2 = LogProduct(listOf(LogNum(ExactFraction(15, 7))), ExactFraction.FOUR)
 
         expr = Expression(listOf(), listOf(product1, product2))
         expected = "$product1+$product2"

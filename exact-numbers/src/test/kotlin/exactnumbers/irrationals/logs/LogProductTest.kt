@@ -1,7 +1,6 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
-import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -23,17 +22,17 @@ internal class LogProductTest {
         assertEquals(zero, product.logs)
         assertEquals(ExactFraction.ZERO, product.coefficient)
 
-        logs = listOf(LogNum(14.toBigInteger()), LogNum(17.toBigInteger()), LogNum.ZERO)
+        logs = listOf(LogNum(ExactFraction(14)), LogNum(ExactFraction(17)), LogNum.ZERO)
         product = LogProduct(logs)
         assertEquals(zero, product.logs)
         assertEquals(ExactFraction.ZERO, product.coefficient)
 
-        logs = listOf(LogNum(14.toBigInteger()), LogNum(17.toBigInteger()), LogNum.ZERO)
+        logs = listOf(LogNum(ExactFraction(14)), LogNum(ExactFraction(17)), LogNum.ZERO)
         product = LogProduct(logs, ExactFraction.FOUR)
         assertEquals(zero, product.logs)
         assertEquals(ExactFraction.ZERO, product.coefficient)
 
-        logs = listOf(LogNum(14.toBigInteger()), LogNum(17.toBigInteger()))
+        logs = listOf(LogNum(ExactFraction(14)), LogNum(ExactFraction(17)))
         product = LogProduct(logs, ExactFraction.ZERO)
         assertEquals(zero, product.logs)
         assertEquals(ExactFraction.ZERO, product.coefficient)
@@ -42,35 +41,44 @@ internal class LogProductTest {
         logs = listOf(LogNum.ONE)
         assertEquals(logs, LogProduct(logs).logs)
 
-        logs = listOf(LogNum(BigInteger.TWO), LogNum(11.toBigInteger()))
+        logs = listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(11)))
         product = LogProduct(logs)
         assertEquals(logs, product.logs)
         assertEquals(ExactFraction.ONE, product.coefficient)
 
-        logs = listOf(LogNum(11.toBigInteger()), LogNum(BigInteger.TWO), LogNum(11.toBigInteger()), LogNum.ONE)
+        logs = listOf(
+            LogNum(ExactFraction(11)),
+            LogNum(ExactFraction(2, 15)),
+            LogNum(ExactFraction(11)),
+            LogNum(ExactFraction(18, 5))
+        )
         product = LogProduct(logs)
         assertEquals(logs, product.logs)
         assertEquals(ExactFraction.ONE, product.coefficient)
 
         // with coefficient
         logs = listOf(
-            LogNum(14.toBigInteger()),
-            LogNum(17.toBigInteger()),
-            LogNum(BigInteger.TEN),
-            LogNum(90.toBigInteger())
+            LogNum(ExactFraction(14)),
+            LogNum(ExactFraction(17, 7)),
+            LogNum(ExactFraction.TEN),
+            LogNum(ExactFraction(90, 49)),
         )
         var coefficient = ExactFraction.FOUR
         product = LogProduct(logs, coefficient)
         assertEquals(logs, product.logs)
         assertEquals(coefficient, product.coefficient)
 
-        logs = listOf(LogNum.ONE, LogNum(BigInteger.TWO))
+        logs = listOf(LogNum.ONE, LogNum(ExactFraction.TWO))
         coefficient = ExactFraction(-2058)
         product = LogProduct(logs, coefficient)
         assertEquals(logs, product.logs)
         assertEquals(coefficient, product.coefficient)
 
-        logs = listOf(LogNum(107.toBigInteger()), LogNum(14.toBigInteger()), LogNum(1000.toBigInteger()))
+        logs = listOf(
+            LogNum(ExactFraction(107)),
+            LogNum(ExactFraction(14)),
+            LogNum(ExactFraction(1000, 1001))
+        )
         coefficient = ExactFraction(-13, 32)
         product = LogProduct(logs, coefficient)
         assertEquals(logs, product.logs)
@@ -83,18 +91,28 @@ internal class LogProductTest {
         var product1 = LogProduct.ZERO
         assertEquals(product1, product1)
 
-        product1 = LogProduct(listOf(LogNum(BigInteger.TWO), LogNum(15.toBigInteger())))
-        assertEquals(product1, product1)
-
-        product1 = LogProduct(listOf(LogNum(BigInteger.TWO), LogNum(15.toBigInteger())), ExactFraction(12))
+        product1 = LogProduct(listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(15))))
         assertEquals(product1, product1)
 
         product1 = LogProduct(
-            listOf(LogNum(1000.toBigInteger()), LogNum.ONE, LogNum(101.toBigInteger()), LogNum(BigInteger.TEN))
+            listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(15, 22))), ExactFraction(12)
+        )
+        assertEquals(product1, product1)
+
+        product1 = LogProduct(
+            listOf(
+                LogNum(ExactFraction(1000, 43)),
+                LogNum.ONE,
+                LogNum(ExactFraction(101)),
+                LogNum(ExactFraction(12, 5))
+            )
         )
         var product2 = LogProduct(
             listOf(
-                LogNum.ONE, LogNum(1000.toBigInteger()), LogNum(BigInteger.TEN), LogNum(101.toBigInteger()),
+                LogNum.ONE,
+                LogNum(ExactFraction(12, 5)),
+                LogNum(ExactFraction(1000, 43)),
+                LogNum(ExactFraction(101))
             )
         )
         assertEquals(product1, product1)
@@ -102,11 +120,11 @@ internal class LogProductTest {
         assertEquals(product2, product1)
 
         product1 = LogProduct(
-            listOf(LogNum(101.toBigInteger()), LogNum(1000.toBigInteger())),
+            listOf(LogNum(ExactFraction(101)), LogNum(ExactFraction(1000))),
             ExactFraction(-18, 5)
         )
         product2 = LogProduct(
-            listOf(LogNum(1000.toBigInteger()), LogNum(101.toBigInteger())),
+            listOf(LogNum(ExactFraction(1000)), LogNum(ExactFraction(101))),
             ExactFraction(-18, 5)
         )
         assertEquals(product1, product1)
@@ -119,39 +137,52 @@ internal class LogProductTest {
         assertNotEquals(product1, product2)
         assertNotEquals(product2, product1)
 
-        product1 = LogProduct(listOf(LogNum(BigInteger.TWO)))
-        product2 = LogProduct(listOf(LogNum(15.toBigInteger()), LogNum(BigInteger.TWO)))
+        product1 = LogProduct(listOf(LogNum(ExactFraction.TWO)))
+        product2 = LogProduct(listOf(LogNum(ExactFraction(15)), LogNum(ExactFraction.TWO)))
         assertNotEquals(product1, product2)
         assertNotEquals(product2, product1)
 
         product1 = LogProduct(
-            listOf(LogNum(15.toBigInteger()), LogNum(BigInteger.TWO)),
+            listOf(LogNum(ExactFraction(15, 7)), LogNum(ExactFraction.TWO)),
             ExactFraction.HALF
         )
         product2 = LogProduct(
-            listOf(LogNum(15.toBigInteger()), LogNum(BigInteger.TWO)),
+            listOf(LogNum(ExactFraction(15, 7)), LogNum(ExactFraction.TWO)),
             -ExactFraction.HALF
         )
         assertNotEquals(product1, product2)
         assertNotEquals(product2, product1)
 
-        product1 = LogProduct(listOf(LogNum(15.toBigInteger()), LogNum(BigInteger.TWO)))
+        product1 = LogProduct(listOf(LogNum(ExactFraction(15)), LogNum(ExactFraction.TWO)))
         product2 = LogProduct(
-            listOf(LogNum(15.toBigInteger()), LogNum(BigInteger.TWO)),
+            listOf(LogNum(ExactFraction(15)), LogNum(ExactFraction.TWO)),
             ExactFraction.THREE
         )
         assertNotEquals(product1, product2)
         assertNotEquals(product2, product1)
 
-        product1 = LogProduct(listOf(LogNum(7.toBigInteger()), LogNum(12.toBigInteger()), LogNum(42.toBigInteger())))
+        product1 = LogProduct(
+            listOf(LogNum(ExactFraction.SEVEN), LogNum(ExactFraction(12)), LogNum(ExactFraction(42)))
+        )
+
         product2 = LogProduct(
             listOf(
                 LogNum.ONE,
-                LogNum(1000.toBigInteger()),
-                LogNum(BigInteger.TEN),
-                LogNum(101.toBigInteger()),
+                LogNum(ExactFraction(1000, 99)),
+                LogNum(ExactFraction.TEN),
+                LogNum(ExactFraction(101))
             )
         )
+        assertNotEquals(product1, product2)
+        assertNotEquals(product2, product1)
+
+        product1 = LogProduct(listOf(LogNum(ExactFraction(15, 4))))
+        product2 = LogProduct(listOf(LogNum(ExactFraction(4, 15))))
+        assertNotEquals(product1, product2)
+        assertNotEquals(product2, product1)
+
+        product1 = LogProduct(listOf(LogNum(ExactFraction(1, 15)), LogNum(ExactFraction(8, 7))))
+        product2 = LogProduct(listOf(LogNum(ExactFraction(1, 15))), ExactFraction(8, 7))
         assertNotEquals(product1, product2)
         assertNotEquals(product2, product1)
     }
@@ -161,19 +192,25 @@ internal class LogProductTest {
         var product = LogProduct.ZERO
         assertTrue(product.isZero())
 
-        product = LogProduct(listOf(LogNum.ONE, LogNum(BigInteger.TWO)), ExactFraction.ZERO)
+        product = LogProduct(listOf(LogNum.ONE, LogNum(ExactFraction.TWO)), ExactFraction.ZERO)
         assertTrue(product.isZero())
 
         product = LogProduct(listOf(LogNum.ONE))
         assertFalse(product.isZero())
 
-        product = LogProduct(listOf(LogNum(BigInteger.TEN), LogNum(1000.toBigInteger()), LogNum(5.toBigInteger())))
+        product = LogProduct(listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction(1000)), LogNum(ExactFraction.FIVE)))
         assertFalse(product.isZero())
 
         product = LogProduct(
-            listOf(LogNum(BigInteger.TEN), LogNum(1000.toBigInteger()), LogNum(5.toBigInteger())),
+            listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction(1000)), LogNum(ExactFraction.FIVE)),
             ExactFraction(-5, 6)
         )
+        assertFalse(product.isZero())
+
+        product = LogProduct(listOf(LogNum(ExactFraction(12, 17)), LogNum(ExactFraction(25, 216))))
+        assertFalse(product.isZero())
+
+        product = LogProduct(listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction.TEN.inverse())))
         assertFalse(product.isZero())
     }
 
@@ -183,20 +220,30 @@ internal class LogProductTest {
         var expected = "0x${LogNum.ZERO}"
         assertEquals(expected, product.toString())
 
-        product = LogProduct(listOf(LogNum.ONE, LogNum(17.toBigInteger()), LogNum(109.toBigInteger())))
-        expected = "1x${LogNum.ONE}x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        product = LogProduct(listOf(LogNum.ONE, LogNum(ExactFraction(17)), LogNum(ExactFraction(109))))
+        expected = "1x${LogNum.ONE}x${LogNum(ExactFraction(17))}x${LogNum(ExactFraction(109))}"
         assertEquals(expected, product.toString())
 
-        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), ExactFraction.FOUR)
-        expected = "4x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        product = LogProduct(
+            listOf(LogNum(ExactFraction(17)), LogNum(ExactFraction(109, 3))),
+            ExactFraction.FOUR
+        )
+        expected = "4x${LogNum(ExactFraction(17))}x${LogNum(ExactFraction(109, 3))}"
         assertEquals(expected, product.toString())
 
-        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), -ExactFraction.FOUR)
-        expected = "-4x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        product = LogProduct(
+            listOf(LogNum(ExactFraction(17)), LogNum(ExactFraction(109))),
+            -ExactFraction.FOUR
+        )
+        expected = "-4x${LogNum(ExactFraction(17))}x${LogNum(ExactFraction(109))}"
         assertEquals(expected, product.toString())
 
-        product = LogProduct(listOf(LogNum(17.toBigInteger()), LogNum(109.toBigInteger())), ExactFraction(13, 3))
-        expected = "${ExactFraction(13, 3)}x${LogNum(17.toBigInteger())}x${LogNum(109.toBigInteger())}"
+        product = LogProduct(
+            listOf(LogNum(ExactFraction(17, 4)), LogNum(ExactFraction(109, 5))),
+            ExactFraction(13, 3)
+        )
+        expected = "${ExactFraction(13, 3)}x${LogNum(ExactFraction(17, 4))}" +
+            "x${LogNum(ExactFraction(109, 5))}"
         assertEquals(expected, product.toString())
     }
 

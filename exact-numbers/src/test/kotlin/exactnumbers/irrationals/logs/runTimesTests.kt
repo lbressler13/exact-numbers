@@ -1,7 +1,6 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
-import java.math.BigInteger
 import kotlin.test.assertEquals
 
 internal fun runTimesTests() {
@@ -14,30 +13,38 @@ internal fun runTimesTests() {
     assertEquals(expected, product * num)
 
     product = LogProduct.ZERO
-    num = LogNum(12.toBigInteger())
+    num = LogNum(ExactFraction(12))
     assertEquals(expected, product * num)
 
-    product = LogProduct(listOf(LogNum.ONE, LogNum(BigInteger.TWO)))
+    product = LogProduct(listOf(LogNum.ONE, LogNum(ExactFraction.TWO)))
     num = LogNum.ZERO
     assertEquals(expected, product * num)
 
     // other
     product = LogProduct.ONE
-    num = LogNum(4.toBigInteger())
+    num = LogNum(ExactFraction.FOUR)
     expected = LogProduct(listOf(LogNum.ONE, num))
     assertEquals(expected, product * num)
 
-    product = LogProduct(listOf(LogNum(BigInteger.TEN), LogNum(BigInteger.TWO), LogNum.ONE))
+    product = LogProduct(listOf(LogNum(ExactFraction(4, 5)), LogNum(ExactFraction.TWO), LogNum.ONE))
     num = LogNum.ONE
     expected = LogProduct(
-        listOf(LogNum(BigInteger.TEN), LogNum(BigInteger.TWO), LogNum.ONE, LogNum.ONE)
+        listOf(LogNum(ExactFraction(4, 5)), LogNum(ExactFraction.TWO), LogNum.ONE, LogNum.ONE)
     )
     assertEquals(expected, product * num)
 
-    product = LogProduct(listOf(LogNum(BigInteger.TEN), LogNum(BigInteger.TWO)), ExactFraction.HALF)
-    num = LogNum(15.toBigInteger())
+    product = LogProduct(listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction.TWO)), ExactFraction.HALF)
+    num = LogNum(ExactFraction(15))
     expected = LogProduct(
-        listOf(LogNum(BigInteger.TEN), LogNum(BigInteger.TWO), LogNum(15.toBigInteger())),
+        listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction.TWO), LogNum(ExactFraction(15))),
+        ExactFraction.HALF
+    )
+    assertEquals(expected, product * num)
+
+    product = LogProduct(listOf(LogNum(ExactFraction(3, 5)), LogNum(ExactFraction.TWO)), ExactFraction.HALF)
+    num = LogNum(ExactFraction(15, 4))
+    expected = LogProduct(
+        listOf(LogNum(ExactFraction(3, 5)), LogNum(ExactFraction.TWO), LogNum(ExactFraction(15, 4))),
         ExactFraction.HALF
     )
     assertEquals(expected, product * num)
@@ -51,39 +58,39 @@ internal fun runTimesTests() {
     assertEquals(expected, product * product2)
     assertEquals(expected, product2 * product)
 
-    product2 = LogProduct(listOf(LogNum(109.toBigInteger()), LogNum(BigInteger.TWO)))
+    product2 = LogProduct(listOf(LogNum(ExactFraction(109, 4)), LogNum(ExactFraction.TWO)))
     assertEquals(expected, product * product2)
     assertEquals(expected, product2 * product)
 
     // other
-    product = LogProduct(listOf(LogNum(BigInteger.TWO)))
+    product = LogProduct(listOf(LogNum(ExactFraction.TWO)))
     product2 = LogProduct(listOf(LogNum.ONE))
-    expected = LogProduct(listOf(LogNum(BigInteger.TWO), LogNum.ONE))
+    expected = LogProduct(listOf(LogNum(ExactFraction.TWO), LogNum.ONE))
     assertEquals(expected, product * product2)
     assertEquals(expected, product2 * product)
 
-    product = LogProduct(listOf(LogNum(14.toBigInteger())))
+    product = LogProduct(listOf(LogNum(ExactFraction(14))))
     product2 = LogProduct(
-        listOf(LogNum(11.toBigInteger()), LogNum(200.toBigInteger()), LogNum(5.toBigInteger()))
+        listOf(LogNum(ExactFraction(11, 7)), LogNum(ExactFraction(200, 3)), LogNum(ExactFraction.FIVE))
     )
     expected = LogProduct(
         listOf(
-            LogNum(14.toBigInteger()), LogNum(11.toBigInteger()), LogNum(200.toBigInteger()), LogNum(5.toBigInteger())
+            LogNum(ExactFraction(14)), LogNum(ExactFraction(11, 7)), LogNum(ExactFraction(200, 3)), LogNum(ExactFraction.FIVE)
         )
     )
     assertEquals(expected, product * product2)
     assertEquals(expected, product2 * product)
 
-    product = LogProduct(listOf(LogNum(14.toBigInteger())), ExactFraction.FOUR)
+    product = LogProduct(listOf(LogNum(ExactFraction(14))), ExactFraction.FOUR)
     product2 = LogProduct(
-        listOf(LogNum(11.toBigInteger()), LogNum(200.toBigInteger()), LogNum(5.toBigInteger()))
+        listOf(LogNum(ExactFraction(11)), LogNum(ExactFraction(200)), LogNum(ExactFraction.FIVE))
     )
     expected = LogProduct(
         listOf(
-            LogNum(14.toBigInteger()),
-            LogNum(11.toBigInteger()),
-            LogNum(200.toBigInteger()),
-            LogNum(5.toBigInteger())
+            LogNum(ExactFraction(14)),
+            LogNum(ExactFraction(11)),
+            LogNum(ExactFraction(200)),
+            LogNum(ExactFraction.FIVE)
         ),
         ExactFraction.FOUR
     )
@@ -91,21 +98,17 @@ internal fun runTimesTests() {
     assertEquals(expected, product2 * product)
 
     product = LogProduct(
-        listOf(LogNum(14.toBigInteger()), LogNum(510015.toBigInteger()), LogNum(BigInteger.TWO)),
+        listOf(LogNum(ExactFraction(14)), LogNum(ExactFraction(510015, 16)), LogNum(ExactFraction.TWO)),
         ExactFraction(-17, 7)
     )
     product2 = LogProduct(
-        listOf(LogNum(11.toBigInteger()), LogNum(200.toBigInteger()), LogNum(5.toBigInteger())),
+        listOf(LogNum(ExactFraction(11)), LogNum(ExactFraction(200, 503)), LogNum(ExactFraction.FIVE)),
         ExactFraction(3, 4)
     )
     expected = LogProduct(
         listOf(
-            LogNum(14.toBigInteger()),
-            LogNum(510015.toBigInteger()),
-            LogNum(BigInteger.TWO),
-            LogNum(11.toBigInteger()),
-            LogNum(200.toBigInteger()),
-            LogNum(5.toBigInteger())
+            LogNum(ExactFraction(14)), LogNum(ExactFraction(510015, 16)), LogNum(ExactFraction.TWO),
+            LogNum(ExactFraction(11)), LogNum(ExactFraction(200, 503)), LogNum(ExactFraction.FIVE),
         ),
         ExactFraction(-51, 28)
     )
