@@ -17,7 +17,6 @@ Therefore, operations with ExactFraction's can be performed without losing preci
 │   │   │   ├── kotlin
 │   │   │   │   ├── exactnumbers       <-- source code for exact-numbers module
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
-│   │   │   │   │   ├── expression     <-- code for Expression and related classes
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
 │   │   │   │   │   ├── utils          <-- reusable functions
