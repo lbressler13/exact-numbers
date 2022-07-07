@@ -4,7 +4,10 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
 import exactnumbers.irrationals.logs.LogProduct
 
-class Expression {
+/**
+ * Representation of the sum of numbers, which can be both rational and irrational numbers
+ */
+internal class Expression {
     val numbers: List<ExactFraction>
     val logs: List<LogProduct>
 
@@ -38,14 +41,21 @@ class Expression {
         return Expression(newNumbers, newLogs)
     }
 
-    // combine all exact fractions and combine log products with the same logs
+    /**
+     * Get simplified version of expression by combining numbers of each type when possible.
+     * Does not compute values of irrational numbers.
+     *
+     * @return [Expression]: simplified expression
+     */
     fun getSimplified(): Expression {
+        // add up exact fractions
         val newNumbers = if (numbers.isEmpty()) {
             listOf()
         } else {
             listOf(numbers.fold(ExactFraction.ZERO, ExactFraction::plus))
         }
 
+        // combine log products with the same lists of logs
         val newLogs = when {
             logs.isEmpty() -> listOf()
             logs.all { it.isZero() } -> listOf(LogProduct.ZERO)
@@ -55,6 +65,8 @@ class Expression {
                     .map {
                         val currentLogs = it.key
                         val products = it.value
+
+                        // get sum of coefficients for this set of products
                         val combinedProducts: LogProduct =
                             products.fold(LogProduct.ZERO) { acc, product ->
                                 val coeff = product.coefficient + acc.coefficient

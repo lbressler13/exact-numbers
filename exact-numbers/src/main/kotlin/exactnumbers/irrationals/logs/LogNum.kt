@@ -5,8 +5,14 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
 
+/**
+ * Representation of a log, with an integer base and rational argument
+ *
+ * @param number [ExactFraction]: value to compute log of
+ * @param base [Int]: base to use when computing log
+ * @throws [ArithmeticException] if number is not positive or if base is less than 1
+ */
 class LogNum(val number: ExactFraction, val base: Int) {
-
     init {
         when {
             number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
@@ -30,35 +36,16 @@ class LogNum(val number: ExactFraction, val base: Int) {
     fun isZero(): Boolean = number == ExactFraction.ONE
 
     // log_b(x/y) = log_b(x) - log_b(y)
-    fun getValue(): BigDecimal {
-        // val numString = number.toString()
-        // val trailingZeros = numString.reversed().indexOfFirst { it != '0' }
+    // get numerator and denominator separately to reduce loss of precision when casting to double
+    fun getValue(): BigDecimal = getLogOf(number.numerator) - getLogOf(number.denominator)
 
-        // val addition = trailingZeros.toBigDecimal() // log(100) = 2
-        // val remaining = number / BigInteger.TEN.pow(trailingZeros)
-        // val logNum = log(remaining.toDouble(), base.toDouble())
-
-        // val logNum = log(number.toDouble(), base.toDouble())
-//        val firstLog = log(number.numerator.toDouble(), base.toDouble())
-//        val secondLog = log(number.denominator.toDouble(), base.toDouble())
-//
-//        if (firstLog.isNaN() || secondLog.isNaN()) {
-//            throw ArithmeticException("Error calculating log of $number")
-//        }
-//
-//        val logNum = firstLog - secondLog
-//
-//        // account for imprecision with doubles
-//        val intNum = logNum.toInt()
-//        if (ExactFraction(base).pow(ExactFraction(intNum)) == number) {
-//            return intNum.toBigDecimal()
-//        }
-//
-//        return logNum.toBigDecimal() // + addition
-        // get numberator and denominator separately to reduce loss of precision when casting to double
-        return getLogOf(number.numerator) - getLogOf(number.denominator)
-    }
-
+    /**
+     * Get log value of a whole number, using the base assigned to this number
+     *
+     * @param [num] [BigInteger]: number to get log of
+     * @return [BigDecimal]: the log of the number, using the current base
+     * @throws [ArithmeticException] if the log returns NaN
+     */
     internal fun getLogOf(num: BigInteger): BigDecimal {
         val logNum = log(num.toDouble(), base.toDouble())
         if (logNum.isNaN()) {

@@ -3,6 +3,13 @@ package exactnumbers.irrationals.logs
 import exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 
+/**
+ * Representation of the product of several logs, and a rational coefficient for the product
+ *
+ * @param logs [List<LogNum>]: list of logs to multiply
+ * @param coefficient [ExactFraction]: coefficient for product
+ * @throws [Exception] if list of logs is empty
+ */
 class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
     val logs: List<LogNum>
     val coefficient: ExactFraction
@@ -29,30 +36,41 @@ class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
     operator fun times(other: LogProduct): LogProduct = LogProduct(logs + other.logs, coefficient * other.coefficient)
     operator fun times(other: LogNum): LogProduct = LogProduct(logs + other, coefficient)
 
-    fun isZero(): Boolean = logs[0].isZero()
+    fun isZero(): Boolean = coefficient.isZero() || logs[0].isZero()
 
-    // TODD this should use simplified
     override operator fun equals(other: Any?): Boolean {
         if (other == null || other !is LogProduct) {
             return false
         }
 
+        // not a real sort, just used for purposes of comparing lists
         val logSort: (LogNum, LogNum) -> Int = { logNum1, logNum2 ->
-            logNum1.number.compareTo(logNum2.number)
+            if (logNum1.number != logNum2.number) {
+                logNum1.number.compareTo(logNum2.number)
+            } else {
+                logNum1.base.compareTo(logNum2.base)
+            }
         }
 
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
         return simplified.coefficient == otherSimplified.coefficient &&
-            simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
+                simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
     }
 
+    /**
+     * Get simplified version of log product by simplifying zero and removing ones that don't affect value
+     *
+     * @return [LogProduct]: simplified log product
+     */
     fun getSimplified(): LogProduct {
-        if (logs.any { it.isZero() }) {
+        // zero
+        if (coefficient.isZero() || logs.any { it.isZero() }) {
             return ZERO
         }
 
+        // remove unnecessary ones
         val newLogs = logs.filter { it != LogNum.ONE }
             .ifEmpty { listOf(LogNum.ONE) }
 
