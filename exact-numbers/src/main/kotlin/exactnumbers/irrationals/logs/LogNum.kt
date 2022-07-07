@@ -40,7 +40,7 @@ class LogNum(val number: ExactFraction, val base: Int) {
     fun getValue(): BigDecimal = getLogOf(number.numerator) - getLogOf(number.denominator)
 
     /**
-     * Get log value of a whole number, using the base assigned to this number
+     * Get log value of a whole number, using the base assigned to this log
      *
      * @param [num] [BigInteger]: number to get log of
      * @return [BigDecimal]: the log of the number, using the current base
@@ -54,7 +54,7 @@ class LogNum(val number: ExactFraction, val base: Int) {
 
         // account for imprecision with doubles
         val intNum = logNum.toInt()
-        if (ExactFraction(base).pow(ExactFraction(intNum)) == ExactFraction(num)) {
+        if (base.toBigInteger().pow(intNum) == num) {
             return intNum.toBigDecimal()
         }
 

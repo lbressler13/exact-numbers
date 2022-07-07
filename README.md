@@ -1,11 +1,17 @@
 # ExactNumbers
 
-### ExactFraction
+## Number Types
+
+### Rational (ExactFraction)
 ExactFraction is an implementation of the [Number](https://docs.oracle.com/javase/8/docs/api/java/lang/Number.html) class.
 It was inspired by the [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html) class, but fills a slightly different purpose.
 An ExactFraction is an exact representation of a rational number.
 It stores the number as a pair of BigInteger's, representing the numerator and denominator, which means that infinite rational numbers (i.e. 5/9) can be stored without rounding.
 Therefore, operations with ExactFraction's can be performed without losing precision due to rounding.
+
+### Irrational
+Though the exact value of an irrational number, such as a logarithm, can't be stored, irrational numbers are stored as a collection of information about the number.
+These values can be used in computation and operations, which reduces the amount of imprecision from casting to a floating point number.
 
 ## Project Structure
 ```project
@@ -23,7 +29,7 @@ Therefore, operations with ExactFraction's can be performed without losing preci
 │   │   │   │   │   ├── utils          <-- reusable functions
 │   │   ├── test
 │   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers  <-- Unit tests for exact-numbers module
+│   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers module
 │   ├── build.gradle.kts          <-- build configurations
 ├── README
 └── settings.gradle.kts
