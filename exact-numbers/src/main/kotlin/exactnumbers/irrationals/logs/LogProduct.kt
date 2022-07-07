@@ -56,7 +56,7 @@ class LogProduct(logs: List<LogNum>, coefficient: ExactFraction) {
         val otherSimplified = other.getSimplified()
 
         return simplified.coefficient == otherSimplified.coefficient &&
-                simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
+            simplified.logs.sortedWith(logSort) == otherSimplified.logs.sortedWith(logSort)
     }
 
     /**
