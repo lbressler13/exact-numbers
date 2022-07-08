@@ -4,9 +4,7 @@ import exactnumbers.exactfraction.ExactFraction
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 internal class LogProductTest {
     @Test
@@ -188,33 +186,6 @@ internal class LogProductTest {
     }
 
     @Test
-    internal fun testIsZero() {
-        var product = LogProduct.ZERO
-        assertTrue(product.isZero())
-
-        product = LogProduct(listOf(LogNum.ONE, LogNum(ExactFraction.TWO)), ExactFraction.ZERO)
-        assertTrue(product.isZero())
-
-        product = LogProduct(listOf(LogNum.ONE))
-        assertFalse(product.isZero())
-
-        product = LogProduct(listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction(1000)), LogNum(ExactFraction.FIVE)))
-        assertFalse(product.isZero())
-
-        product = LogProduct(
-            listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction(1000)), LogNum(ExactFraction.FIVE)),
-            ExactFraction(-5, 6)
-        )
-        assertFalse(product.isZero())
-
-        product = LogProduct(listOf(LogNum(ExactFraction(12, 17)), LogNum(ExactFraction(25, 216))))
-        assertFalse(product.isZero())
-
-        product = LogProduct(listOf(LogNum(ExactFraction.TEN), LogNum(ExactFraction.TEN.inverse())))
-        assertFalse(product.isZero())
-    }
-
-    @Test
     internal fun testToString() {
         var product = LogProduct.ZERO
         var expected = "0x${LogNum.ZERO}"
@@ -246,6 +217,10 @@ internal class LogProductTest {
             "x${LogNum(ExactFraction(109, 5))}"
         assertEquals(expected, product.toString())
     }
+
+    @Test internal fun testIsZero() = runIsZeroTests()
+    @Test internal fun testUnaryMinus() = runUnaryMinusTests()
+    @Test internal fun testUnaryPlus() = runUnaryPlusTests()
 
     @Test internal fun testGetSimplified() = runGetSimplifiedTests()
     @Test internal fun testTimes() = runTimesTests()
