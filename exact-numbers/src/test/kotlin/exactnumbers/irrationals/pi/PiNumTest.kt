@@ -8,9 +8,9 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-class PiNumTest {
+internal class PiNumTest {
     @Test
-    fun testConstructor() {
+    internal fun testConstructor() {
         var piNum = PiNum()
         var expectedCoeff = ExactFraction.ONE
         assertEquals(expectedCoeff, piNum.coefficient)
@@ -29,7 +29,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testUnaryMinus() {
+    internal fun testUnaryMinus() {
         var piNum = PiNum.ZERO
         var expected = PiNum.ZERO
         assertEquals(expected, -piNum)
@@ -48,7 +48,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testUnaryPlus() {
+    internal fun testUnaryPlus() {
         var piNum = PiNum.ZERO
         assertEquals(piNum, +piNum)
 
@@ -63,7 +63,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testPlus() {
+    internal fun testPlus() {
         // zero
         var piNum1 = PiNum.ZERO
         var piNum2 = PiNum.ZERO
@@ -104,7 +104,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testMinus() {
+    internal fun testMinus() {
         // zero
         var piNum1 = PiNum.ZERO
         var piNum2 = PiNum.ZERO
@@ -160,7 +160,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testEquals() {
+    internal fun testEquals() {
         // equal
         var piNum1 = PiNum()
         assertEquals(piNum1, piNum1)
@@ -194,7 +194,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testGetValue() {
+    internal fun testGetValue() {
         // kotlin representation of pi: 3.141592653589793
 
         var piNum = PiNum.ZERO
@@ -223,7 +223,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testIsZero() {
+    internal fun testIsZero() {
         var piNum = PiNum(ExactFraction.ZERO)
         assertTrue(piNum.isZero())
 
@@ -238,7 +238,7 @@ class PiNumTest {
     }
 
     @Test
-    fun testToString() {
+    internal fun testToString() {
         var piNum = PiNum()
         var expected = "[1xπ]"
         assertEquals(expected, piNum.toString())

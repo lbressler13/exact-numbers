@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-fun runUnaryMinusTests() {
+internal fun runUnaryMinusTests() {
     var product = LogProduct.ZERO
     var expected = LogProduct.ZERO
     assertEquals(expected, -product)
@@ -27,7 +27,7 @@ fun runUnaryMinusTests() {
     assertEquals(expected, -product)
 }
 
-fun runUnaryPlusTests() {
+internal fun runUnaryPlusTests() {
     var product = LogProduct.ZERO
     assertEquals(product, +product)
 
@@ -44,7 +44,7 @@ fun runUnaryPlusTests() {
     assertEquals(product, +product)
 }
 
-fun runIsZeroTests() {
+internal fun runIsZeroTests() {
     var product = LogProduct.ZERO
     assertTrue(product.isZero())
 
