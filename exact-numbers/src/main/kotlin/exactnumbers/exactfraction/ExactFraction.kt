@@ -2,9 +2,10 @@ package exactnumbers.exactfraction
 
 import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
-import utils.getGCD
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
+import utils.getGCD
+import utils.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -42,7 +43,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this() {
         if (denominator.isZero()) {
-            throw ArithmeticException("divide by zero")
+            throwDivideByZero()
         }
 
         this.numerator = numerator
@@ -194,7 +195,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     fun inverse(): ExactFraction {
         if (numerator.eq(0)) {
-            throw ArithmeticException("divide by zero")
+            throwDivideByZero()
         }
 
         return ExactFraction(denominator, numerator)

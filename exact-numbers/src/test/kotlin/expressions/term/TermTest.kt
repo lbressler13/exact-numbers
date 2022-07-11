@@ -4,13 +4,13 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-class TermTest {
+internal class TermTest {
     @Test
-    fun testConstructor() {
+    internal fun testConstructor() {
         // zero
         var expectedLogs = listOf<LogNum>()
         var expectedPiCount = 0
@@ -66,7 +66,7 @@ class TermTest {
     }
 
     @Test
-    fun testEquals() {
+    internal fun testEquals() {
         // equal
         var term = Term.ZERO
         assertEquals(term, term)
@@ -121,7 +121,7 @@ class TermTest {
     }
 
     @Test
-    fun testUnaryMinus() {
+    internal fun testUnaryMinus() {
         var term = Term.ZERO
         var expected = Term.ZERO
         assertEquals(expected, -term)
@@ -144,7 +144,7 @@ class TermTest {
     }
 
     @Test
-    fun testUnaryPlus() {
+    internal fun testUnaryPlus() {
         var term = Term.ZERO
         assertEquals(term, +term)
 
@@ -162,7 +162,7 @@ class TermTest {
     }
 
     @Test
-    fun testIsZero() {
+    internal fun testIsZero() {
         // zero
         var term = Term.ZERO
         assertTrue(term.isZero())
@@ -196,6 +196,6 @@ class TermTest {
         assertFalse(term.isZero())
     }
 
-    @Test fun testTimes() = runTimesTests() // TODO
-    @Test fun testDiv() = runDivTests() // TODO
+    @Test internal fun testTimes() = runTimesTests()
+    @Test internal fun testDiv() = runDivTests()
 }

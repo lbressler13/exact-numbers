@@ -3,9 +3,9 @@ package exactnumbers.irrationals.logs
 import exactnumbers.exactfraction.ExactFraction
 import expressions.term.Term
 import utils.divideBigDecimals
+import utils.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.MathContext
 import kotlin.math.log
 
 /**
@@ -18,6 +18,7 @@ import kotlin.math.log
 class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) : Comparable<LogNum> {
     init {
         when {
+            number == ExactFraction.ONE && isDivided -> throwDivideByZero()
             number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             number.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
             base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
@@ -32,11 +33,18 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
             return false
         }
 
-        return base == other.base && number == other.number
+        return getValue() == other.getValue()
     }
 
     operator fun times(other: LogNum): Term = Term(listOf(this, other), 0, ExactFraction.ONE)
-    operator fun div(other: LogNum): Term = Term(listOf(this, other.swapDivided()), 0, ExactFraction.ONE)
+
+    operator fun div(other: LogNum): Term {
+        if (other.isZero()) {
+            throwDivideByZero()
+        }
+
+        return Term(listOf(this, other.swapDivided()), 0, ExactFraction.ONE)
+    }
 
     override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())
 
@@ -52,16 +60,15 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
         }
 
         return divideBigDecimals(BigDecimal.ONE, logValue)
-//
-//        return try {
-//            BigDecimal.ONE.divide(logValue)
-//        } catch (e: ArithmeticException) {
-//            val mc = MathContext(20)
-//            BigDecimal.ONE.divide(logValue, mc)
-//        }
     }
 
-    fun swapDivided(): LogNum = LogNum(number, base, !isDivided)
+    fun swapDivided(): LogNum {
+        if (isZero()) {
+            throwDivideByZero()
+        }
+
+        return LogNum(number, base, !isDivided)
+    }
 
     /**
      * Get log value of a whole number, using the base assigned to this log
@@ -91,7 +98,12 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
         } else {
             "${number.numerator}/${number.denominator}"
         }
-        return "log_$base($numString)"
+
+        if (isDivided) {
+            return "[1/log_$base($numString)]"
+        }
+
+        return "[log_$base($numString)]"
     }
 
     override fun hashCode(): Int = Pair(number, base).hashCode()

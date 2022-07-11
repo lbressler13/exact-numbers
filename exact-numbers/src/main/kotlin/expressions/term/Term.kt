@@ -2,6 +2,7 @@ package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
+import utils.throwDivideByZero
 import java.math.BigDecimal
 
 class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
@@ -32,7 +33,6 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        // TODO simplify logs
         return simplified.logs.sorted() == otherSimplified.logs.sorted() &&
             simplified.piCount == otherSimplified.piCount &&
             simplified.coefficient == otherSimplified.coefficient
@@ -46,6 +46,10 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
     }
 
     operator fun div(other: Term): Term {
+        if (other.isZero()) {
+            throwDivideByZero()
+        }
+
         val newCoefficient = coefficient / other.coefficient
         val newPiCount = this.piCount - other.piCount
         val newLogs = logs + other.logs.map { it.swapDivided() }

@@ -47,3 +47,7 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
         bigDec1.divide(bigDec2, mc)
     }
 }
+
+internal fun throwDivideByZero() {
+    throw ArithmeticException("divide by zero")
+}
