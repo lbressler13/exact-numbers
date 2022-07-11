@@ -1,8 +1,11 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
+import expressions.term.Term
+import utils.divideBigDecimals
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.MathContext
 import kotlin.math.log
 
 /**
@@ -12,7 +15,7 @@ import kotlin.math.log
  * @param base [Int]: base to use when computing log
  * @throws [ArithmeticException] if number is not positive or if base is less than 1
  */
-class LogNum(val number: ExactFraction, val base: Int) {
+class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) : Comparable<LogNum> {
     init {
         when {
             number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
@@ -21,9 +24,10 @@ class LogNum(val number: ExactFraction, val base: Int) {
         }
     }
 
-    constructor(number: ExactFraction) : this(number, base = 10)
+    constructor(number: ExactFraction) : this(number, base = 10, isDivided = false)
+    constructor(number: ExactFraction, base: Int) : this(number, base, isDivided = false)
 
-    override operator fun equals(other: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {
         if (other == null || other !is LogNum) {
             return false
         }
@@ -31,13 +35,33 @@ class LogNum(val number: ExactFraction, val base: Int) {
         return base == other.base && number == other.number
     }
 
-    operator fun times(other: LogNum): LogProduct = LogProduct(listOf(this, other))
+    operator fun times(other: LogNum): Term = Term(listOf(this, other), 0, ExactFraction.ONE)
+    operator fun div(other: LogNum): Term = Term(listOf(this, other.swapDivided()), 0, ExactFraction.ONE)
+
+    override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())
 
     fun isZero(): Boolean = number == ExactFraction.ONE
 
     // log_b(x/y) = log_b(x) - log_b(y)
     // get numerator and denominator separately to reduce loss of precision when casting to double
-    fun getValue(): BigDecimal = getLogOf(number.numerator) - getLogOf(number.denominator)
+    fun getValue(): BigDecimal {
+        val logValue = getLogOf(number.numerator) - getLogOf(number.denominator)
+
+        if (!isDivided) {
+            return logValue
+        }
+
+        return divideBigDecimals(BigDecimal.ONE, logValue)
+//
+//        return try {
+//            BigDecimal.ONE.divide(logValue)
+//        } catch (e: ArithmeticException) {
+//            val mc = MathContext(20)
+//            BigDecimal.ONE.divide(logValue, mc)
+//        }
+    }
+
+    fun swapDivided(): LogNum = LogNum(number, base, !isDivided)
 
     /**
      * Get log value of a whole number, using the base assigned to this log

@@ -2,7 +2,7 @@ package exactnumbers.exactfraction
 
 import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
-import exactnumbers.utils.getGCD
+import utils.getGCD
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal

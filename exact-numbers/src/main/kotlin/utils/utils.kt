@@ -1,9 +1,11 @@
-package exactnumbers.utils
+package utils
 
 import kotlinutils.biginteger.ext.isZero
 import kotlinutils.biginteger.max
 import kotlinutils.biginteger.min
+import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.MathContext
 
 /**
  * Get positive greatest common divisor of 2 numbers using Euclidean algorithm
@@ -35,4 +37,13 @@ internal fun getGCD(val1: BigInteger, val2: BigInteger): BigInteger {
     }
 
     return value
+}
+
+internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
+    return try {
+        bigDec1.divide(bigDec2)
+    } catch (e: ArithmeticException) {
+        val mc = MathContext(20)
+        bigDec1.divide(bigDec2, mc)
+    }
 }

@@ -13,6 +13,9 @@ Therefore, operations with ExactFraction's can be performed without losing preci
 Though the exact value of an irrational number, such as a logarithm, can't be stored, irrational numbers are stored as a collection of information about the number.
 These values can be used in computation and operations, which reduces the amount of imprecision from casting to a floating point number.
 
+### Expressions
+Expressions are a way of representing a combination of several numbers as a single value.
+
 ## Project Structure
 ```project
 ├── exact-numbers
@@ -58,7 +61,7 @@ Linting is done using [ktlint](https://ktlint.github.io/), using [this](https://
 See [here](https://github.com/pinterest/ktlint#standard-rules) for a list of standard rules.
 
 Linting can be run using an IDE, or with the following command:
-```./gradlew ktlintCheck```
+```./gradlew ktlintFormat```
 
 ## Importing the package
 In order to import the package, copy the most recent .jar file into your project, and add the file to the list of imports for the project.

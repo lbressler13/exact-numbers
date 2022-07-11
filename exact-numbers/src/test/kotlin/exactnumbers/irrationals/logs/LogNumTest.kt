@@ -59,6 +59,8 @@ internal class LogNumTest {
         logNum = LogNum(ExactFraction(13, 100))
         expectedNumber = ExactFraction(13, 100)
         assertEquals(expectedNumber, logNum.number)
+
+        // TODO add isDivided
     }
 
     @Test
@@ -103,35 +105,51 @@ internal class LogNumTest {
 
     @Test
     internal fun testTimes() {
-        var logNum1 = LogNum.ZERO
-        var logNum2 = LogNum.ZERO
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+        // TODO
+//        var logNum1 = LogNum.ZERO
+//        var logNum2 = LogNum.ZERO
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+//
+//        logNum1 = LogNum.ZERO
+//        logNum2 = LogNum.ONE
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+//
+//        logNum1 = LogNum.ONE
+//        logNum2 = LogNum.ONE
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+//
+//        logNum1 = LogNum(ExactFraction(105))
+//        logNum2 = LogNum(ExactFraction(20))
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+//
+//        logNum1 = LogNum(ExactFraction(105, 7))
+//        logNum2 = LogNum(ExactFraction(12))
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+//
+//        logNum1 = LogNum(ExactFraction(105, 7))
+//        logNum2 = LogNum(ExactFraction(7, 105))
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
+//        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+    }
 
-        logNum1 = LogNum.ZERO
-        logNum2 = LogNum.ONE
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+    @Test
+    internal fun testDiv() {
+        // TODO
+    }
 
-        logNum1 = LogNum.ONE
-        logNum2 = LogNum.ONE
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+    @Test
+    internal fun testCompareTo() {
+        // TODO
+    }
 
-        logNum1 = LogNum(ExactFraction(105))
-        logNum2 = LogNum(ExactFraction(20))
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
-
-        logNum1 = LogNum(ExactFraction(105, 7))
-        logNum2 = LogNum(ExactFraction(12))
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
-
-        logNum1 = LogNum(ExactFraction(105, 7))
-        logNum2 = LogNum(ExactFraction(7, 105))
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum1 * logNum2)
-        assertEquals(LogProduct(listOf(logNum1, logNum2)), logNum2 * logNum1)
+    @Test
+    internal fun swapDivided() {
+        // TODO
     }
 
     @Test

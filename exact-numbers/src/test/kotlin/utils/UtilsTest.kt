@@ -1,4 +1,4 @@
-package exactnumbers.utils
+package utils
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -56,5 +56,10 @@ internal class UtilsTest {
         val expectedBigInt = expected.toBigInteger()
         assertEquals(expectedBigInt, getGCD(b1, b2))
         assertEquals(expectedBigInt, getGCD(b2, b1))
+    }
+
+    @Test
+    internal fun testDivideBigDecimals() {
+        // TODO
     }
 }
