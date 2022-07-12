@@ -2,6 +2,7 @@ package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.logs.simplifyLogsList
 import utils.throwDivideByZero
 import java.math.BigDecimal
 
@@ -59,8 +60,8 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
     fun isZero(): Boolean = coefficient.isZero() || logs.any(LogNum::isZero)
 
     fun getSimplified(): Term {
-        // TODO
-        return this
+        val newLogs = simplifyLogsList(logs)
+        return Term(newLogs, piCount, coefficient)
     }
 
     fun getValue(): BigDecimal {
