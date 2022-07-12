@@ -3,8 +3,11 @@ package expressions.term
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
 import exactnumbers.irrationals.logs.simplifyLogsList
+import exactnumbers.irrationals.pi.PiNum
+import utils.divideBigDecimals
 import utils.throwDivideByZero
 import java.math.BigDecimal
+import java.math.BigInteger
 
 class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
     val logs: List<LogNum>
@@ -65,11 +68,34 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
     }
 
     fun getValue(): BigDecimal {
-        // TODO
-        return BigDecimal.ZERO
+        val simplified = getSimplified()
+
+        val piValue = PiNum().getValue().pow(simplified.piCount)
+        val logsValue = simplified.logs.fold(BigDecimal.ONE) { acc, log ->
+            acc * log.getValue()
+        }
+
+        val numeratorProduct = piValue * logsValue * coefficient.numerator.toBigDecimal()
+
+        return divideBigDecimals(numeratorProduct, coefficient.denominator.toBigDecimal())
     }
 
-    // TODO toString
+    override fun toString(): String {
+        val coeffString = if (coefficient.denominator == BigInteger.ONE) {
+            coefficient.numerator.toString()
+        } else {
+            "${coefficient.numerator}/${coefficient.denominator}"
+        }
+
+        var logsString = logs.joinToString("x")
+        if (logsString.isNotEmpty()) {
+            logsString = "x$logsString"
+        }
+
+        val piString = "${PiNum()}^$piCount"
+
+        return "${coeffString}x${piString}$logsString"
+    }
 
     override fun hashCode(): Int = listOf("Term", logs, piCount, coefficient).hashCode()
 

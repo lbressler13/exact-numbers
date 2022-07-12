@@ -196,6 +196,29 @@ internal class TermTest {
         assertFalse(term.isZero())
     }
 
+    @Test
+    fun testGetValue() {
+        // TODO
+    }
+
+    @Test
+    fun testToString() {
+        val pi = "π"
+
+        // zero
+
+
+        // just coefficient
+
+        // just logs
+
+        // just pi
+
+        // combination
+
+        // TODO
+    }
+
     @Test internal fun testTimes() = runTimesTests()
     @Test internal fun testDiv() = runDivTests()
 }
