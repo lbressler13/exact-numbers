@@ -3,9 +3,9 @@ package expressions.term
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
 import exactnumbers.irrationals.logs.simplifyLogsList
-import exactnumbers.irrationals.pi.PiNum
-import utils.divideBigDecimals
-import utils.throwDivideByZero
+import exactnumbers.irrationals.pi.Pi
+import shared.divideBigDecimals
+import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -70,7 +70,7 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
     fun getValue(): BigDecimal {
         val simplified = getSimplified()
 
-        val piValue = PiNum().getValue().pow(simplified.piCount)
+        val piValue = Pi().getValue().pow(simplified.piCount)
         val logsValue = simplified.logs.fold(BigDecimal.ONE) { acc, log ->
             acc * log.getValue()
         }
@@ -92,7 +92,7 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
             logsString = "x$logsString"
         }
 
-        val piString = "${PiNum()}^$piCount"
+        val piString = "${Pi()}^$piCount"
 
         return "${coeffString}x${piString}$logsString"
     }

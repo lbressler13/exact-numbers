@@ -4,8 +4,8 @@ import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
-import utils.getGCD
-import utils.throwDivideByZero
+import shared.getGCD
+import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

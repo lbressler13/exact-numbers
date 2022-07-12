@@ -2,8 +2,9 @@ package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
 import expressions.term.Term
-import utils.divideBigDecimals
-import utils.throwDivideByZero
+import shared.NumType
+import shared.divideBigDecimals
+import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
@@ -15,7 +16,9 @@ import kotlin.math.log
  * @param base [Int]: base to use when computing log
  * @throws [ArithmeticException] if number is not positive or if base is less than 1
  */
-class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) : Comparable<LogNum> {
+class LogNum(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<LogNum>, NumType {
+    override val type = TYPE
+
     init {
         when {
             number == ExactFraction.ONE && isDivided -> throwDivideByZero()
@@ -48,11 +51,11 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
 
     override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())
 
-    fun isZero(): Boolean = number == ExactFraction.ONE
+    override fun isZero(): Boolean = number == ExactFraction.ONE
 
     // log_b(x/y) = log_b(x) - log_b(y)
     // get numerator and denominator separately to reduce loss of precision when casting to double
-    fun getValue(): BigDecimal {
+    override fun getValue(): BigDecimal {
         val logValue = getLogOf(number.numerator) - getLogOf(number.denominator)
 
         if (!isDivided) {
@@ -62,7 +65,7 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
         return divideBigDecimals(BigDecimal.ONE, logValue)
     }
 
-    fun swapDivided(): LogNum {
+    override fun swapDivided(): LogNum {
         if (isZero()) {
             throwDivideByZero()
         }
@@ -92,7 +95,7 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
         return logNum.toBigDecimal()
     }
 
-    override fun toString(): String {
+    override fun getBaseString(): String {
         val numString = if (number.denominator == BigInteger.ONE) {
             number.numerator.toString()
         } else {
@@ -100,16 +103,20 @@ class LogNum(val number: ExactFraction, val base: Int, var isDivided: Boolean) :
         }
 
         if (isDivided) {
-            return "[1/log_$base($numString)]"
+            return "1/log_$base($numString)"
         }
 
-        return "[log_$base($numString)]"
+        return "log_$base($numString)"
     }
+
+    override fun toString(): String = "[${getBaseString()}]"
 
     override fun hashCode(): Int = Pair(number, base).hashCode()
 
     companion object {
         val ZERO = LogNum(ExactFraction.ONE)
         val ONE = LogNum(ExactFraction.TEN)
+
+        const val TYPE = "log"
     }
 }

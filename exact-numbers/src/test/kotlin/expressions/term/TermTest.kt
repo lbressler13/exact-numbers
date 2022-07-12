@@ -207,7 +207,6 @@ internal class TermTest {
 
         // zero
 
-
         // just coefficient
 
         // just logs

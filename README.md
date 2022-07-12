@@ -28,7 +28,7 @@ Expressions are a way of representing a combination of several numbers as a sing
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   │   ├── utils          <-- reusable functions
+│   │   │   │   │   ├── shared          <-- reusable functions
 │   │   ├── test
 │   │   │   ├── kotlin
 │   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers module
@@ -45,7 +45,7 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
+This app has a dependency on the [kotlin-shared](https://github.com/lbressler13/kotlin-utils) package.
 This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
 The package version can be updated in the module-level build.gradle.
 
