@@ -12,8 +12,13 @@ internal interface NumType {
 
     val isDivided: Boolean
     fun swapDivided(): NumType
-
-    fun getBaseString(): String
 }
 
 internal operator fun NumType.times(other: NumType): Term = Term(ExactFraction.ONE, listOf(this, other))
+internal operator fun NumType.div(other: NumType): Term {
+    if (other.isZero()) {
+        throwDivideByZero()
+    }
+
+    return Term(ExactFraction.ONE, listOf(this, other.swapDivided()))
+}

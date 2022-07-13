@@ -9,8 +9,9 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 internal class TermTest {
-//    @Test
-//    internal fun testConstructor() {
+    @Test
+    internal fun testConstructor() {
+        // TODO
 //        // zero
 //        var expectedLogs = listOf<LogNum>()
 //        var expectedPiCount = 0
@@ -63,10 +64,11 @@ internal class TermTest {
 //        assertEquals(logs, term.logs)
 //        assertEquals(piCount, term.piCount)
 //        assertEquals(coeff, term.coefficient)
-//    }
-//
-//    @Test
-//    internal fun testEquals() {
+    }
+
+    @Test
+    internal fun testEquals() {
+        // TODO
 //        // equal
 //        var term = Term.ZERO
 //        assertEquals(term, term)
@@ -118,10 +120,11 @@ internal class TermTest {
 //        other = Term(listOf(LogNum(ExactFraction(5, 7))), -2, ExactFraction(-5, 6))
 //        assertNotEquals(term, other)
 //        assertNotEquals(other, term)
-//    }
-//
-//    @Test
-//    internal fun testUnaryMinus() {
+    }
+
+    @Test
+    internal fun testUnaryMinus() {
+        // TODO
 //        var term = Term.ZERO
 //        var expected = Term.ZERO
 //        assertEquals(expected, -term)
@@ -141,10 +144,11 @@ internal class TermTest {
 //        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(-15, 44))
 //        expected = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(15, 44))
 //        assertEquals(expected, -term)
-//    }
-//
-//    @Test
-//    internal fun testUnaryPlus() {
+    }
+
+    @Test
+    internal fun testUnaryPlus() {
+        // TODO
 //        var term = Term.ZERO
 //        assertEquals(term, +term)
 //
@@ -159,10 +163,10 @@ internal class TermTest {
 //
 //        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(-15, 44))
 //        assertEquals(term, +term)
-//    }
-//
-//    @Test
-//    internal fun testIsZero() {
+    }
+
+    @Test
+    internal fun testIsZero() {
 //        // zero
 //        var term = Term.ZERO
 //        assertTrue(term.isZero())
@@ -194,30 +198,30 @@ internal class TermTest {
 //        coeff = ExactFraction(-22, 43)
 //        term = Term(logs, piCount, coeff)
 //        assertFalse(term.isZero())
-//    }
-//
-//    @Test
-//    fun testGetValue() {
-//        // TODO
-//    }
-//
-//    @Test
-//    fun testToString() {
-//        val pi = "π"
-//
-//        // zero
-//
-//        // just coefficient
-//
-//        // just logs
-//
-//        // just pi
-//
-//        // combination
-//
-//        // TODO
-//    }
-//
-//    @Test internal fun testTimes() = runTimesTests()
-//    @Test internal fun testDiv() = runDivTests()
+    }
+
+    @Test
+    fun testGetValue() {
+        // TODO
+    }
+
+    @Test
+    fun testToString() {
+        val pi = "π"
+
+        // zero
+
+        // just coefficient
+
+        // just logs
+
+        // just pi
+
+        // combination
+
+        // TODO
+    }
+
+    @Test internal fun testTimes() = runTimesTests() // TODO
+    @Test internal fun testDiv() = runDivTests() // TODO
 }

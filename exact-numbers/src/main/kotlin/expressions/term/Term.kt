@@ -91,9 +91,13 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
             "${coefficient.numerator}/${coefficient.denominator}"
         }
 
-        val numString = numbers.joinToString { "x${it.getBaseString()}" }
+        val numString = numbers.joinToString("")
 
-        return "<${coeffString}${numString}>"
+        return if (numString.isEmpty()) {
+            "<$coeffString>"
+        } else {
+            "<${coeffString}x${numString}>"
+        }
     }
 
     override fun hashCode(): Int = listOf("Term", coefficient, numbers).hashCode()

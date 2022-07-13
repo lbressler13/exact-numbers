@@ -1,14 +1,19 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.pi.Pi
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 internal class SimplifyLogsListTest {
     private val one = LogNum.ONE
 
     @Test
     internal fun testSimplifyLogsList() {
+        // error
+        assertFails { simplifyLogsList(listOf(Pi(), LogNum.ONE)) }
+
         // zero
         var expected = listOf(LogNum.ZERO)
 

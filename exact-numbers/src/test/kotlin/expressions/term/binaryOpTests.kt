@@ -9,8 +9,8 @@ private val logNum1 = LogNum(ExactFraction(15, 4))
 private val logNum2 = LogNum(ExactFraction.EIGHT)
 private val logNum3 = LogNum(ExactFraction(19, 33))
 private val logNum4 = LogNum(ExactFraction(25, 121))
-//
-//internal fun runTimesTests() {
+
+internal fun runTimesTests() {
 //    // zero
 //    var term1 = Term.ZERO
 //    var expected = Term.ZERO
@@ -90,9 +90,9 @@ private val logNum4 = LogNum(ExactFraction(25, 121))
 //    expected = Term(listOf(logNum1, logNum1, logNum2, logNum3, logNum4), -3, ExactFraction(-120))
 //    assertEquals(expected, term1 * term2)
 //    assertEquals(expected, term2 * term1)
-//}
-//
-//internal fun runDivTests() {
+}
+
+internal fun runDivTests() {
 //    // divide by zero
 //    assertDivByZero { Term.ONE / Term.ZERO }
 //
@@ -181,4 +181,4 @@ private val logNum4 = LogNum(ExactFraction(25, 121))
 //        ExactFraction(15, 8)
 //    )
 //    assertEquals(expected, term2 / term1)
-//}
+}

@@ -1,7 +1,9 @@
 package exactnumbers.irrationals.logs
 
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.pi.Pi
 import expressions.term.Term
+import shared.*
 import shared.NumType
 import shared.divideBigDecimals
 import shared.throwDivideByZero
@@ -31,6 +33,7 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
 
     constructor(number: ExactFraction) : this(number, base = 10, isDivided = false)
     constructor(number: ExactFraction, base: Int) : this(number, base, isDivided = false)
+    constructor(number: ExactFraction, isDivided: Boolean) : this(number, 10, isDivided)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is LogNum) {
@@ -40,16 +43,10 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
         return getValue() == other.getValue()
     }
 
-    // operator fun times(other: LogNum): Term = Term(listOf(this, other), 0, ExactFraction.ONE)
     operator fun times(other: LogNum): Term = times(other as NumType)
-
-    operator fun div(other: LogNum): Term {
-        if (other.isZero()) {
-            throwDivideByZero()
-        }
-
-        return times(other.swapDivided())
-    }
+    operator fun times(other: Pi): Term = times(other as NumType)
+    operator fun div(other: LogNum): Term = div(other as NumType)
+    operator fun div(other: Pi): Term = div(other as NumType)
 
     override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())
 
@@ -97,7 +94,7 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
         return logNum.toBigDecimal()
     }
 
-    override fun getBaseString(): String {
+    override fun toString(): String {
         val numString = if (number.denominator == BigInteger.ONE) {
             number.numerator.toString()
         } else {
@@ -105,13 +102,11 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
         }
 
         if (isDivided) {
-            return "1/log_$base($numString)"
+            return "[1/log_$base($numString)]"
         }
 
-        return "log_$base($numString)"
+        return "[log_$base($numString)]"
     }
-
-    override fun toString(): String = "[${getBaseString()}]"
 
     override fun hashCode(): Int = Pair(number, base).hashCode()
 
