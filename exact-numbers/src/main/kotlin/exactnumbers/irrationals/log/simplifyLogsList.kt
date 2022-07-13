@@ -1,12 +1,14 @@
 package exactnumbers.irrationals.log
 
-import exactnumbers.irrationals.pi.Pi
 import shared.NumType
-import kotlin.math.abs
 
 // simplify product of logs
 internal fun simplifyLogsList(logs: List<NumType>): List<Log> {
     logs as List<Log>
+
+    if (logs.isEmpty()) {
+        return listOf()
+    }
 
     if (logs.any(Log::isZero)) {
         return listOf(Log.ZERO)
@@ -26,15 +28,7 @@ internal fun simplifyLogsList(logs: List<NumType>): List<Log> {
                 countDivided > countNotDivided -> List(countDivided - countNotDivided) { Log(pair.key.first, pair.key.second, true) }
                 else -> List(countNotDivided - countDivided) { Log(pair.key.first, pair.key.second, false) }
             }
-        }.ifEmpty { listOf(Log.ONE) }
+        }
 
     return newLogs.sorted()
-}
-
-internal fun simplifyPi(piCount: Int): List<Pi> {
-    return when {
-        piCount == 0 -> listOf()
-        piCount < 0 -> List(abs(piCount)) { Pi(isDivided = true) }
-        else -> List(abs(piCount)) { Pi(isDivided = false) }
-    }
 }

@@ -14,10 +14,15 @@ internal class SimplifyLogsListTest {
         // error
         assertFails { simplifyLogsList(listOf(Pi(), Log.ONE)) }
 
-        // zero
-        var expected = listOf(Log.ZERO)
+        // empty
+        var expected: List<Log> = listOf()
+        var logs: List<Log> = listOf()
+        assertEquals(expected.sorted(), simplifyLogsList(logs))
 
-        var logs = listOf(Log.ZERO)
+        // zero
+        expected = listOf(Log.ZERO)
+
+        logs = listOf(Log.ZERO)
         assertEquals(expected.sorted(), simplifyLogsList(logs))
 
         logs = listOf(Log.ZERO, Log.ZERO)
@@ -28,11 +33,11 @@ internal class SimplifyLogsListTest {
 
         // ones
         logs = listOf(one)
-        expected = listOf(one)
+        expected = listOf()
         assertEquals(expected.sorted(), simplifyLogsList(logs))
 
         logs = listOf(one, one, one)
-        expected = listOf(one)
+        expected = listOf()
         assertEquals(expected.sorted(), simplifyLogsList(logs))
 
         logs = listOf(one, Log(ExactFraction.EIGHT), Log(ExactFraction.FOUR, 3, true))
@@ -45,7 +50,7 @@ internal class SimplifyLogsListTest {
 
         // inverses
         logs = listOf(Log(ExactFraction.EIGHT), Log(ExactFraction.EIGHT, 10, true))
-        expected = listOf(one)
+        expected = listOf()
         assertEquals(expected.sorted(), simplifyLogsList(logs))
 
         logs = listOf(
