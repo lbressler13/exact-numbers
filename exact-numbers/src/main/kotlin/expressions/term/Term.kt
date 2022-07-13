@@ -4,29 +4,28 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
 import exactnumbers.irrationals.logs.simplifyLogsList
 import exactnumbers.irrationals.pi.Pi
+import exactnumbers.irrationals.pi.simplifyPisList
+import shared.NumType
 import shared.divideBigDecimals
 import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
-    val logs: List<LogNum>
-    val piCount: Int
+class Term internal constructor(coefficient: ExactFraction, numbers: List<NumType>){
     val coefficient: ExactFraction
+    internal val numbers: List<NumType>
 
     init {
-        if (coefficient.isZero() || logs.any(LogNum::isZero)) {
-            this.logs = listOf()
-            this.piCount = 0
+        if (coefficient.isZero() || numbers.any { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
+            this.numbers = listOf()
         } else {
-            this.logs = logs
-            this.piCount = piCount
             this.coefficient = coefficient
+            this.numbers = numbers
         }
     }
 
-    operator fun unaryMinus(): Term = Term(logs, piCount, -coefficient)
+    operator fun unaryMinus(): Term = Term(-coefficient, numbers)
     operator fun unaryPlus(): Term = this
 
     override fun equals(other: Any?): Boolean {
@@ -37,16 +36,15 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        return simplified.logs.sorted() == otherSimplified.logs.sorted() &&
-            simplified.piCount == otherSimplified.piCount &&
-            simplified.coefficient == otherSimplified.coefficient
+        return simplified.coefficient == otherSimplified.coefficient
+                && simplified.getPiCount() == otherSimplified.getPiCount()
+                && simplified.getLogs().sorted() == otherSimplified.getLogs().sorted()
     }
 
     operator fun times(other: Term): Term {
-        val newLogs = logs + other.logs
-        val newPiCount = piCount + other.piCount
-        val newCoefficient = coefficient * other.coefficient
-        return Term(newLogs, newPiCount, newCoefficient)
+        val newCoeff = coefficient * other.coefficient
+        val newNumbers = numbers + other.numbers
+        return Term(newCoeff, newNumbers)
     }
 
     operator fun div(other: Term): Term {
@@ -54,30 +52,36 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
             throwDivideByZero()
         }
 
-        val newCoefficient = coefficient / other.coefficient
-        val newPiCount = this.piCount - other.piCount
-        val newLogs = logs + other.logs.map { it.swapDivided() }
-        return Term(newLogs, newPiCount, newCoefficient)
+        val newCoeff = coefficient / other.coefficient
+        val newNumbers = numbers + other.numbers.map { it.swapDivided() }
+        return Term(newCoeff, newNumbers)
     }
 
-    fun isZero(): Boolean = coefficient.isZero() || logs.any(LogNum::isZero)
+    fun isZero(): Boolean = coefficient.isZero() || numbers.any { it.isZero() }
 
     fun getSimplified(): Term {
-        val newLogs = simplifyLogsList(logs)
-        return Term(newLogs, piCount, coefficient)
+        val groups = numbers.groupBy { it.type }
+        val logs = simplifyLogsList(groups[LogNum.TYPE] ?: listOf())
+        val pis = simplifyPisList(groups[Pi.TYPE] ?: listOf())
+
+        return Term(coefficient, logs + pis)
     }
 
     fun getValue(): BigDecimal {
         val simplified = getSimplified()
 
-        val piValue = Pi().getValue().pow(simplified.piCount)
-        val logsValue = simplified.logs.fold(BigDecimal.ONE) { acc, log ->
-            acc * log.getValue()
-        }
+        val numbersProduct = simplified.numbers.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
+        val numeratorProduct = numbersProduct * simplified.coefficient.numerator.toBigDecimal()
 
-        val numeratorProduct = piValue * logsValue * coefficient.numerator.toBigDecimal()
+        return divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
+    }
 
-        return divideBigDecimals(numeratorProduct, coefficient.denominator.toBigDecimal())
+    fun getLogs(): List<LogNum> = numbers.filter { it.type == LogNum.TYPE }.map { it } as List<LogNum>
+    fun getPiCount(): Int {
+        val pis = numbers.filter { it.type == Pi.TYPE }
+        val positive = pis.count { !it.isDivided }
+        val negative = pis.size - positive
+        return positive - negative
     }
 
     override fun toString(): String {
@@ -87,20 +91,20 @@ class Term(logs: List<LogNum>, piCount: Int, coefficient: ExactFraction) {
             "${coefficient.numerator}/${coefficient.denominator}"
         }
 
-        var logsString = logs.joinToString("x")
-        if (logsString.isNotEmpty()) {
-            logsString = "x$logsString"
-        }
+        val numString = numbers.joinToString { "x${it.getBaseString()}" }
 
-        val piString = "${Pi()}^$piCount"
-
-        return "${coeffString}x${piString}$logsString"
+        return "<${coeffString}${numString}>"
     }
 
-    override fun hashCode(): Int = listOf("Term", logs, piCount, coefficient).hashCode()
+    override fun hashCode(): Int = listOf("Term", coefficient, numbers).hashCode()
 
     companion object {
-        val ZERO = Term(listOf(), 0, ExactFraction.ZERO)
-        val ONE = Term(listOf(), 0, ExactFraction.ONE)
+        val ZERO = Term(ExactFraction.ZERO, listOf())
+        val ONE = Term(ExactFraction.ONE, listOf())
+
+        fun fromValues(coefficient: ExactFraction, logs: List<LogNum>, piCount: Int): Term {
+            val piList = List(piCount) { Pi() }
+            return Term(coefficient, logs + piList)
+        }
     }
 }

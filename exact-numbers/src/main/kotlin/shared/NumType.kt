@@ -1,5 +1,6 @@
 package shared
 
+import exactnumbers.exactfraction.ExactFraction
 import expressions.term.Term
 import java.math.BigDecimal
 
@@ -15,4 +16,4 @@ internal interface NumType {
     fun getBaseString(): String
 }
 
-internal operator fun NumType.times(other: NumType): Term = genericTimes(this, other)
+internal operator fun NumType.times(other: NumType): Term = Term(ExactFraction.ONE, listOf(this, other))

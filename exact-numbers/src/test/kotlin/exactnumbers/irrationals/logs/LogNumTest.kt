@@ -132,38 +132,38 @@ internal class LogNumTest {
         // zero
         var logNum1: LogNum = LogNum.ZERO
         var logNum2: LogNum = LogNum.ZERO
-        var expected = Term(listOf(LogNum.ZERO, LogNum.ZERO), 0, ExactFraction.ONE)
+        var expected = Term(ExactFraction.ONE, listOf(LogNum.ZERO, LogNum.ZERO))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
 
         logNum1 = LogNum.ZERO
         logNum2 = LogNum.ONE
-        expected = Term(listOf(LogNum.ZERO, LogNum.ONE), 0, ExactFraction.ONE)
+        expected = Term(ExactFraction.ONE, listOf(LogNum.ZERO, LogNum.ONE))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
 
         // nonzero
         logNum1 = LogNum.ONE
         logNum2 = LogNum.ONE
-        expected = Term(listOf(LogNum.ONE, LogNum.ONE), 0, ExactFraction.ONE)
+        expected = Term(ExactFraction.ONE, listOf(LogNum.ONE, LogNum.ONE))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
 
         logNum1 = LogNum(ExactFraction(105), 3)
         logNum2 = LogNum(ExactFraction(20))
-        expected = Term(listOf(LogNum(ExactFraction(105), 3), LogNum(ExactFraction(20))), 0, ExactFraction.ONE)
+        expected = Term(ExactFraction.ONE, listOf(LogNum(ExactFraction(105), 3), LogNum(ExactFraction(20))))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
 
         logNum1 = LogNum(ExactFraction(105, 7))
         logNum2 = LogNum(ExactFraction(12), 4, true)
-        expected = Term(listOf(LogNum(ExactFraction(105, 7)), LogNum(ExactFraction(12), 4, true)), 0, ExactFraction.ONE)
+        expected = Term(ExactFraction.ONE, listOf(LogNum(ExactFraction(105, 7)), LogNum(ExactFraction(12), 4, true)))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
 
         logNum1 = LogNum(ExactFraction(105, 7))
         logNum2 = LogNum(ExactFraction(7, 105))
-        expected = Term(listOf(LogNum(ExactFraction(105, 7)), LogNum(ExactFraction(7, 105))), 0, ExactFraction.ONE)
+        expected = Term(ExactFraction.ONE, listOf(LogNum(ExactFraction(105, 7)), LogNum(ExactFraction(7, 105))))
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
     }
@@ -176,31 +176,31 @@ internal class LogNumTest {
         // zero
         var logNum1 = LogNum.ZERO
         var logNum2 = LogNum.ONE
-        var expected = Term(listOf(LogNum.ZERO, LogNum.ONE.swapDivided()), 0, ExactFraction.ONE)
+        var expected = Term(ExactFraction.ONE, listOf(LogNum.ZERO, LogNum.ONE.swapDivided()))
         assertEquals(expected, logNum1 / logNum2)
 
         // nonzero
         logNum1 = LogNum(ExactFraction.EIGHT)
         logNum2 = LogNum(ExactFraction(7, 5))
         expected = Term(
-            listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(7, 5), 10, true)),
-            0, ExactFraction.ONE
+            ExactFraction.ONE,
+            listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(7, 5), 10, true))
         )
         assertEquals(expected, logNum1 / logNum2)
 
         logNum1 = LogNum(ExactFraction.EIGHT, 3, true)
         logNum2 = LogNum(ExactFraction(7, 5), 20, true)
         expected = Term(
-            listOf(LogNum(ExactFraction.EIGHT, 3, true), LogNum(ExactFraction(7, 5), 20)),
-            0, ExactFraction.ONE
+            ExactFraction.ONE,
+            listOf(LogNum(ExactFraction.EIGHT, 3, true), LogNum(ExactFraction(7, 5), 20))
         )
         assertEquals(expected, logNum1 / logNum2)
 
         logNum1 = LogNum(ExactFraction.THREE, 4, true)
         logNum2 = LogNum(ExactFraction.EIGHT, 4, false)
         expected = Term(
-            listOf(LogNum(ExactFraction.THREE, 4, true), LogNum(ExactFraction.EIGHT, 4, true)),
-            0, ExactFraction.ONE
+            ExactFraction.ONE,
+            listOf(LogNum(ExactFraction.THREE, 4, true), LogNum(ExactFraction.EIGHT, 4, true))
         )
         assertEquals(expected, logNum1 / logNum2)
     }

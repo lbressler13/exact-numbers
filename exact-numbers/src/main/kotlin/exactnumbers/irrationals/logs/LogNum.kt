@@ -48,7 +48,7 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
             throwDivideByZero()
         }
 
-        return Term(listOf(this, other.swapDivided()), 0, ExactFraction.ONE)
+        return times(other.swapDivided())
     }
 
     override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())

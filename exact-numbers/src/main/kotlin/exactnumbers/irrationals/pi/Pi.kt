@@ -1,6 +1,7 @@
 package exactnumbers.irrationals.pi
 
 import shared.NumType
+import shared.divideBigDecimals
 import java.math.BigDecimal
 import kotlin.math.PI
 
@@ -12,7 +13,16 @@ class Pi(override val isDivided: Boolean) : NumType {
 
     constructor() : this(false)
 
-    override fun getValue(): BigDecimal = PI.toBigDecimal()
+    override fun getValue(): BigDecimal {
+        val base = PI.toBigDecimal()
+
+        if (isDivided) {
+            return divideBigDecimals(BigDecimal.ONE, base)
+        }
+
+        return base
+    }
+
     override fun isZero(): Boolean = false
 
     override fun swapDivided(): Pi = Pi(!isDivided)
