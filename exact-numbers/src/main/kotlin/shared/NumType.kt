@@ -1,5 +1,6 @@
 package shared
 
+import expressions.term.Term
 import java.math.BigDecimal
 
 internal interface NumType {
@@ -13,3 +14,5 @@ internal interface NumType {
 
     fun getBaseString(): String
 }
+
+internal operator fun NumType.times(other: NumType): Term = genericTimes(this, other)

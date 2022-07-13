@@ -5,6 +5,7 @@ import expressions.term.Term
 import shared.NumType
 import shared.divideBigDecimals
 import shared.throwDivideByZero
+import shared.times
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
@@ -39,7 +40,8 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
         return getValue() == other.getValue()
     }
 
-    operator fun times(other: LogNum): Term = Term(listOf(this, other), 0, ExactFraction.ONE)
+    // operator fun times(other: LogNum): Term = Term(listOf(this, other), 0, ExactFraction.ONE)
+    operator fun times(other: LogNum): Term = times(other as NumType)
 
     operator fun div(other: LogNum): Term {
         if (other.isZero()) {

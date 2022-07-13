@@ -130,8 +130,8 @@ internal class LogNumTest {
     @Test
     internal fun testTimes() {
         // zero
-        var logNum1 = LogNum.ZERO
-        var logNum2 = LogNum.ZERO
+        var logNum1: LogNum = LogNum.ZERO
+        var logNum2: LogNum = LogNum.ZERO
         var expected = Term(listOf(LogNum.ZERO, LogNum.ZERO), 0, ExactFraction.ONE)
         assertEquals(expected, logNum1 * logNum2)
         assertEquals(expected, logNum2 * logNum1)
