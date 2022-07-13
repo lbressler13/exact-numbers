@@ -3,8 +3,8 @@ package exactnumbers.irrationals.logs
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.pi.Pi
 import expressions.term.Term
-import shared.*
 import shared.NumType
+import shared.div
 import shared.divideBigDecimals
 import shared.throwDivideByZero
 import shared.times

@@ -23,8 +23,6 @@ class SimplifyPisListTest {
         pis = listOf(Pi(true), Pi(), Pi(true), Pi(), Pi(), Pi(true))
         assertEquals(expected, simplifyPisList(pis))
 
-        // TODO
-
         // positive
         pis = listOf(Pi())
         expected = listOf(Pi())

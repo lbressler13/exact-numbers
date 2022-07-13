@@ -53,7 +53,6 @@ internal class LogNumTest {
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
-
         // all fields
         logNum = LogNum(ExactFraction(13, 100), 100, true)
         expectedNumber = ExactFraction(13, 100)

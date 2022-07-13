@@ -10,8 +10,9 @@ import shared.divideBigDecimals
 import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.abs
 
-class Term internal constructor(coefficient: ExactFraction, numbers: List<NumType>){
+class Term internal constructor(coefficient: ExactFraction, numbers: List<NumType>) {
     val coefficient: ExactFraction
     internal val numbers: List<NumType>
 
@@ -36,9 +37,9 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        return simplified.coefficient == otherSimplified.coefficient
-                && simplified.getPiCount() == otherSimplified.getPiCount()
-                && simplified.getLogs().sorted() == otherSimplified.getLogs().sorted()
+        return simplified.coefficient == otherSimplified.coefficient &&
+            simplified.getPiCount() == otherSimplified.getPiCount() &&
+            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted()
     }
 
     operator fun times(other: Term): Term {
@@ -88,15 +89,15 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
         val coeffString = if (coefficient.denominator == BigInteger.ONE) {
             coefficient.numerator.toString()
         } else {
-            "${coefficient.numerator}/${coefficient.denominator}"
+            "[${coefficient.numerator}/${coefficient.denominator}]"
         }
 
-        val numString = numbers.joinToString("")
+        val numString = numbers.joinToString("x")
 
         return if (numString.isEmpty()) {
             "<$coeffString>"
         } else {
-            "<${coeffString}x${numString}>"
+            "<${coeffString}x$numString>"
         }
     }
 
@@ -107,7 +108,9 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
         val ONE = Term(ExactFraction.ONE, listOf())
 
         fun fromValues(coefficient: ExactFraction, logs: List<LogNum>, piCount: Int): Term {
-            val piList = List(piCount) { Pi() }
+            val piDivided = piCount < 0
+            val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
+
             return Term(coefficient, logs + piList)
         }
     }

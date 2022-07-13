@@ -1,7 +1,11 @@
 package exactnumbers.irrationals.pi
 
 import java.math.BigDecimal
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 internal class PiTest {
     @Test
@@ -39,7 +43,6 @@ internal class PiTest {
         pi = Pi(true)
         expected = BigDecimal("0.31830988618379069570")
         assertEquals(expected, pi.getValue())
-
     }
 
     @Test

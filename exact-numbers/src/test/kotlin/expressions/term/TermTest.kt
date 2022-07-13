@@ -2,6 +2,8 @@ package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.pi.Pi
+import shared.NumType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -9,195 +11,261 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 internal class TermTest {
+    private val logNum1 = LogNum(ExactFraction(15, 4))
+    private val logNum2 = LogNum(ExactFraction.EIGHT, 7)
+    private val logNum3 = LogNum(ExactFraction(19, 33), true)
+    private val logNum4 = LogNum(ExactFraction(25, 121))
+    private val one = ExactFraction.ONE
+
     @Test
     internal fun testConstructor() {
-        // TODO
-//        // zero
-//        var expectedLogs = listOf<LogNum>()
-//        var expectedPiCount = 0
-//        var expectedCoeff = ExactFraction.ZERO
-//
-//        var term = Term(listOf(), 0, ExactFraction.ZERO)
-//        assertEquals(expectedLogs, term.logs)
-//        assertEquals(expectedPiCount, term.piCount)
-//        assertEquals(expectedCoeff, term.coefficient)
-//
-//        term = Term(listOf(LogNum.ONE, LogNum.ZERO), 7, ExactFraction.TWO)
-//        assertEquals(expectedLogs, term.logs)
-//        assertEquals(expectedPiCount, term.piCount)
-//        assertEquals(expectedCoeff, term.coefficient)
-//
-//        term = Term(listOf(LogNum(ExactFraction.TWO, 15)), 7, ExactFraction.ZERO)
-//        assertEquals(expectedLogs, term.logs)
-//        assertEquals(expectedPiCount, term.piCount)
-//        assertEquals(expectedCoeff, term.coefficient)
-//
-//        // nonzero
-//        var logs = listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(15)))
-//        var piCount = 0
-//        var coeff = ExactFraction.ONE
-//        term = Term(logs, piCount, coeff)
-//        assertEquals(logs, term.logs)
-//        assertEquals(piCount, term.piCount)
-//        assertEquals(coeff, term.coefficient)
-//
-//        logs = listOf()
-//        piCount = -5
-//        coeff = ExactFraction.ONE
-//        term = Term(logs, piCount, coeff)
-//        assertEquals(logs, term.logs)
-//        assertEquals(piCount, term.piCount)
-//        assertEquals(coeff, term.coefficient)
-//
-//        logs = listOf()
-//        piCount = 0
-//        coeff = ExactFraction(17, 4)
-//        term = Term(logs, piCount, coeff)
-//        assertEquals(logs, term.logs)
-//        assertEquals(piCount, term.piCount)
-//        assertEquals(coeff, term.coefficient)
-//
-//        logs = listOf(LogNum(ExactFraction(18)), LogNum(ExactFraction(15, 4)))
-//        piCount = 9
-//        coeff = ExactFraction(-22, 43)
-//        term = Term(logs, piCount, coeff)
-//        assertEquals(logs, term.logs)
-//        assertEquals(piCount, term.piCount)
-//        assertEquals(coeff, term.coefficient)
+        // zero
+        var expectedCoeff = ExactFraction.ZERO
+        var expectedNumbers: List<NumType> = listOf()
+
+        var term = Term(ExactFraction.ZERO, listOf())
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term(ExactFraction.ZERO, listOf(logNum1, logNum3, Pi()))
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term(ExactFraction.FIVE, listOf(logNum1, LogNum.ZERO))
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        // others
+        term = Term(-ExactFraction.FIVE, listOf())
+        expectedCoeff = -ExactFraction.FIVE
+        expectedNumbers = listOf()
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term(ExactFraction(17, 3), listOf(Pi(), logNum2))
+        expectedCoeff = ExactFraction(17, 3)
+        expectedNumbers = listOf(Pi(), logNum2)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term(
+            ExactFraction(-4, 5),
+            listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), logNum2)
+        )
+        expectedCoeff = ExactFraction(-4, 5)
+        expectedNumbers = listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), logNum2)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+    }
+
+    @Test
+    internal fun testFromValues() {
+        // zero
+        var expectedCoeff = ExactFraction.ZERO
+        var expectedNumbers: List<NumType> = listOf()
+
+        var term = Term.fromValues(ExactFraction.ZERO, listOf(), 0)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, LogNum.ONE), 8)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, LogNum.ZERO, logNum3), 5)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        // nonzero
+        term = Term.fromValues(ExactFraction(-5, 7), listOf(), 0)
+        expectedCoeff = ExactFraction(-5, 7)
+        expectedNumbers = listOf()
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction.EIGHT, listOf(), 3)
+        expectedCoeff = ExactFraction.EIGHT
+        expectedNumbers = listOf(Pi(), Pi(), Pi())
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction.EIGHT, listOf(), -3)
+        expectedCoeff = ExactFraction.EIGHT
+        expectedNumbers = listOf(Pi(true), Pi(true), Pi(true))
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum1), 0)
+        expectedCoeff = ExactFraction(-2, 191)
+        expectedNumbers = listOf(logNum1, logNum2, logNum1)
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum3), 2)
+        expectedCoeff = ExactFraction(-2, 191)
+        expectedNumbers = listOf(logNum1, logNum2, logNum3, Pi(), Pi())
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
+
+        term = Term.fromValues(ExactFraction(22), listOf(logNum1, logNum2, logNum3), -2)
+        expectedCoeff = ExactFraction(22)
+        expectedNumbers = listOf(logNum1, logNum2, logNum3, Pi(true), Pi(true))
+        assertEquals(expectedCoeff, term.coefficient)
+        assertEquals(expectedNumbers, term.numbers)
     }
 
     @Test
     internal fun testEquals() {
-        // TODO
-//        // equal
-//        var term = Term.ZERO
-//        assertEquals(term, term)
-//
-//        term = Term(listOf(), 0, ExactFraction(-17, 4))
-//        assertEquals(term, term)
-//
-//        term = Term(listOf(), 15, ExactFraction.ONE)
-//        assertEquals(term, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.THREE), LogNum(ExactFraction.HALF)), 0, ExactFraction.ONE)
-//        assertEquals(term, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.THREE), LogNum(ExactFraction.HALF)), 15, ExactFraction(-17, 4))
-//        assertEquals(term, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction.THREE)), 3, ExactFraction.FOUR)
-//        var other = Term(listOf(LogNum(ExactFraction.THREE), LogNum(ExactFraction.TWO)), 3, ExactFraction.FOUR)
-//        assertEquals(term, other)
-//        assertEquals(other, term)
-//
-//        // not equal
-//        term = Term(listOf(), 0, ExactFraction.ONE)
-//        other = Term(listOf(), 0, ExactFraction.NEG_ONE)
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
-//
-//        term = Term(listOf(), -1, ExactFraction.ONE)
-//        other = Term(listOf(), 1, ExactFraction.ONE)
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.TWO)), 0, ExactFraction.ONE)
-//        other = Term(listOf(LogNum(ExactFraction.HALF)), 0, ExactFraction.ONE)
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction(5, 7))), -3, ExactFraction(-5, 7))
-//        other = Term(listOf(LogNum(ExactFraction(5, 7))), -2, ExactFraction(-5, 7))
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction(5, 7)), LogNum(ExactFraction.EIGHT)), -2, ExactFraction(-5, 7))
-//        other = Term(listOf(LogNum(ExactFraction(5, 7))), -2, ExactFraction(-5, 7))
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
-//
-//        term = Term(listOf(LogNum(ExactFraction(5, 7))), -3, ExactFraction(-5, 7))
-//        other = Term(listOf(LogNum(ExactFraction(5, 7))), -2, ExactFraction(-5, 6))
-//        assertNotEquals(term, other)
-//        assertNotEquals(other, term)
+        // equal
+        var term1 = Term.ZERO
+        assertEquals(term1, term1)
+
+        term1 = Term(ExactFraction(-17, 4), listOf())
+        assertEquals(term1, term1)
+
+        term1 = Term(one, listOf(logNum1, logNum2))
+        assertEquals(term1, term1)
+
+        term1 = Term(one, listOf(Pi(), Pi()))
+        assertEquals(term1, term1)
+
+        term1 = Term(ExactFraction.EIGHT, listOf(Pi(true), logNum4, logNum3, Pi(), logNum1))
+        assertEquals(term1, term1)
+
+        term1 = Term(ExactFraction.EIGHT, listOf(Pi(true), logNum4, logNum3, Pi(), logNum1))
+        var term2 = Term(ExactFraction.EIGHT, listOf(logNum3, Pi(), Pi(true), logNum1, logNum4))
+        assertEquals(term1, term2)
+        assertEquals(term2, term1)
+
+        // not equal
+        term1 = Term(one, listOf())
+        term2 = Term(ExactFraction.NEG_ONE, listOf())
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(ExactFraction.TWO, listOf())
+        term2 = Term(ExactFraction.HALF, listOf())
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(logNum1))
+        term2 = Term(one, listOf())
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(logNum1))
+        term2 = Term(one, listOf(logNum1.swapDivided()))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(logNum1))
+        term2 = Term(one, listOf(logNum1, logNum2))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(Pi()))
+        term2 = Term(one, listOf())
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(Pi()))
+        term2 = Term(one, listOf(Pi(true)))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(one, listOf(Pi(), Pi(true)))
+        term2 = Term(one, listOf(Pi(true)))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(ExactFraction(5, 7), listOf(Pi(), Pi(true), logNum1, logNum1))
+        term2 = Term(ExactFraction.FIVE, listOf(Pi(), Pi(true), logNum1, logNum1))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
+
+        term1 = Term(ExactFraction.EIGHT, listOf(Pi(true), logNum3, logNum4))
+        term2 = Term(ExactFraction(-17, 15), listOf(logNum1, logNum2, logNum3))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
     }
 
     @Test
     internal fun testUnaryMinus() {
-        // TODO
-//        var term = Term.ZERO
-//        var expected = Term.ZERO
-//        assertEquals(expected, -term)
-//
-//        term = Term(listOf(), 3, ExactFraction.ONE)
-//        expected = Term(listOf(), 3, ExactFraction.NEG_ONE)
-//        assertEquals(expected, -term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 0, -ExactFraction.SIX)
-//        expected = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 0, ExactFraction.SIX)
-//        assertEquals(expected, -term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(7, 3))
-//        expected = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(-7, 3))
-//        assertEquals(expected, -term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(-15, 44))
-//        expected = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(15, 44))
-//        assertEquals(expected, -term)
+        var term = Term.ZERO
+        var expected = Term.ZERO
+        assertEquals(expected, -term)
+
+        term = Term(one, listOf(LogNum.ONE))
+        expected = Term(ExactFraction.NEG_ONE, listOf(LogNum.ONE))
+        assertEquals(expected, -term)
+
+        term = Term(ExactFraction.NEG_ONE, listOf(Pi()))
+        expected = Term(one, listOf(Pi()))
+        assertEquals(expected, -term)
+
+        term = Term(-ExactFraction.SIX, listOf(logNum3, logNum4, Pi(true)))
+        expected = Term(ExactFraction.SIX, listOf(logNum3, logNum4, Pi(true)))
+        assertEquals(expected, -term)
+
+        term = Term(ExactFraction(15, 44), listOf())
+        expected = Term(ExactFraction(-15, 44), listOf())
+        assertEquals(expected, -term)
+
+        term = Term(ExactFraction(-15, 44), listOf(Pi(), Pi(true), Pi(), logNum2, logNum3, logNum4))
+        expected = Term(ExactFraction(15, 44), listOf(Pi(), Pi(true), Pi(), logNum2, logNum3, logNum4))
+        assertEquals(expected, -term)
     }
 
     @Test
     internal fun testUnaryPlus() {
-        // TODO
-//        var term = Term.ZERO
-//        assertEquals(term, +term)
-//
-//        term = Term(listOf(), 3, ExactFraction.ONE)
-//        assertEquals(term, +term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 0, -ExactFraction.SIX)
-//        assertEquals(term, +term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(7, 3))
-//        assertEquals(term, +term)
-//
-//        term = Term(listOf(LogNum(ExactFraction.EIGHT), LogNum(ExactFraction(3, 8))), 4, ExactFraction(-15, 44))
-//        assertEquals(term, +term)
+        var term = Term.ZERO
+        assertEquals(term, +term)
+
+        term = Term(one, listOf(LogNum.ONE))
+        assertEquals(term, +term)
+
+        term = Term(one, listOf(Pi()))
+        assertEquals(term, +term)
+
+        term = Term(-ExactFraction.SIX, listOf(logNum3, logNum4, Pi(true)))
+        assertEquals(term, +term)
+
+        term = Term(ExactFraction(15, 44), listOf())
+        assertEquals(term, +term)
+
+        term = Term(ExactFraction(-15, 44), listOf(Pi(), Pi(true), Pi(), logNum2, logNum3, logNum4))
+        assertEquals(term, +term)
     }
 
     @Test
     internal fun testIsZero() {
-//        // zero
-//        var term = Term.ZERO
-//        assertTrue(term.isZero())
-//
-//        // not zero
-//        term = Term.ONE
-//        assertFalse(term.isZero())
-//
-//        var logs = listOf(LogNum(ExactFraction.TWO), LogNum(ExactFraction(15)))
-//        var piCount = 0
-//        var coeff = ExactFraction.ONE
-//        term = Term(logs, piCount, coeff)
-//        assertFalse(term.isZero())
-//
-//        logs = listOf()
-//        piCount = -5
-//        coeff = ExactFraction.ONE
-//        term = Term(logs, piCount, coeff)
-//        assertFalse(term.isZero())
-//
-//        logs = listOf()
-//        piCount = 0
-//        coeff = ExactFraction(17, 4)
-//        term = Term(logs, piCount, coeff)
-//        assertFalse(term.isZero())
-//
-//        logs = listOf(LogNum(ExactFraction(18)), LogNum(ExactFraction(15, 4)))
-//        piCount = 9
-//        coeff = ExactFraction(-22, 43)
-//        term = Term(logs, piCount, coeff)
-//        assertFalse(term.isZero())
+        // zero
+        var term = Term.ZERO
+        assertTrue(term.isZero())
+
+        // not zero
+        term = Term.ONE
+        assertFalse(term.isZero())
+
+        term = Term(one, listOf(LogNum.ONE))
+        assertFalse(term.isZero())
+
+        term = Term(one, listOf(Pi()))
+        assertFalse(term.isZero())
+
+        term = Term(ExactFraction(5, 4), listOf(logNum2, Pi(true), logNum4))
+        assertFalse(term.isZero())
+
+        term = Term(-ExactFraction.HALF, listOf(logNum2, logNum2.swapDivided()))
+        assertFalse(term.isZero())
+
+        term = Term(ExactFraction(-1, 1000000), listOf(Pi(true), Pi(true), Pi(true)))
+        assertFalse(term.isZero())
+    }
+
+    @Test
+    fun testGetSimplified() {
+        // TODO
     }
 
     @Test
@@ -206,22 +274,134 @@ internal class TermTest {
     }
 
     @Test
-    fun testToString() {
-        val pi = "π"
+    fun testGetLogs() {
+        // empty
+        var expected: List<LogNum> = listOf()
 
-        // zero
+        var term = Term(one, listOf())
+        assertEquals(expected, term.getLogs())
 
-        // just coefficient
+        term = Term(one, listOf(Pi(), Pi()))
+        assertEquals(expected, term.getLogs())
 
         // just logs
+        term = Term(one, listOf(logNum1))
+        expected = listOf(logNum1)
+        assertEquals(expected, term.getLogs())
 
-        // just pi
+        term = Term(one, listOf(logNum1, logNum1))
+        expected = listOf(logNum1, logNum1)
+        assertEquals(expected, term.getLogs())
 
-        // combination
+        term = Term(one, listOf(logNum1, logNum1.swapDivided()))
+        expected = listOf(logNum1, logNum1.swapDivided())
+        assertEquals(expected, term.getLogs())
 
-        // TODO
+        term = Term(one, listOf(logNum3, logNum4, logNum1))
+        expected = listOf(logNum3, logNum4, logNum1)
+        assertEquals(expected, term.getLogs())
+
+        // mix
+        term = Term(one, listOf(Pi(), logNum3))
+        expected = listOf(logNum3)
+        assertEquals(expected, term.getLogs())
+
+        term = Term(one, listOf(logNum2, Pi(), Pi(true), logNum2, logNum3, logNum4))
+        expected = listOf(logNum2, logNum2, logNum3, logNum4)
+        assertEquals(expected, term.getLogs())
     }
 
-    @Test internal fun testTimes() = runTimesTests() // TODO
-    @Test internal fun testDiv() = runDivTests() // TODO
+    @Test
+    fun testGetPiCount() {
+        // zero
+        var expected = 0
+
+        var term = Term(one, listOf())
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(Pi(), Pi(true)))
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(Pi(), Pi(true), Pi(), Pi(true), Pi(), Pi(true)))
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(logNum1, logNum4))
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(logNum3, logNum4, Pi(true), Pi(), logNum2, Pi(true), Pi()))
+        assertEquals(expected, term.getPiCount())
+
+        // just pi
+        term = Term(one, listOf(Pi()))
+        expected = 1
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(Pi(true)))
+        expected = -1
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(Pi(true), Pi(true), Pi(true)))
+        expected = -3
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(Pi(), Pi(true), Pi(), Pi(), Pi(true)))
+        expected = 1
+        assertEquals(expected, term.getPiCount())
+
+        // mix
+        term = Term(one, listOf(Pi(true), logNum2))
+        expected = -1
+        assertEquals(expected, term.getPiCount())
+
+        term = Term(one, listOf(logNum3, Pi(), Pi(), logNum2, Pi(true), Pi()))
+        expected = 2
+        assertEquals(expected, term.getPiCount())
+    }
+
+    @Test
+    fun testToString() {
+        // zero
+        var term = Term.ZERO
+        var expected = "<0>"
+        assertEquals(expected, term.toString())
+
+        // just coefficient
+        term = Term(ExactFraction(-25), listOf())
+        expected = "<-25>"
+        assertEquals(expected, term.toString())
+
+        term = Term(ExactFraction(44, 7), listOf())
+        expected = "<[44/7]>"
+        assertEquals(expected, term.toString())
+
+        // just logs
+        term = Term(one, listOf(LogNum.ONE))
+        expected = "<1x${LogNum.ONE}>"
+        assertEquals(expected, term.toString())
+
+        term = Term(one, listOf(logNum2, logNum4, logNum1))
+        expected = "<1x${logNum2}x${logNum4}x$logNum1>"
+        assertEquals(expected, term.toString())
+
+        // just pi
+        term = Term(one, listOf(Pi()))
+        expected = "<1x${Pi()}>"
+        assertEquals(expected, term.toString())
+
+        term = Term(one, listOf(Pi(), Pi(true), Pi()))
+        expected = "<1x${Pi()}x${Pi(true)}x${Pi()}>"
+        assertEquals(expected, term.toString())
+
+        // mix
+        term = Term(ExactFraction.EIGHT, listOf(Pi(), logNum3))
+        expected = "<8x${Pi()}x$logNum3>"
+        assertEquals(expected, term.toString())
+
+        term = Term(ExactFraction(-100, 333), listOf(Pi(true), logNum2, logNum2, logNum4, Pi(), logNum1))
+        expected = "<[-100/333]x${Pi(true)}x${logNum2}x${logNum2}x${logNum4}x${Pi()}x$logNum1>"
+        assertEquals(expected, term.toString())
+    }
+
+    @Test internal fun testTimes() = runTimesTests()
+    @Test internal fun testDiv() = runDivTests()
 }

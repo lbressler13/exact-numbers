@@ -32,9 +32,9 @@ class Pi(override val isDivided: Boolean) : NumType {
     override fun swapDivided(): Pi = Pi(!isDivided)
 
     override fun equals(other: Any?): Boolean {
-        return other != null
-                && other is Pi
-                && isDivided == other.isDivided
+        return other != null &&
+            other is Pi &&
+            isDivided == other.isDivided
     }
 
     operator fun times(other: LogNum): Term = times(other as NumType)
