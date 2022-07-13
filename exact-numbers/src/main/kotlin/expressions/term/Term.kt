@@ -1,8 +1,8 @@
 package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.logs.LogNum
-import exactnumbers.irrationals.logs.simplifyLogsList
+import exactnumbers.irrationals.log.Log
+import exactnumbers.irrationals.log.simplifyLogsList
 import exactnumbers.irrationals.pi.Pi
 import exactnumbers.irrationals.pi.simplifyPisList
 import shared.NumType
@@ -62,7 +62,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
 
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
-        val logs = simplifyLogsList(groups[LogNum.TYPE] ?: listOf())
+        val logs = simplifyLogsList(groups[Log.TYPE] ?: listOf())
         val pis = simplifyPisList(groups[Pi.TYPE] ?: listOf())
 
         return Term(coefficient, logs + pis)
@@ -77,7 +77,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
         return divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
     }
 
-    fun getLogs(): List<LogNum> = numbers.filter { it.type == LogNum.TYPE }.map { it } as List<LogNum>
+    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE }.map { it } as List<Log>
     fun getPiCount(): Int {
         val pis = numbers.filter { it.type == Pi.TYPE }
         val positive = pis.count { !it.isDivided }
@@ -107,7 +107,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
         val ZERO = Term(ExactFraction.ZERO, listOf())
         val ONE = Term(ExactFraction.ONE, listOf())
 
-        fun fromValues(coefficient: ExactFraction, logs: List<LogNum>, piCount: Int): Term {
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>, piCount: Int): Term {
             val piDivided = piCount < 0
             val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
 

@@ -1,4 +1,4 @@
-package exactnumbers.irrationals.logs
+package exactnumbers.irrationals.log
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
@@ -11,42 +11,42 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-internal class LogNumTest {
+internal class LogTest {
     @Test
     internal fun testConstructor() {
         // error
-        assertDivByZero { LogNum(ExactFraction.ONE, 10, isDivided = true) }
+        assertDivByZero { Log(ExactFraction.ONE, 10, isDivided = true) }
 
         assertFailsWith<ArithmeticException>("Cannot calculate log of 0") {
-            LogNum(ExactFraction.ZERO)
+            Log(ExactFraction.ZERO)
         }
 
         assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            LogNum(-ExactFraction.TEN)
+            Log(-ExactFraction.TEN)
         }
 
         assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            LogNum(ExactFraction(-4, 3))
+            Log(ExactFraction(-4, 3))
         }
 
         assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            LogNum(-ExactFraction.TEN)
+            Log(-ExactFraction.TEN)
         }
 
         assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            LogNum(ExactFraction.TEN, -1)
+            Log(ExactFraction.TEN, -1)
         }
 
         assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            LogNum(ExactFraction.TEN, 0)
+            Log(ExactFraction.TEN, 0)
         }
 
         assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            LogNum(ExactFraction.TEN, 1)
+            Log(ExactFraction.TEN, 1)
         }
 
         // zero
-        var logNum = LogNum(ExactFraction.ONE)
+        var logNum = Log(ExactFraction.ONE)
         var expectedNumber = ExactFraction.ONE
         var expectedBase = 10
         assertEquals(expectedNumber, logNum.number)
@@ -54,7 +54,7 @@ internal class LogNumTest {
         assertFalse(logNum.isDivided)
 
         // all fields
-        logNum = LogNum(ExactFraction(13, 100), 100, true)
+        logNum = Log(ExactFraction(13, 100), 100, true)
         expectedNumber = ExactFraction(13, 100)
         expectedBase = 100
         assertEquals(expectedNumber, logNum.number)
@@ -62,14 +62,14 @@ internal class LogNumTest {
         assertTrue(logNum.isDivided)
 
         // just number
-        logNum = LogNum(ExactFraction.TWO)
+        logNum = Log(ExactFraction.TWO)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
         assertEquals(expectedNumber, logNum.number)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
-        logNum = LogNum(ExactFraction(107, 3))
+        logNum = Log(ExactFraction(107, 3))
         expectedNumber = ExactFraction(107, 3)
         expectedBase = 10
         assertEquals(expectedNumber, logNum.number)
@@ -77,14 +77,14 @@ internal class LogNumTest {
         assertFalse(logNum.isDivided)
 
         // number + base
-        logNum = LogNum(ExactFraction.TWO, 2)
+        logNum = Log(ExactFraction.TWO, 2)
         expectedNumber = ExactFraction.TWO
         expectedBase = 2
         assertEquals(expectedNumber, logNum.number)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
-        logNum = LogNum(ExactFraction(107, 3), 5)
+        logNum = Log(ExactFraction(107, 3), 5)
         expectedNumber = ExactFraction(107, 3)
         expectedBase = 5
         assertEquals(expectedNumber, logNum.number)
@@ -92,14 +92,14 @@ internal class LogNumTest {
         assertFalse(logNum.isDivided)
 
         // number + divided
-        logNum = LogNum(ExactFraction.TWO, false)
+        logNum = Log(ExactFraction.TWO, false)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
         assertEquals(expectedNumber, logNum.number)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
-        logNum = LogNum(ExactFraction.TWO, true)
+        logNum = Log(ExactFraction.TWO, true)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
         assertEquals(expectedNumber, logNum.number)
@@ -110,49 +110,49 @@ internal class LogNumTest {
     @Test
     internal fun testEquals() {
         // equals
-        var logNum = LogNum.ZERO
+        var logNum = Log.ZERO
         assertEquals(logNum, logNum)
 
-        logNum = LogNum(ExactFraction.TEN)
+        logNum = Log(ExactFraction.TEN)
         assertEquals(logNum, logNum)
 
-        logNum = LogNum(ExactFraction(30001))
+        logNum = Log(ExactFraction(30001))
         assertEquals(logNum, logNum)
 
-        logNum = LogNum(ExactFraction(107, 12), 3)
+        logNum = Log(ExactFraction(107, 12), 3)
         assertEquals(logNum, logNum)
 
-        logNum = LogNum(ExactFraction(12, 107), 10, true)
+        logNum = Log(ExactFraction(12, 107), 10, true)
         assertEquals(logNum, logNum)
 
         // not equals
-        logNum = LogNum.ZERO
-        var other = LogNum(ExactFraction.TWO)
+        logNum = Log.ZERO
+        var other = Log(ExactFraction.TWO)
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = LogNum(ExactFraction.EIGHT)
-        other = LogNum(ExactFraction.EIGHT, 2)
+        logNum = Log(ExactFraction.EIGHT)
+        other = Log(ExactFraction.EIGHT, 2)
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = LogNum(ExactFraction(15))
-        other = LogNum(ExactFraction(1000))
+        logNum = Log(ExactFraction(15))
+        other = Log(ExactFraction(1000))
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = LogNum(ExactFraction.HALF)
-        other = LogNum(ExactFraction(5, 7))
+        logNum = Log(ExactFraction.HALF)
+        other = Log(ExactFraction(5, 7))
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = LogNum(ExactFraction(7, 8), 3)
-        other = LogNum(ExactFraction(8, 7), 3)
+        logNum = Log(ExactFraction(7, 8), 3)
+        other = Log(ExactFraction(8, 7), 3)
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = LogNum(ExactFraction.EIGHT, 10, true)
-        other = LogNum(ExactFraction.EIGHT, 10, false)
+        logNum = Log(ExactFraction.EIGHT, 10, true)
+        other = Log(ExactFraction.EIGHT, 10, false)
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
     }
@@ -160,43 +160,43 @@ internal class LogNumTest {
     @Test
     internal fun testCompareTo() {
         // equal
-        var logNum1 = LogNum.ZERO
+        var logNum1 = Log.ZERO
         assertEquals(0, logNum1.compareTo(logNum1))
 
-        logNum1 = LogNum(ExactFraction.EIGHT, 3)
+        logNum1 = Log(ExactFraction.EIGHT, 3)
         assertEquals(0, logNum1.compareTo(logNum1))
 
-        logNum1 = LogNum(ExactFraction(4, 5), 3, true)
+        logNum1 = Log(ExactFraction(4, 5), 3, true)
         assertEquals(0, logNum1.compareTo(logNum1))
 
-        logNum1 = LogNum(ExactFraction.TWO, 2)
-        var logNum2 = LogNum(ExactFraction.EIGHT, 8)
+        logNum1 = Log(ExactFraction.TWO, 2)
+        var logNum2 = Log(ExactFraction.EIGHT, 8)
         assertEquals(0, logNum1.compareTo(logNum2))
         assertEquals(0, logNum2.compareTo(logNum1))
 
         // not equal
-        logNum1 = LogNum.ZERO
-        logNum2 = LogNum.ONE
+        logNum1 = Log.ZERO
+        logNum2 = Log.ONE
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
-        logNum1 = LogNum(ExactFraction.EIGHT)
-        logNum2 = LogNum(ExactFraction.EIGHT, 2)
+        logNum1 = Log(ExactFraction.EIGHT)
+        logNum2 = Log(ExactFraction.EIGHT, 2)
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
-        logNum1 = LogNum(ExactFraction(3, 4), 5)
-        logNum2 = LogNum(ExactFraction(4, 3), 5)
+        logNum1 = Log(ExactFraction(3, 4), 5)
+        logNum2 = Log(ExactFraction(4, 3), 5)
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
-        logNum1 = LogNum(ExactFraction(3, 4), 10, true)
-        logNum2 = LogNum(ExactFraction(1, 4))
+        logNum1 = Log(ExactFraction(3, 4), 10, true)
+        logNum2 = Log(ExactFraction(1, 4))
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
-        logNum1 = LogNum(ExactFraction.TWO, 8)
-        logNum2 = LogNum(ExactFraction(32), 8, true)
+        logNum1 = Log(ExactFraction.TWO, 8)
+        logNum2 = Log(ExactFraction(32), 8, true)
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
     }
@@ -204,113 +204,113 @@ internal class LogNumTest {
     @Test
     internal fun testSwapDivided() {
         // error
-        assertDivByZero { LogNum.ZERO.swapDivided() }
+        assertDivByZero { Log.ZERO.swapDivided() }
 
         // other
-        var logNum = LogNum.ONE
-        var expected = LogNum(ExactFraction.TEN, 10, true)
+        var logNum = Log.ONE
+        var expected = Log(ExactFraction.TEN, 10, true)
         assertEquals(expected, logNum.swapDivided())
 
-        logNum = LogNum(ExactFraction.FOUR, 3, false)
-        expected = LogNum(ExactFraction.FOUR, 3, true)
+        logNum = Log(ExactFraction.FOUR, 3, false)
+        expected = Log(ExactFraction.FOUR, 3, true)
         assertEquals(expected, logNum.swapDivided())
 
-        logNum = LogNum(ExactFraction(3, 8), 2, true)
-        expected = LogNum(ExactFraction(3, 8), 2, false)
+        logNum = Log(ExactFraction(3, 8), 2, true)
+        expected = Log(ExactFraction(3, 8), 2, false)
         assertEquals(expected, logNum.swapDivided())
     }
 
     @Test
     internal fun testIsZero() {
-        var logNum = LogNum.ZERO
+        var logNum = Log.ZERO
         assertTrue(logNum.isZero())
 
-        logNum = LogNum.ONE
+        logNum = Log.ONE
         assertFalse(logNum.isZero())
 
-        logNum = LogNum(ExactFraction.TWO, 7)
+        logNum = Log(ExactFraction.TWO, 7)
         assertFalse(logNum.isZero())
 
-        logNum = LogNum(ExactFraction.TEN)
+        logNum = Log(ExactFraction.TEN)
         assertFalse(logNum.isZero())
 
-        logNum = LogNum(ExactFraction(18))
+        logNum = Log(ExactFraction(18))
         assertFalse(logNum.isZero())
 
-        logNum = LogNum(ExactFraction(18, 7))
+        logNum = Log(ExactFraction(18, 7))
         assertFalse(logNum.isZero())
 
-        logNum = LogNum(ExactFraction(7, 18))
+        logNum = Log(ExactFraction(7, 18))
         assertFalse(logNum.isZero())
     }
 
     @Test
     internal fun testGetValue() {
         // base 10
-        var logNum = LogNum(ExactFraction.ONE)
+        var logNum = Log(ExactFraction.ONE)
         var expected = 0.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(100))
+        logNum = Log(ExactFraction(100))
         expected = 2.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(3333))
+        logNum = Log(ExactFraction(3333))
         expected = BigDecimal("3.52283531366053")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction.HALF)
+        logNum = Log(ExactFraction.HALF)
         expected = BigDecimal("-0.30102999566398114")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(21, 2))
+        logNum = Log(ExactFraction(21, 2))
         expected = BigDecimal("1.02118929906993786")
         assertEquals(expected, logNum.getValue())
 
         // base 2
-        logNum = LogNum(ExactFraction.ONE, 2)
+        logNum = Log(ExactFraction.ONE, 2)
         expected = 0.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(1, 8), 2)
+        logNum = Log(ExactFraction(1, 8), 2)
         expected = (-3).toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(200), 2)
+        logNum = Log(ExactFraction(200), 2)
         expected = BigDecimal("7.643856189774724")
         assertEquals(expected, logNum.getValue())
 
         // other
-        logNum = LogNum(ExactFraction(216), 6)
+        logNum = Log(ExactFraction(216), 6)
         expected = 3.toBigDecimal()
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(15151515), 24)
+        logNum = Log(ExactFraction(15151515), 24)
         expected = BigDecimal("5.202432673429519")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(18, 109), 9)
+        logNum = Log(ExactFraction(18, 109), 9)
         expected = BigDecimal("-0.8196595572931246")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(2000, 3), 3)
+        logNum = Log(ExactFraction(2000, 3), 3)
         expected = BigDecimal("5.9186395764396105")
         assertEquals(expected, logNum.getValue())
 
         // divided
-        logNum = LogNum(ExactFraction.TEN, 10, true)
+        logNum = Log(ExactFraction.TEN, 10, true)
         expected = BigDecimal.ONE
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction.EIGHT, 2, true)
+        logNum = Log(ExactFraction.EIGHT, 2, true)
         expected = BigDecimal("0.33333333333333333333")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(1, 4), 10, true)
+        logNum = Log(ExactFraction(1, 4), 10, true)
         expected = BigDecimal("-1.6609640474436814234")
         assertEquals(expected, logNum.getValue())
 
-        logNum = LogNum(ExactFraction(12), 4, true)
+        logNum = Log(ExactFraction(12), 4, true)
         expected = BigDecimal("0.55788589130225962125")
         assertEquals(expected, logNum.getValue())
     }
@@ -318,7 +318,7 @@ internal class LogNumTest {
     @Test
     internal fun testGetLogOf() {
         // base 10
-        var logNum = LogNum(ExactFraction.TEN, 10)
+        var logNum = Log(ExactFraction.TEN, 10)
 
         // var logNum = LogNum(ExactFraction.ONE)
         var bi = BigInteger.ONE
@@ -352,7 +352,7 @@ internal class LogNumTest {
         assertEquals(expected, logNum.getLogOf(bi))
 
         // base 2
-        logNum = LogNum(ExactFraction.TWO, 2)
+        logNum = Log(ExactFraction.TWO, 2)
 
         bi = BigInteger.ONE
         expected = BigDecimal.ZERO
@@ -367,17 +367,17 @@ internal class LogNumTest {
         assertEquals(expected, logNum.getLogOf(bi))
 
         // other
-        logNum = LogNum(ExactFraction.SEVEN, 7)
+        logNum = Log(ExactFraction.SEVEN, 7)
         bi = BigInteger.ONE
         expected = BigDecimal.ZERO
         assertEquals(expected, logNum.getLogOf(bi))
 
-        logNum = LogNum(ExactFraction.SIX, 6)
+        logNum = Log(ExactFraction.SIX, 6)
         bi = 216.toBigInteger()
         expected = 3.toBigDecimal()
         assertEquals(expected, logNum.getLogOf(bi))
 
-        logNum = LogNum(ExactFraction(24), 24)
+        logNum = Log(ExactFraction(24), 24)
         bi = 15151515.toBigInteger()
         expected = BigDecimal("5.202432673429519")
         assertEquals(expected, logNum.getLogOf(bi))
@@ -385,31 +385,31 @@ internal class LogNumTest {
 
     @Test
     internal fun testToString() {
-        var logNum = LogNum.ZERO
+        var logNum = Log.ZERO
         var expected = "[log_10(1)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction.TEN, 108)
+        logNum = Log(ExactFraction.TEN, 108)
         expected = "[log_108(10)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction(15))
+        logNum = Log(ExactFraction(15))
         expected = "[log_10(15)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction(30001), 3)
+        logNum = Log(ExactFraction(30001), 3)
         expected = "[log_3(30001)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction(103, 272), 14)
+        logNum = Log(ExactFraction(103, 272), 14)
         expected = "[log_14(103/272)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction(15, 8), 10, true)
+        logNum = Log(ExactFraction(15, 8), 10, true)
         expected = "[1/log_10(15/8)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = LogNum(ExactFraction.FOUR, 3, true)
+        logNum = Log(ExactFraction.FOUR, 3, true)
         expected = "[1/log_3(4)]"
         assertEquals(expected, logNum.toString())
     }

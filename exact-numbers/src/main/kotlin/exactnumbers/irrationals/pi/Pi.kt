@@ -1,6 +1,6 @@
 package exactnumbers.irrationals.pi
 
-import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.log.Log
 import expressions.term.Term
 import shared.NumType
 import shared.div
@@ -37,9 +37,9 @@ class Pi(override val isDivided: Boolean) : NumType {
             isDivided == other.isDivided
     }
 
-    operator fun times(other: LogNum): Term = times(other as NumType)
+    operator fun times(other: Log): Term = times(other as NumType)
     operator fun times(other: Pi): Term = times(other as NumType)
-    operator fun div(other: LogNum): Term = div(other as NumType)
+    operator fun div(other: Log): Term = div(other as NumType)
     operator fun div(other: Pi): Term = div(other as NumType)
 
     override fun toString(): String {

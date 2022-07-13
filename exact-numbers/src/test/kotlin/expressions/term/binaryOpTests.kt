@@ -2,14 +2,14 @@ package expressions.term
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 
-private val logNum1 = LogNum(ExactFraction(15, 4))
-private val logNum2 = LogNum(ExactFraction.EIGHT)
-private val logNum3 = LogNum(ExactFraction(19, 33))
-private val logNum4 = LogNum(ExactFraction(25, 121))
+private val logNum1 = Log(ExactFraction(15, 4))
+private val logNum2 = Log(ExactFraction.EIGHT)
+private val logNum3 = Log(ExactFraction(19, 33))
+private val logNum4 = Log(ExactFraction(25, 121))
 private val one = ExactFraction.ONE
 
 internal fun runTimesTests() {

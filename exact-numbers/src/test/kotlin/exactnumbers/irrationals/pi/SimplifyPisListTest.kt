@@ -1,6 +1,6 @@
 package exactnumbers.irrationals.pi
 
-import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.log.Log
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
@@ -9,7 +9,7 @@ class SimplifyPisListTest {
     @Test
     fun testSimplifyPisList() {
         // error
-        assertFails { simplifyPisList(listOf(Pi(), LogNum.ONE)) }
+        assertFails { simplifyPisList(listOf(Pi(), Log.ONE)) }
 
         // equal
         var expected: List<Pi> = listOf()

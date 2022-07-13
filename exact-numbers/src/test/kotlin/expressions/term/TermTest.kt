@@ -1,7 +1,7 @@
 package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.logs.LogNum
+import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
 import shared.NumType
 import kotlin.test.Test
@@ -11,10 +11,10 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 internal class TermTest {
-    private val logNum1 = LogNum(ExactFraction(15, 4))
-    private val logNum2 = LogNum(ExactFraction.EIGHT, 7)
-    private val logNum3 = LogNum(ExactFraction(19, 33), true)
-    private val logNum4 = LogNum(ExactFraction(25, 121))
+    private val logNum1 = Log(ExactFraction(15, 4))
+    private val logNum2 = Log(ExactFraction.EIGHT, 7)
+    private val logNum3 = Log(ExactFraction(19, 33), true)
+    private val logNum4 = Log(ExactFraction(25, 121))
     private val one = ExactFraction.ONE
 
     @Test
@@ -31,7 +31,7 @@ internal class TermTest {
         assertEquals(expectedCoeff, term.coefficient)
         assertEquals(expectedNumbers, term.numbers)
 
-        term = Term(ExactFraction.FIVE, listOf(logNum1, LogNum.ZERO))
+        term = Term(ExactFraction.FIVE, listOf(logNum1, Log.ZERO))
         assertEquals(expectedCoeff, term.coefficient)
         assertEquals(expectedNumbers, term.numbers)
 
@@ -68,11 +68,11 @@ internal class TermTest {
         assertEquals(expectedCoeff, term.coefficient)
         assertEquals(expectedNumbers, term.numbers)
 
-        term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, LogNum.ONE), 8)
+        term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, Log.ONE), 8)
         assertEquals(expectedCoeff, term.coefficient)
         assertEquals(expectedNumbers, term.numbers)
 
-        term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, LogNum.ZERO, logNum3), 5)
+        term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, Log.ZERO, logNum3), 5)
         assertEquals(expectedCoeff, term.coefficient)
         assertEquals(expectedNumbers, term.numbers)
 
@@ -195,8 +195,8 @@ internal class TermTest {
         var expected = Term.ZERO
         assertEquals(expected, -term)
 
-        term = Term(one, listOf(LogNum.ONE))
-        expected = Term(ExactFraction.NEG_ONE, listOf(LogNum.ONE))
+        term = Term(one, listOf(Log.ONE))
+        expected = Term(ExactFraction.NEG_ONE, listOf(Log.ONE))
         assertEquals(expected, -term)
 
         term = Term(ExactFraction.NEG_ONE, listOf(Pi()))
@@ -221,7 +221,7 @@ internal class TermTest {
         var term = Term.ZERO
         assertEquals(term, +term)
 
-        term = Term(one, listOf(LogNum.ONE))
+        term = Term(one, listOf(Log.ONE))
         assertEquals(term, +term)
 
         term = Term(one, listOf(Pi()))
@@ -247,7 +247,7 @@ internal class TermTest {
         term = Term.ONE
         assertFalse(term.isZero())
 
-        term = Term(one, listOf(LogNum.ONE))
+        term = Term(one, listOf(Log.ONE))
         assertFalse(term.isZero())
 
         term = Term(one, listOf(Pi()))
@@ -276,7 +276,7 @@ internal class TermTest {
     @Test
     fun testGetLogs() {
         // empty
-        var expected: List<LogNum> = listOf()
+        var expected: List<Log> = listOf()
 
         var term = Term(one, listOf())
         assertEquals(expected, term.getLogs())
@@ -375,8 +375,8 @@ internal class TermTest {
         assertEquals(expected, term.toString())
 
         // just logs
-        term = Term(one, listOf(LogNum.ONE))
-        expected = "<1x${LogNum.ONE}>"
+        term = Term(one, listOf(Log.ONE))
+        expected = "<1x${Log.ONE}>"
         assertEquals(expected, term.toString())
 
         term = Term(one, listOf(logNum2, logNum4, logNum1))

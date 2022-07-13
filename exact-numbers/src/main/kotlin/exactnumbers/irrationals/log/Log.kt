@@ -1,4 +1,4 @@
-package exactnumbers.irrationals.logs
+package exactnumbers.irrationals.log
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.pi.Pi
@@ -19,7 +19,7 @@ import kotlin.math.log
  * @param base [Int]: base to use when computing log
  * @throws [ArithmeticException] if number is not positive or if base is less than 1
  */
-class LogNum(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<LogNum>, NumType {
+class Log(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, NumType {
     override val type = TYPE
 
     init {
@@ -36,19 +36,19 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
     constructor(number: ExactFraction, isDivided: Boolean) : this(number, 10, isDivided)
 
     override fun equals(other: Any?): Boolean {
-        if (other == null || other !is LogNum) {
+        if (other == null || other !is Log) {
             return false
         }
 
         return getValue() == other.getValue()
     }
 
-    operator fun times(other: LogNum): Term = times(other as NumType)
+    operator fun times(other: Log): Term = times(other as NumType)
     operator fun times(other: Pi): Term = times(other as NumType)
-    operator fun div(other: LogNum): Term = div(other as NumType)
+    operator fun div(other: Log): Term = div(other as NumType)
     operator fun div(other: Pi): Term = div(other as NumType)
 
-    override operator fun compareTo(other: LogNum): Int = getValue().compareTo(other.getValue())
+    override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
     override fun isZero(): Boolean = number == ExactFraction.ONE
 
@@ -64,12 +64,12 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
         return divideBigDecimals(BigDecimal.ONE, logValue)
     }
 
-    override fun swapDivided(): LogNum {
+    override fun swapDivided(): Log {
         if (isZero()) {
             throwDivideByZero()
         }
 
-        return LogNum(number, base, !isDivided)
+        return Log(number, base, !isDivided)
     }
 
     /**
@@ -111,8 +111,8 @@ class LogNum(val number: ExactFraction, val base: Int, override val isDivided: B
     override fun hashCode(): Int = Pair(number, base).hashCode()
 
     companion object {
-        val ZERO = LogNum(ExactFraction.ONE)
-        val ONE = LogNum(ExactFraction.TEN)
+        val ZERO = Log(ExactFraction.ONE)
+        val ONE = Log(ExactFraction.TEN)
 
         const val TYPE = "log"
     }

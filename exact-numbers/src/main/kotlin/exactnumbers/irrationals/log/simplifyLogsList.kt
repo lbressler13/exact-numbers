@@ -1,20 +1,20 @@
-package exactnumbers.irrationals.logs
+package exactnumbers.irrationals.log
 
 import exactnumbers.irrationals.pi.Pi
 import shared.NumType
 import kotlin.math.abs
 
 // simplify product of logs
-internal fun simplifyLogsList(logs: List<NumType>): List<LogNum> {
-    logs as List<LogNum>
+internal fun simplifyLogsList(logs: List<NumType>): List<Log> {
+    logs as List<Log>
 
-    if (logs.any(LogNum::isZero)) {
-        return listOf(LogNum.ZERO)
+    if (logs.any(Log::isZero)) {
+        return listOf(Log.ZERO)
     }
 
     // need to simplify to same base --> at what point?
 
-    val newLogs = logs.filter { it != LogNum.ONE } // remove ones
+    val newLogs = logs.filter { it != Log.ONE } // remove ones
         .groupBy { Pair(it.number, it.base) } // remove inverses
         .flatMap { pair ->
             val currentLogs = pair.value
@@ -23,10 +23,10 @@ internal fun simplifyLogsList(logs: List<NumType>): List<LogNum> {
             val countNotDivided = currentLogs.size - countDivided
             when {
                 countDivided == countNotDivided -> listOf()
-                countDivided > countNotDivided -> List(countDivided - countNotDivided) { LogNum(pair.key.first, pair.key.second, true) }
-                else -> List(countNotDivided - countDivided) { LogNum(pair.key.first, pair.key.second, false) }
+                countDivided > countNotDivided -> List(countDivided - countNotDivided) { Log(pair.key.first, pair.key.second, true) }
+                else -> List(countNotDivided - countDivided) { Log(pair.key.first, pair.key.second, false) }
             }
-        }.ifEmpty { listOf(LogNum.ONE) }
+        }.ifEmpty { listOf(Log.ONE) }
 
     return newLogs.sorted()
 }
