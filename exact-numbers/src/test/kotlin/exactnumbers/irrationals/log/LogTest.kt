@@ -413,4 +413,6 @@ internal class LogTest {
         expected = "[1/log_3(4)]"
         assertEquals(expected, logNum.toString())
     }
+
+    @Test internal fun testSimplifyList() = runSimplifyListTests()
 }

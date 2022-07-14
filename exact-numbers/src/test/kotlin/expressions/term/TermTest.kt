@@ -1,9 +1,9 @@
 package expressions.term
 
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
-import shared.NumType
 import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,7 +22,7 @@ internal class TermTest {
     internal fun testConstructor() {
         // zero
         var expectedCoeff = ExactFraction.ZERO
-        var expectedNumbers: List<NumType> = listOf()
+        var expectedNumbers: List<Irrational> = listOf()
 
         var term = Term(ExactFraction.ZERO, listOf())
         assertEquals(expectedCoeff, term.coefficient)
@@ -63,7 +63,7 @@ internal class TermTest {
     internal fun testFromValues() {
         // zero
         var expectedCoeff = ExactFraction.ZERO
-        var expectedNumbers: List<NumType> = listOf()
+        var expectedNumbers: List<Irrational> = listOf()
 
         var term = Term.fromValues(ExactFraction.ZERO, listOf(), 0)
         assertEquals(expectedCoeff, term.coefficient)
@@ -265,11 +265,11 @@ internal class TermTest {
     }
 
     @Test
-    fun testGetSimplified() {
+    internal fun testGetSimplified() {
         // simplified
         var term = Term(ExactFraction.EIGHT, listOf(Pi(), Pi(true)))
         var expectedCoeff = ExactFraction.EIGHT
-        var expectedNumbers: List<NumType> = listOf()
+        var expectedNumbers: List<Irrational> = listOf()
         var result = term.getSimplified()
         assertEquals(expectedCoeff, result.coefficient)
         assertEquals(expectedNumbers, result.numbers)
@@ -333,7 +333,7 @@ internal class TermTest {
     }
 
     @Test
-    fun testGetValue() {
+    internal fun testGetValue() {
         // just number
         var term = Term.ZERO
         var expected = BigDecimal.ZERO
@@ -388,7 +388,7 @@ internal class TermTest {
     }
 
     @Test
-    fun testGetLogs() {
+    internal fun testGetLogs() {
         // empty
         var expected: List<Log> = listOf()
 
@@ -426,7 +426,7 @@ internal class TermTest {
     }
 
     @Test
-    fun testGetPiCount() {
+    internal fun testGetPiCount() {
         // zero
         var expected = 0
 
@@ -473,7 +473,7 @@ internal class TermTest {
     }
 
     @Test
-    fun testToString() {
+    internal fun testToString() {
         // zero
         var term = Term.ZERO
         var expected = "<0>"

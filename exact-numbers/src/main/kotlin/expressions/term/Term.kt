@@ -1,20 +1,18 @@
 package expressions.term
 
+import common.divideBigDecimals
+import common.throwDivideByZero
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
-import exactnumbers.irrationals.log.simplifyLogsList
 import exactnumbers.irrationals.pi.Pi
-import exactnumbers.irrationals.pi.simplifyPisList
-import shared.NumType
-import shared.divideBigDecimals
-import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
 
-class Term internal constructor(coefficient: ExactFraction, numbers: List<NumType>) {
+class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrational>) {
     val coefficient: ExactFraction
-    internal val numbers: List<NumType>
+    internal val numbers: List<Irrational>
 
     init {
         if (coefficient.isZero() || numbers.any { it.isZero() }) {
@@ -62,8 +60,8 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<NumTyp
 
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
-        val logs = simplifyLogsList(groups[Log.TYPE] ?: listOf())
-        val pis = simplifyPisList(groups[Pi.TYPE] ?: listOf())
+        val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())
+        val pis = Pi.simplifyList(groups[Pi.TYPE] ?: listOf())
 
         return Term(coefficient, logs + pis)
     }

@@ -1,4 +1,4 @@
-package shared
+package exactnumbers.irrationals.common
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
@@ -8,12 +8,12 @@ import expressions.term.Term
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class NumTypeTest {
+internal class IrrationalOperatorsTest {
     @Test
     internal fun testTimes() {
         // Log
-        var num1: NumType = Log.ZERO
-        var num2: NumType = Log.ZERO
+        var num1: Irrational = Log.ZERO
+        var num2: Irrational = Log.ZERO
         var expected = Term(ExactFraction.ONE, listOf(Log.ZERO, Log.ZERO))
         assertEquals(expected, num1 * num2)
 
@@ -67,8 +67,8 @@ internal class NumTypeTest {
         assertDivByZero { Log.ONE / Log.ZERO }
 
         // Log
-        var num1: NumType = Log(ExactFraction.EIGHT)
-        var num2: NumType = Log(ExactFraction(15, 4), 7)
+        var num1: Irrational = Log(ExactFraction.EIGHT)
+        var num2: Irrational = Log(ExactFraction(15, 4), 7)
         var expected = Term(ExactFraction.ONE, listOf(Log(ExactFraction.EIGHT), Log(ExactFraction(15, 4), 7, true)))
         assertEquals(expected, num1 / num2)
 

@@ -1,13 +1,13 @@
 package exactnumbers.irrationals.log
 
+import common.divideBigDecimals
+import common.throwDivideByZero
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Irrational
+import exactnumbers.irrationals.common.div
+import exactnumbers.irrationals.common.times
 import exactnumbers.irrationals.pi.Pi
 import expressions.term.Term
-import shared.NumType
-import shared.div
-import shared.divideBigDecimals
-import shared.throwDivideByZero
-import shared.times
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.log
@@ -19,7 +19,7 @@ import kotlin.math.log
  * @param base [Int]: base to use when computing log
  * @throws [ArithmeticException] if number is not positive or if base is less than 1
  */
-class Log(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, NumType {
+class Log(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, Irrational {
     override val type = TYPE
 
     init {
@@ -43,10 +43,10 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
         return getValue() == other.getValue()
     }
 
-    operator fun times(other: Log): Term = times(other as NumType)
-    operator fun times(other: Pi): Term = times(other as NumType)
-    operator fun div(other: Log): Term = div(other as NumType)
-    operator fun div(other: Pi): Term = div(other as NumType)
+    operator fun times(other: Log): Term = times(other as Irrational)
+    operator fun times(other: Pi): Term = times(other as Irrational)
+    operator fun div(other: Log): Term = div(other as Irrational)
+    operator fun div(other: Pi): Term = div(other as Irrational)
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
@@ -111,9 +111,39 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
     override fun hashCode(): Int = Pair(number, base).hashCode()
 
     companion object {
+        const val TYPE = "log"
+
         val ZERO = Log(ExactFraction.ONE)
         val ONE = Log(ExactFraction.TEN)
 
-        const val TYPE = "log"
+        internal fun simplifyList(numbers: List<Irrational>?): List<Log> {
+            if (numbers.isNullOrEmpty()) {
+                return listOf()
+            }
+
+            numbers as List<Log>
+
+            if (numbers.any(Log::isZero)) {
+                return listOf(Log.ZERO)
+            }
+
+            // need to simplify to same base --> at what point?
+
+            val newLogs = numbers.filter { it != ONE } // remove ones
+                .groupBy { Pair(it.number, it.base) } // remove inverses
+                .flatMap { pair ->
+                    val currentLogs = pair.value
+
+                    val countDivided = currentLogs.count { it.isDivided }
+                    val countNotDivided = currentLogs.size - countDivided
+                    when {
+                        countDivided == countNotDivided -> listOf()
+                        countDivided > countNotDivided -> List(countDivided - countNotDivided) { Log(pair.key.first, pair.key.second, true) }
+                        else -> List(countNotDivided - countDivided) { Log(pair.key.first, pair.key.second, false) }
+                    }
+                }
+
+            return newLogs.sorted()
+        }
     }
 }

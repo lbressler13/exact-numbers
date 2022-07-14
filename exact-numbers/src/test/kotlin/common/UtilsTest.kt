@@ -1,4 +1,4 @@
-package shared
+package common
 
 import assertDivByZero
 import java.math.BigDecimal

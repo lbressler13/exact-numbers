@@ -1,11 +1,11 @@
 package exactnumbers.exactfraction
 
+import common.getGCD
+import common.throwDivideByZero
 import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
-import shared.getGCD
-import shared.throwDivideByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

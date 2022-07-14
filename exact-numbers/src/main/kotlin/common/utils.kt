@@ -1,4 +1,4 @@
-package shared
+package common
 
 import kotlinutils.biginteger.ext.isZero
 import kotlinutils.biginteger.max

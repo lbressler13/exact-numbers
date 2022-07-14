@@ -73,4 +73,6 @@ internal class PiTest {
         expected = "[1/π]"
         assertEquals(expected, piNum.toString())
     }
+
+    @Test internal fun testSimplifyList() = runSimplifyListTests()
 }
