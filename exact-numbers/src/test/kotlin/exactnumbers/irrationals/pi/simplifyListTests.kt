@@ -11,6 +11,8 @@ internal fun runSimplifyListTests() {
     // equal
     var expected: List<Pi> = listOf()
 
+    assertEquals(expected, Pi.simplifyList(null))
+
     var pis: List<Pi> = listOf()
     assertEquals(expected, Pi.simplifyList(pis))
 

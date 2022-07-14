@@ -13,6 +13,9 @@ internal fun runSimplifyListTests() {
 
     // empty
     var expected: List<Log> = listOf()
+
+    assertEquals(expected.sorted(), Log.simplifyList(null))
+
     var logs: List<Log> = listOf()
     assertEquals(expected.sorted(), Log.simplifyList(logs))
 

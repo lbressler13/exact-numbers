@@ -10,7 +10,7 @@ It stores the number as a pair of BigInteger's, representing the numerator and d
 Therefore, operations with ExactFraction's can be performed without losing precision due to rounding.
 
 ### Irrational
-Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational values related to the number.
+Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational numbers related to the irrational.
 This allows numbers to be multiplied, divided, and simplified before computing the final value, which allows for greater precision when getting the value.
 
 ### Term
@@ -31,10 +31,8 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
 │   │   │   │   ├── expressions        <-- source code for expressions package
-│   │   ├── test
-│   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers package
-│   │   │   │   ├── expressions   <-- unit tests for expressions package
+│   │   ├── test                  
+│   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations
 ├── README
 └── settings.gradle.kts
