@@ -10,8 +10,12 @@ It stores the number as a pair of BigInteger's, representing the numerator and d
 Therefore, operations with ExactFraction's can be performed without losing precision due to rounding.
 
 ### Irrational
-Though the exact value of an irrational number, such as a logarithm, can't be stored, irrational numbers are stored as a collection of information about the number.
-These values can be used in computation and operations, which reduces the amount of imprecision from casting to a floating point number.
+Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational numbers related to the irrational.
+This allows numbers to be multiplied, divided, and simplified before computing the final value, which allows for greater precision when getting the value.
+
+### Term
+A term is a way of representing the product of several numbers, which can include both rational and irrational numbers.
+Terms can be multiplied and divided, and the list of numbers is simplified as much as possible before calculating the final value.
 
 ## Project Structure
 ```project
@@ -21,14 +25,14 @@ These values can be used in computation and operations, which reduces the amount
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers       <-- source code for exact-numbers module
+│   │   │   │   ├── common             <-- code that is shared between packages
+│   │   │   │   ├── exactnumbers       <-- source code for exact-numbers package
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   │   ├── utils          <-- reusable functions
-│   │   ├── test
-│   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers module
+│   │   │   │   ├── expressions        <-- source code for expressions package
+│   │   ├── test                  
+│   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations
 ├── README
 └── settings.gradle.kts
@@ -58,7 +62,7 @@ Linting is done using [ktlint](https://ktlint.github.io/), using [this](https://
 See [here](https://github.com/pinterest/ktlint#standard-rules) for a list of standard rules.
 
 Linting can be run using an IDE, or with the following command:
-```./gradlew ktlintCheck```
+```./gradlew ktlintFormat```
 
 ## Importing the package
 In order to import the package, copy the most recent .jar file into your project, and add the file to the list of imports for the project.

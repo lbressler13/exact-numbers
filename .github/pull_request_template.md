@@ -6,5 +6,8 @@
 * [ ] Unit tests have been written for all new functionality
 * [ ] I have updated the version number (if needed)
 
+## Testing
+How was this tested?
+
 ## Additional Comments
 Add something fun or delete this section
