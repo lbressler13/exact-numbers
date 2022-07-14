@@ -33,6 +33,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
 
     override fun isZero(): Boolean = false
 
+    override fun isRational(): Boolean = false
+
     override fun swapDivided(): Pi = Pi(!isDivided)
 
     override fun equals(other: Any?): Boolean {

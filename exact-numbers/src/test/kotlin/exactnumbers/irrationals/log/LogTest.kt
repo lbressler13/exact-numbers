@@ -245,6 +245,35 @@ internal class LogTest {
     }
 
     @Test
+    internal fun testIsRational() {
+        // rational
+        var logNum = Log.ZERO
+        assertTrue(logNum.isRational())
+
+        logNum = Log.ONE
+        assertTrue(logNum.isRational())
+
+        logNum = Log(ExactFraction(2048), 2)
+        assertTrue(logNum.isRational())
+
+        logNum = Log(ExactFraction(2048), 2, true)
+        assertTrue(logNum.isRational())
+
+        logNum = Log(ExactFraction(1, 27), 3)
+        assertTrue(logNum.isRational())
+
+        // irrational
+        logNum = Log(ExactFraction(20))
+        assertFalse(logNum.isRational())
+
+        logNum = Log(ExactFraction(1, 10), 5)
+        assertFalse(logNum.isRational())
+
+        logNum = Log(ExactFraction(1000), 100, true)
+        assertFalse(logNum.isRational())
+    }
+
+    @Test
     internal fun testGetValue() {
         // base 10
         var logNum = Log(ExactFraction.ONE)

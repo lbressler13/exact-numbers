@@ -69,6 +69,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
      *
      * @return [Term] simplified version of this term
      */
+    // TODO refactor to extract rational values from lists
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
         val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())

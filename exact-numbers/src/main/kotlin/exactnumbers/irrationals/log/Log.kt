@@ -55,6 +55,13 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
 
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
+    override fun isRational(): Boolean {
+        val numLog = getLogOf(argument.numerator)
+        val denomLog = getLogOf(argument.denominator)
+
+        return numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
+    }
+
     /**
      * Get value of log, using the expression log_b(x/y) = log_b(x) - log_b(y).
      * This reduces loss of precision when casting to Double.

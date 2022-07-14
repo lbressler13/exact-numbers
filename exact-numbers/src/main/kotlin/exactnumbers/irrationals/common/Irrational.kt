@@ -10,6 +10,7 @@ internal interface Irrational {
 
     fun getValue(): BigDecimal
     fun isZero(): Boolean
+    fun isRational(): Boolean
 
     val isDivided: Boolean
     fun swapDivided(): Irrational

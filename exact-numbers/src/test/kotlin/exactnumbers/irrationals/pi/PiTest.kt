@@ -55,6 +55,15 @@ internal class PiTest {
     }
 
     @Test
+    internal fun testIsRational() {
+        var pi = Pi()
+        assertFalse(pi.isRational())
+
+        pi = Pi(true)
+        assertFalse(pi.isRational())
+    }
+
+    @Test
     internal fun testSwapDivided() {
         var pi = Pi()
         assertTrue(pi.swapDivided().isDivided)
