@@ -3,13 +3,13 @@ package exactnumbers.irrationals.log
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 
 private val one = Log.ONE
 
 internal fun runSimplifyListTests() {
     // error
-    assertFails { Log.simplifyList(listOf(Pi(), Log.ONE)) }
+    assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
 
     // empty
     var expected: List<Log> = listOf()

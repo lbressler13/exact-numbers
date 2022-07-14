@@ -39,6 +39,13 @@ internal fun getGCD(val1: BigInteger, val2: BigInteger): BigInteger {
     return value
 }
 
+/**
+ * Perform division of two BigDecimals, rounding to 20 digits if the result is irrational
+ *
+ * @param bigDec1 [BigDecimal]: number on left side of division
+ * @param bigDec2 [BigDecimal]: number on right side of division
+ * @return [BigDecimal]: bigDec1 / bigDec2
+ */
 internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
     return try {
         bigDec1.divide(bigDec2)
@@ -48,6 +55,10 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
     }
 }
 
+/**
+ * Reusable code for manually throwing a divide by zero error
+ * @throws [ArithmeticException]: divide by zero error
+ */
 internal fun throwDivideByZero() {
     throw ArithmeticException("divide by zero")
 }

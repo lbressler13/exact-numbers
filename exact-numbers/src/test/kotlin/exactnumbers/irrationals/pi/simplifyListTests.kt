@@ -2,11 +2,11 @@ package exactnumbers.irrationals.pi
 
 import exactnumbers.irrationals.log.Log
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 
 internal fun runSimplifyListTests() {
     // error
-    assertFails { Pi.simplifyList(listOf(Pi(), Log.ONE)) }
+    assertFailsWith<ClassCastException> { Pi.simplifyList(listOf(Pi(), Log.ONE)) }
 
     // equal
     var expected: List<Pi> = listOf()

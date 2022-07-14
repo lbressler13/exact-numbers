@@ -49,7 +49,7 @@ internal class LogTest {
         var logNum = Log(ExactFraction.ONE)
         var expectedNumber = ExactFraction.ONE
         var expectedBase = 10
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
@@ -57,7 +57,7 @@ internal class LogTest {
         logNum = Log(ExactFraction(13, 100), 100, true)
         expectedNumber = ExactFraction(13, 100)
         expectedBase = 100
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertTrue(logNum.isDivided)
 
@@ -65,14 +65,14 @@ internal class LogTest {
         logNum = Log(ExactFraction.TWO)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
         logNum = Log(ExactFraction(107, 3))
         expectedNumber = ExactFraction(107, 3)
         expectedBase = 10
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
@@ -80,14 +80,14 @@ internal class LogTest {
         logNum = Log(ExactFraction.TWO, 2)
         expectedNumber = ExactFraction.TWO
         expectedBase = 2
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
         logNum = Log(ExactFraction(107, 3), 5)
         expectedNumber = ExactFraction(107, 3)
         expectedBase = 5
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
@@ -95,14 +95,14 @@ internal class LogTest {
         logNum = Log(ExactFraction.TWO, false)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertFalse(logNum.isDivided)
 
         logNum = Log(ExactFraction.TWO, true)
         expectedNumber = ExactFraction.TWO
         expectedBase = 10
-        assertEquals(expectedNumber, logNum.number)
+        assertEquals(expectedNumber, logNum.argument)
         assertEquals(expectedBase, logNum.base)
         assertTrue(logNum.isDivided)
     }

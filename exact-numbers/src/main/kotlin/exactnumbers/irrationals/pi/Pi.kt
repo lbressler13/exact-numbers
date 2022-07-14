@@ -11,11 +11,14 @@ import kotlin.math.PI
 import kotlin.math.abs
 
 /**
- * Representation of pi, with a rational coefficient
+ * Representation of pi
+ *
+ * @param isDivided [Boolean]: if the inverse of the value should be calculated
  */
 class Pi(override val isDivided: Boolean) : Irrational {
     override val type: String = TYPE
 
+    // constructor with reduced params
     constructor() : this(false)
 
     override fun getValue(): BigDecimal {
@@ -38,6 +41,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
             isDivided == other.isDivided
     }
 
+    // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = times(other as Irrational)
     operator fun times(other: Pi): Term = times(other as Irrational)
     operator fun div(other: Log): Term = div(other as Irrational)
@@ -58,6 +62,13 @@ class Pi(override val isDivided: Boolean) : Irrational {
     companion object {
         const val TYPE = "pi"
 
+        /**
+         * Simplify list of pis
+         *
+         * @param numbers [List<Irrational>] : list to simplify, expected to consist of only Pis
+         * @return [List<Pi>]: simplified list
+         * @throws [ClassCastException] if any of the numbers are not a Pi
+         */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {
                 return listOf()

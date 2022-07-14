@@ -10,6 +10,12 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
 
+/**
+ * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
+ *
+ * @param coefficient [ExactFraction]
+ * @param numbers [List<Irrational>]
+ */
 class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrational>) {
     val coefficient: ExactFraction
     internal val numbers: List<Irrational>
@@ -58,6 +64,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
 
     fun isZero(): Boolean = coefficient.isZero() || numbers.any { it.isZero() }
 
+    /**
+     * Simplify all numbers, based on the simplify function for their type
+     *
+     * @return [Term] simplified version of this term
+     */
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
         val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())
@@ -66,6 +77,12 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         return Term(coefficient, logs + pis)
     }
 
+    /**
+     * Get value of term by multiplying numbers.
+     * Term is simplified before any computation is run
+     *
+     * @return [BigDecimal]
+     */
     fun getValue(): BigDecimal {
         val simplified = getSimplified()
 
@@ -75,7 +92,14 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         return divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
     }
 
+    /**
+     * Get all logs from numbers
+     */
     fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE }.map { it } as List<Log>
+
+    /**
+     * Get number of Pi in numbers. Divided Pi is counted as -1
+     */
     fun getPiCount(): Int {
         val pis = numbers.filter { it.type == Pi.TYPE }
         val positive = pis.count { !it.isDivided }
@@ -105,6 +129,15 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val ZERO = Term(ExactFraction.ZERO, listOf())
         val ONE = Term(ExactFraction.ONE, listOf())
 
+        /**
+         * Public method of constructing a Term, by providing information about irrationals
+         *
+         * @param coefficient [ExactFraction]
+         * @param logs [List<Log>]: list of log numbers
+         * @param piCount [Int]: how many occurrence of Pi to include in the list of numbers.
+         * A negative number corresponds to divided Pi values
+         * @return [Term] with the given values
+         */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, piCount: Int): Term {
             val piDivided = piCount < 0
             val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }

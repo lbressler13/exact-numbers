@@ -15,25 +15,27 @@ import kotlin.math.log
 /**
  * Representation of a log, with an integer base and rational argument
  *
- * @param number [ExactFraction]: value to compute log of
+ * @param argument [ExactFraction]: value to compute log of
  * @param base [Int]: base to use when computing log
- * @throws [ArithmeticException] if number is not positive or if base is less than 1
+ * @param isDivided [Boolean]: if the inverse of the value should be calculated
+ * @throws [ArithmeticException] if number is not positive, base is less than 1, or value is 0 when isDivided is true
  */
-class Log(val number: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, Irrational {
+class Log(val argument: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, Irrational {
     override val type = TYPE
 
     init {
         when {
-            number == ExactFraction.ONE && isDivided -> throwDivideByZero()
-            number.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
-            number.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
+            argument == ExactFraction.ONE && isDivided -> throwDivideByZero()
+            argument.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
+            argument.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
             base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
         }
     }
 
-    constructor(number: ExactFraction) : this(number, base = 10, isDivided = false)
-    constructor(number: ExactFraction, base: Int) : this(number, base, isDivided = false)
-    constructor(number: ExactFraction, isDivided: Boolean) : this(number, 10, isDivided)
+    // constructors with reduced params
+    constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false)
+    constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false)
+    constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Log) {
@@ -43,6 +45,7 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
         return getValue() == other.getValue()
     }
 
+    // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = times(other as Irrational)
     operator fun times(other: Pi): Term = times(other as Irrational)
     operator fun div(other: Log): Term = div(other as Irrational)
@@ -50,12 +53,16 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
-    override fun isZero(): Boolean = number == ExactFraction.ONE
+    override fun isZero(): Boolean = argument == ExactFraction.ONE
 
-    // log_b(x/y) = log_b(x) - log_b(y)
-    // get numerator and denominator separately to reduce loss of precision when casting to double
+    /**
+     * Get value of log, using the expression log_b(x/y) = log_b(x) - log_b(y).
+     * This reduces loss of precision when casting to Double.
+     *
+     * @return [BigDecimal]
+     */
     override fun getValue(): BigDecimal {
-        val logValue = getLogOf(number.numerator) - getLogOf(number.denominator)
+        val logValue = getLogOf(argument.numerator) - getLogOf(argument.denominator)
 
         if (!isDivided) {
             return logValue
@@ -69,7 +76,7 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
             throwDivideByZero()
         }
 
-        return Log(number, base, !isDivided)
+        return Log(argument, base, !isDivided)
     }
 
     /**
@@ -82,7 +89,7 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
     internal fun getLogOf(num: BigInteger): BigDecimal {
         val logNum = log(num.toDouble(), base.toDouble())
         if (logNum.isNaN()) {
-            throw ArithmeticException("Error calculating log of $number")
+            throw ArithmeticException("Error calculating log of $argument")
         }
 
         // account for imprecision with doubles
@@ -95,10 +102,10 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
     }
 
     override fun toString(): String {
-        val numString = if (number.denominator == BigInteger.ONE) {
-            number.numerator.toString()
+        val numString = if (argument.denominator == BigInteger.ONE) {
+            argument.numerator.toString()
         } else {
-            "${number.numerator}/${number.denominator}"
+            "${argument.numerator}/${argument.denominator}"
         }
 
         if (isDivided) {
@@ -108,7 +115,7 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
         return "[log_$base($numString)]"
     }
 
-    override fun hashCode(): Int = Pair(number, base).hashCode()
+    override fun hashCode(): Int = Pair(argument, base).hashCode()
 
     companion object {
         const val TYPE = "log"
@@ -116,6 +123,14 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
         val ZERO = Log(ExactFraction.ONE)
         val ONE = Log(ExactFraction.TEN)
 
+        /**
+         * Simplify list of logs
+         *
+         * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Logs
+         * @return [List<Log>]: simplified list
+         * @throws [ClassCastException] if any of the numbers are not a Log
+         */
+        // TODO improve simplification by looking at bases
         internal fun simplifyList(numbers: List<Irrational>?): List<Log> {
             if (numbers.isNullOrEmpty()) {
                 return listOf()
@@ -124,13 +139,11 @@ class Log(val number: ExactFraction, val base: Int, override val isDivided: Bool
             numbers as List<Log>
 
             if (numbers.any(Log::isZero)) {
-                return listOf(Log.ZERO)
+                return listOf(ZERO)
             }
 
-            // need to simplify to same base --> at what point?
-
             val newLogs = numbers.filter { it != ONE } // remove ones
-                .groupBy { Pair(it.number, it.base) } // remove inverses
+                .groupBy { Pair(it.argument, it.base) } // remove inverses
                 .flatMap { pair ->
                     val currentLogs = pair.value
 

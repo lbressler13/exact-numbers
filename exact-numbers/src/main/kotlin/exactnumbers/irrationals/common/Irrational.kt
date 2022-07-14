@@ -2,6 +2,9 @@ package exactnumbers.irrationals.common
 
 import java.math.BigDecimal
 
+/**
+ * Values needed for representation of an irrational number
+ */
 internal interface Irrational {
     val type: String
 

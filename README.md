@@ -10,11 +10,12 @@ It stores the number as a pair of BigInteger's, representing the numerator and d
 Therefore, operations with ExactFraction's can be performed without losing precision due to rounding.
 
 ### Irrational
-Though the exact value of an irrational number, such as a logarithm, can't be stored, irrational numbers are stored as a collection of information about the number.
-These values can be used in computation and operations, which reduces the amount of imprecision from casting to a floating point number.
+Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational values related to the number.
+This allows numbers to be multiplied, divided, and simplified before computing the final value, which allows for greater precision when getting the value.
 
-### Expressions
-Expressions are a way of representing a combination of several numbers as a single value.
+### Term
+A term is a way of representing the product of several numbers, which can include both rational and irrational numbers.
+Terms can be multiplied and divided, and the list of numbers is simplified as much as possible before calculating the final value.
 
 ## Project Structure
 ```project
@@ -24,14 +25,16 @@ Expressions are a way of representing a combination of several numbers as a sing
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers       <-- source code for exact-numbers module
+│   │   │   │   ├── common             <-- code that is shared between packages
+│   │   │   │   ├── exactnumbers       <-- source code for exact-numbers package
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   │   ├── common          <-- reusable functions
+│   │   │   │   ├── expressions        <-- source code for expressions package
 │   │   ├── test
 │   │   │   ├── kotlin
-│   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers module
+│   │   │   │   ├── exactnumbers  <-- unit tests for exact-numbers package
+│   │   │   │   ├── expressions   <-- unit tests for expressions package
 │   ├── build.gradle.kts          <-- build configurations
 ├── README
 └── settings.gradle.kts
@@ -45,7 +48,7 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-common](https://github.com/lbressler13/kotlin-utils) package.
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
 This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
 The package version can be updated in the module-level build.gradle.
 
