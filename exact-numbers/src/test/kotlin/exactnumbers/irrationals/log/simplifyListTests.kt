@@ -2,7 +2,6 @@ package exactnumbers.irrationals.log
 
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.pi.Pi
-import kotlin.math.exp
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -81,7 +80,8 @@ internal fun runSimplifyListTests() {
         Log(ExactFraction.FOUR, 3)
     )
     expected = Pair(
-        fractionOne, listOf(
+        fractionOne,
+        listOf(
             Log(ExactFraction(7, 3), 10, true),
             Log(ExactFraction(5, 51)),
             Log(ExactFraction(5, 51), 5, true)
