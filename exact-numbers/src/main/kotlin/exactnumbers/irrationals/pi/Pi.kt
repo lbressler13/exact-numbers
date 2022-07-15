@@ -74,11 +74,11 @@ class Pi(override val isDivided: Boolean) : Irrational {
          * @return [List<Pi>]: simplified list
          * @throws [ClassCastException] if any of the numbers are not a Pi
          */
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Pi>> {
+        internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             val one = ExactFraction.ONE
 
             if (numbers.isNullOrEmpty()) {
-                return Pair(one, listOf())
+                return listOf()
             }
 
             numbers as List<Pi>
@@ -88,15 +88,9 @@ class Pi(override val isDivided: Boolean) : Irrational {
             val diff = abs(positive - negative)
 
             return when {
-                positive == negative -> Pair(one, listOf())
-                positive < negative -> {
-                    val newList = List(diff) { Pi(isDivided = true) }
-                    Pair(one, newList)
-                }
-                else -> {
-                    val newList = List(diff) { Pi(isDivided = false) }
-                    Pair(one, newList)
-                }
+                positive == negative -> listOf()
+                positive < negative -> List(diff) { Pi(isDivided = true) }
+                else -> List(diff) { Pi(isDivided = false) }
             }
         }
     }
