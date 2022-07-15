@@ -18,8 +18,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Linting
-        # run: $GITHUB_WORKSPACE/gradlew ktlintCheck
         run: gradle ktlintCheck
 
       - name: Tests
-        run: $GITHUB_WORKSPACE/gradlew test
+        run: gradle test
