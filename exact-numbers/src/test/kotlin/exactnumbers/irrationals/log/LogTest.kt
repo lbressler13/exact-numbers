@@ -4,12 +4,7 @@ import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 internal class LogTest {
     @Test
@@ -262,6 +257,9 @@ internal class LogTest {
         logNum = Log(ExactFraction(1, 27), 3)
         assertTrue(logNum.isRational())
 
+        logNum = Log(ExactFraction(1, 1000), true)
+        assertTrue(logNum.isRational())
+
         // irrational
         logNum = Log(ExactFraction(20))
         assertFalse(logNum.isRational())
@@ -271,6 +269,46 @@ internal class LogTest {
 
         logNum = Log(ExactFraction(1000), 100, true)
         assertFalse(logNum.isRational())
+
+        logNum = Log(ExactFraction(8, 1000), 2)
+        assertFalse(logNum.isRational())
+    }
+
+    @Test
+    internal fun testGetRationalValue() {
+        // irrational
+        var logNum = Log(ExactFraction.SIX)
+        assertNull(logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(1000), 5)
+        assertNull(logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(5, 12), 5)
+        assertNull(logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(5, 12), 5, true)
+        assertNull(logNum.getRationalValue())
+
+        // rational
+        logNum = Log.ZERO
+        var expected = ExactFraction.ZERO
+        assertEquals(expected, logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(32), 2)
+        expected = ExactFraction.FIVE
+        assertEquals(expected, logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(1, 27), 3)
+        expected = -ExactFraction.THREE
+        assertEquals(expected, logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(1, 1000))
+        expected = -ExactFraction.THREE
+        assertEquals(expected, logNum.getRationalValue())
+
+        logNum = Log(ExactFraction(1, 1000), true)
+        expected = ExactFraction(-1, 3)
+        assertEquals(expected, logNum.getRationalValue())
     }
 
     @Test

@@ -22,7 +22,7 @@ internal class TermTest {
     @Test internal fun testTimes() = runTimesTests()
     @Test internal fun testDiv() = runDivTests()
 
-    @Test internal fun testGetSimplified() = runGetSimplifiedTests()
+    @Test internal fun testGetSimplified() = runGetSimplifiedTests() // TODO add values that modify coefficient
     @Test internal fun testGetValue() = runGetValueTests()
 
     @Test

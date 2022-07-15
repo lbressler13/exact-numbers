@@ -2,10 +2,11 @@ package exactnumbers.irrationals.pi
 
 import java.math.BigDecimal
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNull
 
 internal class PiTest {
     @Test
@@ -61,6 +62,15 @@ internal class PiTest {
 
         pi = Pi(true)
         assertFalse(pi.isRational())
+    }
+
+    @Test
+    internal fun testGetRationalValue() {
+        var pi = Pi()
+        assertNull(pi.getRationalValue())
+
+        pi = Pi(true)
+        assertNull(pi.getRationalValue())
     }
 
     @Test

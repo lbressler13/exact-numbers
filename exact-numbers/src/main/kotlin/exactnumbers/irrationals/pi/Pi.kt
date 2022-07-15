@@ -1,6 +1,7 @@
 package exactnumbers.irrationals.pi
 
 import common.divideBigDecimals
+import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.common.div
 import exactnumbers.irrationals.common.times
@@ -34,6 +35,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
     override fun isZero(): Boolean = false
 
     override fun isRational(): Boolean = false
+
+    override fun getRationalValue(): ExactFraction? = null
 
     override fun swapDivided(): Pi = Pi(!isDivided)
 
@@ -71,9 +74,11 @@ class Pi(override val isDivided: Boolean) : Irrational {
          * @return [List<Pi>]: simplified list
          * @throws [ClassCastException] if any of the numbers are not a Pi
          */
-        internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
+        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Pi>> {
+            val one = ExactFraction.ONE
+
             if (numbers.isNullOrEmpty()) {
-                return listOf()
+                return Pair(one, listOf())
             }
 
             numbers as List<Pi>
@@ -83,9 +88,15 @@ class Pi(override val isDivided: Boolean) : Irrational {
             val diff = abs(positive - negative)
 
             return when {
-                positive == negative -> listOf()
-                positive < negative -> List(diff) { Pi(isDivided = true) }
-                else -> List(diff) { Pi(isDivided = false) }
+                positive == negative -> Pair(one, listOf())
+                positive < negative -> {
+                    val newList = List(diff) { Pi(isDivided = true) }
+                    Pair(one, newList)
+                }
+                else -> {
+                    val newList = List(diff) { Pi(isDivided = false) }
+                    Pair(one, newList)
+                }
             }
         }
     }

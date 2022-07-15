@@ -41,9 +41,42 @@ internal fun runGetSimplifiedTests() {
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)
 
-    term = Term(ExactFraction(18, 5), listOf(Pi(true), logNum2, Pi(true), logNum2, logNum1, logNum2.swapDivided(), Pi(true), Pi()))
+    term = Term(
+        ExactFraction(18, 5),
+        listOf(Pi(true), logNum2, Pi(true), logNum2, logNum1, logNum2.swapDivided(), Pi(true), Pi())
+    )
     expectedCoeff = ExactFraction(18, 5)
     expectedNumbers = listOf(logNum1, logNum2, Pi(true), Pi(true))
+    result = term.getSimplified()
+    assertEquals(expectedCoeff, result.coefficient)
+    assertEquals(expectedNumbers, result.numbers)
+
+    term = Term(ExactFraction.FOUR, listOf(Log(ExactFraction(100))))
+    expectedCoeff = ExactFraction.EIGHT
+    expectedNumbers = listOf()
+    result = term.getSimplified()
+    assertEquals(expectedCoeff, result.coefficient)
+    assertEquals(expectedNumbers, result.numbers)
+
+    term = Term(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3, true)))
+    expectedCoeff = ExactFraction(-20, 3)
+    expectedNumbers = listOf()
+    result = term.getSimplified()
+    assertEquals(expectedCoeff, result.coefficient)
+    assertEquals(expectedNumbers, result.numbers)
+
+    term = Term(
+        ExactFraction(3, 5),
+        listOf(
+            Log(ExactFraction.FOUR),
+            Log(ExactFraction(625), 5),
+            Pi(),
+            Log(ExactFraction(1000), 12),
+            Log(ExactFraction(1, 16), 4, true)
+        )
+    )
+    expectedCoeff = ExactFraction(-6, 5)
+    expectedNumbers = listOf(Log(ExactFraction.FOUR), Log(ExactFraction(1000), 12), Pi())
     result = term.getSimplified()
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)
