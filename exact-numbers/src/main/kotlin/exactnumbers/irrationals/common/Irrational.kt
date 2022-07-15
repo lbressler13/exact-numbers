@@ -1,5 +1,6 @@
 package exactnumbers.irrationals.common
 
+import exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
 
 /**
@@ -10,6 +11,8 @@ internal interface Irrational {
 
     fun getValue(): BigDecimal
     fun isZero(): Boolean
+    fun isRational(): Boolean
+    fun getRationalValue(): ExactFraction?
 
     val isDivided: Boolean
     fun swapDivided(): Irrational

@@ -8,9 +8,13 @@ import exactnumbers.irrationals.common.div
 import exactnumbers.irrationals.common.times
 import exactnumbers.irrationals.pi.Pi
 import expressions.term.Term
+import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.log
+import kotlin.math.roundToInt
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -56,6 +60,50 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
     /**
+     * Determine if the value of the log is a rational number.
+     *
+     * @return [Boolean]: true if the value is rational, false otherwise
+     */
+    override fun isRational(): Boolean {
+        val numLog = getLogOf(argument.numerator)
+        val denomLog = getLogOf(argument.denominator)
+
+        // rational if both values are whole numbers
+        return numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
+    }
+
+    /**
+     * Get the value of the log as a rational value if rational
+     *
+     * @return [ExactFraction?]: value of the log, or null if the value is irrational
+     */
+    override fun getRationalValue(): ExactFraction? {
+        if (!isRational()) {
+            return null
+        }
+
+        if (isZero()) {
+            return ExactFraction.ZERO
+        }
+
+        val numLog = getLogOf(argument.numerator).toBigInteger()
+        val denomLog = getLogOf(argument.denominator).toBigInteger()
+
+        val result = when {
+            numLog.isZero() -> ExactFraction(denomLog) // numerator of argument is 1, negative sign is added later
+            denomLog.isZero() -> ExactFraction(numLog) // denominator of argument is 1
+            else -> ExactFraction(numLog, denomLog)
+        }
+
+        return when {
+            isDivided && argument < base -> -result.inverse()
+            isDivided -> result.inverse()
+            argument < base -> -result
+            else -> result
+        }
+    }
+
+    /**
      * Get value of log, using the expression log_b(x/y) = log_b(x) - log_b(y).
      * This reduces loss of precision when casting to Double.
      *
@@ -93,12 +141,14 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         }
 
         // account for imprecision with doubles
-        val intNum = logNum.toInt()
-        if (base.toBigInteger().pow(intNum) == num) {
-            return intNum.toBigDecimal()
-        }
+        val upInt = ceil(logNum).roundToInt()
+        val downInt = floor(logNum).roundToInt()
 
-        return logNum.toBigDecimal()
+        return when (num) {
+            base.toBigInteger().pow(upInt) -> upInt.toBigDecimal()
+            base.toBigInteger().pow(downInt) -> downInt.toBigDecimal()
+            else -> logNum.toBigDecimal()
+        }
     }
 
     override fun toString(): String {
@@ -124,39 +174,49 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         val ONE = Log(ExactFraction.TEN)
 
         /**
-         * Simplify list of logs
+         * Extract rational values and simplify remaining list of irrationals
          *
          * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Logs
-         * @return [List<Log>]: simplified list
+         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of irrational values
          * @throws [ClassCastException] if any of the numbers are not a Log
          */
         // TODO improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<Irrational>?): List<Log> {
+        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
-                return listOf()
+                return Pair(ExactFraction.ONE, listOf())
             }
 
             numbers as List<Log>
 
             if (numbers.any(Log::isZero)) {
-                return listOf(ZERO)
+                return Pair(ExactFraction.ZERO, listOf())
             }
 
-            val newLogs = numbers.filter { it != ONE } // remove ones
-                .groupBy { Pair(it.argument, it.base) } // remove inverses
-                .flatMap { pair ->
+            val groupedLogs = numbers.groupBy { it.isRational() }
+
+            // multiply rational numbers
+            val rational: ExactFraction = groupedLogs[true]?.fold(ExactFraction.ONE) { acc, log ->
+                acc * (log.getRationalValue() ?: ExactFraction.ONE)
+            } ?: ExactFraction.ONE
+
+            // simplify remaining irrational numbers
+            val newLogs = groupedLogs[false]?.filter { it != ONE } // remove ones
+                ?.groupBy { Pair(it.argument, it.base) } // remove inverses
+                ?.flatMap { pair ->
                     val currentLogs = pair.value
 
                     val countDivided = currentLogs.count { it.isDivided }
                     val countNotDivided = currentLogs.size - countDivided
                     when {
                         countDivided == countNotDivided -> listOf()
-                        countDivided > countNotDivided -> List(countDivided - countNotDivided) { Log(pair.key.first, pair.key.second, true) }
+                        countDivided > countNotDivided -> List(countDivided - countNotDivided) {
+                            Log(pair.key.first, pair.key.second, true)
+                        }
                         else -> List(countNotDivided - countDivided) { Log(pair.key.first, pair.key.second, false) }
                     }
-                }
+                } ?: listOf()
 
-            return newLogs.sorted()
+            return Pair(rational, newLogs.sorted())
         }
     }
 }

@@ -1,6 +1,7 @@
 package exactnumbers.irrationals.pi
 
 import common.divideBigDecimals
+import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.common.div
 import exactnumbers.irrationals.common.times
@@ -32,6 +33,10 @@ class Pi(override val isDivided: Boolean) : Irrational {
     }
 
     override fun isZero(): Boolean = false
+
+    override fun isRational(): Boolean = false
+
+    override fun getRationalValue(): ExactFraction? = null
 
     override fun swapDivided(): Pi = Pi(!isDivided)
 
@@ -70,6 +75,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
          * @throws [ClassCastException] if any of the numbers are not a Pi
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
+            val one = ExactFraction.ONE
+
             if (numbers.isNullOrEmpty()) {
                 return listOf()
             }

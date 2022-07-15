@@ -73,8 +73,10 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val groups = numbers.groupBy { it.type }
         val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())
         val pis = Pi.simplifyList(groups[Pi.TYPE] ?: listOf())
+        val newCoefficient = coefficient * logs.first
+        val newNumbers = logs.second + pis
 
-        return Term(coefficient, logs + pis)
+        return Term(newCoefficient, newNumbers)
     }
 
     /**

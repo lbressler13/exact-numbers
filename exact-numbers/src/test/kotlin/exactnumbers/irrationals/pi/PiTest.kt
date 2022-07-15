@@ -5,6 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class PiTest {
@@ -52,6 +53,24 @@ internal class PiTest {
 
         pi = Pi(true)
         assertFalse(pi.isZero())
+    }
+
+    @Test
+    internal fun testIsRational() {
+        var pi = Pi()
+        assertFalse(pi.isRational())
+
+        pi = Pi(true)
+        assertFalse(pi.isRational())
+    }
+
+    @Test
+    internal fun testGetRationalValue() {
+        var pi = Pi()
+        assertNull(pi.getRationalValue())
+
+        pi = Pi(true)
+        assertNull(pi.getRationalValue())
     }
 
     @Test
