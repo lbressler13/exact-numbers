@@ -1,6 +1,7 @@
 package exactnumbers.irrationals.log
 
 import common.divideBigDecimals
+import common.getIntFromDecimal
 import common.throwDivideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
@@ -11,10 +12,7 @@ import expressions.term.Term
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.math.ceil
-import kotlin.math.floor
 import kotlin.math.log
-import kotlin.math.roundToInt
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -141,14 +139,8 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         }
 
         // account for imprecision with doubles
-        val upInt = ceil(logNum).roundToInt()
-        val downInt = floor(logNum).roundToInt()
-
-        return when (num) {
-            base.toBigInteger().pow(upInt) -> upInt.toBigDecimal()
-            base.toBigInteger().pow(downInt) -> downInt.toBigDecimal()
-            else -> logNum.toBigDecimal()
-        }
+        val int = getIntFromDecimal(logNum.toBigDecimal()) { base.toBigInteger().pow(it.toInt()) == num }
+        return int?.toBigDecimal() ?: logNum.toBigDecimal()
     }
 
     override fun toString(): String {

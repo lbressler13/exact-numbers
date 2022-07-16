@@ -6,6 +6,10 @@ import kotlinutils.biginteger.min
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
+import java.math.RoundingMode
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 /**
  * Get positive greatest common divisor of 2 numbers using Euclidean algorithm
@@ -52,6 +56,21 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
     } catch (e: ArithmeticException) {
         val mc = MathContext(20)
         bigDec1.divide(bigDec2, mc)
+    }
+}
+
+internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Boolean): BigInteger? {
+    try {
+        val upInt = decimal.setScale(0, RoundingMode.UP).toBigInteger()
+        val downInt = decimal.setScale(0, RoundingMode.DOWN).toBigInteger()
+
+        return when {
+            checkInt(upInt) -> upInt
+            checkInt(downInt) -> downInt
+            else -> null
+        }
+    } catch (_: Exception) {
+        return null
     }
 }
 
