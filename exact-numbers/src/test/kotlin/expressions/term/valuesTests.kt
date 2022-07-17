@@ -8,7 +8,7 @@ import java.math.BigDecimal
 import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))
-private val logNum2 = Log(ExactFraction.EIGHT, 7)
+private val logNum2 = Log(8, 7)
 private val one = ExactFraction.ONE
 
 internal fun runGetSimplifiedTests() {
@@ -51,7 +51,7 @@ internal fun runGetSimplifiedTests() {
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)
 
-    term = Term(ExactFraction.FOUR, listOf(Log(ExactFraction(100))))
+    term = Term(ExactFraction.FOUR, listOf(Log(100)))
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = listOf()
     result = term.getSimplified()
@@ -68,15 +68,15 @@ internal fun runGetSimplifiedTests() {
     term = Term(
         ExactFraction(3, 5),
         listOf(
-            Log(ExactFraction.FOUR),
+            Log(4),
             Log(ExactFraction(625), 5),
             Pi(),
-            Log(ExactFraction(1000), 12),
+            Log(1000, 12),
             Log(ExactFraction(1, 16), 4, true)
         )
     )
     expectedCoeff = ExactFraction(-6, 5)
-    expectedNumbers = listOf(Log(ExactFraction.FOUR), Log(ExactFraction(1000), 12), Pi())
+    expectedNumbers = listOf(Log(4), Log(1000, 12), Pi())
     result = term.getSimplified()
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)
@@ -130,7 +130,7 @@ internal fun runGetValueTests() {
     expected = BigDecimal.ONE
     assertEquals(expected, term.getValue())
 
-    term = Term(one, listOf(Log(ExactFraction(3333))))
+    term = Term(one, listOf(Log(3333)))
     expected = BigDecimal("3.52283531366053")
     assertEquals(expected, term.getValue())
 
@@ -156,11 +156,11 @@ internal fun runGetValueTests() {
     expected = BigDecimal("-8.3775804095727813333")
     assertEquals(expected, term.getValue())
 
-    term = Term(ExactFraction.SEVEN, listOf(Log(ExactFraction(6, 7), 4), Pi(), Log(ExactFraction(40))))
+    term = Term(ExactFraction.SEVEN, listOf(Log(ExactFraction(6, 7), 4), Pi(), Log(40)))
     expected = BigDecimal("-3.9175691871908989550925271506970548502975209152")
     assertEquals(expected, term.getValue())
 
-    term = Term(ExactFraction.HALF, listOf(Log(ExactFraction.FOUR, 2, true), Pi(true), Log(ExactFraction(123456789))))
+    term = Term(ExactFraction.HALF, listOf(Log(4, 2, true), Pi(true), Log(123456789)))
     expected = BigDecimal("0.64390230285929702583103243749028475")
     assertEquals(expected, term.getValue())
 }

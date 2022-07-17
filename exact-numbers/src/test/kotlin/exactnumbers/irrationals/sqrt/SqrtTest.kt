@@ -58,7 +58,10 @@ internal class SqrtTest {
         sqrt = Sqrt(ExactFraction(15, 1234))
         assertFalse(sqrt.isZero())
 
-        sqrt = Sqrt(ExactFraction.TWO)
+        sqrt = Sqrt(ExactFraction(12000, 179))
+        assertFalse(sqrt.isZero())
+
+        sqrt = Sqrt(2)
         assertFalse(sqrt.isZero())
     }
 
@@ -94,7 +97,7 @@ internal class SqrtTest {
         sqrt = Sqrt.ONE
         assertTrue(sqrt.isRational())
 
-        sqrt = Sqrt(ExactFraction(961))
+        sqrt = Sqrt(961)
         assertTrue(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(1, 64))
@@ -104,7 +107,7 @@ internal class SqrtTest {
         assertTrue(sqrt.isRational())
 
         // irrational
-        sqrt = Sqrt(ExactFraction.TWO)
+        sqrt = Sqrt(2)
         assertFalse(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(1, 35))
@@ -117,13 +120,13 @@ internal class SqrtTest {
     @Test
     internal fun testGetRationalValue() {
         // irrational
-        var sqrt = Sqrt(ExactFraction.TWO)
+        var sqrt = Sqrt(2)
         assertNull(sqrt.getRationalValue())
 
         sqrt = Sqrt(ExactFraction(64, 15))
         assertNull(sqrt.getRationalValue())
 
-        sqrt = Sqrt(ExactFraction(155))
+        sqrt = Sqrt(155)
         assertNull(sqrt.getRationalValue())
 
         // rational
@@ -135,7 +138,7 @@ internal class SqrtTest {
         expected = ExactFraction.ONE
         assertEquals(expected, sqrt.getRationalValue())
 
-        sqrt = Sqrt(ExactFraction(2209))
+        sqrt = Sqrt(2209)
         expected = ExactFraction(47)
         assertEquals(expected, sqrt.getRationalValue())
 
@@ -162,7 +165,7 @@ internal class SqrtTest {
         expected = BigDecimal.ONE
         assertEquals(expected, sqrt.getValue())
 
-        sqrt = Sqrt(ExactFraction(144))
+        sqrt = Sqrt(144)
         expected = BigDecimal("12")
         assertEquals(expected, sqrt.getValue())
 
@@ -174,11 +177,11 @@ internal class SqrtTest {
         expected = BigDecimal("1.25")
         assertEquals(expected, sqrt.getValue())
 
-        sqrt = Sqrt(ExactFraction.SEVEN)
+        sqrt = Sqrt(7)
         expected = BigDecimal("2.6457513110645905905")
         assertEquals(expected, sqrt.getValue())
 
-        sqrt = Sqrt(ExactFraction(32))
+        sqrt = Sqrt(32)
         expected = BigDecimal("5.6568542494923801952")
         assertEquals(expected, sqrt.getValue())
 
@@ -193,7 +196,7 @@ internal class SqrtTest {
         var sqrt1 = Sqrt.ZERO
         assertEquals(sqrt1, sqrt1)
 
-        sqrt1 = Sqrt(ExactFraction.SIX)
+        sqrt1 = Sqrt(6)
         assertEquals(sqrt1, sqrt1)
 
         sqrt1 = Sqrt(ExactFraction(9, 400))
@@ -205,7 +208,7 @@ internal class SqrtTest {
         assertNotEquals(sqrt1, sqrt2)
         assertNotEquals(sqrt2, sqrt1)
 
-        sqrt1 = Sqrt(ExactFraction.TWO)
+        sqrt1 = Sqrt(2)
         sqrt2 = Sqrt(ExactFraction.HALF)
         assertNotEquals(sqrt1, sqrt2)
         assertNotEquals(sqrt2, sqrt1)
@@ -234,7 +237,7 @@ internal class SqrtTest {
         expected = Pair(one, Sqrt.ONE)
         assertEquals(expected, sqrt.getSimplified())
 
-        sqrt = Sqrt(ExactFraction(1024))
+        sqrt = Sqrt(1024)
         expected = Pair(ExactFraction(32), Sqrt.ONE)
         assertEquals(expected, sqrt.getSimplified())
 
@@ -243,11 +246,11 @@ internal class SqrtTest {
         assertEquals(expected, sqrt.getSimplified())
 
         // rational w/ whole
-        sqrt = Sqrt(ExactFraction(50))
+        sqrt = Sqrt(50)
         expected = Pair(ExactFraction.FIVE, Sqrt(ExactFraction.TWO))
         assertEquals(expected, sqrt.getSimplified())
 
-        sqrt = Sqrt(ExactFraction(3000))
+        sqrt = Sqrt(3000)
         expected = Pair(ExactFraction.TEN, Sqrt(ExactFraction(30)))
         assertEquals(expected, sqrt.getSimplified())
 
@@ -256,11 +259,11 @@ internal class SqrtTest {
         assertEquals(expected, sqrt.getSimplified())
 
         // no whole
-        sqrt = Sqrt(ExactFraction(15))
+        sqrt = Sqrt(15)
         expected = Pair(one, sqrt)
         assertEquals(expected, sqrt.getSimplified())
 
-        sqrt = Sqrt(ExactFraction(107))
+        sqrt = Sqrt(107)
         expected = Pair(one, sqrt)
         assertEquals(expected, sqrt.getSimplified())
 
@@ -278,11 +281,11 @@ internal class SqrtTest {
         var expected = "[$symbol(0)]"
         assertEquals(expected, sqrt.toString())
 
-        sqrt = Sqrt(ExactFraction.TEN)
+        sqrt = Sqrt(10)
         expected = "[$symbol(10)]"
         assertEquals(expected, sqrt.toString())
 
-        sqrt = Sqrt(ExactFraction(1234567))
+        sqrt = Sqrt(1234567)
         expected = "[$symbol(1234567)]"
         assertEquals(expected, sqrt.toString())
 

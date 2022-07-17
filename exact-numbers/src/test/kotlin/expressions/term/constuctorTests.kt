@@ -7,7 +7,7 @@ import exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))
-private val logNum2 = Log(ExactFraction.EIGHT, 7)
+private val logNum2 = Log(8, 7)
 private val logNum3 = Log(ExactFraction(19, 33), true)
 private val logNum4 = Log(ExactFraction(25, 121))
 private val one = ExactFraction.ONE
