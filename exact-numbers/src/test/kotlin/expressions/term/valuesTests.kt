@@ -63,7 +63,7 @@ internal fun runGetSimplifiedTests() {
         listOf(Pi(true), logNum2, Pi(true), logNum2, logNum1, logNum2.swapDivided(), Pi(true), Pi())
     )
     expectedCoeff = ExactFraction(18, 5)
-    expectedNumbers = listOf(logNum1, logNum2, Pi(true), Pi(true))
+    expectedNumbers = listOf(logNum2, logNum1, Pi(true), Pi(true))
     result = term.getSimplified()
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)

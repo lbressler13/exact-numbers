@@ -8,6 +8,7 @@ import kotlin.test.assertFailsWith
 private val one = Log.ONE
 private val fractionOne = ExactFraction.ONE
 
+// TODO improve these
 internal fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
@@ -29,7 +30,7 @@ internal fun runSimplifyListTests() {
     logs = listOf(Log.ZERO, Log.ZERO)
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(Log.ONE, Log.ZERO, Log(ExactFraction(18, 91)))
+    logs = listOf(Log.ONE, Log.ZERO, Log(ExactFraction(18, 91))).sorted()
     assertEquals(expected, Log.simplifyList(logs))
 
     // ones
@@ -41,16 +42,16 @@ internal fun runSimplifyListTests() {
     expected = Pair(fractionOne, listOf())
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(one, Log(8), Log(4, 3, true))
+    logs = listOf(one, Log(8), Log(4, 3, true)).sorted()
     expected = Pair(fractionOne, listOf(Log(8), Log(4, 3, true)).sorted())
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(one, Log(8), one, one, one, Log(4, 3, true))
+    logs = listOf(one, Log(8), one, one, one, Log(4, 3, true)).sorted()
     expected = Pair(fractionOne, listOf(Log(8), Log(4, 3, true)).sorted())
     assertEquals(expected, Log.simplifyList(logs))
 
     // inverses
-    logs = listOf(Log(8), Log(8, 10, true))
+    logs = listOf(Log(8), Log(8, 10, true)).sorted()
     expected = Pair(fractionOne, listOf())
     assertEquals(expected, Log.simplifyList(logs))
 
@@ -78,7 +79,7 @@ internal fun runSimplifyListTests() {
         Log(ExactFraction(7, 3), 10, true),
         Log(ExactFraction(5, 51), 5, true),
         Log(4, 3)
-    )
+    ).sorted()
     expected = Pair(
         fractionOne,
         listOf(
@@ -103,8 +104,8 @@ internal fun runSimplifyListTests() {
         Log(6),
         Log(ExactFraction(15, 4), 4),
         Log(ExactFraction(1, 16), 2)
-    )
-    expected = Pair(ExactFraction(4, 3), listOf(Log(6), Log(ExactFraction(15, 4), 4)))
+    ).sorted()
+    expected = Pair(ExactFraction(4, 3), listOf(Log(6), Log(ExactFraction(15, 4), 4)).sorted())
     assertEquals(expected, Log.simplifyList(logs))
 
     // no changes

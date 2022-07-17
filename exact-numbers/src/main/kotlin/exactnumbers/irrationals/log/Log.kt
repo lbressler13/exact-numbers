@@ -20,7 +20,12 @@ import java.math.BigInteger
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  * @throws [ArithmeticException] if number is not positive, base is less than 1, or value is 0 when isDivided is true
  */
-class Log(val argument: ExactFraction, val base: Int, override val isDivided: Boolean) : Comparable<Log>, Irrational {
+class Log private constructor(
+    val argument: ExactFraction,
+    val base: Int,
+    override val isDivided: Boolean,
+    private val fullySimplified: Boolean
+) : Comparable<Log>, Irrational {
     override val type = TYPE
 
     init {
@@ -33,9 +38,10 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
     }
 
     // constructors with reduced params + other types
-    constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false)
-    constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false)
-    constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided)
+    constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false, false)
+    constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false, false)
+    constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided, false)
+    constructor(argument: ExactFraction, base: Int, isDivided: Boolean) : this(argument, base, isDivided, false)
 
     constructor(argument: Int) : this(ExactFraction(argument))
     constructor(argument: Int, base: Int) : this(ExactFraction(argument), base)
@@ -128,6 +134,21 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         return divideBigDecimals(BigDecimal.ONE, logValue)
     }
 
+    fun getSimplified(): Pair<ExactFraction, Log> {
+        when {
+            fullySimplified -> return Pair(ExactFraction.ONE, this)
+            isZero() -> return Pair(ExactFraction.ONE, ZERO)
+            equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
+        }
+
+        val rational = getRationalValue()
+        if (rational == null) {
+            return Pair(ExactFraction.ONE, Log(argument, base, isDivided, true))
+        }
+
+        return Pair(rational, ONE)
+    }
+
     override fun swapDivided(): Log {
         if (isZero()) {
             throwDivideByZero()
@@ -155,8 +176,8 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
     companion object {
         const val TYPE = "log"
 
-        val ZERO = Log(ExactFraction.ONE)
-        val ONE = Log(ExactFraction.TEN)
+        val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
+        val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
 
         /**
          * Extract rational values and simplify remaining list of irrationals
@@ -177,31 +198,37 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
                 return Pair(ExactFraction.ZERO, listOf())
             }
 
-            val groupedLogs = numbers.groupBy { it.isRational() }
+            val simplifiedNums = numbers.map { it.getSimplified() }
+            val coeff = simplifiedNums.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            // multiply rational numbers
-            val rational: ExactFraction = groupedLogs[true]?.fold(ExactFraction.ONE) { acc, log ->
-                acc * (log.getRationalValue() ?: ExactFraction.ONE)
-            } ?: ExactFraction.ONE
+            val combinedNums: List<Log> = simplifiedNums.map { it.second }
+                .groupBy { Pair(it.argument, it.base) }
+                .flatMap { pair ->
+                    if (Log(pair.key.first, pair.key.second) == ONE) {
+                        listOf()
+                    } else {
+                        val currentLogs = pair.value
+                        val countDivided = currentLogs.count { it.isDivided }
+                        val countNotDivided = currentLogs.size - countDivided
 
-            // simplify remaining irrational numbers
-            val newLogs = groupedLogs[false]?.filter { it != ONE } // remove ones
-                ?.groupBy { Pair(it.argument, it.base) } // remove inverses
-                ?.flatMap { pair ->
-                    val currentLogs = pair.value
-
-                    val countDivided = currentLogs.count { it.isDivided }
-                    val countNotDivided = currentLogs.size - countDivided
-                    when {
-                        countDivided == countNotDivided -> listOf()
-                        countDivided > countNotDivided -> List(countDivided - countNotDivided) {
-                            Log(pair.key.first, pair.key.second, true)
+                        when {
+                            countDivided == countNotDivided -> listOf()
+                            countDivided > countNotDivided -> List(countDivided - countNotDivided) {
+                                Log(pair.key.first, pair.key.second, isDivided = true, fullySimplified = true)
+                            }
+                            else -> List(countNotDivided - countDivided) {
+                                Log(
+                                    pair.key.first,
+                                    pair.key.second,
+                                    isDivided = false,
+                                    fullySimplified = true
+                                )
+                            }
                         }
-                        else -> List(countNotDivided - countDivided) { Log(pair.key.first, pair.key.second, false) }
                     }
-                } ?: listOf()
+                }
 
-            return Pair(rational, newLogs.sorted())
+            return Pair(coeff, combinedNums)
         }
     }
 }

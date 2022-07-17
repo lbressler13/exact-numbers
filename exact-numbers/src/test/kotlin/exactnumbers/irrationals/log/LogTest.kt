@@ -294,6 +294,11 @@ internal class LogTest {
     }
 
     @Test
+    internal fun testGetSimplified() {
+        // TODO
+    }
+
+    @Test
     internal fun testToString() {
         var logNum = Log.ZERO
         var expected = "[log_10(1)]"

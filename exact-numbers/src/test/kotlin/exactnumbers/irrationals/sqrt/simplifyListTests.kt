@@ -13,9 +13,13 @@ internal fun runSimplifyListTests() {
     assertFailsWith<ClassCastException> { Sqrt.simplifyList(listOf(Pi())) }
 
     // empty
-    var expected = Pair(one, listOf<Sqrt>())
-
     var numbers: List<Irrational> = listOf()
+    var expected = Pair(one, listOf<Sqrt>())
+    assertEquals(expected, Sqrt.simplifyList(numbers))
+
+    // zero
+    expected = Pair(ExactFraction.ZERO, listOf())
+    numbers = listOf(Sqrt.ZERO)
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt.ZERO, Sqrt(2))

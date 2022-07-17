@@ -10,7 +10,7 @@ import expressions.term.Term
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Sqrt(val radicand: ExactFraction) : Irrational {
+class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Irrational {
     override val type = TYPE
     override val isDivided = false
 
@@ -20,9 +20,13 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
         }
     }
 
-    constructor(radicand: Int) : this(ExactFraction(radicand))
-    constructor(radicand: Long) : this(ExactFraction(radicand))
-    constructor(radicand: BigInteger) : this(ExactFraction(radicand))
+    constructor(radicand: ExactFraction) : this(radicand, false)
+    constructor(radicand: Int) : this(ExactFraction(radicand), false)
+    constructor(radicand: Long) : this(ExactFraction(radicand), false)
+    constructor(radicand: BigInteger) : this(ExactFraction(radicand), false)
+    private constructor(radicand: Int, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
+    private constructor(radicand: Long, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
+    private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
     operator fun times(other: Sqrt): Term = times(other)
     operator fun times(other: Log): Term = times(other)
@@ -61,12 +65,16 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
 
     // sqrt(32) returns 4*sqrt(2)
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
+        if (fullySimplified) {
+            return Pair(ExactFraction.ONE, this)
+        }
+
         if (radicand.isZero()) {
-            return Pair(ExactFraction.ONE, ZERO)
+            return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ZERO, true))
         }
 
         if (radicand == ExactFraction.ONE) {
-            return Pair(ExactFraction.ONE, ONE)
+            return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ONE, true))
         }
 
         val numWhole = extractWholeOf(radicand.numerator)
@@ -77,7 +85,7 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
         val newDenom = radicand.denominator / (denomWhole * denomWhole)
         val newRadicand = ExactFraction(newNum, newDenom)
 
-        return Pair(whole, Sqrt(newRadicand))
+        return Pair(whole, Sqrt(newRadicand, true))
     }
 
     override fun toString(): String {
@@ -95,14 +103,18 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
     companion object {
         const val TYPE = "sqrt"
 
-        val ZERO = Sqrt(ExactFraction.ZERO)
-        val ONE = Sqrt(ExactFraction.ONE)
+        val ZERO = Sqrt(ExactFraction.ZERO, fullySimplified = true)
+        val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)
 
-        internal fun simplifyList(numbers: List<Irrational>): Pair<ExactFraction, List<Sqrt>> {
+        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
+            if (numbers.isNullOrEmpty()) {
+                return Pair(ExactFraction.ONE, listOf())
+            }
+
             numbers as List<Sqrt>
 
-            if (numbers.isNullOrEmpty() || numbers.any { it.isZero() }) {
-                return Pair(ExactFraction.ONE, listOf())
+            if (numbers.any(Sqrt::isZero)) {
+                return Pair(ExactFraction.ZERO, listOf())
             }
 
             var coeff = ExactFraction.ONE
@@ -118,7 +130,8 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
                 coeff *= simplified.first
 
                 val num = simplified.second.radicand.numerator.toExactFraction()
-                val denom = simplified.second.radicand.denominator.toExactFraction().inverse() // put value in denominator
+                val denom =
+                    simplified.second.radicand.denominator.toExactFraction().inverse() // put value in denominator
 
                 when {
                     // sqrt(x) * sqrt(x) = add x to coeff, remove from list
@@ -145,7 +158,7 @@ class Sqrt(val radicand: ExactFraction) : Irrational {
                 }
             }
 
-            val sqrtList = currentNums.map { Sqrt(it) }.toList()
+            val sqrtList = currentNums.map { Sqrt(it, true) }.toList()
 
             return Pair(coeff, sqrtList)
         }
