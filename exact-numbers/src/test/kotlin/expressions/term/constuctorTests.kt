@@ -4,6 +4,7 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
+import exactnumbers.irrationals.sqrt.Sqrt
 import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))
@@ -21,11 +22,15 @@ internal fun runConstructorTests() {
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term(ExactFraction.ZERO, listOf(logNum1, logNum3, Pi()))
+    term = Term(ExactFraction.ZERO, listOf(logNum1, Sqrt(35), logNum3, Pi()))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
     term = Term(ExactFraction.FIVE, listOf(logNum1, Log.ZERO))
+    assertEquals(expectedCoeff, term.coefficient)
+    assertEquals(expectedNumbers, term.numbers)
+
+    term = Term(ExactFraction.FIVE, listOf(logNum1, Sqrt.ZERO))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
@@ -42,12 +47,18 @@ internal fun runConstructorTests() {
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
+    term = Term(ExactFraction(17, 3), listOf(Pi(), logNum2, Sqrt(ExactFraction(9, 25))))
+    expectedCoeff = ExactFraction(17, 3)
+    expectedNumbers = listOf(Pi(), logNum2, Sqrt(ExactFraction(9, 25)))
+    assertEquals(expectedCoeff, term.coefficient)
+    assertEquals(expectedNumbers, term.numbers)
+
     term = Term(
         ExactFraction(-4, 5),
-        listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), logNum2)
+        listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), Sqrt(32), logNum2, Sqrt(109))
     )
     expectedCoeff = ExactFraction(-4, 5)
-    expectedNumbers = listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), logNum2)
+    expectedNumbers = listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), Sqrt(32), logNum2, Sqrt(109))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 }
@@ -57,52 +68,64 @@ internal fun runFromValuesTests() {
     var expectedCoeff = ExactFraction.ZERO
     var expectedNumbers: List<Irrational> = listOf()
 
-    var term = Term.fromValues(ExactFraction.ZERO, listOf(), 0)
+    var term = Term.fromValues(ExactFraction.ZERO, listOf(), listOf(), 0)
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, Log.ONE), 8)
+    term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, Log.ONE), listOf(Sqrt.ONE), 8)
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, Log.ZERO, logNum3), 5)
+    term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, Log.ZERO, logNum3), listOf(Sqrt(64)), 5)
+    assertEquals(expectedCoeff, term.coefficient)
+    assertEquals(expectedNumbers, term.numbers)
+
+    term = Term.fromValues(
+        ExactFraction.TWO, listOf(logNum1), listOf(Sqrt(64), Sqrt.ZERO, Sqrt(ExactFraction(3, 19))), -2
+    )
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
     // nonzero
-    term = Term.fromValues(ExactFraction(-5, 7), listOf(), 0)
+    term = Term.fromValues(ExactFraction(-5, 7), listOf(), listOf(), 0)
     expectedCoeff = ExactFraction(-5, 7)
     expectedNumbers = listOf()
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(), 3)
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(), listOf(), 3)
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = listOf(Pi(), Pi(), Pi())
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(), -3)
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(), listOf(), -3)
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = listOf(Pi(true), Pi(true), Pi(true))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum1), 0)
+    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum1), listOf(), 0)
     expectedCoeff = ExactFraction(-2, 191)
     expectedNumbers = listOf(logNum1, logNum2, logNum1)
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum3), 2)
+    term = Term.fromValues(ExactFraction(-2, 191), listOf(), listOf(Sqrt.ONE, Sqrt(52)), 0)
     expectedCoeff = ExactFraction(-2, 191)
-    expectedNumbers = listOf(logNum1, logNum2, logNum3, Pi(), Pi())
+    expectedNumbers = listOf(Sqrt.ONE, Sqrt(52))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 
-    term = Term.fromValues(ExactFraction(22), listOf(logNum1, logNum2, logNum3), -2)
+    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum3), listOf(Sqrt(12), Sqrt(99)), 2)
+    expectedCoeff = ExactFraction(-2, 191)
+    expectedNumbers = listOf(logNum1, logNum2, logNum3, Sqrt(12), Sqrt(99), Pi(), Pi())
+    assertEquals(expectedCoeff, term.coefficient)
+    assertEquals(expectedNumbers, term.numbers)
+
+    term = Term.fromValues(ExactFraction(22), listOf(logNum1, logNum2, logNum3), listOf(Sqrt(12), Sqrt(99)), -2)
     expectedCoeff = ExactFraction(22)
-    expectedNumbers = listOf(logNum1, logNum2, logNum3, Pi(true), Pi(true))
+    expectedNumbers = listOf(logNum1, logNum2, logNum3, Sqrt(12), Sqrt(99), Pi(true), Pi(true))
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedNumbers, term.numbers)
 }

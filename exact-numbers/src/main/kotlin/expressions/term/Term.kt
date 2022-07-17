@@ -99,7 +99,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
     /**
      * Get all logs from numbers
      */
-    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE }.map { it } as List<Log>
+    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE } as List<Log>
 
     /**
      * Get number of Pi in numbers. Divided Pi is counted as -1
@@ -110,6 +110,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val negative = pis.size - positive
         return positive - negative
     }
+
+    /**
+     * Get all square roots from numbers
+     */
+    fun getSquareRoots(): List<Sqrt> = numbers.filter { it.type == Sqrt.TYPE } as List<Sqrt>
 
     override fun toString(): String {
         val coeffString = if (coefficient.denominator == BigInteger.ONE) {
@@ -142,11 +147,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
          * A negative number corresponds to divided Pi values
          * @return [Term] with the given values
          */
-        fun fromValues(coefficient: ExactFraction, logs: List<Log>, piCount: Int): Term {
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
             val piDivided = piCount < 0
             val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
 
-            return Term(coefficient, logs + piList)
+            return Term(coefficient, logs + roots + piList)
         }
     }
 }
