@@ -11,7 +11,8 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class LogTest {
-    @Test internal fun testConstructor() = runConstructorTests() // TODO
+    // TODO add sqrt
+    @Test internal fun testConstructor() = runConstructorTests()
 
     @Test
     internal fun testEquals() {

@@ -1,7 +1,6 @@
 package exactnumbers.irrationals.sqrt
 
 import common.divideBigDecimals
-import common.throwDivideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
 import exactnumbers.irrationals.common.Irrational
@@ -11,24 +10,19 @@ import expressions.term.Term
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrational {
+class Sqrt(val radicand: ExactFraction) : Irrational {
     override val type = TYPE
+    override val isDivided = false
 
     init {
-        when {
-            radicand.isNegative() -> throw ArithmeticException("Cannot calculate root of a negative number")
-            radicand.isZero() && isDivided -> throwDivideByZero()
+        if (radicand.isNegative()) {
+            throw ArithmeticException("Cannot calculate root of a negative number")
         }
     }
 
-    constructor(radicand: ExactFraction) : this(radicand, false)
-
     constructor(radicand: Int) : this(ExactFraction(radicand))
-    constructor(radicand: Int, isDivided: Boolean) : this(ExactFraction(radicand), isDivided)
     constructor(radicand: Long) : this(ExactFraction(radicand))
-    constructor(radicand: Long, isDivided: Boolean) : this(ExactFraction(radicand), isDivided)
     constructor(radicand: BigInteger) : this(ExactFraction(radicand))
-    constructor(radicand: BigInteger, isDivided: Boolean) : this(ExactFraction(radicand), isDivided)
 
     operator fun times(other: Sqrt): Term = times(other)
     operator fun times(other: Log): Term = times(other)
@@ -38,7 +32,7 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
     operator fun div(other: Pi): Term = div(other)
 
     override fun isZero(): Boolean = radicand.isZero()
-    override fun swapDivided(): Sqrt = Sqrt(radicand, !isDivided)
+    override fun swapDivided(): Sqrt = Sqrt(radicand.inverse())
 
     override fun isRational(): Boolean {
         val numRoot = getRootOf(radicand.numerator).toPlainString()
@@ -54,37 +48,16 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
 
         val numRoot = getRootOf(radicand.numerator).toBigInteger()
         val denomRoot = getRootOf(radicand.denominator).toBigInteger()
-        val result = ExactFraction(numRoot, denomRoot)
-
-        if (isDivided) {
-            return result.inverse()
-        }
-
-        return result
+        return ExactFraction(numRoot, denomRoot)
     }
 
     override fun getValue(): BigDecimal {
         val numRoot = getRootOf(radicand.numerator)
         val denomRoot = getRootOf(radicand.denominator)
-        val result = divideBigDecimals(numRoot, denomRoot)
-
-        if (isDivided) {
-            return divideBigDecimals(BigDecimal.ONE, result)
-        }
-
-        return result
+        return divideBigDecimals(numRoot, denomRoot)
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other == null || other !is Sqrt) {
-            return false
-        }
-
-        return isZero() && other.isZero() || // 0 = 0
-            radicand == ExactFraction.ONE && other.radicand == ExactFraction.ONE || // sqrt(1) = 1/sqrt(1)
-            isDivided == other.isDivided && radicand == other.radicand || // sqrt(x) = sqrt(x), 1/sqrt(x) = 1/sqrt(x)
-            isDivided != other.isDivided && radicand == other.radicand.inverse() // sqrt(1/x) = 1/sqrt(x)
-    }
+    override fun equals(other: Any?): Boolean = other != null && other is Sqrt && radicand == other.radicand
 
     // sqrt(32) returns 4*sqrt(2)
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
@@ -93,21 +66,15 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
         }
 
         if (radicand == ExactFraction.ONE) {
-            return Pair(ExactFraction.ONE, ONE) // not divided, even if current number is
+            return Pair(ExactFraction.ONE, ONE)
         }
 
-        val notDivided = if (isDivided) {
-            radicand.inverse()
-        } else {
-            radicand
-        }
-
-        val numWhole = extractWholeOf(notDivided.numerator)
-        val denomWhole = extractWholeOf(notDivided.denominator)
+        val numWhole = extractWholeOf(radicand.numerator)
+        val denomWhole = extractWholeOf(radicand.denominator)
         val whole = ExactFraction(numWhole, denomWhole)
 
-        val newNum = notDivided.numerator / (numWhole * numWhole)
-        val newDenom = notDivided.denominator / (denomWhole * denomWhole)
+        val newNum = radicand.numerator / (numWhole * numWhole)
+        val newDenom = radicand.denominator / (denomWhole * denomWhole)
         val newRadicand = ExactFraction(newNum, newDenom)
 
         return Pair(whole, Sqrt(newRadicand))
@@ -120,14 +87,10 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
             "${radicand.numerator}/${radicand.denominator}"
         }
 
-        if (isDivided) {
-            return "[1/√($numString)]"
-        }
-
         return "[√($numString)]"
     }
 
-    override fun hashCode(): Int = listOf(TYPE, radicand, isDivided).hashCode()
+    override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
 
     companion object {
         const val TYPE = "sqrt"
@@ -138,7 +101,7 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
         internal fun simplifyList(numbers: List<Irrational>): Pair<ExactFraction, List<Sqrt>> {
             numbers as List<Sqrt>
 
-            if (numbers.isEmpty() || numbers.any { it.isZero() }) {
+            if (numbers.isNullOrEmpty() || numbers.any { it.isZero() }) {
                 return Pair(ExactFraction.ONE, listOf())
             }
 
