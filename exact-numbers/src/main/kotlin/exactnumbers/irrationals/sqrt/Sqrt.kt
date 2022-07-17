@@ -71,14 +71,26 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
     }
 
     override fun equals(other: Any?): Boolean {
-        return other != null &&
-                other is Sqrt &&
-                isDivided == other.isDivided &&
-                radicand == other.radicand
+        if (other == null || other !is Sqrt) {
+            return false
+        }
+
+        return isZero() && other.isZero() // 0 = 0
+                || radicand == ExactFraction.ONE && other.radicand == ExactFraction.ONE // sqrt(1) = 1/sqrt(1)
+                || isDivided == other.isDivided && radicand == other.radicand // sqrt(x) = sqrt(x), 1/sqrt(x) = 1/sqrt(x)
+                || isDivided != other.isDivided && radicand == other.radicand.inverse() // sqrt(1/x) = 1/sqrt(x)
     }
 
     // sqrt(32) returns 4*sqrt(2)
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
+        if (radicand.isZero()) {
+            return Pair(ExactFraction.ONE, ZERO)
+        }
+
+        if (radicand == ExactFraction.ONE) {
+            return Pair(ExactFraction.ONE, ONE) // not divided, even if current number is
+        }
+
         val numWhole = extractWholeOf(radicand.numerator)
         val denomWhole = extractWholeOf(radicand.denominator)
         var whole = ExactFraction(numWhole, denomWhole)
@@ -114,10 +126,25 @@ class Sqrt(val radicand: ExactFraction, override val isDivided: Boolean) : Irrat
         val ONE = Sqrt(ExactFraction.ONE)
 
         internal fun simplifyList(numbers: List<Irrational>): Pair<ExactFraction, List<Sqrt>> {
-            // TODO
             numbers as List<Sqrt>
 
-            return Pair(ExactFraction.ONE, numbers)
+            if (numbers.isEmpty() || numbers.any { it.isZero() }) {
+                return Pair(ExactFraction.ONE, listOf())
+            }
+
+            val combinedResult: Pair<ExactFraction, List<Sqrt>> = numbers.map { it.getSimplified() }
+                .fold(Pair(ExactFraction.ONE, listOf())) { acc, pair ->
+                    val coeff = acc.first * pair.first
+                    val numList = acc.second + pair.second
+                    Pair(coeff, numList)
+                }
+
+            println(combinedResult)
+            println(combinedResult.second.map { it == ONE })
+
+            val filteredNums = combinedResult.second.filter { it != ONE }
+
+            return Pair(combinedResult.first, filteredNums)
         }
     }
 }

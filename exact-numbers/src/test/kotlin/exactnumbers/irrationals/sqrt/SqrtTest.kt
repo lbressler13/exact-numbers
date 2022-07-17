@@ -3,10 +3,6 @@ package exactnumbers.irrationals.sqrt
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
-import java.math.BigInteger
-import java.math.MathContext
-import kotlin.math.exp
-import kotlin.math.sqrt
 import kotlin.test.*
 
 internal class SqrtTest {
@@ -191,7 +187,6 @@ internal class SqrtTest {
 
         sqrt = Sqrt(ExactFraction(144))
         expected = BigDecimal("12")
-        println(sqrt(144.0))
         assertEquals(expected, sqrt.getValue())
 
         sqrt = Sqrt(ExactFraction(25), true)
@@ -238,30 +233,41 @@ internal class SqrtTest {
         sqrt1 = Sqrt(ExactFraction(9, 400), true)
         assertEquals(sqrt1, sqrt1)
 
+        sqrt1 = Sqrt(ExactFraction.ONE)
+        var sqrt2 = Sqrt(ExactFraction.ONE, true)
+        assertEquals(sqrt1, sqrt2)
+        assertEquals(sqrt2, sqrt1)
+
+        sqrt1 = Sqrt(ExactFraction(11, 34))
+        sqrt2 = Sqrt(ExactFraction(34, 11), true)
+        assertEquals(sqrt1, sqrt2)
+        assertEquals(sqrt2, sqrt1)
+
         // not equal
         sqrt1 = Sqrt.ZERO
-        var sqrt2 = Sqrt.ONE
+        sqrt2 = Sqrt.ONE
         assertNotEquals(sqrt1, sqrt2)
+        assertNotEquals(sqrt2, sqrt1)
 
         sqrt1 = Sqrt(ExactFraction.TWO)
         sqrt2 = Sqrt(ExactFraction.HALF)
         assertNotEquals(sqrt1, sqrt2)
-
-        sqrt1 = Sqrt(ExactFraction.TWO, true)
-        sqrt2 = Sqrt(ExactFraction.HALF)
-        assertNotEquals(sqrt1, sqrt2)
+        assertNotEquals(sqrt2, sqrt1)
 
         sqrt1 = Sqrt(ExactFraction.TWO, true)
         sqrt2 = Sqrt(ExactFraction.TWO)
         assertNotEquals(sqrt1, sqrt2)
+        assertNotEquals(sqrt2, sqrt1)
 
         sqrt1 = Sqrt(ExactFraction(9, 25))
         sqrt2 = Sqrt(ExactFraction.NINE)
         assertNotEquals(sqrt1, sqrt2)
+        assertNotEquals(sqrt2, sqrt1)
 
         sqrt1 = Sqrt(ExactFraction(103, 422))
         sqrt2 = Sqrt(ExactFraction(90, 37), true)
         assertNotEquals(sqrt1, sqrt2)
+        assertNotEquals(sqrt2, sqrt1)
     }
 
     @Test
@@ -358,4 +364,6 @@ internal class SqrtTest {
         expected = "[1/${symbol}(12/35)]"
         assertEquals(expected, sqrt.toString())
     }
+
+    @Test internal fun testSimplifyList() = runSimplifyListTests()
 }
