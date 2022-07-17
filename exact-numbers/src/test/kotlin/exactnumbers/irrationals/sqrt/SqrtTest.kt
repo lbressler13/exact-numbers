@@ -273,6 +273,37 @@ internal class SqrtTest {
     }
 
     @Test
+    internal fun testCompareTo() {
+        // equal
+        var sqrt1 = Sqrt.ZERO
+        assertEquals(sqrt1, sqrt1)
+
+        sqrt1 = Sqrt(ExactFraction(9, 11))
+        assertEquals(sqrt1, sqrt1)
+
+        // not equal
+        sqrt1 = Sqrt.ZERO
+        var sqrt2 = Sqrt.ONE
+        assertTrue(sqrt1 < sqrt2)
+        assertTrue(sqrt2 > sqrt1)
+
+        sqrt1 = Sqrt.ZERO
+        sqrt2 = Sqrt.ONE
+        assertTrue(sqrt1 < sqrt2)
+        assertTrue(sqrt2 > sqrt1)
+
+        sqrt1 = Sqrt(3)
+        sqrt2 = Sqrt(9)
+        assertTrue(sqrt1 < sqrt2)
+        assertTrue(sqrt2 > sqrt1)
+
+        sqrt1 = Sqrt(ExactFraction(15, 26))
+        sqrt2 = Sqrt(ExactFraction(26, 15))
+        assertTrue(sqrt1 < sqrt2)
+        assertTrue(sqrt2 > sqrt1)
+    }
+
+    @Test
     internal fun testToString() {
         val symbol = "√"
 

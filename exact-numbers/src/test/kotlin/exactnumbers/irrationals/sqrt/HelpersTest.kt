@@ -5,7 +5,7 @@ import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class HelpersTest {
+internal class HelpersTest {
     @Test
     internal fun testGetRootOf() {
         // rational

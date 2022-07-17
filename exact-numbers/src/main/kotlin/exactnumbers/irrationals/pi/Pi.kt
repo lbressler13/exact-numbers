@@ -6,6 +6,7 @@ import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.common.div
 import exactnumbers.irrationals.common.times
 import exactnumbers.irrationals.log.Log
+import exactnumbers.irrationals.sqrt.Sqrt
 import expressions.term.Term
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -49,8 +50,10 @@ class Pi(override val isDivided: Boolean) : Irrational {
     // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = times(other as Irrational)
     operator fun times(other: Pi): Term = times(other as Irrational)
+    operator fun times(other: Sqrt): Term = times(other as Irrational)
     operator fun div(other: Log): Term = div(other as Irrational)
     operator fun div(other: Pi): Term = div(other as Irrational)
+    operator fun div(other: Sqrt): Term = div(other as Irrational)
 
     override fun toString(): String {
         val pi = "π"

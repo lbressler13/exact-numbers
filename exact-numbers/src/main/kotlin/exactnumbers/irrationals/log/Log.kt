@@ -7,6 +7,7 @@ import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.common.div
 import exactnumbers.irrationals.common.times
 import exactnumbers.irrationals.pi.Pi
+import exactnumbers.irrationals.sqrt.Sqrt
 import expressions.term.Term
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
@@ -18,6 +19,7 @@ import java.math.BigInteger
  * @param argument [ExactFraction]: value to compute log of
  * @param base [Int]: base to use when computing log
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
+ * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  * @throws [ArithmeticException] if number is not positive, base is less than 1, or value is 0 when isDivided is true
  */
 class Log private constructor(
@@ -67,8 +69,10 @@ class Log private constructor(
     // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = times(other as Irrational)
     operator fun times(other: Pi): Term = times(other as Irrational)
+    operator fun times(other: Sqrt): Term = times(other as Irrational)
     operator fun div(other: Log): Term = div(other as Irrational)
     operator fun div(other: Pi): Term = div(other as Irrational)
+    operator fun div(other: Sqrt): Term = div(other as Irrational)
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
@@ -105,16 +109,15 @@ class Log private constructor(
         val denomLog = getLogOf(argument.denominator, base).toBigInteger()
 
         val result = when {
-            numLog.isZero() -> ExactFraction(denomLog) // numerator of argument is 1, negative sign is added later
+            numLog.isZero() -> -ExactFraction(denomLog) // numerator of argument is 1
             denomLog.isZero() -> ExactFraction(numLog) // denominator of argument is 1
             else -> ExactFraction(numLog, denomLog)
         }
 
-        return when {
-            isDivided && argument < base -> -result.inverse()
-            isDivided -> result.inverse()
-            argument < base -> -result
-            else -> result
+        return if (isDivided) {
+            result.inverse()
+        } else {
+            result
         }
     }
 
@@ -134,6 +137,13 @@ class Log private constructor(
         return divideBigDecimals(BigDecimal.ONE, logValue)
     }
 
+    /**
+     * Simplify log into a coefficient and a log value.
+     * Extracts rational value as coefficient and returns log as 1, or returns coefficient as 1 with the existing log for irrational logs.
+     *
+     * @return [Pair<ExactFraction, Log>]: a pair of coefficient and log such that the product has the same value as the current log
+     */
+    // TODO: improve the process of simplifying
     fun getSimplified(): Pair<ExactFraction, Log> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
@@ -186,7 +196,7 @@ class Log private constructor(
          * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of irrational values
          * @throws [ClassCastException] if any of the numbers are not a Log
          */
-        // TODO improve simplification by looking at bases
+        // TODO: improve simplification by looking at bases
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, listOf())

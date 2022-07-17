@@ -44,7 +44,8 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
 
         return simplified.coefficient == otherSimplified.coefficient &&
             simplified.getPiCount() == otherSimplified.getPiCount() &&
-            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted()
+            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted() &&
+            simplified.getSquareRoots().sorted() == otherSimplified.getSquareRoots().sorted()
     }
 
     operator fun times(other: Term): Term {

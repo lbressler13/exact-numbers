@@ -56,6 +56,14 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
     }
 }
 
+/**
+ * Round decimal up and down, and determine if either value passes a check.
+ * If so, returns the passing value, which defaults to rounding up.
+ *
+ * @param decimal [BigDecimal]: the number to round
+ * @param checkInt [(BigInteger) -> Boolean]: function to check rounded value
+ * @return [BigInteger?]: a rounded number that passes the checks, or null if there is none
+ */
 internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Boolean): BigInteger? {
     try {
         val upInt = decimal.setScale(0, RoundingMode.UP).toBigInteger()

@@ -98,7 +98,7 @@ internal class UtilsTest {
     }
 
     @Test
-    fun testGetIntFromDecimal() {
+    internal fun testGetIntFromDecimal() {
         var goodValues = mapOf(BigDecimal.ZERO to BigInteger.ZERO, BigDecimal("0.000001") to BigInteger.ZERO)
         var badValues = listOf(BigDecimal.ONE, BigDecimal("-15"), BigDecimal("1.0001"))
         runSingleGetIntFromDecimalTest(goodValues, badValues, BigInteger::isZero)

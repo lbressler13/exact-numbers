@@ -2,12 +2,10 @@ package exactnumbers.irrationals.log
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
-import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class LogTest {

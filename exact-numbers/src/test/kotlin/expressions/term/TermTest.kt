@@ -107,6 +107,8 @@ internal class TermTest {
 
         term1 = Term(ExactFraction.EIGHT, listOf(Log(15)))
         term2 = Term(ExactFraction.EIGHT, listOf(Sqrt(15)))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
 
         term1 = Term(ExactFraction(5, 7), listOf(Pi(), Pi(true), logNum1, logNum1))
         term2 = Term(ExactFraction.FIVE, listOf(Pi(), Pi(true), logNum1, logNum1))

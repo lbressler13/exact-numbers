@@ -8,15 +8,23 @@ import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 
+/**
+ * Find component of number that is a perfect square and can be extracted as a coefficient.
+ * As an example, the function would return 5 for 50, because 50 = 2 * 5^2.
+ * Uses memoization to avoid repeated computation.
+ *
+ * @param num [BigInteger]: value to extract from
+ * @return [BigInteger]: the whole number that was extracted
+ */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
-    val memoization = Memoization.individualWholeNumber
+    val memo = Memoization.individualWholeNumber
 
-    if (num in memoization) {
-        return memoization[num]!!
+    if (num in memo) {
+        return memo[num]!!
     }
 
     if (num.isZero()) {
-        memoization[num] = BigInteger.ONE
+        memo[num] = BigInteger.ONE
         return BigInteger.ONE
     }
 
@@ -25,6 +33,7 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
     var remaining = num
 
     while (factor * factor <= remaining && remaining > BigInteger.ONE) {
+        // divide by current factor as many times as needed
         while (remaining % (factor * factor) == BigInteger.ZERO) {
             extracted *= factor
             remaining /= (factor * factor)
@@ -33,10 +42,16 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
         factor++
     }
 
-    memoization[num] = extracted
+    memo[num] = extracted
     return extracted
 }
 
+/**
+ * Get sqrt value of a whole number
+ *
+ * @param num [BigInteger]: number to get root of
+ * @return [BigDecimal]: the root of the number, using the current base
+ */
 internal fun getRootOf(num: BigInteger): BigDecimal {
     val mc = MathContext(20, RoundingMode.HALF_UP)
     val whole = extractWholeOf(num)
