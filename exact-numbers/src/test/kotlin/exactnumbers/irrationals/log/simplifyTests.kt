@@ -8,7 +8,56 @@ import kotlin.test.assertFailsWith
 private val one = Log.ONE
 private val fractionOne = ExactFraction.ONE
 
-// TODO improve these
+internal fun runGetSimplifiedTests() {
+    // zero
+    var logNum = Log.ZERO
+    var expected = Pair(ExactFraction.ONE, Log.ZERO)
+    assertEquals(expected, logNum.getSimplified())
+
+    // one
+    logNum = one
+    expected = Pair(fractionOne, one)
+    assertEquals(expected, logNum.getSimplified())
+
+    // rational
+    logNum = Log(1000)
+    expected = Pair(ExactFraction.THREE, one)
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(1, 1000))
+    expected = Pair(-ExactFraction.THREE, one)
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(32), 2)
+    expected = Pair(ExactFraction.FIVE, one)
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(32), 2, isDivided = true)
+    expected = Pair(ExactFraction(1, 5), one)
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(1, 81), 3)
+    expected = Pair(-ExactFraction.FOUR, one)
+    assertEquals(expected, logNum.getSimplified())
+
+    // irrational
+    logNum = Log(30)
+    expected = Pair(fractionOne, Log(30))
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(100, 9))
+    expected = Pair(fractionOne, Log(ExactFraction(100, 9)))
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(100, 2)
+    expected = Pair(fractionOne, Log(100, 2))
+    assertEquals(expected, logNum.getSimplified())
+
+    logNum = Log(ExactFraction(2, 15), 7)
+    expected = Pair(fractionOne, Log(ExactFraction(2, 15), 7))
+    assertEquals(expected, logNum.getSimplified())
+}
+
 internal fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
