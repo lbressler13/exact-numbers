@@ -5,14 +5,14 @@ plugins {
 }
 
 group = "org.example"
-version = "0.0.7"
+version = "0.0.8"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.0.2"
+    val kotlinUtilsVersion = "0.0.3"
 
     implementation(kotlin("stdlib"))
     testImplementation(kotlin("test"))

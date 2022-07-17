@@ -6,6 +6,7 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
+import exactnumbers.irrationals.sqrt.Sqrt
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
@@ -43,7 +44,8 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
 
         return simplified.coefficient == otherSimplified.coefficient &&
             simplified.getPiCount() == otherSimplified.getPiCount() &&
-            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted()
+            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted() &&
+            simplified.getSquareRoots().sorted() == otherSimplified.getSquareRoots().sorted()
     }
 
     operator fun times(other: Term): Term {
@@ -73,8 +75,9 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val groups = numbers.groupBy { it.type }
         val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())
         val pis = Pi.simplifyList(groups[Pi.TYPE] ?: listOf())
-        val newCoefficient = coefficient * logs.first
-        val newNumbers = logs.second + pis
+        val sqrts = Sqrt.simplifyList(groups[Sqrt.TYPE] ?: listOf())
+        val newCoefficient = coefficient * logs.first * sqrts.first
+        val newNumbers = logs.second + sqrts.second + pis
 
         return Term(newCoefficient, newNumbers)
     }
@@ -97,7 +100,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
     /**
      * Get all logs from numbers
      */
-    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE }.map { it } as List<Log>
+    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE } as List<Log>
 
     /**
      * Get number of Pi in numbers. Divided Pi is counted as -1
@@ -108,6 +111,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val negative = pis.size - positive
         return positive - negative
     }
+
+    /**
+     * Get all square roots from numbers
+     */
+    fun getSquareRoots(): List<Sqrt> = numbers.filter { it.type == Sqrt.TYPE } as List<Sqrt>
 
     override fun toString(): String {
         val coeffString = if (coefficient.denominator == BigInteger.ONE) {
@@ -140,11 +148,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
          * A negative number corresponds to divided Pi values
          * @return [Term] with the given values
          */
-        fun fromValues(coefficient: ExactFraction, logs: List<Log>, piCount: Int): Term {
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
             val piDivided = piCount < 0
             val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
 
-            return Term(coefficient, logs + piList)
+            return Term(coefficient, logs + roots + piList)
         }
     }
 }
