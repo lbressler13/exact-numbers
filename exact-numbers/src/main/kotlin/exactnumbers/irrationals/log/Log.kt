@@ -11,7 +11,6 @@ import expressions.term.Term
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.math.log
 
 /**
  * Representation of a log, with an integer base and rational argument

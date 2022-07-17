@@ -277,7 +277,7 @@ internal class TermTest {
         val sqrt1 = Sqrt(ExactFraction(1000, 109))
         val sqrt2 = Sqrt(5096)
         term = Term(ExactFraction(-100, 333), listOf(Pi(true), logNum2, logNum2, sqrt1, logNum4, Pi(), logNum1, sqrt2))
-        expected = "<[-100/333]x${Pi(true)}x${logNum2}x${logNum2}x${sqrt1}x${logNum4}x${Pi()}x${logNum1}x${sqrt2}>"
+        expected = "<[-100/333]x${Pi(true)}x${logNum2}x${logNum2}x${sqrt1}x${logNum4}x${Pi()}x${logNum1}x$sqrt2>"
         assertEquals(expected, term.toString())
     }
 }
