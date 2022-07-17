@@ -1,6 +1,7 @@
 package exactnumbers.irrationals.sqrt
 
 import common.divideBigDecimals
+import common.throwDivideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.ext.toExactFraction
 import exactnumbers.irrationals.common.Irrational
@@ -46,7 +47,13 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     operator fun div(other: Pi): Term = div(other)
 
     override fun isZero(): Boolean = radicand.isZero()
-    override fun swapDivided(): Sqrt = Sqrt(radicand.inverse())
+    override fun swapDivided(): Sqrt {
+        if (isZero()) {
+            throwDivideByZero()
+        }
+
+        return Sqrt(radicand.inverse())
+    }
 
     /**
      * Determine if the value of the root is a rational number.

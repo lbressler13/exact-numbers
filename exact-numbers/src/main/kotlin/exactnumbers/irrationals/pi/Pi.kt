@@ -65,7 +65,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
         }
     }
 
-    override fun hashCode(): Int = PI.hashCode()
+    override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
 
     companion object {
         const val TYPE = "pi"

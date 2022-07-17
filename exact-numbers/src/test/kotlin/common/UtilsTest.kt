@@ -129,6 +129,22 @@ internal class UtilsTest {
         goodValues = mapOf()
         listOf(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal("2"), BigDecimal("-2"), BigDecimal("1.9999999"))
         runSingleGetIntFromDecimalTest(goodValues, badValues) { BigInteger("10").pow(it.toInt()) == BigInteger("99") }
+
+        // test choosing closer number
+        goodValues = mapOf(
+            BigDecimal.ONE to BigInteger.ONE,
+            BigDecimal("0.3") to BigInteger.ZERO,
+            BigDecimal("0.5") to BigInteger.ONE,
+            BigDecimal("0.7") to BigInteger.ONE,
+            BigDecimal("15.5") to BigInteger("16"),
+            BigDecimal("-15.3") to BigInteger("-15"),
+            BigDecimal("-15.5") to BigInteger("-16"),
+            BigDecimal("-15.7") to BigInteger("-16"),
+            BigDecimal("10000.000001") to BigInteger("10000"),
+            BigDecimal("10000.999999") to BigInteger("10001"),
+        )
+        badValues = listOf()
+        runSingleGetIntFromDecimalTest(goodValues, badValues) { true }
     }
 
     private fun runSingleGetIntFromDecimalTest(
@@ -137,6 +153,7 @@ internal class UtilsTest {
         test: (BigInteger) -> Boolean
     ) {
         for (pair in goodValues) {
+            println(pair)
             assertEquals(pair.value, getIntFromDecimal(pair.key, test))
         }
 

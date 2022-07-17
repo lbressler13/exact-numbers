@@ -61,10 +61,10 @@ Tests can be run using an IDE, or with the following command:
 When writing tests for irrationals, it can be useful to use a high-precision calculator, such as [this one](https://www.mathsisfun.com/scientific-calculator.html), to calculate expected values.
 
 ## Linting
-Linting is done using [ktlint](https://ktlint.github.io/), using [this](https://github.com/jlleitschuh/ktlint-gradle) plugin.
+Linting is done with [ktlint](https://ktlint.github.io/), using [this](https://github.com/jlleitschuh/ktlint-gradle) plugin.
 See [here](https://github.com/pinterest/ktlint#standard-rules) for a list of standard rules.
 
-Linting can be run using an IDE, or with the following command:
+Code can be formatted using an IDE, or with the following command:
 ```./gradlew ktlintFormat```
 
 ## Importing the package

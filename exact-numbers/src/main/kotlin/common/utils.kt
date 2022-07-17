@@ -1,8 +1,6 @@
 package common
 
 import kotlinutils.biginteger.ext.isZero
-import kotlinutils.biginteger.max
-import kotlinutils.biginteger.min
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -22,8 +20,8 @@ internal fun getGCD(val1: BigInteger, val2: BigInteger): BigInteger {
         aval1 == aval2 -> return aval1
     }
 
-    var sum = max(aval1, aval2)
-    var value = min(aval1, aval2)
+    var sum = aval1.max(aval2)
+    var value = aval1.min(aval2)
     var finished = false
 
     while (!finished) {
@@ -57,8 +55,8 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
 }
 
 /**
- * Round decimal up and down, and determine if either value passes a check.
- * If so, returns the passing value, which defaults to rounding up.
+ * Round decimal to nearest ints, and determine if either value passes a check.
+ * If so, returns the passing value. If both pass, the closer value will be returned.
  *
  * @param decimal [BigDecimal]: the number to round
  * @param checkInt [(BigInteger) -> Boolean]: function to check rounded value
@@ -69,9 +67,13 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
         val upInt = decimal.setScale(0, RoundingMode.UP).toBigInteger()
         val downInt = decimal.setScale(0, RoundingMode.DOWN).toBigInteger()
 
+        val upPasses = checkInt(upInt)
+        val downPasses = checkInt(downInt)
+
         return when {
-            checkInt(upInt) -> upInt
-            checkInt(downInt) -> downInt
+            upPasses && downPasses -> decimal.setScale(0, RoundingMode.HALF_UP).toBigInteger()
+            upPasses -> upInt
+            downPasses -> downInt
             else -> null
         }
     } catch (_: Exception) {

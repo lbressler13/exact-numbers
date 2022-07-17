@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.0.2"
+    val kotlinUtilsVersion = "0.0.3"
 
     implementation(kotlin("stdlib"))
     testImplementation(kotlin("test"))
