@@ -11,10 +11,7 @@ import expressions.term.Term
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.math.ceil
-import kotlin.math.floor
 import kotlin.math.log
-import kotlin.math.roundToInt
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -36,10 +33,23 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         }
     }
 
-    // constructors with reduced params
+    // constructors with reduced params + other types
     constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false)
     constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false)
     constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided)
+
+    constructor(argument: Int) : this(ExactFraction(argument))
+    constructor(argument: Int, base: Int) : this(ExactFraction(argument), base)
+    constructor(argument: Int, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
+    constructor(argument: Int, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
+    constructor(argument: Long) : this(ExactFraction(argument))
+    constructor(argument: Long, base: Int) : this(ExactFraction(argument), base)
+    constructor(argument: Long, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
+    constructor(argument: Long, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
+    constructor(argument: BigInteger) : this(ExactFraction(argument))
+    constructor(argument: BigInteger, base: Int) : this(ExactFraction(argument), base)
+    constructor(argument: BigInteger, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
+    constructor(argument: BigInteger, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Log) {
@@ -65,8 +75,8 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
      * @return [Boolean]: true if the value is rational, false otherwise
      */
     override fun isRational(): Boolean {
-        val numLog = getLogOf(argument.numerator)
-        val denomLog = getLogOf(argument.denominator)
+        val numLog = getLogOf(argument.numerator, base)
+        val denomLog = getLogOf(argument.denominator, base)
 
         // rational if both values are whole numbers
         return numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
@@ -86,8 +96,8 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
             return ExactFraction.ZERO
         }
 
-        val numLog = getLogOf(argument.numerator).toBigInteger()
-        val denomLog = getLogOf(argument.denominator).toBigInteger()
+        val numLog = getLogOf(argument.numerator, base).toBigInteger()
+        val denomLog = getLogOf(argument.denominator, base).toBigInteger()
 
         val result = when {
             numLog.isZero() -> ExactFraction(denomLog) // numerator of argument is 1, negative sign is added later
@@ -110,7 +120,7 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
      * @return [BigDecimal]
      */
     override fun getValue(): BigDecimal {
-        val logValue = getLogOf(argument.numerator) - getLogOf(argument.denominator)
+        val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
 
         if (!isDivided) {
             return logValue
@@ -127,30 +137,6 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         return Log(argument, base, !isDivided)
     }
 
-    /**
-     * Get log value of a whole number, using the base assigned to this log
-     *
-     * @param [num] [BigInteger]: number to get log of
-     * @return [BigDecimal]: the log of the number, using the current base
-     * @throws [ArithmeticException] if the log returns NaN
-     */
-    internal fun getLogOf(num: BigInteger): BigDecimal {
-        val logNum = log(num.toDouble(), base.toDouble())
-        if (logNum.isNaN()) {
-            throw ArithmeticException("Error calculating log of $argument")
-        }
-
-        // account for imprecision with doubles
-        val upInt = ceil(logNum).roundToInt()
-        val downInt = floor(logNum).roundToInt()
-
-        return when (num) {
-            base.toBigInteger().pow(upInt) -> upInt.toBigDecimal()
-            base.toBigInteger().pow(downInt) -> downInt.toBigDecimal()
-            else -> logNum.toBigDecimal()
-        }
-    }
-
     override fun toString(): String {
         val numString = if (argument.denominator == BigInteger.ONE) {
             argument.numerator.toString()
@@ -165,7 +151,7 @@ class Log(val argument: ExactFraction, val base: Int, override val isDivided: Bo
         return "[log_$base($numString)]"
     }
 
-    override fun hashCode(): Int = Pair(argument, base).hashCode()
+    override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
 
     companion object {
         const val TYPE = "log"

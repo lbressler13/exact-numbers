@@ -3,110 +3,15 @@ package exactnumbers.irrationals.log
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
-import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class LogTest {
-    @Test
-    internal fun testConstructor() {
-        // error
-        assertDivByZero { Log(ExactFraction.ONE, 10, isDivided = true) }
-
-        assertFailsWith<ArithmeticException>("Cannot calculate log of 0") {
-            Log(ExactFraction.ZERO)
-        }
-
-        assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            Log(-ExactFraction.TEN)
-        }
-
-        assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            Log(ExactFraction(-4, 3))
-        }
-
-        assertFailsWith<ArithmeticException>("Cannot calculate log of negative number") {
-            Log(-ExactFraction.TEN)
-        }
-
-        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            Log(ExactFraction.TEN, -1)
-        }
-
-        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            Log(ExactFraction.TEN, 0)
-        }
-
-        assertFailsWith<ArithmeticException>("Log base must be greater than 1") {
-            Log(ExactFraction.TEN, 1)
-        }
-
-        // zero
-        var logNum = Log(ExactFraction.ONE)
-        var expectedNumber = ExactFraction.ONE
-        var expectedBase = 10
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        // all fields
-        logNum = Log(ExactFraction(13, 100), 100, true)
-        expectedNumber = ExactFraction(13, 100)
-        expectedBase = 100
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertTrue(logNum.isDivided)
-
-        // just number
-        logNum = Log(ExactFraction.TWO)
-        expectedNumber = ExactFraction.TWO
-        expectedBase = 10
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        logNum = Log(ExactFraction(107, 3))
-        expectedNumber = ExactFraction(107, 3)
-        expectedBase = 10
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        // number + base
-        logNum = Log(ExactFraction.TWO, 2)
-        expectedNumber = ExactFraction.TWO
-        expectedBase = 2
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        logNum = Log(ExactFraction(107, 3), 5)
-        expectedNumber = ExactFraction(107, 3)
-        expectedBase = 5
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        // number + divided
-        logNum = Log(ExactFraction.TWO, false)
-        expectedNumber = ExactFraction.TWO
-        expectedBase = 10
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isDivided)
-
-        logNum = Log(ExactFraction.TWO, true)
-        expectedNumber = ExactFraction.TWO
-        expectedBase = 10
-        assertEquals(expectedNumber, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertTrue(logNum.isDivided)
-    }
+    @Test internal fun testConstructor() = runConstructorTests() // TODO
 
     @Test
     internal fun testEquals() {
@@ -386,74 +291,6 @@ internal class LogTest {
         logNum = Log(ExactFraction(12), 4, true)
         expected = BigDecimal("0.55788589130225962125")
         assertEquals(expected, logNum.getValue())
-    }
-
-    @Test
-    internal fun testGetLogOf() {
-        // base 10
-        var logNum = Log(ExactFraction.TEN, 10)
-
-        // var logNum = LogNum(ExactFraction.ONE)
-        var bi = BigInteger.ONE
-        var expected = BigDecimal.ZERO
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = BigInteger.TEN
-        expected = BigDecimal.ONE
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 100.toBigInteger()
-        expected = 2.toBigDecimal()
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 200.toBigInteger()
-        // expected = BigDecimal("2.30102999566398114")
-        expected = BigDecimal("2.301029995663981")
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 3333.toBigInteger()
-        expected = BigDecimal("3.52283531366053")
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 300.toBigInteger()
-        // expected = BigDecimal("2.47712125471966244")
-        expected = BigDecimal("2.477121254719662")
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 77.toBigInteger()
-        expected = BigDecimal("1.8864907251724818")
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        // base 2
-        logNum = Log(ExactFraction.TWO, 2)
-
-        bi = BigInteger.ONE
-        expected = BigDecimal.ZERO
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 32.toBigInteger()
-        expected = 5.toBigDecimal()
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        bi = 200.toBigInteger()
-        expected = BigDecimal("7.643856189774724")
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        // other
-        logNum = Log(ExactFraction.SEVEN, 7)
-        bi = BigInteger.ONE
-        expected = BigDecimal.ZERO
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        logNum = Log(ExactFraction.SIX, 6)
-        bi = 216.toBigInteger()
-        expected = 3.toBigDecimal()
-        assertEquals(expected, logNum.getLogOf(bi))
-
-        logNum = Log(ExactFraction(24), 24)
-        bi = 15151515.toBigInteger()
-        expected = BigDecimal("5.202432673429519")
-        assertEquals(expected, logNum.getLogOf(bi))
     }
 
     @Test

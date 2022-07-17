@@ -6,6 +6,7 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
+import exactnumbers.irrationals.sqrt.Sqrt
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
@@ -73,8 +74,9 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val groups = numbers.groupBy { it.type }
         val logs = Log.simplifyList(groups[Log.TYPE] ?: listOf())
         val pis = Pi.simplifyList(groups[Pi.TYPE] ?: listOf())
-        val newCoefficient = coefficient * logs.first
-        val newNumbers = logs.second + pis
+        val sqrts = Sqrt.simplifyList(groups[Sqrt.TYPE] ?: listOf())
+        val newCoefficient = coefficient * logs.first * sqrts.first
+        val newNumbers = logs.second + sqrts.second + pis
 
         return Term(newCoefficient, newNumbers)
     }
