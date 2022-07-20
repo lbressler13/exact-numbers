@@ -1,7 +1,7 @@
 package exactnumbers.irrationals.sqrt
 
 import common.getIntFromDecimal
-import exactnumbers.irrationals.common.Memoization
+import exactnumbers.irrationals.common.Memoize
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -17,7 +17,7 @@ import java.math.RoundingMode
  * @return [BigInteger]: the whole number that was extracted
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
-    val memo = Memoization.individualWholeNumber
+    val memo = Memoize.individualWholeNumber
 
     if (num in memo) {
         return memo[num]!!

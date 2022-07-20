@@ -45,13 +45,25 @@ internal fun runSimplifyListTests() {
     expected = Pair(ExactFraction(35, 32), listOf())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
+    numbers = listOf(
+        Sqrt(15),
+        Sqrt(6),
+        Sqrt(10)
+    )
+    expected = Pair(ExactFraction(30), listOf())
+    assertEquals(expected, Sqrt.simplifyList(numbers))
+
     // mixed
+    numbers = listOf(Sqrt(2), Sqrt(6))
+    expected = Pair(ExactFraction.TWO, listOf(Sqrt(3)))
+    assertEquals(expected, Sqrt.simplifyList(numbers))
+
     numbers = listOf(Sqrt(8))
     expected = Pair(ExactFraction.TWO, listOf(Sqrt(2)))
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(ExactFraction(2, 15)), Sqrt(16))
-    expected = Pair(ExactFraction.FOUR, listOf(Sqrt(2), Sqrt(ExactFraction(1, 15))))
+    expected = Pair(ExactFraction.FOUR, listOf(Sqrt(ExactFraction(2, 15))))
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(
@@ -61,7 +73,7 @@ internal fun runSimplifyListTests() {
     )
     expected = Pair(
         ExactFraction(33, 10),
-        listOf(Sqrt(11), Sqrt(ExactFraction(1, 5)))
+        listOf(Sqrt(ExactFraction(11, 5)))
     )
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
@@ -73,7 +85,7 @@ internal fun runSimplifyListTests() {
     )
     expected = Pair(
         ExactFraction(2, 3),
-        listOf(Sqrt(15), Sqrt(ExactFraction(1, 3)), Sqrt(ExactFraction(1, 17)))
+        listOf(Sqrt(ExactFraction(5, 17)))
     )
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
@@ -88,17 +100,14 @@ internal fun runSimplifyListTests() {
 
     // no wholes
     numbers = listOf(Sqrt(2), Sqrt(ExactFraction(17, 33)))
-    expected = Pair(one, listOf(Sqrt(2), Sqrt(17), Sqrt(ExactFraction(1, 33))))
+    expected = Pair(one, listOf(Sqrt(ExactFraction(34, 33))))
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(15), Sqrt(ExactFraction(1511, 119)), Sqrt(ExactFraction(1, 13)))
     expected = Pair(
         one,
         listOf(
-            Sqrt(15),
-            Sqrt(1511),
-            Sqrt(ExactFraction(1, 119)),
-            Sqrt(ExactFraction(1, 13))
+            Sqrt(ExactFraction(22665, 1547))
         )
     )
     assertEquals(expected, Sqrt.simplifyList(numbers))
@@ -119,7 +128,7 @@ internal fun runSimplifyListTests() {
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(ExactFraction(2, 15)), rootOne, Sqrt(16))
-    expected = Pair(ExactFraction.FOUR, listOf(Sqrt(2), Sqrt(ExactFraction(1, 15))))
+    expected = Pair(ExactFraction.FOUR, listOf(Sqrt(ExactFraction(2, 15))))
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(

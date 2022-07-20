@@ -73,6 +73,10 @@ internal class HelpersTest {
         expected = BigInteger.TWO
         assertEquals(expected, extractWholeOf(num))
 
+        num = BigInteger("18")
+        expected = BigInteger("3")
+        assertEquals(expected, extractWholeOf(num))
+
         num = BigInteger("200")
         expected = BigInteger.TEN
         assertEquals(expected, extractWholeOf(num))
