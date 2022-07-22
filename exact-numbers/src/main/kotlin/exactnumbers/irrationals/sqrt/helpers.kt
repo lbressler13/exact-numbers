@@ -18,6 +18,7 @@ import java.math.RoundingMode
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
     val memo = Memoize.individualWholeNumber
+    println("Start: $memo")
 
     if (num in memo) {
         return memo[num]!!
@@ -32,17 +33,36 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
     var factor = BigInteger.TWO
     var remaining = num
 
-    while (factor * factor <= remaining && remaining > BigInteger.ONE) {
-        // divide by current factor as many times as needed
-        while (remaining % (factor * factor) == BigInteger.ZERO) {
-            extracted *= factor
-            remaining /= (factor * factor)
-        }
+//    var previousExtracted: BigInteger? = null
+//    var previousRemaining: BigInteger? = null
+//    val orderedExtracted = mutableListOf(extracted)
+//    val orderedRemaining = mutableListOf(remaining)
 
-        factor++
+    while (factor * factor <= remaining && remaining > BigInteger.ONE) {
+        if (remaining in memo) {
+            extracted *= memo[remaining]!!
+            remaining = BigInteger.ONE
+        } else {
+            // divide by current factor as many times as needed
+            while (remaining % (factor * factor) == BigInteger.ZERO) {
+                extracted *= factor
+                remaining /= (factor * factor)
+            }
+
+//            if (remaining != previousRemaining || extracted != previousExtracted) {
+//                orderedExtracted.add(extracted)
+//                orderedRemaining.add(remaining)
+//                previousRemaining = remaining
+//                previousExtracted = extracted
+//            }
+
+            factor++
+        }
     }
 
     memo[num] = extracted
+//    println("Pair: ${Pair(orderedRemaining, orderedExtracted.reversed())}")
+    println("End: $memo")
     return extracted
 }
 

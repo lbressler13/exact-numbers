@@ -1,7 +1,7 @@
 package exactnumbers.irrationals.sqrt
 
 import common.divideBigDecimals
-import common.throwDivideByZero
+import common.divideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
@@ -48,7 +48,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
         if (isZero()) {
-            throwDivideByZero()
+            throw divideByZero
         }
 
         return Sqrt(radicand.inverse())
@@ -158,6 +158,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
                 return Pair(ExactFraction.ONE, listOf())
             }
 
+            @Suppress("Unchecked cast")
             numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {

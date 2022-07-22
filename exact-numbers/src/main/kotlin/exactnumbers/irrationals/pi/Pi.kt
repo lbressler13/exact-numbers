@@ -78,12 +78,11 @@ class Pi(override val isDivided: Boolean) : Irrational {
          * @throws [ClassCastException] if any of the numbers are not a Pi
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
-            val one = ExactFraction.ONE
-
             if (numbers.isNullOrEmpty()) {
                 return listOf()
             }
 
+            @Suppress("Unchecked cast")
             numbers as List<Pi>
 
             val positive = numbers.count { !it.isDivided }
