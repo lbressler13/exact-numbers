@@ -18,7 +18,6 @@ import java.math.RoundingMode
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
     val memo = Memoize.individualWholeNumber
-    println("Start: $memo")
 
     if (num in memo) {
         return memo[num]!!
@@ -33,36 +32,42 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
     var factor = BigInteger.TWO
     var remaining = num
 
-//    var previousExtracted: BigInteger? = null
-//    var previousRemaining: BigInteger? = null
-//    val orderedExtracted = mutableListOf(extracted)
-//    val orderedRemaining = mutableListOf(remaining)
+    val orderedRemaining = mutableListOf(remaining)
+    val orderedFactors = mutableListOf(BigInteger.ONE)
 
     while (factor * factor <= remaining && remaining > BigInteger.ONE) {
         if (remaining in memo) {
-            extracted *= memo[remaining]!!
+            val fromMemo = memo[remaining]!!
+            extracted *= fromMemo
             remaining = BigInteger.ONE
+
+            orderedFactors.add(fromMemo)
+            orderedRemaining.add(remaining)
         } else {
             // divide by current factor as many times as needed
+            var extractedCount = 0
+
             while (remaining % (factor * factor) == BigInteger.ZERO) {
                 extracted *= factor
                 remaining /= (factor * factor)
+                extractedCount++
             }
 
-//            if (remaining != previousRemaining || extracted != previousExtracted) {
-//                orderedExtracted.add(extracted)
-//                orderedRemaining.add(remaining)
-//                previousRemaining = remaining
-//                previousExtracted = extracted
-//            }
+            if (extractedCount > 0) {
+                orderedFactors.add(factor.pow(extractedCount))
+                orderedRemaining.add(remaining)
+            }
 
             factor++
         }
     }
 
-    memo[num] = extracted
-//    println("Pair: ${Pair(orderedRemaining, orderedExtracted.reversed())}")
-    println("End: $memo")
+    var currentProduct = BigInteger.ONE
+    for (idx in orderedFactors.indices.reversed()) {
+        memo[orderedRemaining[idx]] = currentProduct
+        currentProduct *= orderedFactors[idx]
+    }
+
     return extracted
 }
 

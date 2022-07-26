@@ -5,6 +5,8 @@ import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+// TODO mock Memoize object + reset before each test
+
 internal class HelpersTest {
     @Test
     internal fun testGetRootOf() {
@@ -58,6 +60,10 @@ internal class HelpersTest {
 
         num = BigInteger("36")
         expected = BigInteger("6")
+        assertEquals(expected, extractWholeOf(num))
+
+        num = BigInteger("81")
+        expected = BigInteger("9")
         assertEquals(expected, extractWholeOf(num))
 
         num = BigInteger("8281")

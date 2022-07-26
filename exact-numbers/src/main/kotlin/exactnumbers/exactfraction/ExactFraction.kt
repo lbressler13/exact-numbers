@@ -426,7 +426,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     }
 
     fun toBigInteger(): BigInteger = numerator / denominator
-    fun toBI(): BigInteger = toBigInteger()
     fun toBigDecimal(precision: Int = 20): BigDecimal {
         val mc = MathContext(precision, RoundingMode.HALF_UP)
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)

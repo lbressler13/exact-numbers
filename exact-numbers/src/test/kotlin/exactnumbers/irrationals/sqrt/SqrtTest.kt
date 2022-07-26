@@ -2,17 +2,17 @@ package exactnumbers.irrationals.sqrt
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Memoize
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 internal class SqrtTest {
+    @BeforeTest
+    fun reset() {
+        Memoize.individualWholeNumber.clear()
+    }
+
     @Test
     internal fun testConstructor() {
         // errors
