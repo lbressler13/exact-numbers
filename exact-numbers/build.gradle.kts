@@ -18,7 +18,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     testImplementation(kotlin("test"))
-    // testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 
     implementation(files("libs/kotlin-utils-$kotlinUtilsVersion.jar"))
 }

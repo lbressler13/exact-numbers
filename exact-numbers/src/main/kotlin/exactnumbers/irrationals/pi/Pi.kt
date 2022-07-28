@@ -82,7 +82,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
                 return listOf()
             }
 
-            @Suppress("Unchecked cast")
+            @Suppress("UNCHECKED_CAST")
             numbers as List<Pi>
 
             val positive = numbers.count { !it.isDivided }

@@ -100,7 +100,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
     /**
      * Get all logs from numbers
      */
-    @Suppress("Unchecked cast")
+    @Suppress("UNCHECKED_CAST")
     fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE } as List<Log>
 
     /**
@@ -116,7 +116,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
     /**
      * Get all square roots from numbers
      */
-    @Suppress("Unchecked cast")
+    @Suppress("UNCHECKED_CAST")
     fun getSquareRoots(): List<Sqrt> = numbers.filter { it.type == Sqrt.TYPE } as List<Sqrt>
 
     override fun toString(): String {

@@ -1,15 +1,29 @@
 package exactnumbers.irrationals.sqrt
 
+import exactnumbers.irrationals.common.Memoize
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-// TODO mock Memoize object + reset before each test
+// TODO need some tests where memo is actually used
+// TODO test that correct values are being added to memo
 
 internal class HelpersTest {
+    @AfterTest
+    fun clearMocks() {
+        unmockkAll()
+    }
+
     @Test
     internal fun testGetRootOf() {
+        mockkObject(Memoize)
+        every { Memoize.individualWholeNumber } answers { mutableMapOf() }
+
         // rational
         var num = BigInteger.ZERO
         var expected = BigDecimal.ZERO
@@ -42,7 +56,10 @@ internal class HelpersTest {
     }
 
     @Test
-    internal fun testExtractWholeOf() {
+    fun testExtractWholeOf() {
+        mockkObject(Memoize)
+        every { Memoize.individualWholeNumber } answers { mutableMapOf() }
+
         val one = BigInteger.ONE
 
         // rational
