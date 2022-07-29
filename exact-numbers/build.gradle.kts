@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.0.5"
+    val kotlinUtilsVersion = "0.0.6-alpha"
     val mockkVersion = "1.12.4"
 
     implementation(kotlin("stdlib"))
