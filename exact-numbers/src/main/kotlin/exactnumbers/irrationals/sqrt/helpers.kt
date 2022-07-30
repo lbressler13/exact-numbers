@@ -72,7 +72,6 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
                 addToMemo(factor, BigInteger.ONE)
             }
 
-
             factor++
         }
     }

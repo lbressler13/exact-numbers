@@ -1,19 +1,17 @@
 package exactnumbers.irrationals.sqrt
 
-import exactnumbers.exactfraction.ExactFraction.Companion.THREE
 import exactnumbers.irrationals.common.Memoize
-import kotlinutils.biginteger.ext.THREE
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.spyk
+import io.mockk.unmockkAll
+import io.mockk.verify
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-
-// TODO need some tests where memo is actually used
-// TODO test that correct values are being added to memo
-// TODO tests where values are already stored in memo
 
 internal class HelpersTest {
     @AfterTest
@@ -66,6 +64,8 @@ internal class HelpersTest {
         val seven = BigInteger("7")
         val ten = BigInteger("10")
 
+        mockkObject(Memoize)
+
         // exception
         assertFailsWith<ArithmeticException>("Cannot calculate root of negative number") { extractWholeOf(BigInteger("-25")) }
 
@@ -81,7 +81,8 @@ internal class HelpersTest {
         num = BigInteger("100")
         expected = ten
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(one, one),
                 Pair(two, one),
                 Pair(five, one),
@@ -93,7 +94,8 @@ internal class HelpersTest {
         num = BigInteger("36")
         expected = BigInteger("6")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(one, one),
                 Pair(two, one),
                 Pair(three, one),
@@ -105,7 +107,8 @@ internal class HelpersTest {
         num = BigInteger("81")
         expected = BigInteger("9")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(one, one),
                 Pair(three, one),
                 Pair(BigInteger("81"), BigInteger("9"))
@@ -115,7 +118,8 @@ internal class HelpersTest {
         num = BigInteger("4900")
         expected = BigInteger("70")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(one, one),
                 Pair(two, one),
                 Pair(five, one),
@@ -129,7 +133,8 @@ internal class HelpersTest {
         num = BigInteger("8281")
         expected = BigInteger("91")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(one, one),
                 Pair(seven, one),
                 Pair(BigInteger("13"), one),
@@ -142,26 +147,21 @@ internal class HelpersTest {
         num = BigInteger("8")
         expected = two
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
-                Pair(two, one),
-                Pair(BigInteger("8"), two)
-            )
+            num, expected, mapOf(), listOf(Pair(two, one), Pair(BigInteger("8"), two))
         )
 
         num = BigInteger("18")
         expected = BigInteger("3")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
-                Pair(two, one),
-                Pair(three, one),
-                Pair(BigInteger("18"), three)
-            )
+            num, expected, mapOf(),
+            listOf(Pair(two, one), Pair(three, one), Pair(BigInteger("18"), three))
         )
 
         num = BigInteger("200")
         expected = ten
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(two, one),
                 Pair(five, one),
                 Pair(BigInteger("50"), five),
@@ -172,7 +172,8 @@ internal class HelpersTest {
         num = BigInteger("296208")
         expected = BigInteger("132")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(
+            num, expected, mapOf(),
+            listOf(
                 Pair(two, one),
                 Pair(three, one),
                 Pair(BigInteger("11"), one),
@@ -228,7 +229,8 @@ internal class HelpersTest {
         num = BigInteger("4900")
         expected = BigInteger("70")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(one to one, two to one, five to one, seven to one), listOf(
+            num, expected, mapOf(one to one, two to one, five to one, seven to one),
+            listOf(
                 Pair(BigInteger("49"), seven),
                 Pair(BigInteger("1225"), BigInteger("35")),
                 Pair(BigInteger("4900"), BigInteger("70"))
@@ -246,7 +248,8 @@ internal class HelpersTest {
         num = BigInteger("200")
         expected = ten
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(five to one, BigInteger("20") to two), listOf(
+            num, expected, mapOf(five to one, BigInteger("20") to two),
+            listOf(
                 Pair(two, one),
                 Pair(BigInteger("50"), five),
                 Pair(BigInteger("200"), ten)
@@ -265,7 +268,6 @@ internal class HelpersTest {
             every { mapSpy[pair.key] } returns pair.value
         }
 
-        mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mapSpy }
 
         assertEquals(expected, extractWholeOf(num))
@@ -273,7 +275,5 @@ internal class HelpersTest {
         for (call in calls) {
             verify { mapSpy[call.first] = call.second }
         }
-
-        unmockkAll()
     }
 }
