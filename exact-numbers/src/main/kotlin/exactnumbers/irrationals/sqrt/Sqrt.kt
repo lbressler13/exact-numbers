@@ -165,6 +165,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
                 return Pair(ExactFraction.ZERO, listOf())
             }
 
+            // combine all roots into single root, and return that value
             val total = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
             val numWhole = extractWholeOf(total.numerator)
             val denomWhole = extractWholeOf(total.denominator)

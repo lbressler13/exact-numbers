@@ -36,7 +36,6 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
     }
 
     if (num.isZero()) {
-        // memo[num] = BigInteger.ONE
         addToMemo(num, BigInteger.ONE)
         return BigInteger.ONE
     }
