@@ -161,9 +161,4 @@ internal class UtilsTest {
             assertNull(getIntFromDecimal(value, test))
         }
     }
-
-    @Test
-    internal fun testDivideByZero() {
-        assertDivByZero { throwDivideByZero() }
-    }
 }

@@ -1,7 +1,8 @@
 package exactnumbers.irrationals.sqrt
 
 import common.getIntFromDecimal
-import exactnumbers.irrationals.common.Memoization
+import exactnumbers.irrationals.common.Memoize
+import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -13,18 +14,29 @@ import java.math.RoundingMode
  * As an example, the function would return 5 for 50, because 50 = 2 * 5^2.
  * Uses memoization to avoid repeated computation.
  *
- * @param num [BigInteger]: value to extract from
+ * @param num [BigInteger]: value to extract from, required to be non-negative
  * @return [BigInteger]: the whole number that was extracted
+ * @throws [ArithmeticException] if [num] is negative
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
-    val memo = Memoization.individualWholeNumber
+    if (num.isNegative()) {
+        throw ArithmeticException("Cannot calculate root of a negative number")
+    }
+
+    val memo = Memoize.individualWholeNumber
+
+    fun addToMemo(key: BigInteger, value: BigInteger) {
+        if (key !in memo) {
+            memo[key] = value
+        }
+    }
 
     if (num in memo) {
         return memo[num]!!
     }
 
     if (num.isZero()) {
-        memo[num] = BigInteger.ONE
+        addToMemo(num, BigInteger.ONE)
         return BigInteger.ONE
     }
 
@@ -32,17 +44,43 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
     var factor = BigInteger.TWO
     var remaining = num
 
-    while (factor * factor <= remaining && remaining > BigInteger.ONE) {
-        // divide by current factor as many times as needed
-        while (remaining % (factor * factor) == BigInteger.ZERO) {
-            extracted *= factor
-            remaining /= (factor * factor)
-        }
+    val orderedRemaining = mutableListOf(remaining)
+    val orderedFactors = mutableListOf(BigInteger.ONE)
 
-        factor++
+    while (factor * factor <= remaining && remaining > BigInteger.ONE) {
+        if (remaining in memo) {
+            val fromMemo = memo[remaining]!!
+            extracted *= fromMemo
+            remaining = BigInteger.ONE
+
+            orderedFactors.add(fromMemo)
+            orderedRemaining.add(remaining)
+        } else {
+            // divide by current factor as many times as needed
+            var extractedCount = 0
+
+            while (remaining % (factor * factor) == BigInteger.ZERO) {
+                extracted *= factor
+                remaining /= (factor * factor)
+                extractedCount++
+            }
+
+            if (extractedCount > 0) {
+                orderedFactors.add(factor.pow(extractedCount))
+                orderedRemaining.add(remaining)
+                addToMemo(factor, BigInteger.ONE)
+            }
+
+            factor++
+        }
     }
 
-    memo[num] = extracted
+    var currentProduct = BigInteger.ONE
+    for (idx in orderedFactors.indices.reversed()) {
+        addToMemo(orderedRemaining[idx], currentProduct)
+        currentProduct *= orderedFactors[idx]
+    }
+
     return extracted
 }
 

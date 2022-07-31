@@ -1,9 +1,8 @@
 package exactnumbers.irrationals.sqrt
 
 import common.divideBigDecimals
-import common.throwDivideByZero
+import common.divideByZero
 import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.ext.toExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
 import exactnumbers.irrationals.pi.Pi
@@ -49,7 +48,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
         if (isZero()) {
-            throwDivideByZero()
+            throw divideByZero
         }
 
         return Sqrt(radicand.inverse())
@@ -151,7 +150,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
          * Extract rational values and simplify remaining list of irrationals
          *
          * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Sqrts
-         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of irrational values
+         * @return [Pair<ExactFraction, List<Sqrt>>]: product of rational values and a list containing a single, fully simplified irrational root
          * @throws [ClassCastException] if any of the numbers are not a Sqrt
          */
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
@@ -159,58 +158,30 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
                 return Pair(ExactFraction.ONE, listOf())
             }
 
+            @Suppress("UNCHECKED_CAST")
             numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {
                 return Pair(ExactFraction.ZERO, listOf())
             }
 
-            var coeff = ExactFraction.ONE
-            val currentNums: MutableSet<ExactFraction> = mutableSetOf()
+            // combine all roots into single root, and return that value
+            val total = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
+            val numWhole = extractWholeOf(total.numerator)
+            val denomWhole = extractWholeOf(total.denominator)
+            val numRoot = total.numerator / (numWhole * numWhole)
+            val denomRoot = total.denominator / (denomWhole * denomWhole)
 
-            for (sqrt in numbers) {
-                if (sqrt == ONE) {
-                    continue
-                }
+            val root = Sqrt(ExactFraction(numRoot, denomRoot), true)
+            val coeff = ExactFraction(numWhole, denomWhole)
 
-                val simplified = sqrt.getSimplified()
-
-                coeff *= simplified.first
-
-                val num = simplified.second.radicand.numerator.toExactFraction()
-                val denom =
-                    simplified.second.radicand.denominator.toExactFraction().inverse() // put value in denominator
-
-                // update current numbers based on numerator value
-                when {
-                    // sqrt(x) * sqrt(x) = add x to coeff, remove from list
-                    currentNums.contains(num) -> {
-                        currentNums.remove(num)
-                        coeff *= num
-                    }
-                    // sqrt(x) * sqrt(1/x) = remove from list, multiple coeff by 1 (no change)
-                    currentNums.contains(num.inverse()) -> currentNums.remove(num.inverse())
-                    // add sqrt(x) to list, may be removed later
-                    num != ExactFraction.ONE -> currentNums.add(num)
-                }
-
-                // update current numbers based on denominator value
-                when {
-                    // sqrt(1/x) * sqrt(1/x) = add 1/x to coeff, remove from list
-                    currentNums.contains(denom) -> {
-                        currentNums.remove(denom)
-                        coeff *= denom
-                    }
-                    // sqrt(1/x) * sqrt(x) = remove from list, multiple coeff by 1 (no change)
-                    currentNums.contains(denom.inverse()) -> currentNums.remove(denom.inverse())
-                    // add sqrt(1/x) to list, may be removed later
-                    denom != ExactFraction.ONE -> currentNums.add(denom)
-                }
+            val rootList = if (root == ONE) {
+                listOf()
+            } else {
+                listOf(root)
             }
 
-            val sqrtList = currentNums.map { Sqrt(it, true) }.toList()
-
-            return Pair(coeff, sqrtList)
+            return Pair(coeff, rootList)
         }
     }
 }

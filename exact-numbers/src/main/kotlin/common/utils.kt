@@ -80,11 +80,3 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
         return null
     }
 }
-
-/**
- * Reusable code for manually throwing a divide by zero error
- * @throws [ArithmeticException]: divide by zero error
- */
-internal fun throwDivideByZero() {
-    throw ArithmeticException("divide by zero")
-}
