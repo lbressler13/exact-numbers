@@ -1,5 +1,7 @@
 package expressions.additive
 
+import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Irrational
 import expressions.term.Term
 import kotlinutils.bigdecimal.ext.isZero
 import java.math.BigDecimal
@@ -31,21 +33,47 @@ class AdditiveExpression private constructor(val terms: List<Term>, private val 
 //    }
 
     // TODO
-//    fun getSimplified(): AdditiveExpression {
-//        return this
-//        if (isSimplified) {
-//            return Pair(Term.ONE, this)
-//        }
+    fun getSimplified(): AdditiveExpression {
+        if (isSimplified) {
+            return this
+        }
+
+        val simplifiedTerms = terms.map(Term::getSimplified).filterNot { it.isZero() }
+
+        return when (simplifiedTerms.size) {
+            0 -> ZERO
+            1 -> AdditiveExpression(simplifiedTerms, true)
+            else -> {
+                val irrationalSort: (Irrational, Irrational) -> Int = { num1, num2 ->
+                    if (num1.type != num2.type) {
+                        num1.type.compareTo(num2.type)
+                    } else {
+                        num1.getValue().compareTo(num2.getValue())
+                    }
+                }
+
+                val addedTerms = simplifiedTerms.groupBy { it.numbers.sortedWith(irrationalSort) }
+                    .map {
+                        println(it)
+                        val numbers = it.key
+                        val currentTerms = it.value
+                        val newCoeff = currentTerms.fold(ExactFraction.ZERO) { acc, term -> acc + term.coefficient }
+                        Term(newCoeff, numbers)
+                    }
+                    .filterNot { it.isZero() }
+
+                if (addedTerms.isEmpty()) {
+                    ZERO
+                } else {
+                    AdditiveExpression(addedTerms)
+                }
+            }
+        }
+    }
+
+    // TODO
+//    fun extractCommon(): Pair<Term, AdditiveExpression> {
 //
-//        val simplifiedTerms = terms.map(Term::getSimplified).filterNot { it.isZero() }
-//
-//        return when (simplifiedTerms.size) {
-//            0 -> Pair(Term.ZERO, ZERO)
-//            1 -> Pair(simplifiedTerms.first(), ONE)
-//            else -> {
-//                Pair(Term.ONE, this)
-//            }
-//        }
 //    }
 
     override fun equals(other: Any?): Boolean {
