@@ -91,6 +91,7 @@ class AdditiveExpressionTest {
 
     @Test
     fun equalsTests() {
+        // equal
         var expr1 = AdditiveExpression.ZERO
         assertEquals(expr1, expr1)
 
@@ -110,6 +111,12 @@ class AdditiveExpressionTest {
         assertEquals(expr1, expr2)
         assertEquals(expr2, expr1)
 
+        expr1 = AdditiveExpression(listOf(term1, term2, term3))
+        expr2 = AdditiveExpression(listOf(term3, term1, term2))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
+
+        // not equal
         expr1 = AdditiveExpression.ZERO
         expr2 = AdditiveExpression.ONE
         assertNotEquals(expr1, expr2)
@@ -136,9 +143,10 @@ class AdditiveExpressionTest {
         assertNotEquals(expr2, expr1)
     }
 
+    @Test fun testPlus() = runPlusTests()
+    @Test fun testMinus() = runMinusTests()
+
     // @Test fun testIsZero() {} // TODO
-    // @Test fun testPlus() {} // TODO
-    // @Test fun testMinus() {} // TODO
     // @Test fun testGetValue() {} // TODO
     // @Test fun testGetSimplified() {} // TODO
     // @Test fun testToString() {} // TODO

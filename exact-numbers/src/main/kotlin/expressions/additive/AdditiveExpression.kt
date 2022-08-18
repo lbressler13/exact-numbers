@@ -17,13 +17,8 @@ class AdditiveExpression private constructor(val terms: List<Term>, private val 
     operator fun unaryPlus(): AdditiveExpression = this
     operator fun unaryMinus(): AdditiveExpression = AdditiveExpression(terms.map(Term::unaryMinus), isSimplified)
 
-//    operator fun plus(other: AdditiveExpression): AdditiveExpression {
-//        // TODO
-//    }
-//
-//    operator fun minus(other: AdditiveExpression): AdditiveExpression {
-//        // TODO
-//    }
+    operator fun plus(other: AdditiveExpression): AdditiveExpression = AdditiveExpression(terms + other.terms)
+    operator fun minus(other: AdditiveExpression): AdditiveExpression = plus(-other)
 
     // fun isZero(): Boolean = getValue().isZero()
 
@@ -59,16 +54,17 @@ class AdditiveExpression private constructor(val terms: List<Term>, private val 
         }
 
         // TODO improve simplified
-        val simplifiedTerms = terms.filterNot { it.isZero() }
-        val otherSimplifiedTerms = other.terms.filterNot { it.isZero() }
+        val simplifiedTerms = terms.filterNot { it.isZero() }.sortedBy { it.getValue() }
+        val otherSimplifiedTerms = other.terms.filterNot { it.isZero() }.sortedBy { it.getValue() }
         return simplifiedTerms == otherSimplifiedTerms
     }
 
     override fun hashCode(): Int = Pair("AdditiveExpression", terms).hashCode()
 
-//    override fun toString(): String {
-//        return super.toString()
-//    }
+    override fun toString(): String {
+        val termsString = terms.joinToString("+")
+        return "AE<$termsString>"
+    }
 
     companion object {
         val ZERO: AdditiveExpression = AdditiveExpression(Term.ZERO)
