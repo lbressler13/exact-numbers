@@ -4,6 +4,7 @@ import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import expressions.term.Term
 import kotlinutils.bigdecimal.ext.isZero
+import kotlinutils.biginteger.getListGCD
 import java.math.BigDecimal
 
 class AdditiveExpression private constructor(val terms: List<Term>, private val isSimplified: Boolean) {
@@ -73,7 +74,7 @@ class AdditiveExpression private constructor(val terms: List<Term>, private val 
 
     // TODO
 //    fun extractCommon(): Pair<Term, AdditiveExpression> {
-//
+//        // TODO functionality in Term to get everything in one call
 //    }
 
     override fun equals(other: Any?): Boolean {
@@ -81,9 +82,8 @@ class AdditiveExpression private constructor(val terms: List<Term>, private val 
             return false
         }
 
-        // TODO improve simplified
-        val simplifiedTerms = terms.filterNot { it.isZero() }.sortedBy { it.getValue() }
-        val otherSimplifiedTerms = other.terms.filterNot { it.isZero() }.sortedBy { it.getValue() }
+        val simplifiedTerms = getSimplified().terms.sortedBy { it.getValue() }
+        val otherSimplifiedTerms = other.getSimplified().terms.sortedBy { it.getValue() }
         return simplifiedTerms == otherSimplifiedTerms
     }
 

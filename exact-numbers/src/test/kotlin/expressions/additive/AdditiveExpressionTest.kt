@@ -1,5 +1,7 @@
 package expressions.additive
 
+import exactnumbers.exactfraction.ExactFraction
+import expressions.term.Term
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertNotEquals
@@ -104,6 +106,24 @@ class AdditiveExpressionTest {
 
         expr1 = AdditiveExpression(listOf(term1, term2, term3))
         expr2 = AdditiveExpression(listOf(term3, term1, term2))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
+
+        // with simplification
+        expr1 = AdditiveExpression(listOf(term1, -term1))
+        expr2 = AdditiveExpression.ZERO
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
+
+        expr1 = AdditiveExpression(listOf(term1, term2, term3, -term3))
+        expr2 = AdditiveExpression(listOf(term2, term1))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
+
+        val t1 = Term(ExactFraction.TWO, term1.numbers)
+        val t2 = Term(ExactFraction(-3, 4), term1.numbers)
+        expr1 = AdditiveExpression(listOf(t1, t2))
+        expr2 = AdditiveExpression(Term(ExactFraction(5, 4), term1.numbers))
         assertEquals(expr1, expr2)
         assertEquals(expr2, expr1)
 
