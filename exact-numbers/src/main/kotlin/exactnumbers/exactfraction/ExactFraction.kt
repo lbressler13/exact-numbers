@@ -1,12 +1,12 @@
 package exactnumbers.exactfraction
 
 import common.divideByZero
-import common.getGCD
 import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
 import kotlinutils.biginteger.ext.ifZero
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
+import kotlinutils.biginteger.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
