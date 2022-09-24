@@ -9,12 +9,18 @@ version = "0.0.8"
 
 repositories {
     mavenCentral()
+
+    maven {
+        url = uri("https://maven.pkg.github.com/lbressler13/kotlin-utils")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.0.3"
-
     implementation(kotlin("stdlib"))
+    implementation("xyz.lbres:kotlin-utils:0.1.0")
     testImplementation(kotlin("test"))
-    implementation(files("libs/kotlin-utils-$kotlinUtilsVersion.jar"))
 }

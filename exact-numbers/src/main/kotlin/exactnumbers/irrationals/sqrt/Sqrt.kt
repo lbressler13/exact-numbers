@@ -159,6 +159,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
                 return Pair(ExactFraction.ONE, listOf())
             }
 
+            @Suppress("UNCHECKED_CAST")
             numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {

@@ -21,7 +21,6 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 ```project
 ├── exact-numbers
 │   ├── build                     <-- automatically generated build files
-│   ├── libs                      <-- local libraries
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
@@ -46,9 +45,21 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
-This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
-The package version can be updated in the module-level build.gradle.
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub package registry.
+In order to build the project, you will need a GitHub access token with the scope package:read.
+
+You can add the following properties to a local gradle.properties file in order to build:
+```properties
+gpr.user=USERNAME
+gpr.key=PAT
+```
+This will allow you to be through an IDE or the command line.
+To build in the command line, you can set:
+```shell
+USERNAME=USERNAME
+TOKEN=PAT
+```
+However, this configuration may not allow you to build through an IDE.
 
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.

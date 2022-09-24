@@ -202,6 +202,7 @@ class Log private constructor(
                 return Pair(ExactFraction.ONE, listOf())
             }
 
+            @Suppress("UNCHECKED_CAST")
             numbers as List<Log>
 
             if (numbers.any(Log::isZero)) {
