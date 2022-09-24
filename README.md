@@ -1,5 +1,7 @@
 # ExactNumbers
 
+[![Unit Tests](https://github.com/lbressler13/exact-numbers/actions/workflows/basic_flow.yml/badge.svg)](https://github.com/lbressler13/exact-numbers/actions/workflows/basic_flow.yml)
+
 ## Number Types
 
 ### Rational (ExactFraction)

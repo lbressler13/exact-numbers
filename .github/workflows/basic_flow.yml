@@ -1,13 +1,14 @@
-name: CI
+name: Unit Tests
 
 on:
-  # push to any branch, any PR, or manual trigger
   push:
   pull_request:
   workflow_dispatch:
 
 jobs:
   build:
+    name: Unit Tests
+
     runs-on: ubuntu-latest
 
     env:
@@ -15,11 +16,10 @@ jobs:
       TOKEN: ${{ secrets.TOKEN }}
 
     steps:
-      # Checkout repository under $GITHUB_WORKSPACE so job can access it
       - uses: actions/checkout@v3
 
       - name: Linting
         run: gradle ktlintCheck
 
-      - name: Tests
+      - name: Unit Tests
         run: gradle test
