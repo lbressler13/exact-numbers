@@ -61,6 +61,8 @@ TOKEN=PAT
 ```
 However, this configuration may not allow you to build through an IDE.
 
+See [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information on importing GitHub packages.
+
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.
 Tests must be written for all logic in the package.

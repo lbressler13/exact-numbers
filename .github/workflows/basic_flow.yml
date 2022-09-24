@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      USERNAME: ${{ secrets.USERNAME }}
+      TOKEN: ${{ secrets.TOKEN }}
+
     steps:
       # Checkout repository under $GITHUB_WORKSPACE so job can access it
       - uses: actions/checkout@v3
