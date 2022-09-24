@@ -1,7 +1,7 @@
 package exactnumbers.irrationals.log
 
 import common.divideBigDecimals
-import common.throwDivideByZero
+import common.divideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.common.div
@@ -32,7 +32,7 @@ class Log private constructor(
 
     init {
         when {
-            argument == ExactFraction.ONE && isDivided -> throwDivideByZero()
+            argument == ExactFraction.ONE && isDivided -> throw divideByZero
             argument.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             argument.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
             base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
@@ -161,7 +161,7 @@ class Log private constructor(
 
     override fun swapDivided(): Log {
         if (isZero()) {
-            throwDivideByZero()
+            throw divideByZero
         }
 
         return Log(argument, base, !isDivided)

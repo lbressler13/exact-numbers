@@ -2,8 +2,14 @@ package exactnumbers.irrationals.sqrt
 
 import assertDivByZero
 import exactnumbers.exactfraction.ExactFraction
+import exactnumbers.irrationals.common.Memoize
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -13,6 +19,17 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class SqrtTest {
+    @BeforeTest
+    fun createMocks() {
+        mockkObject(Memoize)
+        every { Memoize.individualWholeNumber } answers { mutableMapOf() }
+    }
+
+    @AfterTest
+    fun clearMocks() {
+        unmockkAll()
+    }
+
     @Test
     internal fun testConstructor() {
         // errors

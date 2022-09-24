@@ -70,18 +70,18 @@ internal fun runToByteTests() {
 // test account for fact that Char can't be negative
 internal fun runToCharTests() {
     var ef = ExactFraction(0)
-    var expected = Char(0)
+    var expected = 0.toChar()
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(5)
-    expected = Char(5)
+    expected = 5.toChar()
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-5)
     assertExactFractionOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(2, 5)
-    expected = Char(0)
+    expected = 0.toChar()
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-18, 5)

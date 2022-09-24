@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.example"
-version = "0.0.8"
+version = "0.0.9"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,12 @@ repositories {
 }
 
 dependencies {
+    val kotlinUtilsVersion = "0.1.0"
+    val mockkVersion = "1.12.4"
+
     implementation(kotlin("stdlib"))
-    implementation("xyz.lbres:kotlin-utils:0.1.0")
+    implementation("xyz.lbres:kotlin-utils:$kotlinUtilsVersion")
+
     testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }

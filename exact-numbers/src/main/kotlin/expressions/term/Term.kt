@@ -1,7 +1,7 @@
 package expressions.term
 
 import common.divideBigDecimals
-import common.throwDivideByZero
+import common.divideByZero
 import exactnumbers.exactfraction.ExactFraction
 import exactnumbers.irrationals.common.Irrational
 import exactnumbers.irrationals.log.Log
@@ -56,7 +56,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
 
     operator fun div(other: Term): Term {
         if (other.isZero()) {
-            throwDivideByZero()
+            throw divideByZero
         }
 
         val newCoeff = coefficient / other.coefficient

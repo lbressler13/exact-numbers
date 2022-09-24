@@ -1,11 +1,12 @@
 package exactnumbers.exactfraction
 
-import common.getGCD
-import common.throwDivideByZero
+import common.divideByZero
 import exactnumbers.ext.eq
 import exactnumbers.ext.toExactFraction
+import kotlinutils.biginteger.ext.ifZero
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
+import kotlinutils.biginteger.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -42,12 +43,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ArithmeticException if denominator is 0
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this() {
-        if (denominator.isZero()) {
-            throwDivideByZero()
-        }
-
         this.numerator = numerator
-        this.denominator = denominator
+        this.denominator = denominator.ifZero { throw divideByZero }
         simplify()
     }
 
@@ -194,16 +191,16 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     // UNARY NON-OPERATORS
 
     fun inverse(): ExactFraction {
-        if (numerator.eq(0)) {
-            throwDivideByZero()
+        if (numerator.isZero()) {
+            throw divideByZero
         }
 
         return ExactFraction(denominator, numerator)
     }
 
     fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator)
-    fun isNegative(): Boolean = numerator < BigInteger.ZERO
-    fun isZero(): Boolean = numerator.eq(0)
+    fun isNegative(): Boolean = numerator.isNegative()
+    fun isZero(): Boolean = numerator.isZero()
 
     // SIMPLIFICATION
 
@@ -429,7 +426,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     }
 
     fun toBigInteger(): BigInteger = numerator / denominator
-    fun toBI(): BigInteger = toBigInteger()
     fun toBigDecimal(precision: Int = 20): BigDecimal {
         val mc = MathContext(precision, RoundingMode.HALF_UP)
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
