@@ -1,5 +1,7 @@
 # ExactNumbers
 
+[![Unit Tests](https://github.com/lbressler13/exact-numbers/actions/workflows/basic_flow.yml/badge.svg)](https://github.com/lbressler13/exact-numbers/actions/workflows/basic_flow.yml)
+
 ## Number Types
 
 ### Rational (ExactFraction)
@@ -21,7 +23,6 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 ```project
 ├── exact-numbers
 │   ├── build                     <-- automatically generated build files
-│   ├── libs                      <-- local libraries
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
@@ -46,9 +47,24 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package.
-This package must be built and placed in a local **libs** folder in order for a gradle build to succeed.
-The package version can be updated in the module-level build.gradle.
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub Packages registry.
+In order to build the project, you will need a GitHub access token with at least the `read:packages` scope.
+
+You can add the following properties to a local gradle.properties file in order to build:
+```properties
+gpr.user=GITHUB_USERNAME
+gpr.key=GITHUB_PAT
+```
+This will allow you to build through an IDE or the command line.
+To build in the command line, you can set:
+```shell
+USERNAME=GITHUB_USERNAME
+TOKEN=GITHUB_PAT
+```
+However, this configuration may not allow you to build through an IDE.
+If you have values set in both gradle.properties and in the environment, the values in gradle.properties will be used.
+
+See [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information on importing GitHub packages.
 
 ## Testing
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.

@@ -11,3 +11,7 @@ exact-numbers/libs
 
 # OS
 .DS_Store
+
+# Local secrets
+.env
+gradle.properties
