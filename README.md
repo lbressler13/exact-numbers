@@ -47,21 +47,22 @@ When the package is built, a .jar file will be generated in the build/libs folde
 The name will be in the format "exact-numbers-version", where the version is specified in the build.gradle.kts file.
 
 ### Dependencies
-This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub package registry.
-In order to build the project, you will need a GitHub access token with the scope package:read.
+This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub Packages registry.
+In order to build the project, you will need a GitHub access token with at least the `read:packages` scope.
 
 You can add the following properties to a local gradle.properties file in order to build:
 ```properties
-gpr.user=USERNAME
-gpr.key=PAT
+gpr.user=GITHUB_USERNAME
+gpr.key=GITHUB_PAT
 ```
-This will allow you to be through an IDE or the command line.
+This will allow you to build through an IDE or the command line.
 To build in the command line, you can set:
 ```shell
-USERNAME=USERNAME
-TOKEN=PAT
+USERNAME=GITHUB_USERNAME
+TOKEN=GITHUB_PAT
 ```
 However, this configuration may not allow you to build through an IDE.
+If you have values set in both gradle.properties and in the environment, the values in gradle.properties will be used.
 
 See [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information on importing GitHub packages.
 
