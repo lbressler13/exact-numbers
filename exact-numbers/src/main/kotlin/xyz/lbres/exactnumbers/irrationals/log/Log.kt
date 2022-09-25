@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction

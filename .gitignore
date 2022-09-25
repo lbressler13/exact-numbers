@@ -14,4 +14,4 @@ exact-numbers/libs
 
 # Local secrets
 .env
-local.properties
+gradle.properties

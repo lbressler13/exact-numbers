@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import kotlinutils.biginteger.ext.isZero
-import kotlinutils.string.ext.substringTo
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.string.ext.substringTo
 import java.math.BigInteger
 
 /**

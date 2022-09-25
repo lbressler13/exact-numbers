@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import kotlinutils.biginteger.ext.isNegative
-import kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.biginteger.ext.isNegative
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.common.getIntFromDecimal
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
 import java.math.BigDecimal

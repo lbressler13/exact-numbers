@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import kotlinutils.biginteger.ext.ifZero
-import kotlinutils.biginteger.ext.isNegative
-import kotlinutils.biginteger.ext.isZero
-import kotlinutils.biginteger.getGCD
+import xyz.lbres.kotlinutils.biginteger.ext.ifZero
+import xyz.lbres.kotlinutils.biginteger.ext.isNegative
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.biginteger.getGCD
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "xyz.lbres"
-version = "0.0.9"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.1.0"
+    val kotlinUtilsVersion = "0.2.0"
     val mockkVersion = "1.12.4"
 
     implementation(kotlin("stdlib"))
