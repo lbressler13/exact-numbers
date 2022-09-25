@@ -1,15 +1,15 @@
-package exactnumbers.irrationals.log
+package xyz.lbres.exactnumbers.irrationals.log
 
-import common.divideBigDecimals
-import common.divideByZero
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.common.Irrational
-import exactnumbers.irrationals.common.div
-import exactnumbers.irrationals.common.times
-import exactnumbers.irrationals.pi.Pi
-import exactnumbers.irrationals.sqrt.Sqrt
-import expressions.term.Term
 import kotlinutils.biginteger.ext.isZero
+import xyz.lbres.common.divideBigDecimals
+import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.div
+import xyz.lbres.exactnumbers.irrationals.common.times
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
+import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
 import java.math.BigInteger
 

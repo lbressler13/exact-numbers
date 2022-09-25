@@ -1,4 +1,4 @@
-package exactnumbers.irrationals.common
+package xyz.lbres.exactnumbers.irrationals.common
 
 import java.math.BigInteger
 

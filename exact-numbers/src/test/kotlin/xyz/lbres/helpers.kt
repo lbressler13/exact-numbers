@@ -1,5 +1,5 @@
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.exactfraction.ExactFractionOverflowException
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

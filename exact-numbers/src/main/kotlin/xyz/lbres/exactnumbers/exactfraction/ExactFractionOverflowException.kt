@@ -1,4 +1,4 @@
-package exactnumbers.exactfraction
+package xyz.lbres.exactnumbers.exactfraction
 
 /**
  * ArithmeticException specifically for ExactFraction casting overflow.

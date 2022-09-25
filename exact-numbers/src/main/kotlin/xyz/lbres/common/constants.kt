@@ -1,4 +1,4 @@
-package common
+package xyz.lbres.common
 
 /**
  * Error to be thrown when dividing by zero

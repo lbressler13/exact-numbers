@@ -1,8 +1,8 @@
-package exactnumbers.irrationals.sqrt
+package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.common.Irrational
-import exactnumbers.irrationals.pi.Pi
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

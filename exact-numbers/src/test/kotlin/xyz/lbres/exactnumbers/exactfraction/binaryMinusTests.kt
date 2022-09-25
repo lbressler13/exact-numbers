@@ -1,4 +1,4 @@
-package exactnumbers.exactfraction
+package xyz.lbres.exactnumbers.exactfraction
 
 import kotlin.test.assertEquals
 

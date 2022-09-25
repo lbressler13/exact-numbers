@@ -1,6 +1,6 @@
-package exactnumbers.irrationals.common
+package xyz.lbres.exactnumbers.irrationals.common
 
-import exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
 
 /**

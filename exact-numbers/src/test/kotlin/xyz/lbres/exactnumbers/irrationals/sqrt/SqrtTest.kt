@@ -1,11 +1,11 @@
-package exactnumbers.irrationals.sqrt
+package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import assertDivByZero
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.common.Memoize
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.Memoize
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest

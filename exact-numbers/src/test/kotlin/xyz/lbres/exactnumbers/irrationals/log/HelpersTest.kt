@@ -1,4 +1,4 @@
-package exactnumbers.irrationals.log
+package xyz.lbres.exactnumbers.irrationals.log
 
 import java.math.BigDecimal
 import java.math.BigInteger

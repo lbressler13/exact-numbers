@@ -1,6 +1,6 @@
-package exactnumbers.exactfraction
+package xyz.lbres.exactnumbers.exactfraction
 
-import exactnumbers.ext.eq
+import xyz.lbres.exactnumbers.ext.eq
 
 internal fun runSimplifyTests() {
     runSimplifyZeroTests()

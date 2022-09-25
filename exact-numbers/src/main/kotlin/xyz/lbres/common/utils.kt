@@ -1,4 +1,4 @@
-package common
+package xyz.lbres.common
 
 import java.math.BigDecimal
 import java.math.BigInteger

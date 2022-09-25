@@ -1,4 +1,4 @@
-package common
+package xyz.lbres.common
 
 import assertDivByZero
 import kotlinutils.biginteger.ext.isZero

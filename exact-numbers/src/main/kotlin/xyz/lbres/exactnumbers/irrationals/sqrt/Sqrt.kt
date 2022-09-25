@@ -1,12 +1,12 @@
-package exactnumbers.irrationals.sqrt
+package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import common.divideBigDecimals
-import common.divideByZero
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.common.Irrational
-import exactnumbers.irrationals.log.Log
-import exactnumbers.irrationals.pi.Pi
-import expressions.term.Term
+import xyz.lbres.common.divideBigDecimals
+import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.log.Log
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
+import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
 import java.math.BigInteger
 

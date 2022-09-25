@@ -1,7 +1,7 @@
-package exactnumbers.irrationals.log
+package xyz.lbres.exactnumbers.irrationals.log
 
 import assertDivByZero
-import exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

@@ -1,10 +1,10 @@
-package exactnumbers.irrationals.common
+package xyz.lbres.exactnumbers.irrationals.common
 
 import assertDivByZero
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.log.Log
-import exactnumbers.irrationals.pi.Pi
-import expressions.term.Term
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.log.Log
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
+import xyz.lbres.expressions.term.Term
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

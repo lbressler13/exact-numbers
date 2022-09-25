@@ -1,6 +1,6 @@
-package exactnumbers.ext
+package xyz.lbres.exactnumbers.ext
 
-import exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals

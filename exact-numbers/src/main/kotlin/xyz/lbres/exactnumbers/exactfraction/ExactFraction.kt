@@ -1,12 +1,12 @@
-package exactnumbers.exactfraction
+package xyz.lbres.exactnumbers.exactfraction
 
-import common.divideByZero
-import exactnumbers.ext.eq
-import exactnumbers.ext.toExactFraction
 import kotlinutils.biginteger.ext.ifZero
 import kotlinutils.biginteger.ext.isNegative
 import kotlinutils.biginteger.ext.isZero
 import kotlinutils.biginteger.getGCD
+import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.ext.eq
+import xyz.lbres.exactnumbers.ext.toExactFraction
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

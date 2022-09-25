@@ -1,4 +1,4 @@
-package exactnumbers.irrationals.pi
+package xyz.lbres.exactnumbers.irrationals.pi
 
 import java.math.BigDecimal
 import kotlin.test.Test

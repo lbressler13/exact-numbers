@@ -1,10 +1,10 @@
-package expressions.term
+package xyz.lbres.expressions.term
 
-import exactnumbers.exactfraction.ExactFraction
-import exactnumbers.irrationals.common.Irrational
-import exactnumbers.irrationals.log.Log
-import exactnumbers.irrationals.pi.Pi
-import exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.log.Log
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
+import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
