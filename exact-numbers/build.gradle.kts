@@ -1,10 +1,11 @@
 plugins {
     `java-library`
+    `maven-publish`
     kotlin("jvm") version "1.5.10"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0" // ktlint
 }
 
-group = "org.example"
+group = "xyz.lbres"
 version = "0.0.9"
 
 repositories {
@@ -28,4 +29,21 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:$mockkVersion")
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/lbressler13/exact-numbers")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+        }
+    }
 }
