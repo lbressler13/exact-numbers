@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -10,6 +9,7 @@ import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
 
