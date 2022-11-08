@@ -38,12 +38,12 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
     // public methods to expose general Irrational operators
-    operator fun times(other: Sqrt): Term = times(other)
-    operator fun times(other: Log): Term = times(other)
-    operator fun times(other: Pi): Term = times(other)
-    operator fun div(other: Sqrt): Term = div(other)
-    operator fun div(other: Log): Term = div(other)
-    operator fun div(other: Pi): Term = div(other)
+    operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this, other))
+    operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
+    operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this, other.swapDivided()))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
 
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
@@ -155,14 +155,14 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
          */
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
             if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, listOf())
+                return Pair(ExactFraction.ONE, emptyList())
             }
 
             @Suppress("UNCHECKED_CAST")
             numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {
-                return Pair(ExactFraction.ZERO, listOf())
+                return Pair(ExactFraction.ZERO, emptyList())
             }
 
             // combine all roots into single root, and return that value
@@ -176,7 +176,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val coeff = ExactFraction(numWhole, denomWhole)
 
             val rootList = if (root == ONE) {
-                listOf()
+                emptyList()
             } else {
                 listOf(root)
             }

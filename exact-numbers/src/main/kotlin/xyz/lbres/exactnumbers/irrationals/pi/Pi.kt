@@ -3,8 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.common.div
-import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
@@ -17,7 +15,7 @@ import kotlin.math.abs
  *
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val isDivided: Boolean) : Irrational {
+class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
     override val type: String = TYPE
 
     // constructor with reduced params
@@ -47,13 +45,21 @@ class Pi(override val isDivided: Boolean) : Irrational {
             isDivided == other.isDivided
     }
 
+    override fun compareTo(other: Pi): Int {
+        return when {
+            !isDivided && other.isDivided -> 1
+            isDivided && !other.isDivided -> -1
+            else -> 0
+        }
+    }
+
     // public methods to expose general Irrational operators
-    operator fun times(other: Log): Term = times(other as Irrational)
-    operator fun times(other: Pi): Term = times(other as Irrational)
-    operator fun times(other: Sqrt): Term = times(other as Irrational)
-    operator fun div(other: Log): Term = div(other as Irrational)
-    operator fun div(other: Pi): Term = div(other as Irrational)
-    operator fun div(other: Sqrt): Term = div(other as Irrational)
+    operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
+    operator fun times(other: Pi): Term = Term.fromValues(listOf(this, other))
+    operator fun times(other: Sqrt): Term = Term.fromValues(listOf(other), listOf(this))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this, other.swapDivided()))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
 
     override fun toString(): String {
         val pi = "π"
@@ -79,7 +85,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {
-                return listOf()
+                return emptyList()
             }
 
             @Suppress("UNCHECKED_CAST")
@@ -90,7 +96,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
             val diff = abs(positive - negative)
 
             return when {
-                positive == negative -> listOf()
+                positive == negative -> emptyList()
                 positive < negative -> List(diff) { Pi(isDivided = true) }
                 else -> List(diff) { Pi(isDivided = false) }
             }
