@@ -4,8 +4,6 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.common.div
-import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
@@ -67,12 +65,12 @@ class Log private constructor(
     }
 
     // public methods to expose general Irrational operators
-    operator fun times(other: Log): Term = times(other as Irrational)
-    operator fun times(other: Pi): Term = times(other as Irrational)
-    operator fun times(other: Sqrt): Term = times(other as Irrational)
-    operator fun div(other: Log): Term = div(other as Irrational)
-    operator fun div(other: Pi): Term = div(other as Irrational)
-    operator fun div(other: Sqrt): Term = div(other as Irrational)
+    operator fun times(other: Log): Term = Term.fromValues(listOf(this, other))
+    operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
+    operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(this, other.swapDivided()))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
@@ -199,14 +197,14 @@ class Log private constructor(
         // TODO: improve simplification by looking at bases
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, listOf())
+                return Pair(ExactFraction.ONE, emptyList())
             }
 
             @Suppress("UNCHECKED_CAST")
             numbers as List<Log>
 
             if (numbers.any(Log::isZero)) {
-                return Pair(ExactFraction.ZERO, listOf())
+                return Pair(ExactFraction.ZERO, emptyList())
             }
 
             val simplifiedNums = numbers.map { it.getSimplified() }
@@ -216,14 +214,14 @@ class Log private constructor(
                 .groupBy { Pair(it.argument, it.base) }
                 .flatMap { pair ->
                     if (Log(pair.key.first, pair.key.second) == ONE) {
-                        listOf()
+                        emptyList()
                     } else {
                         val currentLogs = pair.value
                         val countDivided = currentLogs.count { it.isDivided }
                         val countNotDivided = currentLogs.size - countDivided
 
                         when {
-                            countDivided == countNotDivided -> listOf()
+                            countDivided == countNotDivided -> emptyList()
                             countDivided > countNotDivided -> List(countDivided - countNotDivided) {
                                 Log(pair.key.first, pair.key.second, isDivided = true, fullySimplified = true)
                             }

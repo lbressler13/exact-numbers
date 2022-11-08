@@ -89,7 +89,7 @@ internal class UtilsTest {
             BigDecimal("10000.000001") to BigInteger("10000"),
             BigDecimal("10000.999999") to BigInteger("10001"),
         )
-        badValues = listOf()
+        badValues = emptyList()
         runSingleGetIntFromDecimalTest(goodValues, badValues) { true }
     }
 

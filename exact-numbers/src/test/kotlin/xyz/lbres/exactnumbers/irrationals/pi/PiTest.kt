@@ -35,6 +35,15 @@ internal class PiTest {
     }
 
     @Test
+    internal fun testCompareTo() {
+        assertEquals(Pi(), Pi())
+        assertEquals(Pi(true), Pi(true))
+
+        assertTrue(Pi(true) < Pi())
+        assertTrue(Pi() > Pi(true))
+    }
+
+    @Test
     internal fun testGetValue() {
         // kotlin representation of pi: 3.141592653589793
         var pi = Pi()
