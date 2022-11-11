@@ -3,6 +3,8 @@ package xyz.lbres.exactnumbers.irrationals.common
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigDecimal
 
+// TODO implementations inherit from Number
+
 /**
  * Values needed for representation of an irrational number
  */

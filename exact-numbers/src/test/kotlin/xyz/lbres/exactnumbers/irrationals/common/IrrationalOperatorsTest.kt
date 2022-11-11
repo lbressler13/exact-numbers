@@ -1,15 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
-import assertDivByZero
-import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
-import xyz.lbres.expressions.term.Term
-import kotlin.test.Test
-import kotlin.test.assertEquals
-
 // TODO: individual tests in each class
-//internal class IrrationalOperatorsTest {
+// internal class IrrationalOperatorsTest {
 //    @Test
 //    internal fun testTimes() {
 //        // Log
@@ -115,4 +107,4 @@ import kotlin.test.assertEquals
 //        expected = Term(ExactFraction.ONE, listOf(Pi(), Log(ExactFraction(15, 7))))
 //        assertEquals(expected, num1 / num2)
 //    }
-//}
+// }

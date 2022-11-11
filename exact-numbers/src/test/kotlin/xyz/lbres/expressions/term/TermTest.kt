@@ -17,8 +17,7 @@ internal class TermTest {
     private val logNum4 = Log(ExactFraction(25, 121))
     private val one = ExactFraction.ONE
 
-    @Test internal fun testConstructor() = runConstructorTests()
-    @Test internal fun testFromValues() = runFromValuesTests()
+    @Test fun testConstructor() = runConstructorTests()
 
     @Test internal fun testTimes() = runTimesTests()
     @Test internal fun testDiv() = runDivTests()

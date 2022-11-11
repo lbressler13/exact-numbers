@@ -36,15 +36,12 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
     init {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
-            // this.numbers = emptyList()
             this.logs = emptyList()
             this.squareRoots = emptyList()
             this.pis = emptyList()
             piCount = 0
         } else {
             this.coefficient = coefficient
-            // this.numbers = numbers
-
             this.logs = logs
             this.squareRoots = squareRoots
             this.pis = pis
