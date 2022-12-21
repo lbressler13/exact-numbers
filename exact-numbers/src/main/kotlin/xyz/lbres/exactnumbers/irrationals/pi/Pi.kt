@@ -14,9 +14,9 @@ import kotlin.math.abs
 /**
  * Representation of pi
  *
- * @param isDivided [Boolean]: if the inverse of the value should be calculated
+ * @param inverted [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
+class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
     override val type: String = TYPE
 
     // constructor with reduced params
@@ -25,7 +25,7 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
     override fun getValue(): BigDecimal {
         val base = PI.toBigDecimal()
 
-        if (isDivided) {
+        if (inverted) {
             return divideBigDecimals(BigDecimal.ONE, base)
         }
 
@@ -38,35 +38,37 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
 
     override fun getRationalValue(): ExactFraction? = null
 
-    override fun swapDivided(): Pi = Pi(!isDivided)
+    override fun inverse(): Pi = Pi(!inverted)
 
     override fun equals(other: Any?): Boolean {
         return other != null &&
             other is Pi &&
-            isDivided == other.isDivided
+            inverted == other.inverted
     }
 
     override fun compareTo(other: Pi): Int {
         return when {
-            !isDivided && other.isDivided -> 1
-            isDivided && !other.isDivided -> -1
+            !inverted && other.inverted -> 1
+            inverted && !other.inverted -> -1
             else -> 0
         }
     }
 
+    operator fun times(other: ExactFraction): Term = Term.fromValues(other, listOf(this))
     operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(other), listOf(this))
-    operator fun div(other: Log): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
-    operator fun div(other: Pi): Term = Term.fromValues(listOf(this, other.swapDivided()))
-    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
+    operator fun div(other: ExactFraction): Term = Term.fromValues(other.inverse(), listOf(this))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(other.inverse()), listOf(this))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this, other.inverse()))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(other.inverse()), listOf(this))
 
     override fun toString(): String {
         val pi = "π"
-        return ternaryIf(isDivided, "[1/$pi]", "[$pi]")
+        return ternaryIf(inverted, "[1/$pi]", "[$pi]")
     }
 
-    override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
+    override fun hashCode(): Int = listOf(TYPE, PI, inverted).hashCode()
 
     companion object {
         const val TYPE = "pi"
@@ -83,14 +85,14 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
                 return emptyList()
             }
 
-            val positive = numbers.count { !it.isDivided }
+            val positive = numbers.count { !it.inverted }
             val negative = numbers.size - positive
             val diff = abs(positive - negative)
 
             return when {
                 positive == negative -> emptyList()
-                positive < negative -> List(diff) { Pi(isDivided = true) }
-                else -> List(diff) { Pi(isDivided = false) }
+                positive < negative -> List(diff) { Pi(inverted = true) }
+                else -> List(diff) { Pi(inverted = false) }
             }
         }
     }

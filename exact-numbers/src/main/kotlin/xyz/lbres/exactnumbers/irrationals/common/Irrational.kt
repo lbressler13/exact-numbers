@@ -16,6 +16,6 @@ internal interface Irrational {
     fun isRational(): Boolean
     fun getRationalValue(): ExactFraction?
 
-    val isDivided: Boolean
-    fun swapDivided(): Irrational
+    val inverted: Boolean
+    fun inverse(): Irrational
 }

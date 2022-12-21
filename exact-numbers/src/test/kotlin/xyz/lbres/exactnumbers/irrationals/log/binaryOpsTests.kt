@@ -11,6 +11,7 @@ fun runTimesTests() {
     // zero
     assertEquals(Term.ZERO, Log.ZERO * Log.ONE)
     assertEquals(Term.ZERO, Log.ONE * Sqrt.ZERO)
+    assertEquals(Term.ZERO, Log.ONE * ExactFraction.ZERO)
 
     // log only
     var log1 = Log(ExactFraction(4, 5))
@@ -22,6 +23,17 @@ fun runTimesTests() {
     log2 = Log(ExactFraction(5, 4))
     expected = Term.fromValues(listOf(log1, log2))
     assertEquals(expected, log1 * log2)
+
+    // exact fraction
+    log1 = Log(ExactFraction(25), 4)
+    var ef = ExactFraction(-5)
+    expected = Term.fromValues(ef, listOf(log1))
+    assertEquals(expected, log1 * ef)
+
+    log1 = Log(1000, true)
+    ef = ExactFraction(100, 213)
+    expected = Term.fromValues(ef, listOf(log1))
+    assertEquals(expected, log1 * ef)
 
     // pi
     log1 = Log(ExactFraction(25), 4)
@@ -50,22 +62,34 @@ fun runDivTests() {
     // zero
     assertDivByZero { Log.ONE / Log.ZERO }
     assertDivByZero { Log.ONE / Sqrt.ZERO }
+    assertDivByZero { Log.ONE / ExactFraction.ZERO }
 
     // log only
     var log1 = Log(ExactFraction.EIGHT)
     var log2 = Log(ExactFraction(15, 4), 7)
-    var expected = Term.fromValues(listOf(log1, log2.swapDivided()))
+    var expected = Term.fromValues(listOf(log1, log2.inverse()))
     assertEquals(expected, log1 / log2)
 
     log1 = Log(ExactFraction(1, 7))
     log2 = Log(ExactFraction.FOUR, true)
-    expected = Term.fromValues(listOf(log1, log2.swapDivided()))
+    expected = Term.fromValues(listOf(log1, log2.inverse()))
     assertEquals(expected, log1 / log2)
 
     log1 = Log(ExactFraction(1, 7), true)
     log2 = Log(ExactFraction.FOUR, true)
-    expected = Term.fromValues(listOf(log1, log2.swapDivided()))
+    expected = Term.fromValues(listOf(log1, log2.inverse()))
     assertEquals(expected, log1 / log2)
+
+    // exact fraction
+    log1 = Log(ExactFraction(25), 4)
+    var ef = ExactFraction(-5)
+    expected = Term.fromValues(ef.inverse(), listOf(log1))
+    assertEquals(expected, log1 / ef)
+
+    log1 = Log(1000, true)
+    ef = ExactFraction(100, 213)
+    expected = Term.fromValues(ef.inverse(), listOf(log1))
+    assertEquals(expected, log1 / ef)
 
     // pi
     log1 = Log(ExactFraction.HALF)
@@ -81,11 +105,11 @@ fun runDivTests() {
     // sqrt
     log1 = Log(ExactFraction(4, 25), true)
     var sqrt = Sqrt(ExactFraction(25, 4))
-    expected = Term.fromValues(listOf(log1), listOf(sqrt.swapDivided()))
+    expected = Term.fromValues(listOf(log1), listOf(sqrt.inverse()))
     assertEquals(expected, log1 / sqrt)
 
     log1 = Log(10010100, true)
     sqrt = Sqrt(13)
-    expected = Term.fromValues(listOf(log1), listOf(sqrt.swapDivided()))
+    expected = Term.fromValues(listOf(log1), listOf(sqrt.inverse()))
     assertEquals(expected, log1 / sqrt)
 }

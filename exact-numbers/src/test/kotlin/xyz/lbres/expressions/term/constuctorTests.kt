@@ -95,7 +95,7 @@ private fun runSingleTypeTests() {
     term = Term.fromValues(logs)
     checkTerm(term, one, logs, emptyList(), emptyList(), 0)
 
-    logs = listOf(logInverse, logDecimal, logDecimal.swapDivided())
+    logs = listOf(logInverse, logDecimal, logDecimal.inverse())
     term = Term.fromValues(logs)
     checkTerm(term, one, logs, emptyList(), emptyList(), 0)
 

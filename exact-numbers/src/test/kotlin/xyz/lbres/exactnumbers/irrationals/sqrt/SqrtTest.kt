@@ -57,7 +57,7 @@ internal class SqrtTest {
     }
 
     @Test fun testIsZero() = runIsZeroTests()
-    @Test fun testSwapDivided() = runSwapDividedTests()
+    @Test fun testInverse() = runInverseTests()
     @Test fun testIsRational() = runIsRationalTests()
 
     @Test fun testGetRationalValue() = runGetRationalValueTests()

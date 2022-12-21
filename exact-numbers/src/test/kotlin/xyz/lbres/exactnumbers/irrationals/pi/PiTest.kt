@@ -17,13 +17,13 @@ internal class PiTest {
     @Test
     fun testConstructor() {
         var pi = Pi()
-        assertFalse(pi.isDivided)
+        assertFalse(pi.inverted)
 
-        pi = Pi(isDivided = false)
-        assertFalse(pi.isDivided)
+        pi = Pi(inverted = false)
+        assertFalse(pi.inverted)
 
-        pi = Pi(isDivided = true)
-        assertTrue(pi.isDivided)
+        pi = Pi(inverted = true)
+        assertTrue(pi.inverted)
     }
 
     @Test
@@ -43,12 +43,13 @@ internal class PiTest {
     fun testTimes() {
         val pi = Pi()
         val piInverse = Pi(true)
-        val log1 = Log(ExactFraction(33, 14), 5, true)
-        val log2 = Log(ExactFraction(1, 100))
-        val sqrt1 = Sqrt(ExactFraction(19, 5))
-        val sqrt2 = Sqrt(3)
 
-        // pi
+        // zero
+        assertEquals(Term.ZERO, pi * Log.ZERO)
+        assertEquals(Term.ZERO, pi * Sqrt.ZERO)
+        assertEquals(Term.ZERO, pi * ExactFraction.ZERO)
+
+        // pi only
         var expected = Term.fromValues(listOf(pi, pi))
         assertEquals(expected, pi * pi)
 
@@ -56,35 +57,45 @@ internal class PiTest {
         assertEquals(expected, pi * piInverse)
         assertEquals(expected, piInverse * pi)
 
-        // log
-        expected = Term.fromValues(listOf(log1), listOf(pi))
-        assertEquals(expected, pi * log1)
+        // exact fraction
+        var ef = ExactFraction.HALF
+        expected = Term.fromValues(ef, listOf(pi))
+        assertEquals(expected, pi * ef)
 
-        expected = Term.fromValues(listOf(log2), listOf(piInverse))
-        assertEquals(expected, piInverse * log2)
+        ef = ExactFraction(1000)
+        expected = Term.fromValues(ef, listOf(piInverse))
+        assertEquals(expected, piInverse * ef)
+
+        // log
+        var log = Log(ExactFraction(33, 14), 5, true)
+        expected = Term.fromValues(listOf(log), listOf(pi))
+        assertEquals(expected, pi * log)
+
+        log = Log(ExactFraction(1, 100))
+        expected = Term.fromValues(listOf(log), listOf(piInverse))
+        assertEquals(expected, piInverse * log)
 
         // sqrt
-        expected = Term.fromValues(listOf(sqrt1), listOf(pi))
-        assertEquals(expected, pi * sqrt1)
+        var sqrt = Sqrt(ExactFraction(19, 5))
+        expected = Term.fromValues(listOf(sqrt), listOf(pi))
+        assertEquals(expected, pi * sqrt)
 
-        expected = Term.fromValues(listOf(sqrt2), listOf(piInverse))
-        assertEquals(expected, piInverse * sqrt2)
-
-        // zero
-        expected = Term.ZERO
-        assertEquals(expected, pi * Log.ZERO)
+        sqrt = Sqrt(3)
+        expected = Term.fromValues(listOf(sqrt), listOf(piInverse))
+        assertEquals(expected, piInverse * sqrt)
     }
 
     @Test
     fun testDiv() {
         val pi = Pi()
         val piInverse = Pi(true)
-        val log1 = Log(ExactFraction(33, 14), 5, true)
-        val log2 = Log(ExactFraction(1, 100))
-        val sqrt1 = Sqrt(ExactFraction(19, 5))
-        val sqrt2 = Sqrt(3)
 
-        // pi
+        // zero
+        assertDivByZero { pi / Log.ZERO }
+        assertDivByZero { pi / Sqrt.ZERO }
+        assertDivByZero { pi / ExactFraction.ZERO }
+
+        // pi only
         var expected = Term.fromValues(listOf(pi, piInverse))
         assertEquals(expected, pi / pi)
 
@@ -94,22 +105,32 @@ internal class PiTest {
         expected = Term.fromValues(listOf(piInverse, pi))
         assertEquals(expected, piInverse / piInverse)
 
-        // log
-        expected = Term.fromValues(listOf(log1.swapDivided()), listOf(pi))
-        assertEquals(expected, pi / log1)
+        // exact fraction
+        var ef = ExactFraction.HALF
+        expected = Term.fromValues(ef.inverse(), listOf(pi))
+        assertEquals(expected, pi / ef)
 
-        expected = Term.fromValues(listOf(log2.swapDivided()), listOf(piInverse))
-        assertEquals(expected, piInverse / log2)
+        ef = ExactFraction(1000)
+        expected = Term.fromValues(ef.inverse(), listOf(piInverse))
+        assertEquals(expected, piInverse / ef)
+
+        // log
+        var log = Log(ExactFraction(33, 14), 5, true)
+        expected = Term.fromValues(listOf(log.inverse()), listOf(pi))
+        assertEquals(expected, pi / log)
+
+        log = Log(ExactFraction(1, 100))
+        expected = Term.fromValues(listOf(log.inverse()), listOf(piInverse))
+        assertEquals(expected, piInverse / log)
 
         // sqrt
-        expected = Term.fromValues(listOf(sqrt1.swapDivided()), listOf(pi))
-        assertEquals(expected, pi / sqrt1)
+        var sqrt = Sqrt(ExactFraction(19, 5))
+        expected = Term.fromValues(listOf(sqrt.inverse()), listOf(pi))
+        assertEquals(expected, pi / sqrt)
 
-        expected = Term.fromValues(listOf(sqrt2.swapDivided()), listOf(piInverse))
-        assertEquals(expected, piInverse / sqrt2)
-
-        // zero
-        assertDivByZero { pi / Log.ZERO }
+        sqrt = Sqrt(3)
+        expected = Term.fromValues(listOf(sqrt.inverse()), listOf(piInverse))
+        assertEquals(expected, piInverse / sqrt)
     }
 
     @Test
@@ -152,12 +173,12 @@ internal class PiTest {
     }
 
     @Test
-    fun testSwapDivided() {
+    fun testInverse() {
         var pi = Pi()
-        assertTrue(pi.swapDivided().isDivided)
+        assertTrue(pi.inverse().inverted)
 
         pi = Pi(true)
-        assertFalse(pi.swapDivided().isDivided)
+        assertFalse(pi.inverse().inverted)
     }
 
     @Test

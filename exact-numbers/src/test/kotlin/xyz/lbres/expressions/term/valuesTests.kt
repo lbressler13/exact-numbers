@@ -47,7 +47,7 @@ internal fun runGetSimplifiedTests() {
 
     term = Term.fromValues(
         ExactFraction(18, 5),
-        listOf(logNum2, logNum2, logNum1, logNum2.swapDivided()),
+        listOf(logNum2, logNum2, logNum1, logNum2.inverse()),
         listOf(Pi(true), Pi(true), Pi(true), Pi())
     )
     expectedCoeff = ExactFraction(18, 5)
@@ -106,9 +106,9 @@ internal fun runGetSimplifiedTests() {
     expectedPis = listOf(Pi(true))
     runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), expectedPis)
 
-    term = Term.fromValues(ExactFraction.SEVEN, listOf(logNum1, logNum1, logNum2.swapDivided()), listOf(Sqrt(5)), listOf(Pi(), Pi()))
+    term = Term.fromValues(ExactFraction.SEVEN, listOf(logNum1, logNum1, logNum2.inverse()), listOf(Sqrt(5)), listOf(Pi(), Pi()))
     expectedCoeff = ExactFraction.SEVEN
-    expectedLogs = listOf(logNum1, logNum1, logNum2.swapDivided())
+    expectedLogs = listOf(logNum1, logNum1, logNum2.inverse())
     expectedSqrts = listOf(Sqrt(5))
     expectedPis = listOf(Pi(), Pi())
     runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, expectedSqrts, expectedPis)
@@ -129,7 +129,7 @@ internal fun runGetValueTests() {
     assertEquals(expected, term.getValue())
 
     // just logs
-    term = Term.fromValues(listOf(logNum1, logNum1.swapDivided()))
+    term = Term.fromValues(listOf(logNum1, logNum1.inverse()))
     expected = BigDecimal.ONE
     assertEquals(expected, term.getValue())
 

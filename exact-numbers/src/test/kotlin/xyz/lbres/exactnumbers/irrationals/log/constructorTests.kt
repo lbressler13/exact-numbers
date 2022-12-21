@@ -44,7 +44,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.inverted)
     }
 
     // all fields
@@ -53,7 +53,7 @@ internal fun runConstructorTests() {
     expectedBase = 100
     assertEquals(expectedNumber, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertTrue(logNum.isDivided)
+    assertTrue(logNum.inverted)
 
     expectedNumber = ExactFraction(30)
     expectedBase = 100
@@ -61,7 +61,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertTrue(it.isDivided)
+        assertTrue(it.inverted)
     }
 
     // just number
@@ -71,7 +71,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.inverted)
     }
 
     logNum = Log(ExactFraction(107, 3))
@@ -79,7 +79,7 @@ internal fun runConstructorTests() {
     expectedBase = 10
     assertEquals(expectedNumber, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.isDivided)
+    assertFalse(logNum.inverted)
 
     // number + base
     expectedNumber = ExactFraction.TWO
@@ -88,7 +88,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.inverted)
     }
 
     logNum = Log(ExactFraction(107, 3), 5)
@@ -96,7 +96,7 @@ internal fun runConstructorTests() {
     expectedBase = 5
     assertEquals(expectedNumber, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.isDivided)
+    assertFalse(logNum.inverted)
 
     // number + divided
     expectedNumber = ExactFraction.TWO
@@ -105,7 +105,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.inverted)
     }
 
     expectedNumber = ExactFraction.TWO
@@ -114,6 +114,6 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertTrue(it.isDivided)
+        assertTrue(it.inverted)
     }
 }

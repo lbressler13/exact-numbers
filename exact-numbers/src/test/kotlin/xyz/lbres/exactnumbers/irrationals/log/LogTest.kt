@@ -106,26 +106,25 @@ internal class LogTest {
     }
 
     @Test fun testTimes() = runTimesTests()
-
     @Test fun testDiv() = runDivTests()
 
     @Test
-    fun testSwapDivided() {
+    fun testInverse() {
         // error
-        assertDivByZero { Log.ZERO.swapDivided() }
+        assertDivByZero { Log.ZERO.inverse() }
 
         // other
         var logNum = Log.ONE
         var expected = Log(10, 10, true)
-        assertEquals(expected, logNum.swapDivided())
+        assertEquals(expected, logNum.inverse())
 
         logNum = Log(4, 3, false)
         expected = Log(4, 3, true)
-        assertEquals(expected, logNum.swapDivided())
+        assertEquals(expected, logNum.inverse())
 
         logNum = Log(ExactFraction(3, 8), 2, true)
         expected = Log(ExactFraction(3, 8), 2, false)
-        assertEquals(expected, logNum.swapDivided())
+        assertEquals(expected, logNum.inverse())
     }
 
     @Test

@@ -60,7 +60,7 @@ internal class TermTest {
         assertNotEquals(term2, term1)
 
         term1 = Term.fromValue(logNum1)
-        term2 = Term.fromValue(logNum1.swapDivided())
+        term2 = Term.fromValue(logNum1.inverse())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -213,7 +213,7 @@ internal class TermTest {
         assertFalse(term.isZero())
         assertFalse(term.isZero()) // repeat to test stored values
 
-        term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.swapDivided()))
+        term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.inverse()))
         assertFalse(term.isZero())
         assertFalse(term.isZero()) // repeat to test stored values
 

@@ -13,6 +13,7 @@ internal fun runTimesTests() {
     // zero
     assertEquals(Term.ZERO, Sqrt.ZERO * Sqrt.ONE)
     assertEquals(Term.ZERO, Sqrt.ONE * Log.ZERO)
+    assertEquals(Term.ZERO, Sqrt.ONE * ExactFraction.ZERO)
 
     // sqrt only
     var sqrt1 = Sqrt(100)
@@ -24,6 +25,17 @@ internal fun runTimesTests() {
     sqrt2 = Sqrt(ExactFraction(27, 17))
     expected = Term.fromValues(listOf(sqrt1, sqrt2))
     assertEquals(expected, sqrt1 * sqrt2)
+
+    // exact fraction
+    sqrt1 = Sqrt(111)
+    var ef = ExactFraction(-5)
+    expected = Term.fromValues(ef, listOf(sqrt1))
+    assertEquals(expected, sqrt1 * ef)
+
+    sqrt1 = Sqrt(ExactFraction(9, 100))
+    ef = ExactFraction(100, 213)
+    expected = Term.fromValues(ef, listOf(sqrt1))
+    assertEquals(expected, sqrt1 * ef)
 
     // log
     sqrt1 = Sqrt(ExactFraction(16, 169))
@@ -52,27 +64,39 @@ internal fun runDivTests() {
     // zero
     assertDivByZero { Sqrt.ONE / Sqrt.ZERO }
     assertDivByZero { Sqrt.ONE / Log.ZERO }
+    assertDivByZero { Sqrt.ONE / ExactFraction.ZERO }
 
     // sqrt only
     var sqrt1 = Sqrt(100)
     var sqrt2 = Sqrt(ExactFraction(1, 100))
-    var expected = Term.fromValues(listOf(sqrt1, sqrt2.swapDivided()))
+    var expected = Term.fromValues(listOf(sqrt1, sqrt2.inverse()))
     assertEquals(expected, sqrt1 / sqrt2)
 
     sqrt1 = Sqrt(ExactFraction(99, 5))
     sqrt2 = Sqrt(ExactFraction(27, 17))
-    expected = Term.fromValues(listOf(sqrt1, sqrt2.swapDivided()))
+    expected = Term.fromValues(listOf(sqrt1, sqrt2.inverse()))
     assertEquals(expected, sqrt1 / sqrt2)
+
+    // exact fraction
+    sqrt1 = Sqrt(111)
+    var ef = ExactFraction(-5)
+    expected = Term.fromValues(ef.inverse(), listOf(sqrt1))
+    assertEquals(expected, sqrt1 / ef)
+
+    sqrt1 = Sqrt(ExactFraction(9, 100))
+    ef = ExactFraction(100, 213)
+    expected = Term.fromValues(ef.inverse(), listOf(sqrt1))
+    assertEquals(expected, sqrt1 / ef)
 
     // log
     sqrt1 = Sqrt(ExactFraction(16, 169))
     var log = Log(ExactFraction(25), 4, true)
-    expected = Term.fromValues(listOf(log.swapDivided()), listOf(sqrt1))
+    expected = Term.fromValues(listOf(log.inverse()), listOf(sqrt1))
     assertEquals(expected, sqrt1 / log)
 
     sqrt1 = Sqrt(155)
     log = Log(100)
-    expected = Term.fromValues(listOf(log.swapDivided()), listOf(sqrt1))
+    expected = Term.fromValues(listOf(log.inverse()), listOf(sqrt1))
     assertEquals(expected, sqrt1 / log)
 
     // pi

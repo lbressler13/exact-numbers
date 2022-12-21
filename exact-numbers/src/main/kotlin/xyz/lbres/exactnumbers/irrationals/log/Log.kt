@@ -16,21 +16,21 @@ import java.math.BigInteger
  *
  * @param argument [ExactFraction]: value to compute log of
  * @param base [Int]: base to use when computing log
- * @param isDivided [Boolean]: if the inverse of the value should be calculated
+ * @param inverted [Boolean]: if the inverse of the value should be calculated
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  * @throws [ArithmeticException] if number is not positive, base is less than 1, or value is 0 when isDivided is true
  */
 class Log private constructor(
     val argument: ExactFraction,
     val base: Int,
-    override val isDivided: Boolean,
+    override val inverted: Boolean,
     private val fullySimplified: Boolean
 ) : Comparable<Log>, Irrational {
     override val type = TYPE
 
     init {
         when {
-            argument == ExactFraction.ONE && isDivided -> throw divideByZero
+            argument == ExactFraction.ONE && inverted -> throw divideByZero
             argument.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             argument.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
             base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
@@ -38,8 +38,8 @@ class Log private constructor(
     }
 
     // constructors with reduced params + other types
-    constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false, false)
-    constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false, false)
+    constructor(argument: ExactFraction) : this(argument, base = 10, inverted = false, false)
+    constructor(argument: ExactFraction, base: Int) : this(argument, base, inverted = false, false)
     constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided, false)
     constructor(argument: ExactFraction, base: Int, isDivided: Boolean) : this(argument, base, isDivided, false)
 
@@ -64,12 +64,14 @@ class Log private constructor(
         return getValue() == other.getValue()
     }
 
+    operator fun times(other: ExactFraction): Term = Term.fromValues(other, listOf(this))
     operator fun times(other: Log): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other))
-    operator fun div(other: Log): Term = Term.fromValues(listOf(this, other.swapDivided()))
-    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
-    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
+    operator fun div(other: ExactFraction): Term = Term.fromValues(other.inverse(), listOf(this))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(this, other.inverse()))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.inverse()))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other.inverse()))
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
@@ -111,7 +113,7 @@ class Log private constructor(
             else -> ExactFraction(numLog, denomLog)
         }
 
-        return if (isDivided) {
+        return if (inverted) {
             result.inverse()
         } else {
             result
@@ -127,7 +129,7 @@ class Log private constructor(
     override fun getValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
 
-        if (!isDivided) {
+        if (!inverted) {
             return logValue
         }
 
@@ -150,18 +152,25 @@ class Log private constructor(
 
         val rational = getRationalValue()
         if (rational == null) {
-            return Pair(ExactFraction.ONE, Log(argument, base, isDivided, true))
+            return Pair(ExactFraction.ONE, Log(argument, base, inverted, true))
         }
 
         return Pair(rational, ONE)
     }
 
-    override fun swapDivided(): Log {
+    /**
+     * Create log with value 1/this.
+     *
+     * **This does not correspond to an inverse log**
+     *
+     * @return [Log]: log with value 1/this
+     */
+    override fun inverse(): Log {
         if (isZero()) {
             throw divideByZero
         }
 
-        return Log(argument, base, !isDivided)
+        return Log(argument, base, !inverted)
     }
 
     override fun toString(): String {
@@ -171,20 +180,20 @@ class Log private constructor(
             "${argument.numerator}/${argument.denominator}"
         }
 
-        if (isDivided) {
+        if (inverted) {
             return "[1/log_$base($numString)]"
         }
 
         return "[log_$base($numString)]"
     }
 
-    override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
+    override fun hashCode(): Int = listOf(TYPE, argument, base, inverted).hashCode()
 
     companion object {
         const val TYPE = "log"
 
-        val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
-        val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
+        val ZERO = Log(ExactFraction.ONE, 10, inverted = false, fullySimplified = true)
+        val ONE = Log(ExactFraction.TEN, 10, inverted = false, fullySimplified = true)
 
         /**
          * Extract rational values and simplify remaining list of logs
@@ -213,19 +222,19 @@ class Log private constructor(
                         emptyList()
                     } else {
                         val currentLogs = pair.value
-                        val countDivided = currentLogs.count { it.isDivided }
+                        val countDivided = currentLogs.count { it.inverted }
                         val countNotDivided = currentLogs.size - countDivided
 
                         when {
                             countDivided == countNotDivided -> emptyList()
                             countDivided > countNotDivided -> List(countDivided - countNotDivided) {
-                                Log(pair.key.first, pair.key.second, isDivided = true, fullySimplified = true)
+                                Log(pair.key.first, pair.key.second, inverted = true, fullySimplified = true)
                             }
                             else -> List(countNotDivided - countDivided) {
                                 Log(
                                     pair.key.first,
                                     pair.key.second,
-                                    isDivided = false,
+                                    inverted = false,
                                     fullySimplified = true
                                 )
                             }

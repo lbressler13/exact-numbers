@@ -34,8 +34,8 @@ internal fun runGetLogsTests() {
     expected = listOf(logNum1, logNum1)
     assertEquals(expected, term.logs)
 
-    term = Term.fromValues(listOf(logNum1, logNum1.swapDivided()))
-    expected = listOf(logNum1, logNum1.swapDivided())
+    term = Term.fromValues(listOf(logNum1, logNum1.inverse()))
+    expected = listOf(logNum1, logNum1.inverse())
     assertEquals(expected, term.logs)
 
     term = Term.fromValues(listOf(logNum3, logNum4, logNum1))

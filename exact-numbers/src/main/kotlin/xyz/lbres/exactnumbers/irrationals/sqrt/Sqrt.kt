@@ -20,7 +20,7 @@ import java.math.BigInteger
  */
 class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Comparable<Sqrt>, Irrational {
     override val type = TYPE
-    override val isDivided = false
+    override val inverted = false
 
     init {
         if (radicand.isNegative()) {
@@ -38,15 +38,17 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     private constructor(radicand: Long, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
     private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
+    operator fun times(other: ExactFraction): Term = Term.fromValues(other, listOf(this))
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
-    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this, other.swapDivided()))
-    operator fun div(other: Log): Term = Term.fromValues(listOf(other.swapDivided()), listOf(this))
-    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.swapDivided()))
+    operator fun div(other: ExactFraction): Term = Term.fromValues(other.inverse(), listOf(this))
+    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(this, other.inverse()))
+    operator fun div(other: Log): Term = Term.fromValues(listOf(other.inverse()), listOf(this))
+    operator fun div(other: Pi): Term = Term.fromValues(listOf(this), listOf(other.inverse()))
 
     override fun isZero(): Boolean = radicand.isZero()
-    override fun swapDivided(): Sqrt {
+    override fun inverse(): Sqrt {
         if (isZero()) {
             throw divideByZero
         }

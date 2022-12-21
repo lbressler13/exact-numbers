@@ -82,9 +82,9 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
 
         return Term(
             coefficient / other.coefficient,
-            logs + other.logs.map(Log::swapDivided),
-            squareRoots + other.squareRoots.map(Sqrt::swapDivided),
-            pis + other.pis.map(Pi::swapDivided)
+            logs + other.logs.map(Log::inverse),
+            squareRoots + other.squareRoots.map(Sqrt::inverse),
+            pis + other.pis.map(Pi::inverse)
         )
     }
 
@@ -140,7 +140,7 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
      */
     private fun calculatePiCount(): Int {
         // val pis = numbers.filter { it.type == Pi.TYPE }
-        val positive = pis.count { !it.isDivided }
+        val positive = pis.count { !it.inverted }
         val negative = pis.size - positive
         return positive - negative
     }
@@ -184,7 +184,7 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
             val piDivided = piCount < 0
-            val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
+            val piList = List(abs(piCount)) { Pi(inverted = piDivided) }
 
             return Term(coefficient, logs, roots, piList)
         }
