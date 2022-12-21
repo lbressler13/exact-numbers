@@ -63,9 +63,9 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
         val otherSimplified = other.getSimplified()
 
         return simplified.coefficient == otherSimplified.coefficient &&
-                simplified.piCount == otherSimplified.piCount &&
-                simplified.logs.sorted() == otherSimplified.logs.sorted() &&
-                simplified.squareRoots.sorted() == otherSimplified.squareRoots.sorted()
+            simplified.piCount == otherSimplified.piCount &&
+            simplified.logs.sorted() == otherSimplified.logs.sorted() &&
+            simplified.squareRoots.sorted() == otherSimplified.squareRoots.sorted()
     }
 
     operator fun times(other: Term): Term {

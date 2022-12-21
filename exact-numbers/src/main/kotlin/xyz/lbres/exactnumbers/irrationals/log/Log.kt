@@ -2,6 +2,7 @@ package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
@@ -10,6 +11,7 @@ import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -25,7 +27,7 @@ class Log private constructor(
     val base: Int,
     override val isInverted: Boolean,
     private val fullySimplified: Boolean
-) : Comparable<Log>, Irrational {
+) : Comparable<Log>, Irrational, Number() {
     override val type = TYPE
 
     init {
@@ -176,6 +178,55 @@ class Log private constructor(
         }
 
         return "[log_$base($numString)]"
+    }
+
+    private fun getRoundedAndCheckOverflow(minValue: String, maxValue: String, fromType: String): BigDecimal {
+        val roundedValue = getValue().setScale(0, RoundingMode.HALF_UP)
+
+        val minDecimal = BigDecimal(minValue)
+        val maxDecimal = BigDecimal(maxValue)
+        if (roundedValue < minDecimal || roundedValue > maxDecimal) {
+            throw CastingOverflowException(toString(), TYPE, fromType)
+        }
+
+        return roundedValue
+    }
+
+    override fun toByte(): Byte {
+        val roundedValue = getRoundedAndCheckOverflow(Byte.MIN_VALUE.toString(), Byte.MAX_VALUE.toString(), "Byte")
+        return roundedValue.toByte()
+    }
+
+    override fun toChar(): Char {
+        val maxAsInt = Char.MAX_VALUE.code
+        val minAsInt = Char.MIN_VALUE.code
+        val roundedValue = getRoundedAndCheckOverflow(minAsInt.toString(), maxAsInt.toString(), "Char")
+        return roundedValue.toInt().toChar()
+    }
+
+    override fun toShort(): Short {
+        val roundedValue = getRoundedAndCheckOverflow(Short.MIN_VALUE.toString(), Short.MAX_VALUE.toString(), "Short")
+        return roundedValue.toShort()
+    }
+
+    override fun toInt(): Int {
+        val roundedValue = getRoundedAndCheckOverflow(Int.MIN_VALUE.toString(), Int.MAX_VALUE.toString(), "Int")
+        return roundedValue.toInt()
+    }
+
+    override fun toLong(): Long {
+        val roundedValue = getRoundedAndCheckOverflow(Long.MIN_VALUE.toString(), Long.MAX_VALUE.toString(), "Long")
+        return roundedValue.toLong()
+    }
+
+    override fun toFloat(): Float {
+        getRoundedAndCheckOverflow((-Float.MAX_VALUE).toString(), Float.MAX_VALUE.toString(), "Float")
+        return getValue().toFloat()
+    }
+
+    override fun toDouble(): Double {
+        getRoundedAndCheckOverflow((-Double.MAX_VALUE).toString(), Double.MAX_VALUE.toString(), "Double")
+        return getValue().toDouble()
     }
 
     override fun hashCode(): Int = listOf(TYPE, argument, base, isInverted).hashCode()
