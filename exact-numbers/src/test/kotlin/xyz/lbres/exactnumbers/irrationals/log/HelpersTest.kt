@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 internal class HelpersTest {
     @Test
-    internal fun testGetLogOf() {
+    fun testGetLogOf() {
         // base 10
         var base = 10
 

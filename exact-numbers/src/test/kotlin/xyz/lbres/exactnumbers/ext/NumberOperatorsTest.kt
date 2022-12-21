@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 internal class NumberOperatorsTest {
     @Test
-    internal fun testToExactFraction() {
+    fun testToExactFraction() {
         // Int
         var i = 0
         assertEquals(ExactFraction(i), i.toExactFraction())
@@ -58,7 +58,7 @@ internal class NumberOperatorsTest {
     }
 
     @Test
-    internal fun testEq() {
+    fun testEq() {
         // BigInteger, Int
         var i = 0
         var bi = BigInteger(i.toString())

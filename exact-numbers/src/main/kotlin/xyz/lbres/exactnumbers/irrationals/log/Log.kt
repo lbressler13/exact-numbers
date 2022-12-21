@@ -64,7 +64,6 @@ class Log private constructor(
         return getValue() == other.getValue()
     }
 
-    // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this), listOf(other))
@@ -188,20 +187,17 @@ class Log private constructor(
         val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
 
         /**
-         * Extract rational values and simplify remaining list of irrationals
+         * Extract rational values and simplify remaining list of logs
          *
-         * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Logs
-         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of irrational values
+         * @param numbers [List<Log>]: list to simplify
+         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of logs
          * @throws [ClassCastException] if any of the numbers are not a Log
          */
         // TODO: improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
+        internal fun simplifyList(numbers: List<Log>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }
-
-            @Suppress("UNCHECKED_CAST")
-            numbers as List<Log>
 
             if (numbers.any(Log::isZero)) {
                 return Pair(ExactFraction.ZERO, emptyList())

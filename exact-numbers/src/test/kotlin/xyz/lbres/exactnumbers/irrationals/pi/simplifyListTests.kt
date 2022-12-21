@@ -1,13 +1,8 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
-import xyz.lbres.exactnumbers.irrationals.log.Log
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 internal fun runSimplifyListTests() {
-    // error
-    assertFailsWith<ClassCastException> { Pi.simplifyList(listOf(Pi(), Log.ONE)) }
-
     // equal
     var expected: List<Pi> = listOf()
 

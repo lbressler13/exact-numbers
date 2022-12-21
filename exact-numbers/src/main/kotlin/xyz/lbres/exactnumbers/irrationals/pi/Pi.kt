@@ -6,6 +6,7 @@ import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.kotlinutils.general.ternaryIf
 import java.math.BigDecimal
 import kotlin.math.PI
 import kotlin.math.abs
@@ -53,7 +54,6 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
         }
     }
 
-    // public methods to expose general Irrational operators
     operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(other), listOf(this))
@@ -63,12 +63,7 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
 
     override fun toString(): String {
         val pi = "π"
-
-        return if (isDivided) {
-            "[1/$pi]"
-        } else {
-            "[$pi]"
-        }
+        return ternaryIf(isDivided, "[1/$pi]", "[$pi]")
     }
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
@@ -79,17 +74,14 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational {
         /**
          * Simplify list of pis
          *
-         * @param numbers [List<Irrational>] : list to simplify, expected to consist of only Pis
+         * @param numbers [List<Pi>] : list to simplify
          * @return [List<Pi>]: simplified list
          * @throws [ClassCastException] if any of the numbers are not a Pi
          */
-        internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
+        internal fun simplifyList(numbers: List<Pi>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {
                 return emptyList()
             }
-
-            @Suppress("UNCHECKED_CAST")
-            numbers as List<Pi>
 
             val positive = numbers.count { !it.isDivided }
             val negative = numbers.size - positive

@@ -20,7 +20,7 @@ internal class HelpersTest {
     }
 
     @Test
-    internal fun testGetRootOf() {
+    fun testGetRootOf() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
 

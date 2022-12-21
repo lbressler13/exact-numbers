@@ -1,10 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 internal fun runGetSimplifiedTests() {
     val one = ExactFraction.ONE
@@ -56,15 +53,12 @@ internal fun runGetSimplifiedTests() {
 internal fun runSimplifyListTests() {
     val one = ExactFraction.ONE
 
-    // error
-    assertFailsWith<ClassCastException> { Sqrt.simplifyList(listOf(Pi())) }
-
     // empty
     var expected = Pair(one, listOf<Sqrt>())
 
     assertEquals(expected, Sqrt.simplifyList(null))
 
-    var numbers: List<Irrational> = listOf()
+    var numbers: List<Sqrt> = listOf()
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // zero

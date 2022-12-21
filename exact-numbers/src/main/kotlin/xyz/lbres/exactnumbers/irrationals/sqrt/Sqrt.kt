@@ -7,6 +7,7 @@ import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.kotlinutils.general.ternaryIf
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -37,7 +38,6 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     private constructor(radicand: Long, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
     private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
-    // public methods to expose general Irrational operators
     operator fun times(other: Sqrt): Term = Term.fromValues(listOf(this, other))
     operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
     operator fun times(other: Pi): Term = Term.fromValues(listOf(this), listOf(other))
@@ -147,19 +147,16 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)
 
         /**
-         * Extract rational values and simplify remaining list of irrationals
+         * Extract rational values and simplify remaining list of sqrts
          *
-         * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Sqrts
+         * @param numbers [List<Sqrt>]: list to simplify
          * @return [Pair<ExactFraction, List<Sqrt>>]: product of rational values and a list containing a single, fully simplified irrational root
          * @throws [ClassCastException] if any of the numbers are not a Sqrt
          */
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
+        internal fun simplifyList(numbers: List<Sqrt>?): Pair<ExactFraction, List<Sqrt>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }
-
-            @Suppress("UNCHECKED_CAST")
-            numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {
                 return Pair(ExactFraction.ZERO, emptyList())
@@ -175,11 +172,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val root = Sqrt(ExactFraction(numRoot, denomRoot), true)
             val coeff = ExactFraction(numWhole, denomWhole)
 
-            val rootList = if (root == ONE) {
-                emptyList()
-            } else {
-                listOf(root)
-            }
+            val rootList = ternaryIf(root == ONE, emptyList(), listOf(root))
 
             return Pair(coeff, rootList)
         }

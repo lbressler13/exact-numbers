@@ -19,14 +19,14 @@ internal class TermTest {
 
     @Test fun testConstructor() = runConstructorTests()
 
-    @Test internal fun testTimes() = runTimesTests()
-    @Test internal fun testDiv() = runDivTests()
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
 
-    @Test internal fun testGetSimplified() = runGetSimplifiedTests()
-    @Test internal fun testGetValue() = runGetValueTests()
+    @Test fun testGetSimplified() = runGetSimplifiedTests()
+    @Test fun testGetValue() = runGetValueTests()
 
     @Test
-    internal fun testEquals() {
+    fun testEquals() {
         // equal
         var term1 = Term.ZERO
         assertEquals(term1, term1)
@@ -116,7 +116,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testUnaryMinus() {
+    fun testUnaryMinus() {
         var term = Term.ZERO
         var expected = Term.ZERO
         assertEquals(expected, -term)
@@ -157,7 +157,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testUnaryPlus() {
+    fun testUnaryPlus() {
         var term = Term.ZERO
         assertEquals(term, +term)
 
@@ -186,7 +186,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testIsZero() {
+    fun testIsZero() {
         // zero
         var term = Term.ZERO
         assertTrue(term.isZero())
@@ -226,12 +226,12 @@ internal class TermTest {
         assertFalse(term.isZero()) // repeat to test stored values
     }
 
-    @Test internal fun testGetLogs() = runGetLogsTests()
-    @Test internal fun testGetPiCount() = runGetPiCountTests()
-    @Test internal fun testGetSquareRoots() = runGetSquareRootsTests()
+    @Test fun testGetLogs() = runGetLogsTests()
+    @Test fun testGetPiCount() = runGetPiCountTests()
+    @Test fun testGetSquareRoots() = runGetSquareRootsTests()
 
     @Test
-    internal fun testToString() {
+    fun testToString() {
         // zero
         var term = Term.ZERO
         var expected = "<0>"

@@ -1,9 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 private val one = Log.ONE
 private val fractionOne = ExactFraction.ONE
@@ -59,9 +57,6 @@ internal fun runGetSimplifiedTests() {
 }
 
 internal fun runSimplifyListTests() {
-    // error
-    assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
-
     // empty
     var expected: Pair<ExactFraction, List<Log>> = Pair(fractionOne, listOf())
 
