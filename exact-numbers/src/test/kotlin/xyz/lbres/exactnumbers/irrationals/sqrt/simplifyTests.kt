@@ -6,6 +6,53 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+internal fun runGetSimplifiedTests() {
+    val one = ExactFraction.ONE
+
+    // rational
+    var sqrt = Sqrt.ZERO
+    var expected = Pair(one, Sqrt.ZERO)
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt.ONE
+    expected = Pair(one, Sqrt.ONE)
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(1024)
+    expected = Pair(ExactFraction(32), Sqrt.ONE)
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(ExactFraction(9, 25))
+    expected = Pair(ExactFraction(3, 5), Sqrt.ONE)
+    assertEquals(expected, sqrt.getSimplified())
+
+    // rational w/ whole
+    sqrt = Sqrt(50)
+    expected = Pair(ExactFraction.FIVE, Sqrt(ExactFraction.TWO))
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(3000)
+    expected = Pair(ExactFraction.TEN, Sqrt(ExactFraction(30)))
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(ExactFraction(50, 27))
+    expected = Pair(ExactFraction(5, 3), Sqrt(ExactFraction(2, 3)))
+    assertEquals(expected, sqrt.getSimplified())
+
+    // no whole
+    sqrt = Sqrt(15)
+    expected = Pair(one, sqrt)
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(107)
+    expected = Pair(one, sqrt)
+    assertEquals(expected, sqrt.getSimplified())
+
+    sqrt = Sqrt(ExactFraction(94, 46))
+    expected = Pair(one, sqrt)
+    assertEquals(expected, sqrt.getSimplified())
+}
+
 internal fun runSimplifyListTests() {
     val one = ExactFraction.ONE
 

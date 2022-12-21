@@ -253,7 +253,8 @@ private fun runAllTypeTests() {
     checkTerm(term, ExactFraction(18), logs, sqrts, pis, 1)
 }
 
-private fun checkTerm(term: Term,
+private fun checkTerm(
+    term: Term,
     expectedCoeff: ExactFraction,
     expectedLogs: List<Log>,
     expectedSqrts: List<Sqrt>,

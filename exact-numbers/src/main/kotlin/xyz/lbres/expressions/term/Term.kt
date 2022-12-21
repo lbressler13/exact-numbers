@@ -80,9 +80,6 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
             throw divideByZero
         }
 
-//        val newCoeff = coefficient / other.coefficient
-//        val newNumbers = numbers + other.numbers.map { it.swapDivided() }
-//        return Term(newCoeff, newNumbers)
         return Term(
             coefficient / other.coefficient,
             logs + other.logs.map(Log::swapDivided),
@@ -139,13 +136,6 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
     }
 
     /**
-     * Get all logs from numbers
-     */
-//    @Suppress("UNCHECKED_CAST")
-//    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE } as List<Log>
-    // fun getLogs() = logs
-
-    /**
      * Get number of Pi in numbers. Divided Pi is counted as -1
      */
     private fun calculatePiCount(): Int {
@@ -154,13 +144,6 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
         val negative = pis.size - positive
         return positive - negative
     }
-
-    /**
-     * Get all square roots from numbers
-     */
-//    @Suppress("UNCHECKED_CAST")
-//    fun getSquareRoots(): List<Sqrt> = numbers.filter { it.type == Sqrt.TYPE } as List<Sqrt>
-    // fun getSquareRoots() = squareRoots
 
     override fun toString(): String {
         return storedString.ifNull {
@@ -255,6 +238,7 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
         @JvmName("termFromCoeffsRootsPis")
         fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>, pis: List<Pi>) = fromValues(coefficient, emptyList(), roots, pis)
 
+        // single rational or irrational value
         fun fromValue(coefficient: ExactFraction) = fromValues(coefficient, emptyList(), emptyList(), emptyList())
         fun fromValue(log: Log) = fromValues(ExactFraction.ONE, listOf(log), emptyList(), emptyList())
         fun fromValue(sqrt: Sqrt) = fromValues(ExactFraction.ONE, emptyList(), listOf(sqrt), emptyList())
