@@ -6,6 +6,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.general.ternaryIf
 import xyz.lbres.kotlinutils.generic.ext.ifNull
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -22,6 +23,7 @@ import kotlin.math.abs
  */
 class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squareRoots: List<Sqrt>, pis: List<Pi>) {
     val coefficient: ExactFraction
+
     // internal val numbers: List<Irrational>
     val logs: List<Log>
     val squareRoots: List<Sqrt>
@@ -61,9 +63,9 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
         val otherSimplified = other.getSimplified()
 
         return simplified.coefficient == otherSimplified.coefficient &&
-            simplified.piCount == otherSimplified.piCount &&
-            simplified.logs.sorted() == otherSimplified.logs.sorted() &&
-            simplified.squareRoots.sorted() == otherSimplified.squareRoots.sorted()
+                simplified.piCount == otherSimplified.piCount &&
+                simplified.logs.sorted() == otherSimplified.logs.sorted() &&
+                simplified.squareRoots.sorted() == otherSimplified.squareRoots.sorted()
     }
 
     operator fun times(other: Term): Term {
@@ -90,7 +92,8 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
 
     fun isZero(): Boolean {
         return storedIsZero.ifNull {
-            val result = coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)
+            val result =
+                coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)
             storedIsZero = result
             result
         }
@@ -136,11 +139,10 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
     }
 
     /**
-     * Get number of Pi in numbers. Divided Pi is counted as -1
+     * Get number of Pi in numbers. Inverted Pi is counted as -1
      */
     private fun calculatePiCount(): Int {
-        // val pis = numbers.filter { it.type == Pi.TYPE }
-        val positive = pis.count { !it.inverted }
+        val positive = pis.count { !it.isInverted }
         val negative = pis.size - positive
         return positive - negative
     }
@@ -154,12 +156,7 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
             }
 
             val numString = (logs + squareRoots + pis).joinToString("x")
-
-            val result = if (numString.isEmpty()) {
-                "<$coeffString>"
-            } else {
-                "<${coeffString}x$numString>"
-            }
+            val result = ternaryIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
 
             storedString = result
             result
@@ -183,8 +180,8 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
-            val piDivided = piCount < 0
-            val piList = List(abs(piCount)) { Pi(inverted = piDivided) }
+            val pi = ternaryIf(piCount < 0, Pi().inverse(), Pi())
+            val piList = List(abs(piCount)) { pi }
 
             return Term(coefficient, logs, roots, piList)
         }
@@ -205,38 +202,53 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
         // one type of irrational
         @JvmName("termFromLogs")
         fun fromValues(logs: List<Log>) = fromValues(ExactFraction.ONE, logs, emptyList(), emptyList())
+
         @JvmName("termFromRoots")
         fun fromValues(roots: List<Sqrt>) = fromValues(ExactFraction.ONE, emptyList(), roots, emptyList())
+
         @JvmName("termFromPis")
         fun fromValues(pis: List<Pi>) = fromValues(ExactFraction.ONE, emptyList(), emptyList(), pis)
 
         // two types of irrationals
         @JvmName("termFromLogsRoots")
         fun fromValues(logs: List<Log>, roots: List<Sqrt>) = fromValues(ExactFraction.ONE, logs, roots, emptyList())
+
         @JvmName("termFromLogsPis")
         fun fromValues(logs: List<Log>, pis: List<Pi>) = fromValues(ExactFraction.ONE, logs, emptyList(), pis)
+
         @JvmName("termFromRootsPis")
         fun fromValues(roots: List<Sqrt>, pis: List<Pi>) = fromValues(ExactFraction.ONE, emptyList(), roots, pis)
 
         // three types of irrationals
         @JvmName("termFromLogsRootsPis")
-        fun fromValues(logs: List<Log>, roots: List<Sqrt>, pis: List<Pi>) = fromValues(ExactFraction.ONE, logs, roots, pis)
+        fun fromValues(logs: List<Log>, roots: List<Sqrt>, pis: List<Pi>) =
+            fromValues(ExactFraction.ONE, logs, roots, pis)
 
         // one type of irrational + coefficient
         @JvmName("termFromCoeffLogs")
-        fun fromValues(coefficient: ExactFraction, logs: List<Log>) = fromValues(coefficient, logs, emptyList(), emptyList())
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>) =
+            fromValues(coefficient, logs, emptyList(), emptyList())
+
         @JvmName("termFromCoeffRoots")
-        fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>) = fromValues(coefficient, emptyList(), roots, emptyList())
+        fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>) =
+            fromValues(coefficient, emptyList(), roots, emptyList())
+
         @JvmName("termFromCoeffPis")
-        fun fromValues(coefficient: ExactFraction, pis: List<Pi>) = fromValues(coefficient, emptyList(), emptyList(), pis)
+        fun fromValues(coefficient: ExactFraction, pis: List<Pi>) =
+            fromValues(coefficient, emptyList(), emptyList(), pis)
 
         // two types of irrationals + coefficient
         @JvmName("termFromCoeffLogsRoots")
-        fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>) = fromValues(coefficient, logs, roots, emptyList())
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>) =
+            fromValues(coefficient, logs, roots, emptyList())
+
         @JvmName("termFromCoeffLogsPis")
-        fun fromValues(coefficient: ExactFraction, logs: List<Log>, pis: List<Pi>) = fromValues(coefficient, logs, emptyList(), pis)
+        fun fromValues(coefficient: ExactFraction, logs: List<Log>, pis: List<Pi>) =
+            fromValues(coefficient, logs, emptyList(), pis)
+
         @JvmName("termFromCoeffsRootsPis")
-        fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>, pis: List<Pi>) = fromValues(coefficient, emptyList(), roots, pis)
+        fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>, pis: List<Pi>) =
+            fromValues(coefficient, emptyList(), roots, pis)
 
         // single rational or irrational value
         fun fromValue(coefficient: ExactFraction) = fromValues(coefficient, emptyList(), emptyList(), emptyList())

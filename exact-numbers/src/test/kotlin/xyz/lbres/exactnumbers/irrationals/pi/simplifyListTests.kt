@@ -11,10 +11,10 @@ internal fun runSimplifyListTests() {
     var pis: List<Pi> = listOf()
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(), Pi(true))
+    pis = listOf(Pi(), Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(true), Pi(), Pi(true), Pi(), Pi(), Pi(true))
+    pis = listOf(Pi().inverse(), Pi(), Pi().inverse(), Pi(), Pi(), Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 
     // positive
@@ -26,28 +26,28 @@ internal fun runSimplifyListTests() {
     expected = listOf(Pi(), Pi(), Pi())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(), Pi(), Pi(true))
+    pis = listOf(Pi(), Pi(), Pi().inverse())
     expected = listOf(Pi())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(), Pi(), Pi(), Pi(true), Pi(), Pi(true))
+    pis = listOf(Pi(), Pi(), Pi(), Pi().inverse(), Pi(), Pi().inverse())
     expected = listOf(Pi(), Pi())
     assertEquals(expected, Pi.simplifyList(pis))
 
     // negative
-    pis = listOf(Pi(true))
-    expected = listOf(Pi(true))
+    pis = listOf(Pi().inverse())
+    expected = listOf(Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(true), Pi(true), Pi(true))
-    expected = listOf(Pi(true), Pi(true), Pi(true))
+    pis = listOf(Pi().inverse(), Pi().inverse(), Pi().inverse())
+    expected = listOf(Pi().inverse(), Pi().inverse(), Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(true), Pi(true), Pi())
-    expected = listOf(Pi(true))
+    pis = listOf(Pi().inverse(), Pi().inverse(), Pi())
+    expected = listOf(Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 
-    pis = listOf(Pi(true), Pi(true), Pi(true), Pi(), Pi(true), Pi())
-    expected = listOf(Pi(true), Pi(true))
+    pis = listOf(Pi().inverse(), Pi().inverse(), Pi().inverse(), Pi(), Pi().inverse(), Pi())
+    expected = listOf(Pi().inverse(), Pi().inverse())
     assertEquals(expected, Pi.simplifyList(pis))
 }

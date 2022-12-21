@@ -30,7 +30,7 @@ internal fun runGetSimplifiedTests() {
     expected = Pair(ExactFraction.FIVE, one)
     assertEquals(expected, logNum.getSimplified())
 
-    logNum = Log(ExactFraction(32), 2, isDivided = true)
+    logNum = Log(ExactFraction(32), 2).inverse()
     expected = Pair(ExactFraction(1, 5), one)
     assertEquals(expected, logNum.getSimplified())
 
@@ -86,50 +86,50 @@ internal fun runSimplifyListTests() {
     expected = Pair(fractionOne, listOf())
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(one, Log(8), Log(4, 3, true)).sorted()
-    expected = Pair(fractionOne, listOf(Log(8), Log(4, 3, true)).sorted())
+    logs = listOf(one, Log(8), Log(4, 3).inverse()).sorted()
+    expected = Pair(fractionOne, listOf(Log(8), Log(4, 3).inverse()).sorted())
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(one, Log(8), one, one, one, Log(4, 3, true)).sorted()
-    expected = Pair(fractionOne, listOf(Log(8), Log(4, 3, true)).sorted())
+    logs = listOf(one, Log(8), one, one, one, Log(4, 3).inverse()).sorted()
+    expected = Pair(fractionOne, listOf(Log(8), Log(4, 3).inverse()).sorted())
     assertEquals(expected, Log.simplifyList(logs))
 
     // inverses
-    logs = listOf(Log(8), Log(8, 10, true)).sorted()
+    logs = listOf(Log(8), Log(8, 10).inverse()).sorted()
     expected = Pair(fractionOne, listOf())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
-        Log(4, 3, true),
-        Log(4, 3, true),
-        Log(4, 3, false)
+        Log(4, 3).inverse(),
+        Log(4, 3).inverse(),
+        Log(4, 3)
     )
-    expected = Pair(fractionOne, listOf(Log(4, 3, true)))
+    expected = Pair(fractionOne, listOf(Log(4, 3).inverse()))
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
-        Log(4, 3, true),
-        Log(4, 3, false),
-        Log(4, 3, false)
+        Log(4, 3).inverse(),
+        Log(4, 3),
+        Log(4, 3)
     )
-    expected = Pair(fractionOne, listOf(Log(4, 3, false)))
+    expected = Pair(fractionOne, listOf(Log(4, 3)))
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
         Log(ExactFraction(7, 3)),
         Log(ExactFraction(5, 51)),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(4, 3, true),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(ExactFraction(5, 51), 5, true),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(4, 3).inverse(),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(ExactFraction(5, 51), 5).inverse(),
         Log(4, 3)
     ).sorted()
     expected = Pair(
         fractionOne,
         listOf(
-            Log(ExactFraction(7, 3), 10, true),
+            Log(ExactFraction(7, 3), 10).inverse(),
             Log(ExactFraction(5, 51)),
-            Log(ExactFraction(5, 51), 5, true)
+            Log(ExactFraction(5, 51), 5).inverse()
         ).sorted()
     )
     assertEquals(expected, Log.simplifyList(logs))
@@ -144,7 +144,7 @@ internal fun runSimplifyListTests() {
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
-        Log(ExactFraction(1, 1000), true),
+        Log(ExactFraction(1, 1000)).inverse(),
         Log(6),
         Log(ExactFraction(15, 4), 4),
         Log(ExactFraction(1, 16), 2)
@@ -161,15 +161,15 @@ internal fun runSimplifyListTests() {
     expected = Pair(fractionOne, logs)
     assertEquals(expected, Log.simplifyList(logs))
 
-    logs = listOf(Log(3), Log(3, 9, true)).sorted()
+    logs = listOf(Log(3), Log(3, 9).inverse()).sorted()
     expected = Pair(fractionOne, logs)
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
         Log(ExactFraction(5, 51)),
-        Log(4, 3, true),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(ExactFraction(5, 51), 5, true),
+        Log(4, 3).inverse(),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(ExactFraction(5, 51), 5).inverse(),
         Log(1000005, 3)
     ).sorted()
     expected = Pair(fractionOne, logs)

@@ -14,9 +14,9 @@ import kotlin.math.abs
 /**
  * Representation of pi
  *
- * @param inverted [Boolean]: if the inverse of the value should be calculated
+ * @param isInverted [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
+class Pi private constructor(override val isInverted: Boolean) : Comparable<Pi>, Irrational {
     override val type: String = TYPE
 
     // constructor with reduced params
@@ -25,7 +25,7 @@ class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
     override fun getValue(): BigDecimal {
         val base = PI.toBigDecimal()
 
-        if (inverted) {
+        if (isInverted) {
             return divideBigDecimals(BigDecimal.ONE, base)
         }
 
@@ -38,18 +38,18 @@ class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
 
     override fun getRationalValue(): ExactFraction? = null
 
-    override fun inverse(): Pi = Pi(!inverted)
+    override fun inverse(): Pi = Pi(!isInverted)
 
     override fun equals(other: Any?): Boolean {
         return other != null &&
             other is Pi &&
-            inverted == other.inverted
+            isInverted == other.isInverted
     }
 
     override fun compareTo(other: Pi): Int {
         return when {
-            !inverted && other.inverted -> 1
-            inverted && !other.inverted -> -1
+            !isInverted && other.isInverted -> 1
+            isInverted && !other.isInverted -> -1
             else -> 0
         }
     }
@@ -65,10 +65,10 @@ class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
 
     override fun toString(): String {
         val pi = "π"
-        return ternaryIf(inverted, "[1/$pi]", "[$pi]")
+        return ternaryIf(isInverted, "[1/$pi]", "[$pi]")
     }
 
-    override fun hashCode(): Int = listOf(TYPE, PI, inverted).hashCode()
+    override fun hashCode(): Int = listOf(TYPE, PI, isInverted).hashCode()
 
     companion object {
         const val TYPE = "pi"
@@ -85,14 +85,14 @@ class Pi(override val inverted: Boolean) : Comparable<Pi>, Irrational {
                 return emptyList()
             }
 
-            val positive = numbers.count { !it.inverted }
+            val positive = numbers.count { !it.isInverted }
             val negative = numbers.size - positive
             val diff = abs(positive - negative)
 
             return when {
                 positive == negative -> emptyList()
-                positive < negative -> List(diff) { Pi(inverted = true) }
-                else -> List(diff) { Pi(inverted = false) }
+                positive < negative -> List(diff) { Pi(isInverted = true) }
+                else -> List(diff) { Pi(isInverted = false) }
             }
         }
     }

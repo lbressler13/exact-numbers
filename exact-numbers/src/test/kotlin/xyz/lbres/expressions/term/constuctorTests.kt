@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 private val logWhole = Log(1000)
 private val logDecimal = Log(ExactFraction(25, 121))
 private val logChangeBase = Log(8, 7)
-private val logInverse = Log(ExactFraction(19, 33), true)
+private val logInverse = Log(ExactFraction(19, 33)).inverse()
 
 private val sqrtWhole = Sqrt(289)
 private val sqrtPartialWhole = Sqrt(8)
@@ -17,7 +17,7 @@ private val sqrtWholeEF = Sqrt(ExactFraction(9, 25))
 private val sqrtDecimal = Sqrt(11)
 
 private val pi = Pi()
-private val piInverse = Pi(true)
+private val piInverse = Pi().inverse()
 
 private val one = ExactFraction.ONE
 

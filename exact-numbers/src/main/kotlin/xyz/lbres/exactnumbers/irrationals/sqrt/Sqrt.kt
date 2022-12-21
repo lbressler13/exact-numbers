@@ -20,7 +20,7 @@ import java.math.BigInteger
  */
 class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Comparable<Sqrt>, Irrational {
     override val type = TYPE
-    override val inverted = false
+    override val isInverted = false
 
     init {
         if (radicand.isNegative()) {

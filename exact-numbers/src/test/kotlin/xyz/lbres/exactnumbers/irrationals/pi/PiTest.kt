@@ -16,14 +16,8 @@ import kotlin.test.assertTrue
 internal class PiTest {
     @Test
     fun testConstructor() {
-        var pi = Pi()
-        assertFalse(pi.inverted)
-
-        pi = Pi(inverted = false)
-        assertFalse(pi.inverted)
-
-        pi = Pi(inverted = true)
-        assertTrue(pi.inverted)
+        val pi = Pi()
+        assertFalse(pi.isInverted)
     }
 
     @Test
@@ -31,7 +25,7 @@ internal class PiTest {
         var pi1 = Pi()
         assertEquals(pi1, pi1)
 
-        pi1 = Pi(true)
+        pi1 = Pi().inverse()
         assertEquals(pi1, pi1)
 
         val pi2 = Pi()
@@ -42,7 +36,7 @@ internal class PiTest {
     @Test
     fun testTimes() {
         val pi = Pi()
-        val piInverse = Pi(true)
+        val piInverse = Pi().inverse()
 
         // zero
         assertEquals(Term.ZERO, pi * Log.ZERO)
@@ -67,7 +61,7 @@ internal class PiTest {
         assertEquals(expected, piInverse * ef)
 
         // log
-        var log = Log(ExactFraction(33, 14), 5, true)
+        var log = Log(ExactFraction(33, 14), 5).inverse()
         expected = Term.fromValues(listOf(log), listOf(pi))
         assertEquals(expected, pi * log)
 
@@ -88,7 +82,7 @@ internal class PiTest {
     @Test
     fun testDiv() {
         val pi = Pi()
-        val piInverse = Pi(true)
+        val piInverse = Pi().inverse()
 
         // zero
         assertDivByZero { pi / Log.ZERO }
@@ -115,7 +109,7 @@ internal class PiTest {
         assertEquals(expected, piInverse / ef)
 
         // log
-        var log = Log(ExactFraction(33, 14), 5, true)
+        var log = Log(ExactFraction(33, 14), 5).inverse()
         expected = Term.fromValues(listOf(log.inverse()), listOf(pi))
         assertEquals(expected, pi / log)
 
@@ -140,7 +134,7 @@ internal class PiTest {
         var expected = BigDecimal("3.141592653589793")
         assertEquals(expected, pi.getValue())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         expected = BigDecimal("0.31830988618379069570")
         assertEquals(expected, pi.getValue())
     }
@@ -150,7 +144,7 @@ internal class PiTest {
         var pi = Pi()
         assertFalse(pi.isZero())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertFalse(pi.isZero())
     }
 
@@ -159,7 +153,7 @@ internal class PiTest {
         var pi = Pi()
         assertFalse(pi.isRational())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertFalse(pi.isRational())
     }
 
@@ -168,17 +162,17 @@ internal class PiTest {
         var pi = Pi()
         assertNull(pi.getRationalValue())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertNull(pi.getRationalValue())
     }
 
     @Test
     fun testInverse() {
         var pi = Pi()
-        assertTrue(pi.inverse().inverted)
+        assertTrue(pi.inverse().isInverted)
 
-        pi = Pi(true)
-        assertFalse(pi.inverse().inverted)
+        pi = Pi().inverse()
+        assertFalse(pi.inverse().isInverted)
     }
 
     @Test
@@ -187,7 +181,7 @@ internal class PiTest {
         var expected = "[π]"
         assertEquals(expected, piNum.toString())
 
-        piNum = Pi(true)
+        piNum = Pi().inverse()
         expected = "[1/π]"
         assertEquals(expected, piNum.toString())
     }

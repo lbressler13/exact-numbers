@@ -1,20 +1,13 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 internal fun runConstructorTests() {
     // error
-    assertDivByZero { Log(ExactFraction.ONE, 10, isDivided = true) }
-    assertDivByZero { Log(1, 10, isDivided = true) }
-    assertDivByZero { Log(1L, 10, isDivided = true) }
-    assertDivByZero { Log(BigInteger.ONE, 10, isDivided = true) }
-
     assertFailsWith<ArithmeticException>("Cannot calculate log of 0") { Log(ExactFraction.ZERO) }
     assertFailsWith<ArithmeticException>("Cannot calculate log of 0") { Log(0) }
     assertFailsWith<ArithmeticException>("Cannot calculate log of 0") { Log(0L) }
@@ -44,24 +37,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.inverted)
-    }
-
-    // all fields
-    var logNum = Log(ExactFraction(13, 100), 100, true)
-    expectedNumber = ExactFraction(13, 100)
-    expectedBase = 100
-    assertEquals(expectedNumber, logNum.argument)
-    assertEquals(expectedBase, logNum.base)
-    assertTrue(logNum.inverted)
-
-    expectedNumber = ExactFraction(30)
-    expectedBase = 100
-    logs = listOf(Log(ExactFraction(30), 100, true), Log(30, 100, true), Log(30L, 100, true), Log(BigInteger("30"), 100, true))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertTrue(it.inverted)
+        assertFalse(it.isInverted)
     }
 
     // just number
@@ -71,15 +47,15 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.inverted)
+        assertFalse(it.isInverted)
     }
 
-    logNum = Log(ExactFraction(107, 3))
+    var logNum = Log(ExactFraction(107, 3))
     expectedNumber = ExactFraction(107, 3)
     expectedBase = 10
     assertEquals(expectedNumber, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.inverted)
+    assertFalse(logNum.isInverted)
 
     // number + base
     expectedNumber = ExactFraction.TWO
@@ -88,7 +64,7 @@ internal fun runConstructorTests() {
     logs.forEach {
         assertEquals(expectedNumber, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.inverted)
+        assertFalse(it.isInverted)
     }
 
     logNum = Log(ExactFraction(107, 3), 5)
@@ -96,24 +72,5 @@ internal fun runConstructorTests() {
     expectedBase = 5
     assertEquals(expectedNumber, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.inverted)
-
-    // number + divided
-    expectedNumber = ExactFraction.TWO
-    expectedBase = 10
-    logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertFalse(it.inverted)
-    }
-
-    expectedNumber = ExactFraction.TWO
-    expectedBase = 10
-    logs = listOf(Log(ExactFraction.TWO, true), Log(2, true), Log(2L, true), Log(BigInteger.TWO, true))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertTrue(it.inverted)
-    }
+    assertFalse(logNum.isInverted)
 }

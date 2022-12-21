@@ -26,9 +26,6 @@ internal class LogTest {
         logNum = Log(ExactFraction(107, 12), 3)
         assertEquals(logNum, logNum)
 
-        logNum = Log(ExactFraction(12, 107), 10, true)
-        assertEquals(logNum, logNum)
-
         // not equals
         logNum = Log.ZERO
         var other = Log(2)
@@ -55,8 +52,8 @@ internal class LogTest {
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
 
-        logNum = Log(8, 10, true)
-        other = Log(8, 10, false)
+        logNum = Log(8, 10)
+        other = Log(8, 10).inverse()
         assertNotEquals(logNum, other)
         assertNotEquals(other, logNum)
     }
@@ -70,7 +67,7 @@ internal class LogTest {
         logNum1 = Log(8, 3)
         assertEquals(0, logNum1.compareTo(logNum1))
 
-        logNum1 = Log(ExactFraction(4, 5), 3, true)
+        logNum1 = Log(ExactFraction(4, 5), 3).inverse()
         assertEquals(0, logNum1.compareTo(logNum1))
 
         logNum1 = Log(2, 2)
@@ -94,13 +91,13 @@ internal class LogTest {
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
-        logNum1 = Log(ExactFraction(3, 4), 10, true)
+        logNum1 = Log(ExactFraction(3, 4), 10).inverse()
         logNum2 = Log(ExactFraction(1, 4))
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
 
         logNum1 = Log(2, 8)
-        logNum2 = Log(32, 8, true)
+        logNum2 = Log(32, 8).inverse()
         assertTrue(logNum1 < logNum2)
         assertTrue(logNum2 > logNum1)
     }
@@ -115,16 +112,13 @@ internal class LogTest {
 
         // other
         var logNum = Log.ONE
-        var expected = Log(10, 10, true)
-        assertEquals(expected, logNum.inverse())
+        assertTrue(logNum.inverse().isInverted)
 
-        logNum = Log(4, 3, false)
-        expected = Log(4, 3, true)
-        assertEquals(expected, logNum.inverse())
+        logNum = Log(ExactFraction(3, 8), 2)
+        assertTrue(logNum.inverse().isInverted)
 
-        logNum = Log(ExactFraction(3, 8), 2, true)
-        expected = Log(ExactFraction(3, 8), 2, false)
-        assertEquals(expected, logNum.inverse())
+        logNum = Log(4, 3).inverse()
+        assertFalse(logNum.inverse().isInverted)
     }
 
     @Test
@@ -163,13 +157,13 @@ internal class LogTest {
         logNum = Log(2048, 2)
         assertTrue(logNum.isRational())
 
-        logNum = Log(2048, 2, true)
+        logNum = Log(2048, 2).inverse()
         assertTrue(logNum.isRational())
 
         logNum = Log(ExactFraction(1, 27), 3)
         assertTrue(logNum.isRational())
 
-        logNum = Log(ExactFraction(1, 1000), true)
+        logNum = Log(ExactFraction(1, 1000)).inverse()
         assertTrue(logNum.isRational())
 
         // irrational
@@ -179,7 +173,7 @@ internal class LogTest {
         logNum = Log(ExactFraction(1, 10), 5)
         assertFalse(logNum.isRational())
 
-        logNum = Log(1000, 100, true)
+        logNum = Log(1000, 100).inverse()
         assertFalse(logNum.isRational())
 
         logNum = Log(ExactFraction(8, 1000), 2)
@@ -214,11 +208,11 @@ internal class LogTest {
         expected = "[log_14(103/272)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = Log(ExactFraction(15, 8), 10, true)
+        logNum = Log(ExactFraction(15, 8), 10).inverse()
         expected = "[1/log_10(15/8)]"
         assertEquals(expected, logNum.toString())
 
-        logNum = Log(4, 3, true)
+        logNum = Log(4, 3).inverse()
         expected = "[1/log_3(4)]"
         assertEquals(expected, logNum.toString())
     }
