@@ -16,7 +16,7 @@ import kotlin.math.abs
  *
  * @param isInverted [Boolean]: if the inverse of the value should be calculated
  */
-class Pi private constructor(override val isInverted: Boolean) : Comparable<Pi>, Irrational, Number() {
+class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>() {
     override val type: String = TYPE
 
     // constructor with reduced params
@@ -69,14 +69,6 @@ class Pi private constructor(override val isInverted: Boolean) : Comparable<Pi>,
     }
 
     override fun hashCode(): Int = listOf(TYPE, PI, isInverted).hashCode()
-
-    override fun toByte(): Byte = getValue().toByte()
-    override fun toChar(): Char = getValue().toInt().toChar()
-    override fun toShort(): Short = getValue().toShort()
-    override fun toInt(): Int = getValue().toInt()
-    override fun toLong(): Long = getValue().toLong()
-    override fun toDouble(): Double = getValue().toDouble()
-    override fun toFloat(): Float = getValue().toFloat()
 
     companion object {
         const val TYPE = "pi"

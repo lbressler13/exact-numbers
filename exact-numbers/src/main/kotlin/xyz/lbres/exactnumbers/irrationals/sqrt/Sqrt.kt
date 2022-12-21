@@ -2,7 +2,6 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
@@ -11,7 +10,6 @@ import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.ternaryIf
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.RoundingMode
 
 /**
  * Representation of a square root with a rational radicand
@@ -20,8 +18,7 @@ import java.math.RoundingMode
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  * @throws [ArithmeticException] if radicand is negative
  */
-class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) :
-    Comparable<Sqrt>, Irrational, Number() {
+class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Irrational<Sqrt>() {
     override val type = TYPE
     override val isInverted = false
 
@@ -144,53 +141,6 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     }
 
     override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
-
-    private fun getRoundedAndCheckOverflow(maxValue: String, fromType: String): BigDecimal {
-        val roundedValue = getValue().setScale(0, RoundingMode.HALF_UP)
-
-        val maxDecimal = BigDecimal(maxValue)
-        if (roundedValue > maxDecimal) {
-            throw CastingOverflowException(toString(), TYPE, fromType)
-        }
-
-        return roundedValue
-    }
-
-    override fun toByte(): Byte {
-        val roundedValue = getRoundedAndCheckOverflow(Byte.MAX_VALUE.toString(), "Byte")
-        return roundedValue.toByte()
-    }
-
-    override fun toChar(): Char {
-        val maxAsInt = Char.MAX_VALUE.code
-        val roundedValue = getRoundedAndCheckOverflow(maxAsInt.toString(), "Char")
-        return roundedValue.toInt().toChar()
-    }
-
-    override fun toShort(): Short {
-        val roundedValue = getRoundedAndCheckOverflow(Short.MAX_VALUE.toString(), "Short")
-        return roundedValue.toShort()
-    }
-
-    override fun toInt(): Int {
-        val roundedValue = getRoundedAndCheckOverflow(Int.MAX_VALUE.toString(), "Int")
-        return roundedValue.toInt()
-    }
-
-    override fun toLong(): Long {
-        val roundedValue = getRoundedAndCheckOverflow(Long.MAX_VALUE.toString(), "Long")
-        return roundedValue.toLong()
-    }
-
-    override fun toFloat(): Float {
-        getRoundedAndCheckOverflow(Float.MAX_VALUE.toString(), "Float")
-        return getValue().toFloat()
-    }
-
-    override fun toDouble(): Double {
-        getRoundedAndCheckOverflow(Double.MAX_VALUE.toString(), "Double")
-        return getValue().toDouble()
-    }
 
     companion object {
         const val TYPE = "sqrt"
