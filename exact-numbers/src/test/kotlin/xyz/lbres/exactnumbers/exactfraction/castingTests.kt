@@ -1,11 +1,12 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import assertExactFractionOverflow
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal fun runToPairTests() {
     var ef = ExactFraction(0)
@@ -370,4 +371,17 @@ internal fun runToBigDecimalTests() {
     ef = ExactFraction(5, 3)
     bd = BigDecimal("1.66666666666666666667", mc)
     assertEquals(bd, ef.toBigDecimal())
+}
+
+/**
+ * Assert that a correct casting exception is thrown when a cast overflows
+ *
+ * @param type [String]: the type of the value being cast to
+ * @param value [ExactFraction]: the value to cast
+ * @param cast [() -> Unit]: the call to cast the value
+ */
+private fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
+    val errorMessage = "Overflow casting value $value of type ExactFraction to $type"
+    val error = assertFailsWith<CastingOverflowException>(errorMessage) { cast() }
+    assertEquals(value, error.overflowValue)
 }

@@ -14,8 +14,6 @@ private val whole = Sqrt(144) // 12
 private val irrational = Sqrt(15) // 3.872983346207416885179265
 private val large = Sqrt(BigInteger("97546105778997104100")) // 9876543210
 
-// TODO test error message for overflow
-
 internal fun runToByteTests() {
     assertEquals(0, zero.toByte())
     assertEquals(0, ltHalf.toByte())
@@ -23,7 +21,7 @@ internal fun runToByteTests() {
     assertEquals(2, gtOne.toByte())
     assertEquals(12, whole.toByte())
     assertEquals(4, irrational.toByte())
-    assertFailsWith<CastingOverflowException> { large.toByte() }
+    assertOverflowOnLarge("Byte") { large.toByte() }
 }
 
 internal fun runToCharTests() {
@@ -33,7 +31,7 @@ internal fun runToCharTests() {
     assertEquals(2.toChar(), gtOne.toChar())
     assertEquals(12.toChar(), whole.toChar())
     assertEquals(4.toChar(), irrational.toChar())
-    assertFailsWith<CastingOverflowException> { large.toChar() }
+    assertOverflowOnLarge("Char") { large.toChar() }
 }
 
 internal fun runToShortTests() {
@@ -43,7 +41,7 @@ internal fun runToShortTests() {
     assertEquals(2, gtOne.toShort())
     assertEquals(12, whole.toShort())
     assertEquals(4, irrational.toShort())
-    assertFailsWith<CastingOverflowException> { large.toShort() }
+    assertOverflowOnLarge("Short") { large.toShort() }
 }
 
 internal fun runToIntTests() {
@@ -53,7 +51,7 @@ internal fun runToIntTests() {
     assertEquals(2, gtOne.toInt())
     assertEquals(12, whole.toInt())
     assertEquals(4, irrational.toInt())
-    assertFailsWith<CastingOverflowException> { large.toInt() }
+    assertOverflowOnLarge("Int") { large.toInt() }
 }
 
 internal fun runToLongTests() {
@@ -94,4 +92,10 @@ internal fun runToDoubleTests() {
 
     val longRoot = 9876543210.0
     assertEquals(longRoot, large.toDouble())
+}
+
+private fun assertOverflowOnLarge(targetType: String, cast: () -> Unit) {
+    val errorMessage = "Overflow casting value $large of type Sqrt to $targetType"
+    val error = assertFailsWith<CastingOverflowException>(errorMessage) { cast() }
+    assertEquals(error.overflowValue, large)
 }

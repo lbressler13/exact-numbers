@@ -17,8 +17,6 @@ private val large = Log(BigInteger("5444517870735015415413993718908291383296"), 
 private val smallEF = ExactFraction(BigInteger.ONE, BigInteger("5444517870735015415413993718908291383296"))
 private val small = Log(smallEF, 2) // -132
 
-// TODO test error message for overflow
-
 internal fun runToByteTests() {
     assertEquals(0, zero.toByte())
     assertEquals(0, ltHalf.toByte())
@@ -26,8 +24,14 @@ internal fun runToByteTests() {
     assertEquals(2, gtOne.toByte())
     assertEquals(9, whole.toByte())
     assertEquals(13, irrational.toByte())
-    assertFailsWith<CastingOverflowException> { large.toByte() }
-    assertFailsWith<CastingOverflowException> { small.toByte() }
+
+    var errorMessage = "Overflow casting value $large of type Log to Byte"
+    var error = assertFailsWith<CastingOverflowException>(errorMessage) { large.toByte() }
+    assertEquals(large, error.overflowValue)
+
+    errorMessage = "Overflow casting value $small of type Log to Byte"
+    error = assertFailsWith(errorMessage) { small.toByte() }
+    assertEquals(small, error.overflowValue)
 }
 
 internal fun runToCharTests() {
@@ -38,7 +42,10 @@ internal fun runToCharTests() {
     assertEquals(9.toChar(), whole.toChar())
     assertEquals(13.toChar(), irrational.toChar())
     assertEquals(132.toChar(), large.toChar())
-    assertFailsWith<CastingOverflowException> { small.toChar() }
+
+    val errorMessage = "Overflow casting value $small of type Log to Char"
+    val error = assertFailsWith<CastingOverflowException>(errorMessage) { small.toChar() }
+    assertEquals(small, error.overflowValue)
 }
 
 internal fun runToShortTests() {
