@@ -17,6 +17,8 @@ private val large = Log(BigInteger("5444517870735015415413993718908291383296"), 
 private val smallEF = ExactFraction(BigInteger.ONE, BigInteger("5444517870735015415413993718908291383296"))
 private val small = Log(smallEF, 2) // -132
 
+// TODO test error message for overflow
+
 internal fun runToByteTests() {
     assertEquals(0, zero.toByte())
     assertEquals(0, ltHalf.toByte())

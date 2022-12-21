@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.kotlinutils.biginteger.ext.ifZero
@@ -431,7 +432,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
 
-    private fun overflowException(type: String): Exception = ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
+    private fun overflowException(type: String): Exception = CastingOverflowException("ExactFraction", type, toFractionString(), this)
 
     companion object {
         val ZERO = ExactFraction(0)

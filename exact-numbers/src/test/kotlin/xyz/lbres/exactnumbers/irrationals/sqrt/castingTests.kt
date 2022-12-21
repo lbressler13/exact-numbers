@@ -11,8 +11,10 @@ private val ltHalf = Sqrt(ExactFraction(4, 25)) // 0.4
 private val gtHalf = Sqrt(ExactFraction(16, 25)) // 0.8
 private val gtOne = Sqrt(ExactFraction(81, 16)) // 2.25
 private val whole = Sqrt(144) // 12
-private val irrational = Sqrt(15) // 3.872983346207416885179265399782399610832921705291590826
+private val irrational = Sqrt(15) // 3.872983346207416885179265
 private val large = Sqrt(BigInteger("97546105778997104100")) // 9876543210
+
+// TODO test error message for overflow
 
 internal fun runToByteTests() {
     assertEquals(0, zero.toByte())

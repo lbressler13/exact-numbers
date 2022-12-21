@@ -1,5 +1,5 @@
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -24,7 +24,7 @@ internal fun assertDivByZero(function: () -> Unit) {
  * @param cast [() -> Unit]: the call to cast the value
  */
 internal fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
-    val errorMessage = "Overflow when casting to $type"
-    val error = assertFailsWith<ExactFractionOverflowException>(errorMessage) { cast() }
-    assertEquals(value.toFractionString(), error.overflowValue)
+    val errorMessage = "Overflow casting value $value of type ExactFraction to $type"
+    val error = assertFailsWith<CastingOverflowException>(errorMessage) { cast() }
+    assertEquals(value, error.overflowValue)
 }

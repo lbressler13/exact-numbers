@@ -16,13 +16,13 @@ abstract class Irrational<T> internal constructor() : Comparable<T>, Number() {
     abstract val isInverted: Boolean
     abstract fun inverse(): T
 
-    private fun getRoundedAndCheckOverflow(minValue: String, maxValue: String, fromType: String): BigDecimal {
+    private fun getRoundedAndCheckOverflow(minValue: String, maxValue: String, targetType: String): BigDecimal {
         val roundedValue = getValue().setScale(0, RoundingMode.HALF_UP)
 
         val minDecimal = BigDecimal(minValue)
         val maxDecimal = BigDecimal(maxValue)
         if (roundedValue < minDecimal || roundedValue > maxDecimal) {
-            throw CastingOverflowException(toString(), type, fromType)
+            throw CastingOverflowException(type, targetType, toString(), this)
         }
 
         return roundedValue
