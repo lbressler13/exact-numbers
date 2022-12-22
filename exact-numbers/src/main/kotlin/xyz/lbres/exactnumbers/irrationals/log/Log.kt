@@ -192,11 +192,10 @@ class Log private constructor(
         val ONE = Log(ExactFraction.TEN, 10, isInverted = false, fullySimplified = true)
 
         /**
-         * Extract rational values and simplify remaining list of logs
+         * Extract rational values and simplify remaining set of logs
          *
-         * @param numbers [List<Log>]: list to simplify
-         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of logs
-         * @throws [ClassCastException] if any of the numbers are not a Log
+         * @param numbers [MultiSet]<[Log]>: set to simplify
+         * @return [Pair]<[ExactFraction], [MultiSet]<[Log]>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
         internal fun simplifySet(numbers: MultiSet<Log>): Pair<ExactFraction, MultiSet<Log>> {
@@ -237,56 +236,6 @@ class Log private constructor(
             }.fold(invertedOnlyValues + notInvertedOnlyValues) { acc, set -> acc + set }
 
             return Pair(coefficient, allValues)
-        }
-
-        /**
-         * Extract rational values and simplify remaining list of logs
-         *
-         * @param numbers [List<Log>]: list to simplify
-         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of logs
-         * @throws [ClassCastException] if any of the numbers are not a Log
-         */
-        // TODO: improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<Log>?): Pair<ExactFraction, List<Log>> {
-            if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, emptyList())
-            }
-
-            if (numbers.any(Log::isZero)) {
-                return Pair(ExactFraction.ZERO, emptyList())
-            }
-
-            val simplifiedNums = numbers.map { it.getSimplified() }
-            val coeff = simplifiedNums.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
-
-            val combinedNums: List<Log> = simplifiedNums.map { it.second }
-                .groupBy { Pair(it.argument, it.base) }
-                .flatMap { pair ->
-                    if (Log(pair.key.first, pair.key.second) == ONE) {
-                        emptyList()
-                    } else {
-                        val currentLogs = pair.value
-                        val countDivided = currentLogs.count { it.isInverted }
-                        val countNotDivided = currentLogs.size - countDivided
-
-                        when {
-                            countDivided == countNotDivided -> emptyList()
-                            countDivided > countNotDivided -> List(countDivided - countNotDivided) {
-                                Log(pair.key.first, pair.key.second, isInverted = true, fullySimplified = true)
-                            }
-                            else -> List(countNotDivided - countDivided) {
-                                Log(
-                                    pair.key.first,
-                                    pair.key.second,
-                                    isInverted = false,
-                                    fullySimplified = true
-                                )
-                            }
-                        }
-                    }
-                }
-
-            return Pair(coeff, combinedNums)
         }
     }
 }

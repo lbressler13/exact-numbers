@@ -75,6 +75,12 @@ class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>(
     companion object {
         const val TYPE = "pi"
 
+        /**
+         * Simplify set of pis
+         *
+         * @param numbers [MultiSet]<[Pi]> : list to simplify
+         * @return [MultiSet]<[Pi]>: simplified list
+         */
         internal fun simplifySet(numbers: MultiSet<Pi>): MultiSet<Pi> {
             if (numbers.isEmpty()) {
                 return emptyMultiSet()
@@ -88,29 +94,6 @@ class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>(
                 positive == negative -> emptyMultiSet()
                 positive < negative -> MultiSet(diff) { Pi(isInverted = true) }
                 else -> MultiSet(diff) { Pi(isInverted = false) }
-            }
-        }
-
-        /**
-         * Simplify list of pis
-         *
-         * @param numbers [List<Pi>] : list to simplify
-         * @return [List<Pi>]: simplified list
-         * @throws [ClassCastException] if any of the numbers are not a Pi
-         */
-        internal fun simplifyList(numbers: List<Pi>?): List<Pi> {
-            if (numbers.isNullOrEmpty()) {
-                return emptyList()
-            }
-
-            val positive = numbers.count { !it.isInverted }
-            val negative = numbers.size - positive
-            val diff = abs(positive - negative)
-
-            return when {
-                positive == negative -> emptyList()
-                positive < negative -> List(diff) { Pi(isInverted = true) }
-                else -> List(diff) { Pi(isInverted = false) }
             }
         }
     }

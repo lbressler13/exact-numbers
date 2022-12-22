@@ -74,8 +74,8 @@ class Term {
         }
     }
 
-    operator fun unaryMinus(): Term = Term(-coefficient, logs, squareRoots, pis)
-    operator fun unaryPlus(): Term = Term(coefficient, logs, squareRoots, pis)
+    operator fun unaryMinus(): Term = Term(-coefficient, logsSet, squareRootsSet, pisSet)
+    operator fun unaryPlus(): Term = Term(coefficient, logsSet, squareRootsSet, pisSet)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Term) {
@@ -116,6 +116,7 @@ class Term {
     fun isZero(): Boolean {
         return storedIsZero.ifNull {
             val result =
+                // TODO update with set after any operator is implemented
                 coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)
             storedIsZero = result
             result
@@ -129,9 +130,9 @@ class Term {
      */
     fun getSimplified(): Term {
         return storedSimplified.ifNull {
-            val simplifiedLogs = Log.simplifyList(logs)
-            val simplifiedSqrts = Sqrt.simplifyList(squareRoots)
-            val simplifiedPis = Pi.simplifyList(pis)
+            val simplifiedLogs = Log.simplifySet(logsSet)
+            val simplifiedSqrts = Sqrt.simplifySet(squareRootsSet)
+            val simplifiedPis = Pi.simplifySet(pisSet)
             val newCoefficient = coefficient * simplifiedLogs.first * simplifiedSqrts.first
 
             val result = Term(newCoefficient, simplifiedLogs.second, simplifiedSqrts.second, simplifiedPis)
@@ -150,9 +151,9 @@ class Term {
         return storedValue.ifNull {
             val simplified = getSimplified()
 
-            val logProduct = simplified.logs.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-            val sqrtProduct = simplified.squareRoots.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-            val piProduct = simplified.pis.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
+            val logProduct = simplified.logsSet.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
+            val sqrtProduct = simplified.squareRootsSet.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
+            val piProduct = simplified.pisSet.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
             val numeratorProduct = logProduct * sqrtProduct * piProduct * simplified.coefficient.numerator.toBigDecimal()
 
             val result = divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())

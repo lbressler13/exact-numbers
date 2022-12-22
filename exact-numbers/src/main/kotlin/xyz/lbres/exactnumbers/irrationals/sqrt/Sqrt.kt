@@ -151,6 +151,12 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         val ZERO = Sqrt(ExactFraction.ZERO, fullySimplified = true)
         val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)
 
+        /**
+         * Extract rational values and simplify remaining set of sqrts
+         *
+         * @param numbers [MultiSet]<[Sqrt]>: set to simplify
+         * @return [Pair]<[ExactFraction], [MultiSet]<[Sqrt]>>: product of rational values and a set containing a single, fully simplified irrational root
+         */
         internal fun simplifySet(numbers: MultiSet<Sqrt>): Pair<ExactFraction, MultiSet<Sqrt>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
@@ -170,37 +176,6 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val rootList = ternaryIf(root == ONE, emptyMultiSet(), multiSetOf(root))
 
             return Pair(coefficient, rootList)
-        }
-
-        /**
-         * Extract rational values and simplify remaining list of sqrts
-         *
-         * @param numbers [List<Sqrt>]: list to simplify
-         * @return [Pair<ExactFraction, List<Sqrt>>]: product of rational values and a list containing a single, fully simplified irrational root
-         * @throws [ClassCastException] if any of the numbers are not a Sqrt
-         */
-        internal fun simplifyList(numbers: List<Sqrt>?): Pair<ExactFraction, List<Sqrt>> {
-            if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, emptyList())
-            }
-
-            if (numbers.any(Sqrt::isZero)) {
-                return Pair(ExactFraction.ZERO, emptyList())
-            }
-
-            // combine all roots into single root, and return that value
-            val total = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
-            val numWhole = extractWholeOf(total.numerator)
-            val denomWhole = extractWholeOf(total.denominator)
-            val numRoot = total.numerator / (numWhole * numWhole)
-            val denomRoot = total.denominator / (denomWhole * denomWhole)
-
-            val root = Sqrt(ExactFraction(numRoot, denomRoot), true)
-            val coeff = ExactFraction(numWhole, denomWhole)
-
-            val rootList = ternaryIf(root == ONE, emptyList(), listOf(root))
-
-            return Pair(coeff, rootList)
         }
     }
 }
