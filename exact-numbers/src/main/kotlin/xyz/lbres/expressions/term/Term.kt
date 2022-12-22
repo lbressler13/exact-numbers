@@ -8,45 +8,68 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.kotlinutils.general.ternaryIf
 import xyz.lbres.kotlinutils.generic.ext.ifNull
+import xyz.lbres.kotlinutils.set.multiset.MultiSet
+import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
+import xyz.lbres.kotlinutils.set.multiset.multiSetOf
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
 
 /**
- * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
- *
- * @param coefficient [ExactFraction]
- * @param logs [List]<[Log]>: list of log numbers
- * @param squareRoots [List]<[Sqrt]>: list of square root numbers
- * @param pis [List]<[Pi]>: list of pi numbers
- * @return [Term] with the given values
+ * Representation of the product of several numbers, represented as a rational coefficient and lists of irrational numbers
  */
-class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squareRoots: List<Sqrt>, pis: List<Pi>) {
+class Term {
     val coefficient: ExactFraction
 
-    // internal val numbers: List<Irrational>
     val logs: List<Log>
+        get() = getGeneratedLogs()
     val squareRoots: List<Sqrt>
+        get() = getGeneratedSquareRoots()
     val pis: List<Pi>
+        get() = getGeneratedPis()
     val piCount: Int
+
+    private var logsList: List<Log>? = null
+    private var squareRootsList: List<Sqrt>? = null
+    private var pisList: List<Pi>? = null
+
+    private val logsSet: MultiSet<Log>
+    private val squareRootsSet: MultiSet<Sqrt>
+    private val pisSet: MultiSet<Pi>
 
     private var storedIsZero: Boolean? = null
     private var storedSimplified: Term? = null
     private var storedValue: BigDecimal? = null
     private var storedString: String? = null
 
-    init {
+    private constructor(coefficient: ExactFraction, logs: List<Log>, squareRoots: List<Sqrt>, pis: List<Pi>) {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
-            this.logs = emptyList()
-            this.squareRoots = emptyList()
-            this.pis = emptyList()
+            logsSet = emptyMultiSet()
+            squareRootsSet = emptyMultiSet()
+            pisSet = emptyMultiSet()
             piCount = 0
         } else {
             this.coefficient = coefficient
-            this.logs = logs
-            this.squareRoots = squareRoots
-            this.pis = pis
+            logsSet = multiSetOf(*logs.toTypedArray())
+            squareRootsSet = multiSetOf(*squareRoots.toTypedArray())
+            pisSet = multiSetOf(*pis.toTypedArray())
+            piCount = calculatePiCount()
+        }
+    }
+
+    private constructor(coefficient: ExactFraction, logs: MultiSet<Log>, squareRoots: MultiSet<Sqrt>, pis: MultiSet<Pi>) {
+        if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
+            this.coefficient = ExactFraction.ZERO
+            logsSet = emptyMultiSet()
+            squareRootsSet = emptyMultiSet()
+            pisSet = emptyMultiSet()
+            piCount = 0
+        } else {
+            this.coefficient = coefficient
+            logsSet = logs
+            squareRootsSet = squareRoots
+            pisSet = pis
             piCount = calculatePiCount()
         }
     }
@@ -64,16 +87,16 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
 
         return simplified.coefficient == otherSimplified.coefficient &&
             simplified.piCount == otherSimplified.piCount &&
-            simplified.logs.sorted() == otherSimplified.logs.sorted() &&
-            simplified.squareRoots.sorted() == otherSimplified.squareRoots.sorted()
+            simplified.logsSet == otherSimplified.logsSet &&
+            simplified.squareRootsSet == otherSimplified.squareRootsSet
     }
 
     operator fun times(other: Term): Term {
         return Term(
             coefficient * other.coefficient,
-            logs + other.logs,
-            squareRoots + other.squareRoots,
-            pis + other.pis
+            logsSet + other.logsSet,
+            squareRootsSet + other.squareRootsSet,
+            pisSet + other.pisSet
         )
     }
 
@@ -84,9 +107,9 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
 
         return Term(
             coefficient / other.coefficient,
-            logs + other.logs.map(Log::inverse),
-            squareRoots + other.squareRoots.map(Sqrt::inverse),
-            pis + other.pis.map(Pi::inverse)
+            logsSet + other.logsSet.map(Log::inverse),
+            squareRootsSet + other.squareRootsSet.map(Sqrt::inverse),
+            pisSet + other.pisSet.map(Pi::inverse)
         )
     }
 
@@ -142,9 +165,33 @@ class Term private constructor(coefficient: ExactFraction, logs: List<Log>, squa
      * Get number of Pi in numbers. Inverted Pi is counted as -1
      */
     private fun calculatePiCount(): Int {
-        val positive = pis.count { !it.isInverted }
-        val negative = pis.size - positive
+        val positive = pisSet.getCountOf(Pi())
+        val negative = pisSet.getCountOf(Pi().inverse())
         return positive - negative
+    }
+
+    private fun getGeneratedLogs(): List<Log> {
+        if (logsList == null) {
+            logsList = logsSet.toList()
+        }
+
+        return logsList!!
+    }
+
+    private fun getGeneratedSquareRoots(): List<Sqrt> {
+        if (squareRootsList == null) {
+            squareRootsList = squareRootsSet.toList()
+        }
+
+        return squareRootsList!!
+    }
+
+    private fun getGeneratedPis(): List<Pi> {
+        if (pisList == null) {
+            pisList = pisSet.toList()
+        }
+
+        return pisList!!
     }
 
     override fun toString(): String {

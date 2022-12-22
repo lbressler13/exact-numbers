@@ -11,6 +11,7 @@ version = "1.0.0"
 repositories {
     mavenCentral()
 
+    // kotlin-utils
     maven {
         url = uri("https://maven.pkg.github.com/lbressler13/kotlin-utils")
         credentials {
@@ -21,11 +22,13 @@ repositories {
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.3.1"
+    val kotlinUtilsVersion = "0.4.0"
     val mockkVersion = "1.12.4"
 
     implementation(kotlin("stdlib"))
-    implementation("xyz.lbres:kotlin-utils:$kotlinUtilsVersion")
+    // TODO fix gh import
+    implementation(files("libs/kotlin-utils-0.4.0-local.jar"))
+    // implementation("xyz.lbres:kotlin-utils:$kotlinUtilsVersion")
 
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:$mockkVersion")
