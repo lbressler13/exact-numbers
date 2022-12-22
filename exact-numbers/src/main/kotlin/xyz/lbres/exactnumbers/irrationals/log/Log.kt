@@ -8,8 +8,13 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.int.ext.isNegative
+import xyz.lbres.kotlinutils.int.ext.isZero
+import xyz.lbres.kotlinutils.set.multiset.MultiSet
+import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.abs
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -185,6 +190,54 @@ class Log private constructor(
 
         val ZERO = Log(ExactFraction.ONE, 10, isInverted = false, fullySimplified = true)
         val ONE = Log(ExactFraction.TEN, 10, isInverted = false, fullySimplified = true)
+
+        /**
+         * Extract rational values and simplify remaining list of logs
+         *
+         * @param numbers [List<Log>]: list to simplify
+         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of logs
+         * @throws [ClassCastException] if any of the numbers are not a Log
+         */
+        // TODO: improve simplification by looking at bases
+        internal fun simplifySet(numbers: MultiSet<Log>): Pair<ExactFraction, MultiSet<Log>> {
+            when {
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
+                numbers.any(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyMultiSet())
+            }
+
+            val simplifiedNumbers = numbers.map { it.getSimplified() }
+            val coefficient = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
+
+            val logValues: MultiSet<Log> = simplifiedNumbers.map { it.second }
+
+            val invertedDistinct: Set<Log> = logValues
+                .filter { it.isInverted }
+                .map { it.inverse() }
+                .distinctValues
+
+            val notInvertedDistinct: Set<Log> = logValues
+                .filterNot { it.isInverted }
+                .distinctValues
+
+            val bothTypesDistinct: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
+
+            val notInvertedOnlyValues = logValues.filter { it != ONE && !it.isInverted && it !in bothTypesDistinct }
+            val invertedOnlyValues = logValues.filter { it != ONE && it.isInverted && it.inverse() !in bothTypesDistinct }
+
+            val allValues = bothTypesDistinct.map {
+                val notInvertedCount = logValues.getCountOf(it)
+                val invertedCount = logValues.getCountOf(it.inverse())
+                val diff = notInvertedCount - invertedCount
+
+                when {
+                    it == ONE || diff == 0 -> emptyMultiSet()
+                    diff > 0 -> MultiSet(diff) { _ -> it }
+                    else -> MultiSet(abs(diff)) { _ -> it.inverse() }
+                }
+            }.fold(invertedOnlyValues + notInvertedOnlyValues) { acc, set -> acc + set }
+
+            return Pair(coefficient, allValues)
+        }
 
         /**
          * Extract rational values and simplify remaining list of logs

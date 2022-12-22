@@ -70,6 +70,7 @@ internal class SqrtTest {
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
 
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()

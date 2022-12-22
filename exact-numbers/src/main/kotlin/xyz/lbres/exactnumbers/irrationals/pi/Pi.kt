@@ -7,6 +7,8 @@ import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.ternaryIf
+import xyz.lbres.kotlinutils.set.multiset.MultiSet
+import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
 import java.math.BigDecimal
 import kotlin.math.PI
 import kotlin.math.abs
@@ -72,6 +74,22 @@ class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>(
 
     companion object {
         const val TYPE = "pi"
+
+        internal fun simplifySet(numbers: MultiSet<Pi>): MultiSet<Pi> {
+            if (numbers.isEmpty()) {
+                return emptyMultiSet()
+            }
+
+            val positive = numbers.getCountOf(Pi())
+            val negative = numbers.getCountOf(Pi(isInverted = true))
+            val diff = abs(positive - negative)
+
+            return when {
+                positive == negative -> emptyMultiSet()
+                positive < negative -> MultiSet(diff) { Pi(isInverted = true) }
+                else -> MultiSet(diff) { Pi(isInverted = false) }
+            }
+        }
 
         /**
          * Simplify list of pis

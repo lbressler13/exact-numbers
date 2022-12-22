@@ -110,4 +110,5 @@ internal class PiTest {
     @Test fun testToDouble() = runToDoubleTests()
 
     @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
 }

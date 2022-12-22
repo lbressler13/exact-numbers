@@ -8,6 +8,9 @@ import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.ternaryIf
+import xyz.lbres.kotlinutils.set.multiset.MultiSet
+import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
+import xyz.lbres.kotlinutils.set.multiset.multiSetOf
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -147,6 +150,27 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
 
         val ZERO = Sqrt(ExactFraction.ZERO, fullySimplified = true)
         val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)
+
+        internal fun simplifySet(numbers: MultiSet<Sqrt>): Pair<ExactFraction, MultiSet<Sqrt>> {
+            when {
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
+                numbers.any(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyMultiSet())
+            }
+
+            // combine all roots into single root, and return that value
+            val totalProduct = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
+            val numeratorWhole = extractWholeOf(totalProduct.numerator)
+            val denominatorWhole = extractWholeOf(totalProduct.denominator)
+            val numeratorRoot = totalProduct.numerator / (numeratorWhole * numeratorWhole)
+            val denominatorRoot = totalProduct.denominator / (denominatorWhole * denominatorWhole)
+
+            val root = Sqrt(ExactFraction(numeratorRoot, denominatorRoot), true)
+            val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
+
+            val rootList = ternaryIf(root == ONE, emptyMultiSet(), multiSetOf(root))
+
+            return Pair(coefficient, rootList)
+        }
 
         /**
          * Extract rational values and simplify remaining list of sqrts
