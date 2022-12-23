@@ -11,7 +11,7 @@ import kotlin.math.log
  * @param num [BigInteger]: number to get log of
  * @param base [Int]: base to use in calculation
  * @return [BigDecimal]: the log of the number, using the current base
- * @throws [ArithmeticException] if the log returns NaN
+ * @throws [ArithmeticException] if the log returns `NaN`
  */
 internal fun getLogOf(num: BigInteger, base: Int): BigDecimal {
     val logNum = log(num.toDouble(), base.toDouble())

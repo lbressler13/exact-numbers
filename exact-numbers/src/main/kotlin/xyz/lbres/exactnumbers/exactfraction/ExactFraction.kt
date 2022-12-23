@@ -300,7 +300,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Byte values, cast to Byt using simple division, rounding down.
      *
      * @return number as Byte
-     * @throws ExactFractionOverflowException if value is outside range of Byte value
+     * @throws CastingOverflowException if value is outside range of Byte value
      */
     override fun toByte(): Byte {
         val value = numerator / denominator
@@ -318,7 +318,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * Accounts for Chars being non-negative
      *
      * @return number as Char
-     * @throws ExactFractionOverflowException if value is outside range of Char value
+     * @throws CastingOverflowException if value is outside range of Char value
      */
     override fun toChar(): Char {
         val value = numerator / denominator
@@ -335,7 +335,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Short values, cast to Short using simple division, rounding down.
      *
      * @return number as Short
-     * @throws ExactFractionOverflowException if value is outside range of Short value
+     * @throws CastingOverflowException if value is outside range of Short value
      */
     override fun toShort(): Short {
         val value = numerator / denominator
@@ -352,7 +352,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Int values, cast to Int using simple division, rounding down.
      *
      * @return number as Int
-     * @throws ExactFractionOverflowException if value is outside range of Int value
+     * @throws CastingOverflowException if value is outside range of Int value
      */
     override fun toInt(): Int {
         val value = numerator / denominator
@@ -369,7 +369,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Long values, cast to Long using simple division, rounding down.
      *
      * @return number as Long
-     * @throws ExactFractionOverflowException if value is outside range of Long value
+     * @throws CastingOverflowException if value is outside range of Long value
      */
     override fun toLong(): Long {
         val value = numerator / denominator
@@ -386,7 +386,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Double values, cast to Double, using division with precision of 20.
      *
      * @return number as Double
-     * @throws ExactFractionOverflowException if value is outside range of Double value
+     * @throws CastingOverflowException if value is outside range of Double value
      */
     override fun toDouble(): Double {
         val mc = MathContext(20, RoundingMode.HALF_UP)
@@ -408,7 +408,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * If value is between min and max Float values, cast to Float, using division with precision of 20.
      *
      * @return number as Float
-     * @throws ExactFractionOverflowException if value is outside range of Float value
+     * @throws CastingOverflowException if value is outside range of Float value
      */
     override fun toFloat(): Float {
         val mc = MathContext(20, RoundingMode.HALF_UP)

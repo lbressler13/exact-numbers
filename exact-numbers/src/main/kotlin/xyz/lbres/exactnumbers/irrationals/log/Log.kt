@@ -8,6 +8,7 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.general.ternaryIf
 import xyz.lbres.kotlinutils.int.ext.isNegative
 import xyz.lbres.kotlinutils.int.ext.isZero
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
@@ -89,7 +90,7 @@ class Log private constructor(
     /**
      * Get the value of the log as a rational value if rational
      *
-     * @return [ExactFraction?]: value of the log, or null if the value is irrational
+     * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
     override fun getRationalValue(): ExactFraction? {
         if (!isRational()) {
@@ -136,9 +137,9 @@ class Log private constructor(
      * Simplify log into a coefficient and a log value.
      * Extracts rational value as coefficient and returns log as 1, or returns coefficient as 1 with the existing log for irrational logs.
      *
-     * @return [Pair<ExactFraction, Log>]: a pair of coefficient and log such that the product has the same value as the current log
+     * @return [Pair]<[ExactFraction], [Log]>: a pair of coefficient and log such that the product has the same value as the current log
      */
-    // TODO: improve the process of simplifying
+    // TODO: improve the process of simplifying using exponents
     fun getSimplified(): Pair<ExactFraction, Log> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
@@ -176,11 +177,7 @@ class Log private constructor(
             "${argument.numerator}/${argument.denominator}"
         }
 
-        if (isInverted) {
-            return "[1/log_$base($numString)]"
-        }
-
-        return "[log_$base($numString)]"
+        return ternaryIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
     }
 
     override fun hashCode(): Int = listOf(TYPE, argument, base, isInverted).hashCode()

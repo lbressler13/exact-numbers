@@ -15,6 +15,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
 
+// TODO still support old interfaces
+
 /**
  * Representation of the product of several numbers, represented as a rational coefficient and lists of irrational numbers
  */
@@ -42,6 +44,7 @@ class Term {
     private var storedValue: BigDecimal? = null
     private var storedString: String? = null
 
+    // Initialize values using lists of numbers. Accessible via the fromValues methods in the companion object.
     private constructor(coefficient: ExactFraction, logs: List<Log>, squareRoots: List<Sqrt>, pis: List<Pi>) {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
@@ -58,6 +61,7 @@ class Term {
         }
     }
 
+    // Initialize values using multisets. Only used inside the class, to avoid unnecessary casts when creating new terms after operations
     private constructor(coefficient: ExactFraction, logs: MultiSet<Log>, squareRoots: MultiSet<Sqrt>, pis: MultiSet<Pi>) {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
