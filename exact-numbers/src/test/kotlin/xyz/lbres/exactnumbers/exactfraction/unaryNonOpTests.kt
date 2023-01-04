@@ -82,3 +82,73 @@ internal fun runIsZeroTests() {
     ef = ExactFraction(-2, 7)
     assert(!ef.isZero())
 }
+
+internal fun runRoundToWholeTests() {
+    // whole
+    var ef = ExactFraction.ZERO
+    var expected = ExactFraction.ZERO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction.ONE
+    expected = ExactFraction.ONE
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(10000)
+    expected = ExactFraction(10000)
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-123)
+    expected = ExactFraction(-123)
+    assertEquals(expected, ef.roundToWhole())
+
+    // up
+    ef = ExactFraction.HALF
+    expected = ExactFraction.ONE
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-1, 3)
+    expected = ExactFraction.ZERO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(5, 3)
+    expected = ExactFraction.TWO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-4, 3)
+    expected = ExactFraction.NEG_ONE
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(200000, 17)
+    expected = ExactFraction(11765)
+    assertEquals(expected, ef.roundToWhole())
+
+    // down
+    ef = ExactFraction(1, 10)
+    expected = ExactFraction.ZERO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-9, 10)
+    expected = ExactFraction.NEG_ONE
+    assertEquals(expected, ef.roundToWhole())
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-5, 2)
+    expected = -ExactFraction.THREE
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(17, 100000)
+    expected = ExactFraction.ZERO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(7, 3)
+    expected = ExactFraction.TWO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(-5, 3)
+    expected = -ExactFraction.TWO
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(100000, 17)
+    expected = ExactFraction(5882)
+    assertEquals(expected, ef.roundToWhole())
+}

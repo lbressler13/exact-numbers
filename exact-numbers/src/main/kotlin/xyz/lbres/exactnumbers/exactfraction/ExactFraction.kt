@@ -211,6 +211,16 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun isNegative(): Boolean = numerator.isNegative()
     fun isZero(): Boolean = numerator.isZero()
 
+    /**
+     * Round ExactFraction to nearest whole number, using the [RoundingMode.HALF_UP] rounding strategy
+     */
+    fun roundToWhole(): ExactFraction {
+        val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), RoundingMode.HALF_UP)
+        val int = decimal.toBigInteger()
+
+        return ExactFraction(int)
+    }
+
     // SIMPLIFICATION
 
     private fun simplify() {
