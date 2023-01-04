@@ -171,17 +171,26 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         var remaining = other.absoluteValue().numerator.abs()
         val intMax = Int.MAX_VALUE
 
-        while (remaining > BigInteger.ZERO) {
-            if (remaining > intMax.toBigInteger()) {
-                numeratorMult *= numerator.pow(intMax)
-                denominatorMult *= denominator.pow(intMax)
-                remaining -= intMax.toBigInteger()
-            } else {
-                val exp = remaining.toInt()
-                numeratorMult = numerator.pow(exp)
-                denominatorMult = denominator.pow(exp)
-                remaining = BigInteger.ZERO
+        try {
+            while (remaining > BigInteger.ZERO) {
+                if (remaining > intMax.toBigInteger()) {
+                    numeratorMult *= numerator.pow(intMax)
+                    denominatorMult *= denominator.pow(intMax)
+                    remaining -= intMax.toBigInteger()
+                } else {
+                    val exp = remaining.toInt()
+                    numeratorMult = numerator.pow(exp)
+                    denominatorMult = denominator.pow(exp)
+                    remaining = BigInteger.ZERO
+                }
             }
+        } catch (e: ArithmeticException) {
+            var error = e
+            if (e.message == "BigInteger would overflow supported range") {
+                error = ArithmeticException("ExactFraction would overflow supported range")
+            }
+
+            throw error
         }
 
         val result = ExactFraction(numeratorMult, denominatorMult)

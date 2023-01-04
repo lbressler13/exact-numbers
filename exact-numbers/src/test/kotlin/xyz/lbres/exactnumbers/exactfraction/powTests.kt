@@ -114,4 +114,12 @@ internal fun runPowTests() {
     base = ExactFraction(3, 7)
     exp = ExactFraction(3, 7)
     assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
+
+    base = ExactFraction.TWO
+    exp = ExactFraction(999999999999)
+    assertFailsWith<ArithmeticException>("ExactFraction would overflow supported range") { base.pow(exp) }
+
+    base = ExactFraction.HALF
+    exp = ExactFraction(999999999999)
+    assertFailsWith<ArithmeticException>("ExactFraction would overflow supported range") { base.pow(exp) }
 }
