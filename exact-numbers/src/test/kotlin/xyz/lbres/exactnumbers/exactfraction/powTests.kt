@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.exactnumbers.common.NumberOverflowException
 import xyz.lbres.exactnumbers.ext.toExactFraction
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -102,6 +103,30 @@ internal fun runPowTests() {
     expected = ExactFraction(1953125, -512)
     assertEquals(expected, base.pow(exp))
 
+    base = ExactFraction.TWO
+    exp = ExactFraction(6666666)
+    try {
+        base.pow(exp)
+    } catch (e: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
+    base = -ExactFraction.TWO
+    exp = ExactFraction(6666666)
+    try {
+        base.pow(exp)
+    } catch (e: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
+    base = ExactFraction(59)
+    exp = ExactFraction(1000000)
+    try {
+        base.pow(exp)
+    } catch (e: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
     // non-whole
     val expectedError = "Exponents must be whole numbers"
     base = ExactFraction.FOUR
@@ -117,9 +142,9 @@ internal fun runPowTests() {
 
     base = ExactFraction.TWO
     exp = ExactFraction(999999999999)
-    assertFailsWith<ArithmeticException>("ExactFraction would overflow supported range") { base.pow(exp) }
+    assertFailsWith<NumberOverflowException>("ExactFraction would overflow supported range") { base.pow(exp) }
 
     base = ExactFraction.HALF
     exp = ExactFraction(999999999999)
-    assertFailsWith<ArithmeticException>("ExactFraction would overflow supported range") { base.pow(exp) }
+    assertFailsWith<NumberOverflowException>("ExactFraction would overflow supported range") { base.pow(exp) }
 }
