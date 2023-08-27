@@ -13,14 +13,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-internal class HelpersTest {
+ class HelpersTest {
     @AfterTest
     fun clearMocks() {
         unmockkAll()
     }
 
     @Test
-    internal fun testGetRootOf() {
+     fun testGetRootOf() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
 
@@ -72,16 +72,16 @@ internal class HelpersTest {
         // rational
         var num = BigInteger.ZERO
         var expected = one
-        runSingleExtractWholeOfTest(num, expected, mapOf(), listOf(Pair(BigInteger.ZERO, one)))
+        runSingleExtractWholeOfTest(num, expected, emptyMap(), listOf(Pair(BigInteger.ZERO, one)))
 
         num = one
         expected = one
-        runSingleExtractWholeOfTest(num, expected, mapOf(), listOf(Pair(one, one)))
+        runSingleExtractWholeOfTest(num, expected, emptyMap(), listOf(Pair(one, one)))
 
         num = BigInteger("100")
         expected = ten
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(one, one),
                 Pair(two, one),
@@ -94,7 +94,7 @@ internal class HelpersTest {
         num = BigInteger("36")
         expected = BigInteger("6")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(one, one),
                 Pair(two, one),
@@ -107,7 +107,7 @@ internal class HelpersTest {
         num = BigInteger("81")
         expected = BigInteger("9")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(one, one),
                 Pair(three, one),
@@ -118,7 +118,7 @@ internal class HelpersTest {
         num = BigInteger("4900")
         expected = BigInteger("70")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(one, one),
                 Pair(two, one),
@@ -133,7 +133,7 @@ internal class HelpersTest {
         num = BigInteger("8281")
         expected = BigInteger("91")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(one, one),
                 Pair(seven, one),
@@ -147,20 +147,20 @@ internal class HelpersTest {
         num = BigInteger("8")
         expected = two
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(), listOf(Pair(two, one), Pair(BigInteger("8"), two))
+            num, expected, emptyMap(), listOf(Pair(two, one), Pair(BigInteger("8"), two))
         )
 
         num = BigInteger("18")
         expected = BigInteger("3")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(Pair(two, one), Pair(three, one), Pair(BigInteger("18"), three))
         )
 
         num = BigInteger("200")
         expected = ten
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(two, one),
                 Pair(five, one),
@@ -172,7 +172,7 @@ internal class HelpersTest {
         num = BigInteger("296208")
         expected = BigInteger("132")
         runSingleExtractWholeOfTest(
-            num, expected, mapOf(),
+            num, expected, emptyMap(),
             listOf(
                 Pair(two, one),
                 Pair(three, one),
@@ -189,32 +189,32 @@ internal class HelpersTest {
 
         num = two
         assertEquals(expected, extractWholeOf(num))
-        runSingleExtractWholeOfTest(num, expected, mapOf(), listOf(Pair(two, one)))
+        runSingleExtractWholeOfTest(num, expected, emptyMap(), listOf(Pair(two, one)))
 
         num = BigInteger("55")
         assertEquals(expected, extractWholeOf(num))
-        runSingleExtractWholeOfTest(num, expected, mapOf(), listOf(Pair(BigInteger("55"), one)))
+        runSingleExtractWholeOfTest(num, expected, emptyMap(), listOf(Pair(BigInteger("55"), one)))
 
         num = BigInteger("52910")
         assertEquals(expected, extractWholeOf(num))
-        runSingleExtractWholeOfTest(num, expected, mapOf(), listOf(Pair(BigInteger("52910"), one)))
+        runSingleExtractWholeOfTest(num, expected, emptyMap(), listOf(Pair(BigInteger("52910"), one)))
 
         // fully memoized
         num = BigInteger("9800")
         expected = BigInteger("70")
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("917")
         expected = one
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("81")
         expected = BigInteger("9")
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("25")
         expected = five
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected, ten to one, BigInteger("75") to five), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected, ten to one, BigInteger("75") to five), emptyList())
 
         // partially memoized
         num = BigInteger("36")

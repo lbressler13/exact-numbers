@@ -12,14 +12,14 @@ private val logNum3 = Log(ExactFraction(19, 33), true)
 private val logNum4 = Log(ExactFraction(25, 121))
 private val one = ExactFraction.ONE
 
-internal fun runGetLogsTests() {
+ fun runGetLogsTests() {
     // empty
-    var expected: List<Log> = listOf()
+    var expected: List<Log> = emptyList()
 
-    var term = Term(one, listOf())
+    var term = Term(one, emptyList())
     assertEquals(expected, term.getLogs())
 
-    term = Term(ExactFraction.TEN, listOf())
+    term = Term(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.getLogs())
 
     term = Term(one, listOf(Pi(), Pi(), Sqrt(ExactFraction(64, 9))))
@@ -52,14 +52,14 @@ internal fun runGetLogsTests() {
     assertEquals(expected, term.getLogs())
 }
 
-internal fun runGetPiCountTests() {
+ fun runGetPiCountTests() {
     // zero
     var expected = 0
 
-    var term = Term(one, listOf())
+    var term = Term(one, emptyList())
     assertEquals(expected, term.getPiCount())
 
-    term = Term(ExactFraction.TEN, listOf())
+    term = Term(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.getPiCount())
 
     term = Term(one, listOf(Pi(), Pi(true)))
@@ -101,14 +101,14 @@ internal fun runGetPiCountTests() {
     assertEquals(expected, term.getPiCount())
 }
 
-internal fun runGetSquareRootsTests() {
+ fun runGetSquareRootsTests() {
     // zero
-    var expected: List<Sqrt> = listOf()
+    var expected: List<Sqrt> = emptyList()
 
-    var term = Term(one, listOf())
+    var term = Term(one, emptyList())
     assertEquals(expected, term.getSquareRoots())
 
-    term = Term(ExactFraction.TEN, listOf())
+    term = Term(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.getSquareRoots())
 
     term = Term(one, listOf(Pi(), logNum1, Pi(true), logNum2))

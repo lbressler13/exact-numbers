@@ -6,7 +6,7 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-internal fun runSimplifyListTests() {
+ fun runSimplifyListTests() {
     val one = ExactFraction.ONE
 
     // error
@@ -17,11 +17,11 @@ internal fun runSimplifyListTests() {
 
     assertEquals(expected, Sqrt.simplifyList(null))
 
-    var numbers: List<Irrational> = listOf()
+    var numbers: List<Irrational> = emptyList()
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // zero
-    expected = Pair(ExactFraction.ZERO, listOf())
+    expected = Pair(ExactFraction.ZERO, emptyList())
     numbers = listOf(Sqrt.ZERO)
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
@@ -30,11 +30,11 @@ internal fun runSimplifyListTests() {
 
     // only whole
     numbers = listOf(Sqrt.ONE)
-    expected = Pair(one, listOf())
+    expected = Pair(one, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(9))
-    expected = Pair(ExactFraction.THREE, listOf())
+    expected = Pair(ExactFraction.THREE, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(
@@ -42,11 +42,11 @@ internal fun runSimplifyListTests() {
         Sqrt(ExactFraction(1, 64)),
         Sqrt(49)
     )
-    expected = Pair(ExactFraction(35, 32), listOf())
+    expected = Pair(ExactFraction(35, 32), emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(15), Sqrt(6), Sqrt(10))
-    expected = Pair(ExactFraction(30), listOf())
+    expected = Pair(ExactFraction(30), emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // mixed
@@ -107,18 +107,18 @@ internal fun runSimplifyListTests() {
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(13), Sqrt(ExactFraction(1, 13)))
-    expected = Pair(one, listOf())
+    expected = Pair(one, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // ones
     val rootOne = Sqrt.ONE
 
     numbers = listOf(rootOne)
-    expected = Pair(one, listOf())
+    expected = Pair(one, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(rootOne, rootOne, rootOne)
-    expected = Pair(one, listOf())
+    expected = Pair(one, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     numbers = listOf(Sqrt(ExactFraction(2, 15)), rootOne, Sqrt(16))
@@ -133,6 +133,6 @@ internal fun runSimplifyListTests() {
         Sqrt(ExactFraction(1, 64)),
         Sqrt(49)
     )
-    expected = Pair(ExactFraction(35, 32), listOf())
+    expected = Pair(ExactFraction(35, 32), emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))
 }

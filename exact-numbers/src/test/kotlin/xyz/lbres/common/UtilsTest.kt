@@ -8,9 +8,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-internal class UtilsTest {
+class UtilsTest {
     @Test
-    internal fun testDivideBigDecimals() {
+    fun testDivideBigDecimals() {
         // errors
         assertDivByZero { divideBigDecimals(BigDecimal.ZERO, BigDecimal.ZERO) }
         assertDivByZero { divideBigDecimals(BigDecimal("1.234"), BigDecimal.ZERO) }
@@ -44,14 +44,14 @@ internal class UtilsTest {
     }
 
     @Test
-    internal fun testGetIntFromDecimal() {
+    fun testGetIntFromDecimal() {
         var goodValues = mapOf(BigDecimal.ZERO to BigInteger.ZERO, BigDecimal("0.000001") to BigInteger.ZERO)
         var badValues = listOf(BigDecimal.ONE, BigDecimal("-15"), BigDecimal("1.0001"))
         runSingleGetIntFromDecimalTest(goodValues, badValues, BigInteger::isZero)
 
-        goodValues = mapOf()
+        goodValues = emptyMap()
         badValues = listOf(BigDecimal.ONE, BigDecimal.ZERO)
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { throw Exception() }
+        runSingleGetIntFromDecimalTest(goodValues, badValues) { false }
 
         var result = BigInteger("10")
         goodValues = mapOf(
@@ -63,7 +63,7 @@ internal class UtilsTest {
         badValues = listOf(BigDecimal("9"), BigDecimal("11"))
         runSingleGetIntFromDecimalTest(goodValues, badValues) { it * it == BigInteger("100") }
 
-        goodValues = mapOf()
+        goodValues = emptyMap()
         badValues = listOf(BigDecimal.ONE, -BigDecimal.ONE, BigDecimal("2"), BigDecimal("-2"), BigDecimal("4"))
         runSingleGetIntFromDecimalTest(goodValues, badValues) { it * it == BigInteger("2") }
 
@@ -72,7 +72,7 @@ internal class UtilsTest {
         badValues = listOf(BigDecimal("-2"), BigDecimal("0.5"), BigDecimal("4.999999"))
         runSingleGetIntFromDecimalTest(goodValues, badValues) { BigInteger("5").pow(it.toInt()) == BigInteger("25") }
 
-        goodValues = mapOf()
+        goodValues = emptyMap()
         listOf(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal("2"), BigDecimal("-2"), BigDecimal("1.9999999"))
         runSingleGetIntFromDecimalTest(goodValues, badValues) { BigInteger("10").pow(it.toInt()) == BigInteger("99") }
 
@@ -89,17 +89,23 @@ internal class UtilsTest {
             BigDecimal("10000.000001") to BigInteger("10000"),
             BigDecimal("10000.999999") to BigInteger("10001"),
         )
-        badValues = listOf()
+        badValues = emptyList()
         runSingleGetIntFromDecimalTest(goodValues, badValues) { true }
     }
 
+    /**
+     * Run single test for getIntFromDecimal
+     *
+     * @param goodValues [Map]<BigDecimal, BigInteger>: map of values to their expected results, for values that are expected to not return null
+     * @param badValues [List]<BigDecimal>: values for which the function is expected to return null
+     * @param test ([BigInteger]) -> Boolean: test to pass to getIntFromDecimal
+     */
     private fun runSingleGetIntFromDecimalTest(
         goodValues: Map<BigDecimal, BigInteger>,
         badValues: List<BigDecimal>,
         test: (BigInteger) -> Boolean
     ) {
         for (pair in goodValues) {
-            println(pair)
             assertEquals(pair.value, getIntFromDecimal(pair.key, test))
         }
 
