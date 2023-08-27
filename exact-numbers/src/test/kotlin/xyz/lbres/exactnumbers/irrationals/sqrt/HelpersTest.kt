@@ -202,19 +202,19 @@ internal class HelpersTest {
         // fully memoized
         num = BigInteger("9800")
         expected = BigInteger("70")
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("917")
         expected = one
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("81")
         expected = BigInteger("9")
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected), emptyList())
 
         num = BigInteger("25")
         expected = five
-        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected, ten to one, BigInteger("75") to five), listOf())
+        runSingleExtractWholeOfTest(num, expected, mapOf(num to expected, ten to one, BigInteger("75") to five), emptyList())
 
         // partially memoized
         num = BigInteger("36")

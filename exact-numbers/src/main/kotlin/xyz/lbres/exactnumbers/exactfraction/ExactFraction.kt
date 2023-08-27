@@ -8,6 +8,7 @@ import xyz.lbres.kotlinutils.biginteger.ext.ifZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.biginteger.getGCD
+import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -177,12 +178,14 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
 
     fun pow(other: ExactFraction): ExactFraction {
-        if (other.isZero() || equals(ONE)) {
-            return ONE
-        }
-
         if (other.denominator != BigInteger.ONE) {
             throw ArithmeticException("Exponents must be whole numbers")
+        }
+
+        when {
+            equals(ZERO) -> return ZERO
+            equals(ONE) || other.isZero() -> return ONE
+            other == ONE -> return this
         }
 
         var numeratorMult = BigInteger.ONE
@@ -212,7 +215,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         }
 
         val result = ExactFraction(numeratorMult, denominatorMult, fullSimplified = false)
-        return if (other < 0) result.inverse() else result
+        return simpleIf(other < 0, { result.inverse() }, { result })
     }
 
     // UNARY NON-OPERATORS

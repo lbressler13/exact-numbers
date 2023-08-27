@@ -32,7 +32,7 @@ internal class TermTest {
         var term1 = Term.ZERO
         assertEquals(term1, term1)
 
-        term1 = Term(ExactFraction(-17, 4), listOf())
+        term1 = Term(ExactFraction(-17, 4), emptyList())
         assertEquals(term1, term1)
 
         term1 = Term(one, listOf(logNum1, logNum2))
@@ -50,18 +50,18 @@ internal class TermTest {
         assertEquals(term2, term1)
 
         // not equal
-        term1 = Term(one, listOf())
-        term2 = Term(ExactFraction.NEG_ONE, listOf())
+        term1 = Term(one, emptyList())
+        term2 = Term(ExactFraction.NEG_ONE, emptyList())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term(ExactFraction.TWO, listOf())
-        term2 = Term(ExactFraction.HALF, listOf())
+        term1 = Term(ExactFraction.TWO, emptyList())
+        term2 = Term(ExactFraction.HALF, emptyList())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
         term1 = Term(one, listOf(logNum1))
-        term2 = Term(one, listOf())
+        term2 = Term(one, emptyList())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -76,7 +76,7 @@ internal class TermTest {
         assertNotEquals(term2, term1)
 
         term1 = Term(one, listOf(Pi()))
-        term2 = Term(one, listOf())
+        term2 = Term(one, emptyList())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -91,7 +91,7 @@ internal class TermTest {
         assertNotEquals(term2, term1)
 
         term1 = Term(one, listOf(Sqrt(12)))
-        term2 = Term(one, listOf())
+        term2 = Term(one, emptyList())
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -143,8 +143,8 @@ internal class TermTest {
         expected = Term(ExactFraction.SIX, listOf(logNum3, logNum4, Pi(true), Sqrt(36)))
         assertEquals(expected, -term)
 
-        term = Term(ExactFraction(15, 44), listOf())
-        expected = Term(ExactFraction(-15, 44), listOf())
+        term = Term(ExactFraction(15, 44), emptyList())
+        expected = Term(ExactFraction(-15, 44), emptyList())
         assertEquals(expected, -term)
 
         term = Term(
@@ -183,7 +183,7 @@ internal class TermTest {
         term = Term(-ExactFraction.SIX, listOf(logNum3, Sqrt(121), logNum4, Pi(true)))
         assertEquals(term, +term)
 
-        term = Term(ExactFraction(15, 44), listOf())
+        term = Term(ExactFraction(15, 44), emptyList())
         assertEquals(term, +term)
 
         term = Term(
@@ -237,11 +237,11 @@ internal class TermTest {
         assertEquals(expected, term.toString())
 
         // just coefficient
-        term = Term(ExactFraction(-25), listOf())
+        term = Term(ExactFraction(-25), emptyList())
         expected = "<-25>"
         assertEquals(expected, term.toString())
 
-        term = Term(ExactFraction(44, 7), listOf())
+        term = Term(ExactFraction(44, 7), emptyList())
         expected = "<[44/7]>"
         assertEquals(expected, term.toString())
 

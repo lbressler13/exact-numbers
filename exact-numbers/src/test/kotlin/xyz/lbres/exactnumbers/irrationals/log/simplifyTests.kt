@@ -63,15 +63,15 @@ internal fun runSimplifyListTests() {
     assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
 
     // empty
-    var expected: Pair<ExactFraction, List<Log>> = Pair(fractionOne, listOf())
+    var expected: Pair<ExactFraction, List<Log>> = Pair(fractionOne, emptyList())
 
     assertEquals(expected, Log.simplifyList(null))
 
-    var logs: List<Log> = listOf()
+    var logs: List<Log> = emptyList()
     assertEquals(expected, Log.simplifyList(logs))
 
     // zero
-    expected = Pair(ExactFraction.ZERO, listOf())
+    expected = Pair(ExactFraction.ZERO, emptyList())
 
     logs = listOf(Log.ZERO)
     assertEquals(expected, Log.simplifyList(logs))
@@ -84,11 +84,11 @@ internal fun runSimplifyListTests() {
 
     // ones
     logs = listOf(one)
-    expected = Pair(fractionOne, listOf())
+    expected = Pair(fractionOne, emptyList())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(one, one, one)
-    expected = Pair(fractionOne, listOf())
+    expected = Pair(fractionOne, emptyList())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(one, Log(8), Log(4, 3, true)).sorted()
@@ -101,7 +101,7 @@ internal fun runSimplifyListTests() {
 
     // inverses
     logs = listOf(Log(8), Log(8, 10, true)).sorted()
-    expected = Pair(fractionOne, listOf())
+    expected = Pair(fractionOne, emptyList())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
@@ -141,11 +141,11 @@ internal fun runSimplifyListTests() {
 
     // rationals
     logs = listOf(Log(1000))
-    expected = Pair(ExactFraction.THREE, listOf())
+    expected = Pair(ExactFraction.THREE, emptyList())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(Log(9, 3), Log(ExactFraction.HALF, 2))
-    expected = Pair(-ExactFraction.TWO, listOf())
+    expected = Pair(-ExactFraction.TWO, emptyList())
     assertEquals(expected, Log.simplifyList(logs))
 
     logs = listOf(
