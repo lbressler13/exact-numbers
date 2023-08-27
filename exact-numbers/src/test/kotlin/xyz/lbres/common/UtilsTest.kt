@@ -45,39 +45,60 @@ class UtilsTest {
 
     @Test
     fun testGetIntFromDecimal() {
-        var goodValues = mapOf(BigDecimal.ZERO to BigInteger.ZERO, BigDecimal("0.000001") to BigInteger.ZERO)
-        var badValues = listOf(BigDecimal.ONE, BigDecimal("-15"), BigDecimal("1.0001"))
-        runSingleGetIntFromDecimalTest(goodValues, badValues, BigInteger::isZero)
+        var values = mapOf(
+            BigDecimal.ZERO to BigInteger.ZERO,
+            BigDecimal("0.000001") to BigInteger.ZERO,
+            BigDecimal.ONE to null,
+            BigDecimal("-15") to null,
+            BigDecimal("1.0001") to null
+        )
+        runSingleGetIntFromDecimalTest(values, BigInteger::isZero)
 
-        goodValues = emptyMap()
-        badValues = listOf(BigDecimal.ONE, BigDecimal.ZERO)
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { false }
+        values = mapOf(BigDecimal.ONE to null, BigDecimal.ZERO to null)
+        runSingleGetIntFromDecimalTest(values) { false }
 
         var result = BigInteger("10")
-        goodValues = mapOf(
+        values = mapOf(
             BigDecimal("10") to result,
             BigDecimal("9.999999999") to result,
             BigDecimal("10.0000001") to result,
-            BigDecimal("-10") to BigInteger("-10")
+            BigDecimal("-10") to BigInteger("-10"),
+            BigDecimal("9") to null,
+            BigDecimal("11") to null
         )
-        badValues = listOf(BigDecimal("9"), BigDecimal("11"))
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { it * it == BigInteger("100") }
+        runSingleGetIntFromDecimalTest(values) { it * it == BigInteger("100") }
 
-        goodValues = emptyMap()
-        badValues = listOf(BigDecimal.ONE, -BigDecimal.ONE, BigDecimal("2"), BigDecimal("-2"), BigDecimal("4"))
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { it * it == BigInteger("2") }
+        values = mapOf(
+            BigDecimal.ONE to null,
+            -BigDecimal.ONE to null,
+            BigDecimal("2") to null,
+            BigDecimal("-2") to null,
+            BigDecimal("4") to null
+        )
+        runSingleGetIntFromDecimalTest(values) { it * it == BigInteger("2") }
 
         result = BigInteger.TWO
-        goodValues = mapOf(BigDecimal("2") to result, BigDecimal("1.9999") to result, BigDecimal(2.0000002) to result)
-        badValues = listOf(BigDecimal("-2"), BigDecimal("0.5"), BigDecimal("4.999999"))
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { BigInteger("5").pow(it.toInt()) == BigInteger("25") }
+        values = mapOf(
+            BigDecimal("2") to result,
+            BigDecimal("1.9999") to result,
+            BigDecimal("2.0000002") to result,
+            BigDecimal("-2") to null,
+            BigDecimal("0.5") to null,
+            BigDecimal("4.999999") to null
+        )
+        runSingleGetIntFromDecimalTest(values) { BigInteger("5").pow(it.toInt()) == BigInteger("25") }
 
-        goodValues = emptyMap()
-        listOf(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal("2"), BigDecimal("-2"), BigDecimal("1.9999999"))
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { BigInteger("10").pow(it.toInt()) == BigInteger("99") }
+        values = mapOf(
+            BigDecimal.ZERO to null,
+            BigDecimal.ONE to null,
+            BigDecimal("2") to null,
+            BigDecimal("-2") to null,
+            BigDecimal("1.9999999") to null
+        )
+        runSingleGetIntFromDecimalTest(values) { BigInteger("10").pow(it.toInt()) == BigInteger("99") }
 
         // test choosing closer number
-        goodValues = mapOf(
+        values = mapOf(
             BigDecimal.ONE to BigInteger.ONE,
             BigDecimal("0.3") to BigInteger.ZERO,
             BigDecimal("0.5") to BigInteger.ONE,
@@ -89,28 +110,18 @@ class UtilsTest {
             BigDecimal("10000.000001") to BigInteger("10000"),
             BigDecimal("10000.999999") to BigInteger("10001"),
         )
-        badValues = emptyList()
-        runSingleGetIntFromDecimalTest(goodValues, badValues) { true }
+        runSingleGetIntFromDecimalTest(values) { true }
     }
 
     /**
      * Run single test for getIntFromDecimal
      *
-     * @param goodValues [Map]<BigDecimal, BigInteger>: map of values to their expected results, for values that are expected to not return null
-     * @param badValues [List]<BigDecimal>: values for which the function is expected to return null
+     * @param values [Map]<BigDecimal, BigInteger?>: map of values to their expected results
      * @param test ([BigInteger]) -> Boolean: test to pass to getIntFromDecimal
      */
-    private fun runSingleGetIntFromDecimalTest(
-        goodValues: Map<BigDecimal, BigInteger>,
-        badValues: List<BigDecimal>,
-        test: (BigInteger) -> Boolean
-    ) {
-        for (pair in goodValues) {
+    private fun runSingleGetIntFromDecimalTest(values: Map<BigDecimal, BigInteger?>, test: (BigInteger) -> Boolean) {
+        for (pair in values) {
             assertEquals(pair.value, getIntFromDecimal(pair.key, test))
-        }
-
-        for (value in badValues) {
-            assertNull(getIntFromDecimal(value, test))
         }
     }
 }
