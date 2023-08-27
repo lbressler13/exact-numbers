@@ -6,7 +6,7 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
- fun runSimplifyListTests() {
+fun runSimplifyListTests() {
     val one = ExactFraction.ONE
 
     // error

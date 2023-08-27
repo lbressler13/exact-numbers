@@ -3,7 +3,7 @@ package xyz.lbres.exactnumbers.exactfraction
 import assertDivByZero
 import kotlin.test.assertEquals
 
- fun runInverseTests() {
+fun runInverseTests() {
     var ef = ExactFraction(1, 2)
     var expected = ExactFraction(2, 1)
     assertEquals(expected, ef.inverse())
@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
     assertDivByZero { ExactFraction.ZERO.inverse() }
 }
 
- fun runAbsoluteValueTests() {
+fun runAbsoluteValueTests() {
     var ef = ExactFraction(0)
     var expected = ExactFraction(0)
     assertEquals(expected, ef.absoluteValue())
@@ -49,7 +49,7 @@ import kotlin.test.assertEquals
     assertEquals(expected, ef.absoluteValue())
 }
 
- fun runIsNegativeTests() {
+fun runIsNegativeTests() {
     var ef = ExactFraction(0)
     assert(!ef.isNegative())
 
@@ -66,7 +66,7 @@ import kotlin.test.assertEquals
     assert(ef.isNegative())
 }
 
- fun runIsZeroTests() {
+fun runIsZeroTests() {
     var ef = ExactFraction(0)
     assert(ef.isZero())
 

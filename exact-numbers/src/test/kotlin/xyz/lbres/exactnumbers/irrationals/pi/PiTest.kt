@@ -8,9 +8,9 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
- class PiTest {
+class PiTest {
     @Test
-     fun testConstructor() {
+    fun testConstructor() {
         var pi = Pi()
         assertFalse(pi.isDivided)
 
@@ -22,7 +22,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testEquals() {
+    fun testEquals() {
         var pi1 = Pi()
         assertEquals(pi1, pi1)
 
@@ -35,7 +35,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testGetValue() {
+    fun testGetValue() {
         // kotlin representation of pi: 3.141592653589793
         var pi = Pi()
         var expected = BigDecimal("3.141592653589793")
@@ -47,7 +47,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsZero() {
+    fun testIsZero() {
         var pi = Pi()
         assertFalse(pi.isZero())
 
@@ -56,7 +56,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsRational() {
+    fun testIsRational() {
         var pi = Pi()
         assertFalse(pi.isRational())
 
@@ -65,7 +65,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testGetRationalValue() {
+    fun testGetRationalValue() {
         var pi = Pi()
         assertNull(pi.getRationalValue())
 
@@ -74,7 +74,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testSwapDivided() {
+    fun testSwapDivided() {
         var pi = Pi()
         assertTrue(pi.swapDivided().isDivided)
 
@@ -83,7 +83,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testToString() {
+    fun testToString() {
         var piNum = Pi()
         var expected = "[π]"
         assertEquals(expected, piNum.toString())
@@ -93,5 +93,5 @@ import kotlin.test.assertTrue
         assertEquals(expected, piNum.toString())
     }
 
-    @Test  fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifyList() = runSimplifyListTests()
 }

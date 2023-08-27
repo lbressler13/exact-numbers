@@ -12,7 +12,7 @@ private val logNum3 = Log(ExactFraction(19, 33), true)
 private val logNum4 = Log(ExactFraction(25, 121))
 private val one = ExactFraction.ONE
 
- fun runGetLogsTests() {
+fun runGetLogsTests() {
     // empty
     var expected: List<Log> = emptyList()
 
@@ -52,7 +52,7 @@ private val one = ExactFraction.ONE
     assertEquals(expected, term.getLogs())
 }
 
- fun runGetPiCountTests() {
+fun runGetPiCountTests() {
     // zero
     var expected = 0
 
@@ -101,7 +101,7 @@ private val one = ExactFraction.ONE
     assertEquals(expected, term.getPiCount())
 }
 
- fun runGetSquareRootsTests() {
+fun runGetSquareRootsTests() {
     // zero
     var expected: List<Sqrt> = emptyList()
 

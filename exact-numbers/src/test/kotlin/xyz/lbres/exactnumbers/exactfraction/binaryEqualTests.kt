@@ -6,7 +6,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
- fun runEqualsTests() {
+fun runEqualsTests() {
     assertEquals(ExactFraction(0), ExactFraction(0))
     assertEquals(ExactFraction(-1, 3), ExactFraction(-1, 3))
     assertEquals(ExactFraction(5, 2), ExactFraction(5, 2))
@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
     assertNotEquals(ExactFraction(2, 3), ExactFraction(3, 2))
 }
 
- fun runEqTests() {
+fun runEqTests() {
     var ef = ExactFraction(0)
     assertTrue(ef.eq(0))
     assertTrue(ef.eq(0L))

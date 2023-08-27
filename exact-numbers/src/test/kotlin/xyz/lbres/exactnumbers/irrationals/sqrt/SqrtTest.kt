@@ -18,7 +18,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
- class SqrtTest {
+class SqrtTest {
     @BeforeTest
     fun createMocks() {
         mockkObject(Memoize)
@@ -31,7 +31,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testConstructor() {
+    fun testConstructor() {
         // errors
         val expectedMessage = "Cannot calculate root of a negative number"
         assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.EIGHT) }
@@ -63,7 +63,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsZero() {
+    fun testIsZero() {
         // zero
         var sqrt = Sqrt.ZERO
         assertTrue(sqrt.isZero())
@@ -83,7 +83,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testSwapDivided() {
+    fun testSwapDivided() {
         // error
         assertDivByZero { Sqrt.ZERO.swapDivided() }
 
@@ -106,7 +106,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsRational() {
+    fun testIsRational() {
         // rational
         var sqrt = Sqrt.ZERO
         assertTrue(sqrt.isRational())
@@ -135,7 +135,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testGetRationalValue() {
+    fun testGetRationalValue() {
         // irrational
         var sqrt = Sqrt(2)
         assertNull(sqrt.getRationalValue())
@@ -173,7 +173,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun getValue() {
+    fun getValue() {
         var sqrt = Sqrt.ZERO
         var expected = BigDecimal.ZERO
         assertEquals(expected, sqrt.getValue())
@@ -208,7 +208,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testEquals() {
+    fun testEquals() {
         // equal
         var sqrt1 = Sqrt.ZERO
         assertEquals(sqrt1, sqrt1)
@@ -242,7 +242,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testGetSimplified() {
+    fun testGetSimplified() {
         val one = ExactFraction.ONE
 
         // rational
@@ -290,7 +290,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testCompareTo() {
+    fun testCompareTo() {
         // equal
         var sqrt1 = Sqrt.ZERO
         assertEquals(sqrt1, sqrt1)
@@ -321,7 +321,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testToString() {
+    fun testToString() {
         val symbol = "√"
 
         // whole number
@@ -347,5 +347,5 @@ import kotlin.test.assertTrue
         assertEquals(expected, sqrt.toString())
     }
 
-    @Test  fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifyList() = runSimplifyListTests()
 }

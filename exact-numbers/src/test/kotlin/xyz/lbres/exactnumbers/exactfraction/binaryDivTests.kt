@@ -4,7 +4,7 @@ import assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
- fun runDivTests() {
+fun runDivTests() {
     // 0
     var first = ExactFraction(0)
     var second = ExactFraction(2, 3)
@@ -82,7 +82,7 @@ import kotlin.test.assertEquals
  * @param expected [ExactFraction]: expected result
  */
 private fun runMultiTypeDivTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
-   assertEquals(expected, ef / other)
-   assertEquals(expected, ef / other.toLong())
-   assertEquals(expected, ef / other.toBigInteger())
+    assertEquals(expected, ef / other)
+    assertEquals(expected, ef / other.toLong())
+    assertEquals(expected, ef / other.toBigInteger())
 }

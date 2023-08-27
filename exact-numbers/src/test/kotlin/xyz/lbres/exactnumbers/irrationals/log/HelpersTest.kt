@@ -5,9 +5,9 @@ import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
- class HelpersTest {
+class HelpersTest {
     @Test
-     fun testGetLogOf() {
+    fun testGetLogOf() {
         // base 10
         var base = 10
 

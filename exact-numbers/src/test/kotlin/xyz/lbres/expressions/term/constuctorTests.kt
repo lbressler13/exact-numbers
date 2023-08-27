@@ -13,7 +13,7 @@ private val logNum3 = Log(ExactFraction(19, 33), true)
 private val logNum4 = Log(ExactFraction(25, 121))
 private val one = ExactFraction.ONE
 
- fun runConstructorTests() {
+fun runConstructorTests() {
     // zero
     var expectedCoeff = ExactFraction.ZERO
     var expectedNumbers: List<Irrational> = emptyList()
@@ -63,7 +63,7 @@ private val one = ExactFraction.ONE
     assertEquals(expectedNumbers, term.numbers)
 }
 
- fun runFromValuesTests() {
+fun runFromValuesTests() {
     // zero
     var expectedCoeff = ExactFraction.ZERO
     var expectedNumbers: List<Irrational> = emptyList()

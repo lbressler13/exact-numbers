@@ -8,11 +8,11 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
- class LogTest {
-    @Test  fun testConstructor() = runConstructorTests()
+class LogTest {
+    @Test fun testConstructor() = runConstructorTests()
 
     @Test
-     fun testEquals() {
+    fun testEquals() {
         // equals
         var logNum = Log.ZERO
         assertEquals(logNum, logNum)
@@ -62,7 +62,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testCompareTo() {
+    fun testCompareTo() {
         // equal
         var logNum1 = Log.ZERO
         assertEquals(0, logNum1.compareTo(logNum1))
@@ -106,7 +106,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testSwapDivided() {
+    fun testSwapDivided() {
         // error
         assertDivByZero { Log.ZERO.swapDivided() }
 
@@ -125,7 +125,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsZero() {
+    fun testIsZero() {
         var logNum = Log.ZERO
         assertTrue(logNum.isZero())
 
@@ -149,7 +149,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsRational() {
+    fun testIsRational() {
         // rational
         var logNum = Log.ZERO
         assertTrue(logNum.isRational())
@@ -183,14 +183,14 @@ import kotlin.test.assertTrue
         assertFalse(logNum.isRational())
     }
 
-    @Test  fun testGetRationalValue() = runGetRationalValueTests()
-    @Test  fun testGetValue() = runGetValueTests()
+    @Test fun testGetRationalValue() = runGetRationalValueTests()
+    @Test fun testGetValue() = runGetValueTests()
 
-    @Test  fun testGetSimplified() = runGetSimplifiedTests()
-    @Test  fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testGetSimplified() = runGetSimplifiedTests()
+    @Test fun testSimplifyList() = runSimplifyListTests()
 
     @Test
-     fun testToString() {
+    fun testToString() {
         var logNum = Log.ZERO
         var expected = "[log_10(1)]"
         assertEquals(expected, logNum.toString())

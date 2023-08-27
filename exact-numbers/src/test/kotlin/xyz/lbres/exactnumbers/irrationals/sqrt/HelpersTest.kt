@@ -13,14 +13,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
- class HelpersTest {
+class HelpersTest {
     @AfterTest
     fun clearMocks() {
         unmockkAll()
     }
 
     @Test
-     fun testGetRootOf() {
+    fun testGetRootOf() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
 

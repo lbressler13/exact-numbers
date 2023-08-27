@@ -10,24 +10,24 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
- class TermTest {
+class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
     private val logNum3 = Log(ExactFraction(19, 33), true)
     private val logNum4 = Log(ExactFraction(25, 121))
     private val one = ExactFraction.ONE
 
-    @Test  fun testConstructor() = runConstructorTests()
-    @Test  fun testFromValues() = runFromValuesTests()
+    @Test fun testConstructor() = runConstructorTests()
+    @Test fun testFromValues() = runFromValuesTests()
 
-    @Test  fun testTimes() = runTimesTests()
-    @Test  fun testDiv() = runDivTests()
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
 
-    @Test  fun testGetSimplified() = runGetSimplifiedTests()
-    @Test  fun testGetValue() = runGetValueTests()
+    @Test fun testGetSimplified() = runGetSimplifiedTests()
+    @Test fun testGetValue() = runGetValueTests()
 
     @Test
-     fun testEquals() {
+    fun testEquals() {
         // equal
         var term1 = Term.ZERO
         assertEquals(term1, term1)
@@ -122,7 +122,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testUnaryMinus() {
+    fun testUnaryMinus() {
         var term = Term.ZERO
         var expected = Term.ZERO
         assertEquals(expected, -term)
@@ -167,7 +167,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testUnaryPlus() {
+    fun testUnaryPlus() {
         var term = Term.ZERO
         assertEquals(term, +term)
 
@@ -194,7 +194,7 @@ import kotlin.test.assertTrue
     }
 
     @Test
-     fun testIsZero() {
+    fun testIsZero() {
         // zero
         var term = Term.ZERO
         assertTrue(term.isZero())
@@ -225,12 +225,12 @@ import kotlin.test.assertTrue
         assertFalse(term.isZero())
     }
 
-    @Test  fun testGetLogs() = runGetLogsTests()
-    @Test  fun testGetPiCount() = runGetPiCountTests()
-    @Test  fun testGetSquareRoots() = runGetSquareRootsTests()
+    @Test fun testGetLogs() = runGetLogsTests()
+    @Test fun testGetPiCount() = runGetPiCountTests()
+    @Test fun testGetSquareRoots() = runGetSquareRootsTests()
 
     @Test
-     fun testToString() {
+    fun testToString() {
         // zero
         var term = Term.ZERO
         var expected = "<0>"

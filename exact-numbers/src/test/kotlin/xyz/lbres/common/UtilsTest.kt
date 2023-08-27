@@ -6,7 +6,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class UtilsTest {
     @Test

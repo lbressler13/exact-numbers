@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
- fun runConstructorTests() {
+fun runConstructorTests() {
     // error
     assertDivByZero { Log(ExactFraction.ONE, 10, isDivided = true) }
     assertDivByZero { Log(1, 10, isDivided = true) }

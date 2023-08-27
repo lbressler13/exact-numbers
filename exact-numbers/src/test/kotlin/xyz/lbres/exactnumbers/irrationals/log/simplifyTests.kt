@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 private val one = Log.ONE
 private val fractionOne = ExactFraction.ONE
 
- fun runGetSimplifiedTests() {
+fun runGetSimplifiedTests() {
     // zero
     var logNum = Log.ZERO
     var expected = Pair(ExactFraction.ONE, Log.ZERO)
@@ -58,7 +58,7 @@ private val fractionOne = ExactFraction.ONE
     assertEquals(expected, logNum.getSimplified())
 }
 
- fun runSimplifyListTests() {
+fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Log.simplifyList(listOf(Pi(), Log.ONE)) }
 

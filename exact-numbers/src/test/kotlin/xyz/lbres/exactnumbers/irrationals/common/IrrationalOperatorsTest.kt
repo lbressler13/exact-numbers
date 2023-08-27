@@ -8,9 +8,9 @@ import xyz.lbres.expressions.term.Term
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
- class IrrationalOperatorsTest {
+class IrrationalOperatorsTest {
     @Test
-     fun testTimes() {
+    fun testTimes() {
         // Log
         var num1: Irrational = Log.ZERO
         var num2: Irrational = Log.ZERO
@@ -62,7 +62,7 @@ import kotlin.test.assertEquals
     }
 
     @Test
-     fun testDiv() {
+    fun testDiv() {
         // error
         assertDivByZero { Log.ONE / Log.ZERO }
 

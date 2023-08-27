@@ -14,7 +14,7 @@ private val sqrt1 = Sqrt(64)
 private val sqrt2 = Sqrt(ExactFraction(20, 33))
 private val one = ExactFraction.ONE
 
- fun runGetSimplifiedTests() {
+fun runGetSimplifiedTests() {
     // simplified
     var term = Term(ExactFraction.EIGHT, listOf(Pi(), Pi(true)))
     var expectedCoeff = ExactFraction.EIGHT
@@ -150,7 +150,7 @@ private val one = ExactFraction.ONE
     assertEquals(expectedNumbers, result.numbers)
 }
 
- fun runGetValueTests() {
+fun runGetValueTests() {
     // just number
     var term = Term.ZERO
     var expected = BigDecimal.ZERO
