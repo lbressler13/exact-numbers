@@ -4,6 +4,8 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.div
+import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.expressions.term.Term
@@ -38,12 +40,12 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
     // public methods to expose general Irrational operators
-    operator fun times(other: Sqrt): Term = times(other)
-    operator fun times(other: Log): Term = times(other)
-    operator fun times(other: Pi): Term = times(other)
-    operator fun div(other: Sqrt): Term = div(other)
-    operator fun div(other: Log): Term = div(other)
-    operator fun div(other: Pi): Term = div(other)
+    operator fun times(other: Sqrt): Term = times(other as Irrational)
+    operator fun times(other: Log): Term = times(other as Irrational)
+    operator fun times(other: Pi): Term = times(other as Irrational)
+    operator fun div(other: Sqrt): Term = div(other as Irrational)
+    operator fun div(other: Log): Term = div(other as Irrational)
+    operator fun div(other: Pi): Term = div(other as Irrational)
 
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
