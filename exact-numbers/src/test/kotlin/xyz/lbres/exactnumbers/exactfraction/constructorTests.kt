@@ -103,7 +103,7 @@ private fun testPairValConstructor() {
 }
 
 /**
- * Run test with Int, Long, and BigInteger values
+ * Run single-val constructor test with Int, Long, and BigInteger values
  *
  * @param value [Int]: value to cast to Int, Long, and BigInteger
  * @param validateResult ([ExactFraction]) -> Unit: function to validate constructed fraction
@@ -114,6 +114,13 @@ private fun runMultiTypeSingleValTest(value: Int, validateResult: (ExactFraction
     validateResult(ExactFraction(value.toBigInteger()))
 }
 
+/**
+ * Run two-val constructor test with all combinations of Int, Long, and BigInteger values
+ *
+ * @param value1 [Int]: first value to cast to Int, Long, and BigInteger
+ * @param value2 [Int]: first value to cast to Int, Long, and BigInteger
+ * @param validateResult ([ExactFraction]) -> Unit: function to validate constructed fraction
+ */
 private fun runMultiTypePairValTest(value1: Int, value2: Int, validateResult: (ExactFraction) -> Unit) {
     // BigInteger, BigInteger
     validateResult(ExactFraction(value1.toBigInteger(), value2.toBigInteger()))

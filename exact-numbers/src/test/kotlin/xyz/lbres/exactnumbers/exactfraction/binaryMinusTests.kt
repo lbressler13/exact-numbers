@@ -50,13 +50,13 @@ fun runMinusTests() {
     second = ExactFraction(2, 3)
     assertEquals(ExactFraction(-7, 3), first - second)
 
-    first = ExactFraction(59)
-    second = ExactFraction(119)
-    assertEquals(ExactFraction(-60), first - second)
+    first = ExactFraction(5, 19)
+    second = ExactFraction(11, 19)
+    assertEquals(ExactFraction(-6, 19), first - second)
 
-    first = ExactFraction(-249)
-    second = ExactFraction(-329)
-    assertEquals(ExactFraction(80), first - second)
+    first = ExactFraction(-24, 19)
+    second = ExactFraction(-32, 19)
+    assertEquals(ExactFraction(8, 19), first - second)
 
     // different denominator
     first = ExactFraction(5)
@@ -67,9 +67,9 @@ fun runMinusTests() {
     second = ExactFraction(7, 3)
     assertEquals(ExactFraction(1, 6), first - second)
 
-    first = ExactFraction(-52)
-    second = ExactFraction(31)
-    assertEquals(ExactFraction(-83), first - second)
+    first = ExactFraction(-5, 12)
+    second = ExactFraction(3, 11)
+    assertEquals(ExactFraction(-91, 132), first - second)
 
     first = ExactFraction(-4, 8)
     second = ExactFraction(-1, 3)

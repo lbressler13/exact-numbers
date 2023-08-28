@@ -77,7 +77,7 @@ fun runTimesTests() {
 /**
  * Run test with Int, Long, and BigInteger values
  *
- * @param ef [ExactFraction]: first value in subtraction
+ * @param ef [ExactFraction]: first value in multiplication
  * @param other [Int]: value to cast to Int, Long, and BigInteger
  * @param expected [ExactFraction]: expected result
  */
