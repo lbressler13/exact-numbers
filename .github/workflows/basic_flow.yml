@@ -1,7 +1,5 @@
 name: All Checks
 
-# TODO use gradle wrapper
-
 on:
   push:
   pull_request:
@@ -21,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Linting
-        run: gradle ktlintCheck
+        run: ./gradlew ktlintCheck
 
   test:
     name: Unit Tests
@@ -36,4 +34,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Unit Tests
-        run: gradle test
+        run: ./gradlew test
