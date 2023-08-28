@@ -3,20 +3,10 @@ package xyz.lbres.exactnumbers.exactfraction
 import assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 
 // Numerator and denominator are explicitly checked to ensure correct initialization
-
-private val zero = BigInteger.ZERO
-private val pos1 = BigInteger.ONE
-private val neg1 = -BigInteger.ONE
-private val pos3 = 3.toBigInteger()
-private val neg3 = (-3).toBigInteger()
-private val pos4 = 4.toBigInteger()
-private val neg4 = (-4).toBigInteger()
-private val pos7 = 7.toBigInteger()
-private val neg7 = (-7).toBigInteger()
-private val pos18 = 18.toBigInteger()
+// Simplication is tested separately
 
 fun runConstructorTests() {
     testSingleValConstructor()
@@ -33,82 +23,82 @@ private fun testStringConstructor() {
 
     // EF string
     ef = ExactFraction("EF[-7 3]")
-    assertEquals(neg7, ef.numerator)
-    assertEquals(pos3, ef.denominator)
+    assertEquals((-7).toBigInteger(), ef.numerator)
+    assertEquals(3.toBigInteger(), ef.denominator)
 
     // Invalid
-    assertFails { ExactFraction("[]") }
+    assertFailsWith<NumberFormatException>("Invalid EF string format") { ExactFraction("[]") }
 }
 
 private fun testSingleValConstructor() {
     runMultiTypeSingleValTest(0) {
-        assertEquals(it.numerator, zero)
-        assertEquals(it.denominator, pos1)
+        assertEquals(BigInteger.ZERO, it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 
     runMultiTypeSingleValTest(3) {
-        assertEquals(it.numerator, pos3)
-        assertEquals(it.denominator, pos1)
+        assertEquals(3.toBigInteger(), it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 
     runMultiTypeSingleValTest(-3) {
-        assertEquals(it.numerator, neg3)
-        assertEquals(it.denominator, pos1)
+        assertEquals((-3).toBigInteger(), it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 }
 
 private fun testPairValConstructor() {
     // denominator of 0
-    assertDivByZero { ExactFraction(pos1, zero) }
+    assertDivByZero { ExactFraction(BigInteger.ONE, BigInteger.ZERO) }
     assertDivByZero { ExactFraction(1, 0) }
     assertDivByZero { ExactFraction(1L, 0L) }
-    assertDivByZero { ExactFraction(pos1, 0) }
-    assertDivByZero { ExactFraction(1, zero) }
+    assertDivByZero { ExactFraction(BigInteger.ONE, 0) }
+    assertDivByZero { ExactFraction(1, BigInteger.ZERO) }
     assertDivByZero { ExactFraction(1, 0L) }
     assertDivByZero { ExactFraction(1L, 0) }
-    assertDivByZero { ExactFraction(pos1, 0L) }
-    assertDivByZero { ExactFraction(1L, zero) }
+    assertDivByZero { ExactFraction(BigInteger.ONE, 0L) }
+    assertDivByZero { ExactFraction(1L, BigInteger.ZERO) }
 
     // numerator of 0
     runMultiTypePairValTest(0, 1) {
-        assertEquals(zero, it.numerator)
-        assertEquals(pos1, it.denominator)
+        assertEquals(BigInteger.ZERO, it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 
     // positive whole
     runMultiTypePairValTest(4, 1) {
-        assertEquals(pos4, it.numerator)
-        assertEquals(pos1, it.denominator)
+        assertEquals(4.toBigInteger(), it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 
     // positive fraction < 1
     runMultiTypePairValTest(7, 18) {
-        assertEquals(pos7, it.numerator)
-        assertEquals(pos18, it.denominator)
+        assertEquals(7.toBigInteger(), it.numerator)
+        assertEquals(18.toBigInteger(), it.denominator)
     }
 
     // positive fraction > 1
     runMultiTypePairValTest(4, 3) {
-        assertEquals(pos4, it.numerator)
-        assertEquals(pos3, it.denominator)
+        assertEquals(4.toBigInteger(), it.numerator)
+        assertEquals(3.toBigInteger(), it.denominator)
     }
 
     // negative whole
     runMultiTypePairValTest(-4, 1) {
-        assertEquals(neg4, it.numerator)
-        assertEquals(pos1, it.denominator)
+        assertEquals((-4).toBigInteger(), it.numerator)
+        assertEquals(BigInteger.ONE, it.denominator)
     }
 
     // negative fraction > -1
     runMultiTypePairValTest(-1, 3) {
-        assertEquals(neg1, it.numerator)
-        assertEquals(pos3, it.denominator)
+        assertEquals(-BigInteger.ONE, it.numerator)
+        assertEquals(3.toBigInteger(), it.denominator)
     }
 
     // negative fraction < -1
     runMultiTypePairValTest(-7, 4) {
-        assertEquals(neg7, it.numerator)
-        assertEquals(pos4, it.denominator)
+        assertEquals((-7).toBigInteger(), it.numerator)
+        assertEquals(4.toBigInteger(), it.denominator)
     }
 }
 
