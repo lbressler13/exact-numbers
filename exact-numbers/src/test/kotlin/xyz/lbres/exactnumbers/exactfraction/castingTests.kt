@@ -221,44 +221,44 @@ fun runToLongTests() {
 fun runToDoubleTests() {
     var ef = ExactFraction(0)
     var expected = 0.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(5)
     expected = 5.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-5)
     expected = -5.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(1, 2)
     expected = 0.5
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-3, 8)
     expected = -0.375
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(1, 3)
     expected = 0.3333333333333333 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(2, 3)
     expected = 0.6666666666666666 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-4, 19)
     expected = -0.21052631578947368 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
-    val veryBig = Double.MAX_VALUE.toBigDecimal().toBigInteger()
-    val verySmall = (-Double.MAX_VALUE).toBigDecimal().toBigInteger()
+    val largeValue = Double.MAX_VALUE.toBigDecimal().toBigInteger()
+    val smallValue = (-Double.MAX_VALUE).toBigDecimal().toBigInteger()
 
-    ef = ExactFraction(veryBig)
+    ef = ExactFraction(largeValue)
     ef *= 2
     assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 
-    ef = ExactFraction(verySmall)
+    ef = ExactFraction(smallValue)
     ef *= 2
     assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 }
