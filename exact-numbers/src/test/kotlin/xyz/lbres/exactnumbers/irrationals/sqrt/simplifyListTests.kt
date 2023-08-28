@@ -6,9 +6,10 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-fun runSimplifyListTests() {
-    val one = ExactFraction.ONE
+private val one = ExactFraction.ONE
+private val rootOne = Sqrt.ONE
 
+fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Sqrt.simplifyList(listOf(Pi())) }
 
@@ -111,8 +112,6 @@ fun runSimplifyListTests() {
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // ones
-    val rootOne = Sqrt.ONE
-
     numbers = listOf(rootOne)
     expected = Pair(one, emptyList())
     assertEquals(expected, Sqrt.simplifyList(numbers))

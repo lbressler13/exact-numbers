@@ -269,7 +269,8 @@ class TermTest {
         assertEquals(expected, term.toString())
 
         term = Term(one, listOf(Sqrt(32), Sqrt(127), Sqrt(ExactFraction(2, 9))))
-        expected = "<1x${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}"
+        expected = "<1x${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}>"
+        assertEquals(expected, term.toString())
 
         // mix
         term = Term(ExactFraction.EIGHT, listOf(Pi(), logNum3, Sqrt(12)))

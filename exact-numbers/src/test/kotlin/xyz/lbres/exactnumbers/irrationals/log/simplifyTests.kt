@@ -11,7 +11,7 @@ private val fractionOne = ExactFraction.ONE
 fun runGetSimplifiedTests() {
     // zero
     var logNum = Log.ZERO
-    var expected = Pair(ExactFraction.ONE, Log.ZERO)
+    var expected = Pair(fractionOne, Log.ZERO)
     assertEquals(expected, logNum.getSimplified())
 
     // one

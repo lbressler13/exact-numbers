@@ -322,28 +322,26 @@ class SqrtTest {
 
     @Test
     fun testToString() {
-        val symbol = "√"
-
         // whole number
         var sqrt = Sqrt(ExactFraction.ZERO)
-        var expected = "[$symbol(0)]"
+        var expected = "[√(0)]"
         assertEquals(expected, sqrt.toString())
 
         sqrt = Sqrt(10)
-        expected = "[$symbol(10)]"
+        expected = "[√(10)]"
         assertEquals(expected, sqrt.toString())
 
         sqrt = Sqrt(1234567)
-        expected = "[$symbol(1234567)]"
+        expected = "[√(1234567)]"
         assertEquals(expected, sqrt.toString())
 
         // fraction
         sqrt = Sqrt(ExactFraction.HALF)
-        expected = "[$symbol(1/2)]"
+        expected = "[√(1/2)]"
         assertEquals(expected, sqrt.toString())
 
         sqrt = Sqrt(ExactFraction(12, 35))
-        expected = "[$symbol(12/35)]"
+        expected = "[√(12/35)]"
         assertEquals(expected, sqrt.toString())
     }
 
