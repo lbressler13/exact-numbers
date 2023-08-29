@@ -93,5 +93,8 @@ class PiTest {
         assertEquals(expected, piNum.toString())
     }
 
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
+
     @Test fun testSimplifyList() = runSimplifyListTests()
 }

@@ -345,5 +345,8 @@ class SqrtTest {
         assertEquals(expected, sqrt.toString())
     }
 
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
+
     @Test fun testSimplifyList() = runSimplifyListTests()
 }

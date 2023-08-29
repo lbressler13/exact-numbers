@@ -183,6 +183,9 @@ class LogTest {
         assertFalse(logNum.isRational())
     }
 
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
+
     @Test fun testGetRationalValue() = runGetRationalValueTests()
     @Test fun testGetValue() = runGetValueTests()
 
