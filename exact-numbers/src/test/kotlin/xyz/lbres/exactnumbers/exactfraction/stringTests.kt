@@ -3,9 +3,11 @@ package xyz.lbres.exactnumbers.exactfraction
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 // parsing
-internal fun runParseDecimalTests() {
+fun runParseDecimalTests() {
     // whole numbers
     var s = "0"
     var expected = ExactFraction(0)
@@ -95,11 +97,17 @@ internal fun runParseDecimalTests() {
     s = "1.1.1"
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
 
+    s = "."
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "5."
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
     s = "EF[1 1]"
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
 }
 
-internal fun runParseEFStringTests() {
+fun runParseEFStringTests() {
     var s = "EF[0 1]"
     var expected = ExactFraction(0)
     assertEquals(expected, parseEFString(s))
@@ -133,40 +141,40 @@ internal fun runParseEFStringTests() {
     assertFailsWith<NumberFormatException> { parseEFString(s) }
 }
 
-internal fun runCheckIsEFStringTests() {
+fun runCheckIsEFStringTests() {
     var s = "EF[10 1]"
-    assert(checkIsEFString(s))
+    assertTrue(checkIsEFString(s))
 
     s = "EF[-5 2]"
-    assert(checkIsEFString(s))
+    assertTrue(checkIsEFString(s))
 
     s = "EF[0 ]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF[0]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF[0 0 0]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF[0.1 2]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF[]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF["
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "EF]"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 
     s = "hello world"
-    assert(!checkIsEFString(s))
+    assertFalse(checkIsEFString(s))
 }
 
 // toString
-internal fun runToDecimalStringTests() {
+fun runToDecimalStringTests() {
     var ef = ExactFraction(0)
     var expected = "0"
     assertEquals(expected, ef.toDecimalString())
@@ -219,14 +227,14 @@ internal fun runToDecimalStringTests() {
     expected = "45454.88889"
     assertEquals(expected, ef.toDecimalString(5))
 
-    val veryBig = "100000000000000000000"
-    val bi = BigInteger(veryBig)
+    val largeValue = "100000000000000000000"
+    val bi = BigInteger(largeValue)
     ef = ExactFraction(bi, 3)
     expected = "33333333333333333333.333333"
     assertEquals(expected, ef.toDecimalString(6))
 }
 
-internal fun runToFractionStringTests() {
+fun runToFractionStringTests() {
     var ef = ExactFraction(0)
     var expected = "0"
     assertEquals(expected, ef.toFractionString())
@@ -248,7 +256,7 @@ internal fun runToFractionStringTests() {
     assertEquals(expected, ef.toFractionString())
 }
 
-internal fun runToPairStringTests() {
+fun runToPairStringTests() {
     var ef = ExactFraction(0)
     var expected = "(0, 1)"
     assertEquals(expected, ef.toPairString())
@@ -270,7 +278,7 @@ internal fun runToPairStringTests() {
     assertEquals(expected, ef.toPairString())
 }
 
-internal fun runToEFStringTests() {
+fun runToEFStringTests() {
     var ef = ExactFraction(0)
     var expected = "EF[0 1]"
     assertEquals(expected, ef.toEFString())
@@ -287,8 +295,8 @@ internal fun runToEFStringTests() {
     expected = "EF[-9 2]"
     assertEquals(expected, ef.toEFString())
 
-    val veryBig = "10000000000000000000"
-    ef = ExactFraction(19, BigInteger(veryBig))
-    expected = "EF[19 $veryBig]"
+    val largeValue = "10000000000000000000"
+    ef = ExactFraction(19, BigInteger(largeValue))
+    expected = "EF[19 $largeValue]"
     assertEquals(expected, ef.toEFString())
 }

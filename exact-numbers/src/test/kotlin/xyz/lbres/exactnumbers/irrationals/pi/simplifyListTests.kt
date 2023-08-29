@@ -4,16 +4,16 @@ import xyz.lbres.exactnumbers.irrationals.log.Log
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-internal fun runSimplifyListTests() {
+fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Pi.simplifyList(listOf(Pi(), Log.ONE)) }
 
     // equal
-    var expected: List<Pi> = listOf()
+    var expected: List<Pi> = emptyList()
 
     assertEquals(expected, Pi.simplifyList(null))
 
-    var pis: List<Pi> = listOf()
+    var pis: List<Pi> = emptyList()
     assertEquals(expected, Pi.simplifyList(pis))
 
     pis = listOf(Pi(), Pi(true))
