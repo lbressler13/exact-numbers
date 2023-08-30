@@ -1,6 +1,6 @@
 # ExactNumbers
 
-[![All Checks](https://github.com/lbressler13/exact-numbers/actions/workflows/basic_flow.yml/badge.svg?branch=main)](https://github.com/lbressler13/exact-numbers/actions/workflows/main_workflow.yml)
+[![All Checks](https://github.com/lbressler13/exact-numbers/actions/workflows/main_workflow.yml/badge.svg?branch=main)](https://github.com/lbressler13/exact-numbers/actions/workflows/main_workflow.yml)
 
 ## Number Types
 
