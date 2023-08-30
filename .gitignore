@@ -1,7 +1,6 @@
 # Build files
 .gradle
 build
-exact-numbers/build
 
 exact-numbers/libs
 
@@ -11,6 +10,7 @@ exact-numbers/libs
 
 # OS
 .DS_Store
+*.swp
 
 # Local secrets
 .env

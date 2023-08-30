@@ -2,8 +2,9 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
-internal fun runUnaryMinusTests() {
+fun runUnaryMinusTests() {
     var ef = ExactFraction(0)
     var expected = ExactFraction(0)
     assertEquals(expected, -ef)
@@ -25,17 +26,17 @@ internal fun runUnaryMinusTests() {
     assertEquals(expected, -ef)
 }
 
-internal fun runUnaryPlusTests() {
+fun runUnaryPlusTests() {
     var ef = ExactFraction(0)
-    var expected = ExactFraction(0, 1)
+    var expected = ExactFraction(0)
     assertEquals(expected, +ef)
 
     ef = ExactFraction(3)
-    expected = ExactFraction(3, 1)
+    expected = ExactFraction(3)
     assertEquals(expected, +ef)
 
     ef = ExactFraction(-3)
-    expected = ExactFraction(-3, 1)
+    expected = ExactFraction(-3)
     assertEquals(expected, +ef)
 
     ef = ExactFraction(5, 2)
@@ -47,33 +48,33 @@ internal fun runUnaryPlusTests() {
     assertEquals(expected, +ef)
 }
 
-internal fun runNotTests() {
-    assert(!ExactFraction(0))
-    assert(!ExactFraction(0, -3))
+fun runNotTests() {
+    assertTrue(!ExactFraction(0))
+    assertTrue(!ExactFraction(0, -3))
     assertFalse(!ExactFraction(1))
     assertFalse(!ExactFraction(-1))
     assertFalse(!ExactFraction(1, 3))
 }
 
-internal fun runIncTests() {
+fun runIncTests() {
     var ef = ExactFraction(3)
     ef++
-    var expected = ExactFraction(4, 1)
+    var expected = ExactFraction(4)
     assertEquals(expected, ef)
 
     ef = ExactFraction(-3)
     ef++
-    expected = ExactFraction(-2, 1)
+    expected = ExactFraction(-2)
     assertEquals(expected, ef)
 
     ef = ExactFraction(0)
     ef++
-    expected = ExactFraction(1, 1)
+    expected = ExactFraction(1)
     assertEquals(expected, ef)
 
     ef = ExactFraction(-1)
     ef++
-    expected = ExactFraction(0, 1)
+    expected = ExactFraction(0)
     assertEquals(expected, ef)
 
     ef = ExactFraction(6, 7)
@@ -87,25 +88,25 @@ internal fun runIncTests() {
     assertEquals(expected, ef)
 }
 
-internal fun runDecTests() {
+fun runDecTests() {
     var ef = ExactFraction(3)
     ef--
-    var expected = ExactFraction(2, 1)
+    var expected = ExactFraction(2)
     assertEquals(expected, ef)
 
     ef = ExactFraction(-3)
     ef--
-    expected = ExactFraction(-4, 1)
+    expected = ExactFraction(-4)
     assertEquals(expected, ef)
 
     ef = ExactFraction(0)
     ef--
-    expected = ExactFraction(-1, 1)
+    expected = ExactFraction(-1)
     assertEquals(expected, ef)
 
     ef = ExactFraction(1)
     ef--
-    expected = ExactFraction(0, 1)
+    expected = ExactFraction(0)
     assertEquals(expected, ef)
 
     ef = ExactFraction(6, 7)

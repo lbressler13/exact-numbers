@@ -10,24 +10,24 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-internal class TermTest {
+class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
     private val logNum3 = Log(ExactFraction(19, 33), true)
     private val logNum4 = Log(ExactFraction(25, 121))
     private val one = ExactFraction.ONE
 
-    @Test internal fun testConstructor() = runConstructorTests()
-    @Test internal fun testFromValues() = runFromValuesTests()
+    @Test fun testConstructor() = runConstructorTests()
+    @Test fun testFromValues() = runFromValuesTests()
 
-    @Test internal fun testTimes() = runTimesTests()
-    @Test internal fun testDiv() = runDivTests()
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
 
-    @Test internal fun testGetSimplified() = runGetSimplifiedTests()
-    @Test internal fun testGetValue() = runGetValueTests()
+    @Test fun testGetSimplified() = runGetSimplifiedTests()
+    @Test fun testGetValue() = runGetValueTests()
 
     @Test
-    internal fun testEquals() {
+    fun testEquals() {
         // equal
         var term1 = Term.ZERO
         assertEquals(term1, term1)
@@ -122,7 +122,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testUnaryMinus() {
+    fun testUnaryMinus() {
         var term = Term.ZERO
         var expected = Term.ZERO
         assertEquals(expected, -term)
@@ -167,7 +167,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testUnaryPlus() {
+    fun testUnaryPlus() {
         var term = Term.ZERO
         assertEquals(term, +term)
 
@@ -194,7 +194,7 @@ internal class TermTest {
     }
 
     @Test
-    internal fun testIsZero() {
+    fun testIsZero() {
         // zero
         var term = Term.ZERO
         assertTrue(term.isZero())
@@ -225,12 +225,12 @@ internal class TermTest {
         assertFalse(term.isZero())
     }
 
-    @Test internal fun testGetLogs() = runGetLogsTests()
-    @Test internal fun testGetPiCount() = runGetPiCountTests()
-    @Test internal fun testGetSquareRoots() = runGetSquareRootsTests()
+    @Test fun testGetLogs() = runGetLogsTests()
+    @Test fun testGetPiCount() = runGetPiCountTests()
+    @Test fun testGetSquareRoots() = runGetSquareRootsTests()
 
     @Test
-    internal fun testToString() {
+    fun testToString() {
         // zero
         var term = Term.ZERO
         var expected = "<0>"
@@ -269,7 +269,8 @@ internal class TermTest {
         assertEquals(expected, term.toString())
 
         term = Term(one, listOf(Sqrt(32), Sqrt(127), Sqrt(ExactFraction(2, 9))))
-        expected = "<1x${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}"
+        expected = "<1x${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}>"
+        assertEquals(expected, term.toString())
 
         // mix
         term = Term(ExactFraction.EIGHT, listOf(Pi(), logNum3, Sqrt(12)))

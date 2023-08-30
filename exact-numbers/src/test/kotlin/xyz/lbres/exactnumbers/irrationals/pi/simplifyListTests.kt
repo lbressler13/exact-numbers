@@ -4,7 +4,7 @@ import xyz.lbres.exactnumbers.irrationals.log.Log
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-internal fun runSimplifyListTests() {
+fun runSimplifyListTests() {
     // error
     assertFailsWith<ClassCastException> { Pi.simplifyList(listOf(Pi(), Log.ONE)) }
 

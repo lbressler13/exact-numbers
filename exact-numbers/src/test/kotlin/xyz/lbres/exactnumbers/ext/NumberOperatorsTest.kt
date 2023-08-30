@@ -4,10 +4,11 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-internal class NumberOperatorsTest {
+class NumberOperatorsTest {
     @Test
-    internal fun testToExactFraction() {
+    fun testToExactFraction() {
         // Int
         var i = 0
         assertEquals(ExactFraction(i), i.toExactFraction())
@@ -58,47 +59,47 @@ internal class NumberOperatorsTest {
     }
 
     @Test
-    internal fun testEq() {
+    fun testEq() {
         // BigInteger, Int
         var i = 0
         var bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        assertTrue(bi.eq(i))
 
         i = -1
         bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        assertTrue(bi.eq(i))
 
         i = 1
         bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        assertTrue(bi.eq(i))
 
         i = Int.MIN_VALUE
         bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        assertTrue(bi.eq(i))
 
         i = Int.MAX_VALUE
         bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        assertTrue(bi.eq(i))
 
         // BigInteger, Long
         var l = 0L
         bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        assertTrue(bi.eq(l))
 
         l = -1
         bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        assertTrue(bi.eq(l))
 
         l = 1
         bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        assertTrue(bi.eq(l))
 
         l = Long.MIN_VALUE
         bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        assertTrue(bi.eq(l))
 
         l = Long.MAX_VALUE
         bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        assertTrue(bi.eq(l))
     }
 }

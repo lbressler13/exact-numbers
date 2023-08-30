@@ -7,7 +7,7 @@ import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
 
-internal fun runToPairTests() {
+fun runToPairTests() {
     var ef = ExactFraction(0)
     var expected = Pair(0.toBigInteger(), 1.toBigInteger())
     assertEquals(expected, ef.toPair())
@@ -29,7 +29,7 @@ internal fun runToPairTests() {
     assertEquals(expected, ef.toPair())
 }
 
-internal fun runToByteTests() {
+fun runToByteTests() {
     var ef = ExactFraction(0)
     var expected: Byte = 0
     assertEquals(expected, ef.toByte())
@@ -68,7 +68,7 @@ internal fun runToByteTests() {
 }
 
 // test account for fact that Char can't be negative
-internal fun runToCharTests() {
+fun runToCharTests() {
     var ef = ExactFraction(0)
     var expected = 0.toChar()
     assertEquals(expected, ef.toChar())
@@ -104,7 +104,7 @@ internal fun runToCharTests() {
     assertExactFractionOverflow("Char", ef) { ef.toChar() }
 }
 
-internal fun runToShortTests() {
+fun runToShortTests() {
     var ef = ExactFraction(0)
     var expected: Short = 0
     assertEquals(expected, ef.toShort())
@@ -142,7 +142,7 @@ internal fun runToShortTests() {
     assertExactFractionOverflow("Short", ef) { ef.toShort() }
 }
 
-internal fun runToIntTests() {
+fun runToIntTests() {
     var ef = ExactFraction(0)
     var expected = 0
     assertEquals(expected, ef.toInt())
@@ -180,7 +180,7 @@ internal fun runToIntTests() {
     assertExactFractionOverflow("Int", ef) { ef.toInt() }
 }
 
-internal fun runToLongTests() {
+fun runToLongTests() {
     var ef = ExactFraction(0)
     var expected = 0L
     assertEquals(expected, ef.toLong())
@@ -218,52 +218,52 @@ internal fun runToLongTests() {
     assertExactFractionOverflow("Long", ef) { ef.toLong() }
 }
 
-internal fun runToDoubleTests() {
+fun runToDoubleTests() {
     var ef = ExactFraction(0)
     var expected = 0.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(5)
     expected = 5.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-5)
     expected = -5.0
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(1, 2)
     expected = 0.5
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-3, 8)
     expected = -0.375
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(1, 3)
     expected = 0.3333333333333333 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(2, 3)
     expected = 0.6666666666666666 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-4, 19)
     expected = -0.21052631578947368 // maximum precision of double
-    assert(expected == ef.toDouble())
+    assertEquals(expected, ef.toDouble())
 
-    val veryBig = Double.MAX_VALUE.toBigDecimal().toBigInteger()
-    val verySmall = (-Double.MAX_VALUE).toBigDecimal().toBigInteger()
+    val largeValue = Double.MAX_VALUE.toBigDecimal().toBigInteger()
+    val smallValue = (-Double.MAX_VALUE).toBigDecimal().toBigInteger()
 
-    ef = ExactFraction(veryBig)
+    ef = ExactFraction(largeValue)
     ef *= 2
     assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 
-    ef = ExactFraction(verySmall)
+    ef = ExactFraction(smallValue)
     ef *= 2
     assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 }
 
-internal fun runToFloatTests() {
+fun runToFloatTests() {
     var ef = ExactFraction(0)
     var expected = 0f
     assertEquals(expected, ef.toFloat())
@@ -308,7 +308,7 @@ internal fun runToFloatTests() {
     assertExactFractionOverflow("Float", ef) { ef.toFloat() }
 }
 
-internal fun runToBigIntegerTests() {
+fun runToBigIntegerTests() {
     var ef = ExactFraction(0)
     var expected = BigInteger.ZERO
     assertEquals(expected, ef.toBigInteger())
@@ -335,7 +335,7 @@ internal fun runToBigIntegerTests() {
     assertEquals(expected, ef.toBigInteger())
 }
 
-internal fun runToBigDecimalTests() {
+fun runToBigDecimalTests() {
     var ef = ExactFraction(0)
     var bd = BigDecimal(0)
     assertEquals(bd, ef.toBigDecimal())
