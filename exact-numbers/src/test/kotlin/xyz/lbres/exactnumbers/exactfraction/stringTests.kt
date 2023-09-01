@@ -182,6 +182,9 @@ fun runParseEFStringTests() {
     expected = ExactFraction(-17, 29)
     assertEquals(expected, parseEFString(s))
 
+    s = "EF[1 2]"
+    assertFailsWith<ArithmeticException> { parseEFString(s) }
+
     // errors
     s = "EF[1 0]"
     assertFailsWith<ArithmeticException> { parseEFString(s) }
