@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import xyz.lbres.assertDivByZero
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
+import xyz.lbres.assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
 import java.math.BigDecimal
