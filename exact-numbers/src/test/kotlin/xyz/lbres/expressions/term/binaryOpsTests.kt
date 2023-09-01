@@ -1,6 +1,6 @@
 package xyz.lbres.expressions.term
 
-import assertDivByZero
+import xyz.lbres.assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi

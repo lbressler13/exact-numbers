@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import assertDivByZero
+import xyz.lbres.assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt

@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import assertDivByZero
+import xyz.lbres.assertDivByZero
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
