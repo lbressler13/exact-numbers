@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "xyz.lbres"
-version = "0.1.1"
+version = "0.1.1" // TODO major version change, due to change in visibility of num/denom
 
 val githubUsername: String? = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
 val githubPassword: String? = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")

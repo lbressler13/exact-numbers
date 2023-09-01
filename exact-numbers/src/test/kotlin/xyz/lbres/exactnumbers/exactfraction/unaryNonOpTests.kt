@@ -86,7 +86,7 @@ fun runIsZeroTests() {
     assertFalse(ef.isZero())
 }
 
-internal fun runRoundToWholeTests() {
+fun runRoundToWholeTests() {
     // whole
     var ef = ExactFraction.ZERO
     var expected = ExactFraction.ZERO
@@ -163,4 +163,24 @@ internal fun runRoundToWholeTests() {
     ef = ExactFraction("9.99999999999")
     expected = ExactFraction.NINE
     assertEquals(expected, ef.roundToWhole(RoundingMode.DOWN))
+}
+
+fun runIsWholeNumberTests() {
+    var ef = ExactFraction.ZERO
+    assertTrue(ef.isWholeNumber())
+
+    ef = ExactFraction(100, 100)
+    assertTrue(ef.isWholeNumber())
+
+    ef = ExactFraction(-123456789)
+    assertTrue(ef.isWholeNumber())
+
+    ef = ExactFraction.HALF
+    assertFalse(ef.isWholeNumber())
+
+    ef = ExactFraction(6, 7)
+    assertFalse(ef.isWholeNumber())
+
+    ef = ExactFraction(-1000, 999)
+    assertFalse(ef.isWholeNumber())
 }

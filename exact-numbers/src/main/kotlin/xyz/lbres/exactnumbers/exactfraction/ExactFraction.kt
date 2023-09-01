@@ -15,30 +15,37 @@ import java.math.MathContext
 import java.math.RoundingMode
 
 /**
- * Custom number implementation inspired by BigDecimal.
- * Exact representations of rational numbers, without specifying decimal precision.
+ * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
  */
 class ExactFraction private constructor() : Comparable<ExactFraction>, Number() {
     // These values are re-assigned in all public constructors
-    var numerator: BigInteger = BigInteger.ZERO
-    var denominator: BigInteger = BigInteger.ONE
-    private val wholeNumber: Boolean
-        get() = denominator == BigInteger.ONE
+    private var _numerator: BigInteger = BigInteger.ZERO
+    private var _denominator: BigInteger = BigInteger.ZERO
+
+    /**
+     * Numerator of number
+     */
+    val numerator: BigInteger
+        get() = _numerator
+
+    /**
+     * Denominator of number
+     */
+    val denominator: BigInteger
+        get() = _denominator
 
     // CONSTRUCTORS
 
     /**
-     * Constructor using numerator and denominator.
-     * Uses additional parameter to determine if fraction should be simplified.
+     * Private constructor using numerator, denominator, and a flag to indicate if the provided values have been simplified.
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
      * @param fullySimplified [Boolean]: if values being passed in are already fully simplified
-     * @throws ArithmeticException if denominator is 0
      */
     private constructor (numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : this() {
-        this.numerator = numerator
-        this.denominator = denominator.ifZero { throw divideByZero }
+        _numerator = numerator
+        _denominator = denominator.ifZero { throw divideByZero }
 
         if (!fullySimplified) {
             simplify()
@@ -46,12 +53,10 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     }
 
     /**
-     * Constructor using numerator and denominator.
-     * Simplifies fraction on creation
+     * Constructor using numerator and denominator. Simplifies values on initialization.
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
-     * @throws ArithmeticException if denominator is 0
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
 
@@ -67,10 +72,13 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * Constructor which parses value from string
      *
      * @param s [String]: string to parse
-     * @throws NumberFormatException if s is not in a parsable format
      */
-    // result was simplified during parsing, no need to re-simplify here
-    constructor (s: String) : this(parse(s).numerator, parse(s).denominator, fullySimplified = true)
+    // values are simplified during parsing, no need to re-simplify here
+    constructor (s: String) : this() {
+        val result = parse(s)
+        _numerator = result.numerator
+        _denominator = result.denominator
+    }
 
     // constructors for combinations of Int, Long, and BigInteger
     constructor (numerator: Int) : this(numerator.toBigInteger())
@@ -143,9 +151,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
     }
 
-    fun eq(other: Int): Boolean = wholeNumber && numerator.eq(other)
-    fun eq(other: Long): Boolean = wholeNumber && numerator.eq(other)
-    fun eq(other: BigInteger): Boolean = wholeNumber && numerator == other
+    fun eq(other: Int): Boolean = isWholeNumber() && numerator.eq(other)
+    fun eq(other: Long): Boolean = isWholeNumber() && numerator.eq(other)
+    fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
 
     override operator fun compareTo(other: ExactFraction): Int {
         val difference = minus(other)
@@ -197,8 +205,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
             throw e
         }
 
-        val result = ExactFraction(numeratorMult, denominatorMult, fullySimplified = false)
-        return simpleIf(other.isNegative(), { result.inverse() }, { result })
+        val numerator = simpleIf(other.isNegative(), denominatorMult, numeratorMult)
+        val denominator = simpleIf(other.isNegative(), numeratorMult, denominatorMult)
+        return ExactFraction(numerator, denominator, fullySimplified = false)
     }
 
     // UNARY NON-OPERATORS
@@ -218,6 +227,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator, fullySimplified = true)
     fun isNegative(): Boolean = numerator.isNegative()
     fun isZero(): Boolean = numerator.isZero()
+    fun isWholeNumber(): Boolean = denominator == BigInteger.ONE
 
     /**
      * Round ExactFraction to nearest whole number.
@@ -235,21 +245,21 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     private fun simplify() {
         // set denominator to 1 when numerator is 0
-        if (numerator.eq(0)) {
-            denominator = BigInteger.ONE
+        if (numerator.isZero()) {
+            _denominator = BigInteger.ONE
         }
 
         // move negatives to numerator
         if (denominator.isNegative()) {
-            numerator = -numerator
-            denominator = -denominator
+            _numerator = -numerator
+            _denominator = -denominator
         }
 
         // simplify using greatest common divisor
         if (!numerator.isZero()) {
             val gcd = getGCD(numerator, denominator)
-            numerator /= gcd
-            denominator /= gcd
+            _numerator /= gcd
+            _denominator /= gcd
         }
     }
 
@@ -263,7 +273,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @return string representation in decimal format
      */
     fun toDecimalString(digits: Int = 8): String {
-        if (wholeNumber) {
+        if (isWholeNumber()) {
             return numerator.toString()
         }
 
@@ -283,7 +293,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @return string representation of number in fractional format
      */
     fun toFractionString(): String {
-        return simpleIf(wholeNumber, numerator.toString(), "$numerator/$denominator")
+        return simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
     }
 
     fun toPairString(): String = "($numerator, $denominator)"

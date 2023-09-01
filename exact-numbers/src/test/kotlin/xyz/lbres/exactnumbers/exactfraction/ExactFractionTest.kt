@@ -33,6 +33,7 @@ class ExactFractionTest {
     @Test fun testIsNegative() = runIsNegativeTests()
     @Test fun testIsZero() = runIsZeroTests()
     @Test fun testRoundToWhole() = runRoundToWholeTests()
+    @Test fun testIsWholeNumber() = runIsWholeNumberTests()
 
     // parsing + toString
     @Test fun testParseDecimal() = runParseDecimalTests()
