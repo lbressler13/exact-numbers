@@ -294,6 +294,18 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
+    private fun <T> castToWholeNumber(minValue: String, maxValue: String, type: String, cast: (BigInteger) -> T): T {
+        val value = numerator / denominator
+
+        val minInt = BigInteger(minValue)
+        val maxInt = BigInteger(maxValue)
+        if (value in minInt..maxInt) {
+            return cast(value)
+        }
+
+        throw overflowException(type)
+    }
+
     /**
      * If value is between min and max Byte values, cast to Byt using simple division, rounding down.
      *
@@ -301,14 +313,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ExactFractionOverflowException if value is outside range of Byte value
      */
     override fun toByte(): Byte {
-        val value = numerator / denominator
-        val maxByte = Byte.MAX_VALUE.toInt().toBigInteger()
-        val minByte = Byte.MIN_VALUE.toInt().toBigInteger()
-        if (value in minByte..maxByte) {
-            return value.toByte()
-        }
-
-        throw overflowException("Byte")
+        return castToWholeNumber(Byte.MIN_VALUE.toString(), Byte.MAX_VALUE.toString(), "Byte") { it.toByte() }
     }
 
     /**
@@ -319,14 +324,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ExactFractionOverflowException if value is outside range of Char value
      */
     override fun toChar(): Char {
-        val value = numerator / denominator
-        val maxChar = Char.MAX_VALUE.code.toBigInteger()
-        val minChar = Char.MIN_VALUE.code.toBigInteger()
-        if (value in minChar..maxChar) {
-            return value.toInt().toChar()
-        }
-
-        throw overflowException("Char")
+        val minValue = Char.MIN_VALUE.code
+        val maxValue = Char.MAX_VALUE.code
+        return castToWholeNumber(minValue.toString(), maxValue.toString(), "Char") { it.toInt().toChar() }
     }
 
     /**
@@ -336,14 +336,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ExactFractionOverflowException if value is outside range of Short value
      */
     override fun toShort(): Short {
-        val value = numerator / denominator
-        val maxShort = Short.MAX_VALUE.toInt().toBigInteger()
-        val minShort = Short.MIN_VALUE.toInt().toBigInteger()
-        if (value in minShort..maxShort) {
-            return value.toShort()
-        }
-
-        throw overflowException("Short")
+        return castToWholeNumber(Short.MIN_VALUE.toString(), Short.MAX_VALUE.toString(), "Short") { it.toShort() }
     }
 
     /**
@@ -353,14 +346,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ExactFractionOverflowException if value is outside range of Int value
      */
     override fun toInt(): Int {
-        val value = numerator / denominator
-        val maxInt = Int.MAX_VALUE.toBigInteger()
-        val minInt = Int.MIN_VALUE.toBigInteger()
-        if (value in minInt..maxInt) {
-            return value.toInt()
-        }
-
-        throw overflowException("Int")
+        return castToWholeNumber(Int.MIN_VALUE.toString(), Int.MAX_VALUE.toString(), "Int") { it.toInt() }
     }
 
     /**
@@ -370,14 +356,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ExactFractionOverflowException if value is outside range of Long value
      */
     override fun toLong(): Long {
-        val value = numerator / denominator
-        val maxLong = Long.MAX_VALUE.toBigInteger()
-        val minLong = Long.MIN_VALUE.toBigInteger()
-        if (value in minLong..maxLong) {
-            return value.toLong()
-        }
-
-        throw overflowException("Long")
+        return castToWholeNumber(Long.MIN_VALUE.toString(), Long.MAX_VALUE.toString(), "Long") { it.toLong() }
     }
 
     /**
@@ -431,6 +410,12 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     }
 
     private fun overflowException(type: String): Exception = ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
+
+    override fun hashCode(): Int {
+        var result = numerator.hashCode()
+        result = 31 * result + denominator.hashCode()
+        return result
+    }
 
     companion object {
         val ZERO = ExactFraction(0)
