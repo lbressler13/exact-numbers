@@ -22,6 +22,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     // These values are re-assigned in all public constructors
     var numerator: BigInteger = BigInteger.ZERO
     var denominator: BigInteger = BigInteger.ONE
+    var wholeNumber: Boolean = false
 
     // CONSTRUCTORS
 
@@ -31,10 +32,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      *
      * @param numerator [BigInteger]: numerator of fraction
      */
-    constructor (numerator: BigInteger) : this() {
-        this.numerator = numerator
-        this.denominator = BigInteger.ONE
-    }
+    constructor (numerator: BigInteger) : this(numerator, BigInteger.ONE, fullySimplified = true)
 
     /**
      * Constructor using numerator and denominator.
@@ -44,11 +42,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @param denominator [BigInteger]: denominator of fraction
      * @throws ArithmeticException if denominator is 0
      */
-    constructor (numerator: BigInteger, denominator: BigInteger) : this() {
-        this.numerator = numerator
-        this.denominator = denominator.ifZero { throw divideByZero }
-        simplify()
-    }
+    constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
 
     /**
      * Constructor using numerator and denominator.
@@ -66,6 +60,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         if (!fullySimplified) {
             simplify()
         }
+        wholeNumber = denominator == BigInteger.ONE
     }
 
     /**
@@ -74,12 +69,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @param s [String]: string to parse
      * @throws NumberFormatException if s is not in a parsable format
      */
-    constructor (s: String) : this() {
-        // result was simplified when initialized, no need to re-simplify here
-        val result = parse(s)
-        numerator = result.numerator
-        denominator = result.denominator
-    }
+    // result was simplified when initialized, no need to re-simplify here
+    constructor (s: String) : this(parse(s).numerator, parse(s).denominator, fullySimplified = true)
 
     // constructors for combinations of Int, Long, and BigInteger
     constructor (numerator: Int) : this(numerator.toBigInteger())
@@ -154,9 +145,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
     }
 
-    fun eq(other: Int): Boolean = numerator.eq(other) && denominator.eq(1)
-    fun eq(other: Long): Boolean = numerator.eq(other) && denominator.eq(1)
-    fun eq(other: BigInteger): Boolean = numerator == other && denominator.eq(1)
+    fun eq(other: Int): Boolean = wholeNumber && numerator.eq(other)
+    fun eq(other: Long): Boolean = wholeNumber && numerator.eq(other)
+    fun eq(other: BigInteger): Boolean = wholeNumber && numerator == other
 
     override operator fun compareTo(other: ExactFraction): Int {
         val difference = minus(other)
@@ -209,7 +200,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         }
 
         val result = ExactFraction(numeratorMult, denominatorMult, fullySimplified = false)
-        return simpleIf(other < 0, { result.inverse() }, { result })
+        return simpleIf(other.isNegative(), { result.inverse() }, { result })
     }
 
     // UNARY NON-OPERATORS
@@ -242,43 +233,18 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     // SIMPLIFICATION
 
     private fun simplify() {
-        simplifyZero()
-        simplifyGCD()
-        simplifySign()
-    }
-
-    /**
-     * Set denominator to 1 when numerator is 0
-     */
-    private fun simplifyZero() {
+        // set denominator to 1 when numerator is 0
         if (numerator.eq(0)) {
             denominator = BigInteger.ONE
         }
-    }
 
-    /**
-     * Move negatives to numerator
-     */
-    private fun simplifySign() {
-        val numNegative = numerator.isNegative()
-        val denomNegative = denominator.isNegative()
-
-        when {
-            numNegative && denomNegative -> {
-                numerator = numerator.abs()
-                denominator = denominator.abs()
-            }
-            !numNegative && denomNegative -> {
-                numerator = -numerator
-                denominator = denominator.abs()
-            }
+        // move negatives to numerator
+        if (denominator.isNegative()) {
+            numerator = -numerator
+            denominator = -denominator
         }
-    }
 
-    /**
-     * Simplify using greatest common divisor
-     */
-    private fun simplifyGCD() {
+        // simplify using greatest common divisor
         if (!numerator.isZero()) {
             val gcd = getGCD(numerator, denominator)
             numerator /= gcd
@@ -296,7 +262,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @return string representation in decimal format
      */
     fun toDecimalString(digits: Int = 8): String {
-        if (denominator.eq(1)) {
+        if (wholeNumber) {
             return numerator.toString()
         }
 
@@ -315,18 +281,14 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      *
      * @return string representation of number in fractional format
      */
-    fun toFractionString(): String = if (denominator.eq(1)) {
-        numerator.toString()
-    } else {
-        "$numerator/$denominator"
+    fun toFractionString(): String {
+        return simpleIf(wholeNumber, numerator.toString(), "$numerator/$denominator")
     }
 
     fun toPairString(): String = "($numerator, $denominator)"
     fun toEFString(): String = "EF[$numerator $denominator]"
 
     override fun toString(): String = toEFString()
-
-    override fun hashCode(): Int = toPair().hashCode()
 
     // CASTING
 
