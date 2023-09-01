@@ -6,8 +6,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-// TODO test parsing with surrounding spaces
-
 // parsing
 fun runParseDecimalTests() {
     // whole numbers
@@ -181,9 +179,6 @@ fun runParseEFStringTests() {
     s = "EF[-17 29]"
     expected = ExactFraction(-17, 29)
     assertEquals(expected, parseEFString(s))
-
-    s = "EF[1 2]"
-    assertFailsWith<ArithmeticException> { parseEFString(s) }
 
     // errors
     s = "EF[1 0]"
