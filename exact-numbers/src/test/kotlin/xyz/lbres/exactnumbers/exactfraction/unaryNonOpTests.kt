@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.assertDivByZero
+import java.math.RoundingMode
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -153,4 +154,13 @@ internal fun runRoundToWholeTests() {
     ef = ExactFraction(100000, 17)
     expected = ExactFraction(5882)
     assertEquals(expected, ef.roundToWhole())
+
+    // other rounding modes
+    ef = ExactFraction(1, 3)
+    expected = ExactFraction.ONE
+    assertEquals(expected, ef.roundToWhole(RoundingMode.UP))
+
+    ef = ExactFraction("9.99999999999")
+    expected = ExactFraction.NINE
+    assertEquals(expected, ef.roundToWhole(RoundingMode.DOWN))
 }

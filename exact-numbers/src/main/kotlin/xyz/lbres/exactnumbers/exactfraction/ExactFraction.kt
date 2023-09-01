@@ -22,27 +22,10 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     // These values are re-assigned in all public constructors
     var numerator: BigInteger = BigInteger.ZERO
     var denominator: BigInteger = BigInteger.ONE
-    var wholeNumber: Boolean = false
+    private val wholeNumber: Boolean
+        get() = denominator == BigInteger.ONE
 
     // CONSTRUCTORS
-
-    /**
-     * Constructor using only numerator.
-     * Creates ExactFraction with integer value.
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     */
-    constructor (numerator: BigInteger) : this(numerator, BigInteger.ONE, fullySimplified = true)
-
-    /**
-     * Constructor using numerator and denominator.
-     * Simplifies fraction on creation
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     * @param denominator [BigInteger]: denominator of fraction
-     * @throws ArithmeticException if denominator is 0
-     */
-    constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
 
     /**
      * Constructor using numerator and denominator.
@@ -60,8 +43,25 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         if (!fullySimplified) {
             simplify()
         }
-        wholeNumber = denominator == BigInteger.ONE
     }
+
+    /**
+     * Constructor using numerator and denominator.
+     * Simplifies fraction on creation
+     *
+     * @param numerator [BigInteger]: numerator of fraction
+     * @param denominator [BigInteger]: denominator of fraction
+     * @throws ArithmeticException if denominator is 0
+     */
+    constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
+
+    /**
+     * Constructor using only numerator.
+     * Creates ExactFraction with integer value.
+     *
+     * @param numerator [BigInteger]: numerator of fraction
+     */
+    constructor (numerator: BigInteger) : this(numerator, BigInteger.ONE, fullySimplified = true)
 
     /**
      * Constructor which parses value from string
@@ -69,7 +69,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @param s [String]: string to parse
      * @throws NumberFormatException if s is not in a parsable format
      */
-    // result was simplified when initialized, no need to re-simplify here
+    // result was simplified during parsing, no need to re-simplify here
     constructor (s: String) : this(parse(s).numerator, parse(s).denominator, fullySimplified = true)
 
     // constructors for combinations of Int, Long, and BigInteger
@@ -91,13 +91,11 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     operator fun not(): Boolean = isZero()
 
     operator fun inc(): ExactFraction {
-        val newNumerator = numerator + denominator
-        return ExactFraction(newNumerator, denominator, fullySimplified = false)
+        return ExactFraction(numerator + denominator, denominator, fullySimplified = false)
     }
 
     operator fun dec(): ExactFraction {
-        val newNumerator = numerator - denominator
-        return ExactFraction(newNumerator, denominator, fullySimplified = false)
+        return ExactFraction(numerator - denominator, denominator, fullySimplified = false)
     }
 
     // BINARY OPERATORS
@@ -222,10 +220,12 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun isZero(): Boolean = numerator.isZero()
 
     /**
-     * Round ExactFraction to nearest whole number, using the [RoundingMode.HALF_UP] rounding strategy
+     * Round ExactFraction to nearest whole number.
+     *
+     * @param roundingMode [RoundingMode]: mode to use for rounding number. Optional, defaults to [RoundingMode.HALF_UP]
      */
-    fun roundToWhole(): ExactFraction {
-        val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), RoundingMode.HALF_UP)
+    fun roundToWhole(roundingMode: RoundingMode = RoundingMode.HALF_UP): ExactFraction {
+        val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), roundingMode)
         val int = decimal.toBigInteger()
 
         return ExactFraction(int)
