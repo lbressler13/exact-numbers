@@ -18,19 +18,19 @@ import kotlin.math.abs
  * @return [ExactFraction]: parse value
  */
 internal fun parseDecimal(unparsed: String): ExactFraction {
-    var currentState: String = unparsed.trim().lowercase()
+    var currentState: String = unparsed.trim()
 
     validateDecimalString(currentState)
 
     // remove negative sign
     val isNegative = currentState.startsWith("-")
-    val timesNeg = if (isNegative) -BigInteger.ONE else BigInteger.ONE
+    val timesNeg = simpleIf(isNegative, -BigInteger.ONE, BigInteger.ONE)
     if (isNegative) {
         currentState = currentState.substring(1)
     }
 
     // remove e-value
-    val eIndex = currentState.indexOf('e')
+    val eIndex = currentState.indexOf('E')
     var eValue = 0
     if (eIndex != -1) {
         eValue = currentState.substring(eIndex + 1).toInt()
@@ -81,9 +81,9 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
 private fun validateDecimalString(s: String) {
     val exception = NumberFormatException()
 
-    val eIndex = s.indexOf('e')
-    val validCharacters = s.all { it.isDigit() || it == '-' || it == '.' || it == 'e' }
-    val validE = eIndex != 0 && eIndex != s.lastIndex && s.countElement('e') in 0..1
+    val eIndex = s.indexOf('E')
+    val validCharacters = s.all { it.isDigit() || it == '-' || it == '.' || it == 'E' }
+    val validE = eIndex != 0 && eIndex != s.lastIndex && s.countElement('E') in 0..1
     if (!validCharacters || !validE) {
         throw exception
     }

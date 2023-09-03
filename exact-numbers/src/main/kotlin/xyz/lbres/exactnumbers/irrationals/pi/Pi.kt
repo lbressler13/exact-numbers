@@ -56,9 +56,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
     operator fun div(other: Pi): Term = div(other as Irrational)
     operator fun div(other: Sqrt): Term = div(other as Irrational)
 
-    override fun toString(): String {
-        return simpleIf(isDivided, "[1/π]", "[π]")
-    }
+    override fun toString(): String = simpleIf(isDivided, "[1/π]", "[π]")
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
 

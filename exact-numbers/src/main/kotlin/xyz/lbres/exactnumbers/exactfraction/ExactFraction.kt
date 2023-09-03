@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.common.divideByZero
-import xyz.lbres.exactnumbers.common.NumberOverflowException
+import xyz.lbres.exactnumbers.exception.NumberOverflowException
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.kotlinutils.biginteger.ext.ifZero
@@ -41,7 +41,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
-     * @param fullySimplified [Boolean]: if values being passed in are already fully simplified
+     * @param fullySimplified [Boolean]: if numerator and denominator are already fully simplified
      */
     private constructor (numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : this() {
         _numerator = numerator
@@ -175,25 +175,25 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
         when {
             equals(ZERO) -> return ZERO
-            equals(ONE) || other.isZero() -> return ONE
+            equals(ONE) || other == ZERO -> return ONE
             other == ONE -> return this
         }
 
-        var numeratorMult = BigInteger.ONE
-        var denominatorMult = BigInteger.ONE
+        var powNumerator = BigInteger.ONE
+        var powDenominator = BigInteger.ONE
         var remaining = other.absoluteValue().numerator.abs()
         val intMax = Int.MAX_VALUE
 
         try {
             while (remaining > BigInteger.ZERO) {
                 if (remaining > intMax.toBigInteger()) {
-                    numeratorMult *= numerator.pow(intMax)
-                    denominatorMult *= denominator.pow(intMax)
+                    powNumerator *= numerator.pow(intMax)
+                    powDenominator *= denominator.pow(intMax)
                     remaining -= intMax.toBigInteger()
                 } else {
                     val exp = remaining.toInt()
-                    numeratorMult = numerator.pow(exp)
-                    denominatorMult = denominator.pow(exp)
+                    powNumerator = numerator.pow(exp)
+                    powDenominator = denominator.pow(exp)
                     remaining = BigInteger.ZERO
                 }
             }
@@ -205,8 +205,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
             throw e
         }
 
-        val numerator = simpleIf(other.isNegative(), denominatorMult, numeratorMult)
-        val denominator = simpleIf(other.isNegative(), numeratorMult, denominatorMult)
+        val numerator = simpleIf(other.isNegative(), powDenominator, powNumerator)
+        val denominator = simpleIf(other.isNegative(), powNumerator, powDenominator)
         return ExactFraction(numerator, denominator, fullySimplified = false)
     }
 
@@ -240,6 +240,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     // SIMPLIFICATION
 
+    /**
+     * Simplify numerator and denominator to smallest values with same ratio, and move all negatives into numerator
+     */
     private fun simplify() {
         // set denominator to 1 when numerator is 0
         if (numerator.isZero()) {
@@ -279,8 +282,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
         val mc = MathContext(digits, RoundingMode.HALF_UP)
         val remainderDecimal = remainder.toBigDecimal()
-        val denomDecimal = denominator.toBigDecimal()
-        val decimal = remainderDecimal.divide(denomDecimal, mc)
+        val denominatorDecimal = denominator.toBigDecimal()
+        val decimal = remainderDecimal.divide(denominatorDecimal, mc)
         return (whole.toBigDecimal() + decimal).toString()
     }
 

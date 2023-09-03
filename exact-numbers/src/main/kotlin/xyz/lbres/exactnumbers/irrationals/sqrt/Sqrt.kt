@@ -126,13 +126,13 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun compareTo(other: Sqrt): Int = radicand.compareTo(other.radicand)
 
     override fun toString(): String {
-        val numString = if (radicand.denominator == BigInteger.ONE) {
+        val radicandString = if (radicand.denominator == BigInteger.ONE) {
             radicand.numerator.toString()
         } else {
             "${radicand.numerator}/${radicand.denominator}"
         }
 
-        return "[√($numString)]"
+        return "[√($radicandString)]"
     }
 
     override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
