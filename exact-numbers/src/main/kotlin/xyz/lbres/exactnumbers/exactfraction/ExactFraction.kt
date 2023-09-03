@@ -18,7 +18,7 @@ import java.math.RoundingMode
  * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
  */
 class ExactFraction private constructor() : Comparable<ExactFraction>, Number() {
-    // These values are re-assigned in all public constructors
+    // These values are re-assigned in all constructors
     private var _numerator: BigInteger = BigInteger.ZERO
     private var _denominator: BigInteger = BigInteger.ZERO
 
@@ -217,11 +217,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
             throw divideByZero
         }
 
-        return if (numerator.isNegative()) {
-            ExactFraction(-denominator, -numerator, fullySimplified = true)
-        } else {
-            ExactFraction(denominator, numerator, fullySimplified = true)
-        }
+        val signConverter = simpleIf(numerator.isNegative(), -BigInteger.ONE, BigInteger.ONE)
+        return ExactFraction(denominator * signConverter, numerator * signConverter, fullySimplified = true)
     }
 
     fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator, fullySimplified = true)
@@ -413,8 +410,9 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     private fun overflowException(type: String): Exception = ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
 
     override fun hashCode(): Int {
-        var result = numerator.hashCode()
+        var result = 31 * numerator.hashCode()
         result = 31 * result + denominator.hashCode()
+        result = 31 * result + javaClass.name.hashCode()
         return result
     }
 
