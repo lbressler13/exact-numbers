@@ -2,8 +2,10 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.general.tryOrDefault
 import xyz.lbres.kotlinutils.int.ext.isNegative
 import xyz.lbres.kotlinutils.int.ext.isZero
+import xyz.lbres.kotlinutils.string.ext.countElement
 import xyz.lbres.kotlinutils.string.ext.substringTo
 import java.math.BigInteger
 import kotlin.math.abs
@@ -48,8 +50,8 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
         val whole = BigInteger(wholeString)
         val decimal = BigInteger(decimalString)
 
-        if (decimal.isZero()) {
-            ef = ExactFraction(whole * timesNeg) // also covers the case where number is 0
+        ef = if (decimal.isZero()) {
+            ExactFraction(whole * timesNeg) // also covers the case where number is 0
         } else {
             val zeros = "0".repeat(decimalString.length)
             val denomString = "1$zeros"
@@ -57,7 +59,7 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
             val denominator = BigInteger(denomString)
             val numerator = whole * denominator + decimal
 
-            ef = ExactFraction(numerator * timesNeg, denominator)
+            ExactFraction(numerator * timesNeg, denominator)
         }
     }
 
@@ -81,17 +83,17 @@ private fun validateDecimalString(s: String) {
 
     val eIndex = s.indexOf('e')
     val validCharacters = s.all { it.isDigit() || it == '-' || it == '.' || it == 'e' }
-    val validE = eIndex != 0 && eIndex != s.lastIndex && s.count { it == 'e' } in 0..1
+    val validE = eIndex != 0 && eIndex != s.lastIndex && s.countElement('e') in 0..1
     if (!validCharacters || !validE) {
         throw exception
     }
 
     val validateMinus: (String) -> Boolean = { str ->
-        str.indexOf('-') in -1..0 && str.count { it == '-' } in 0..1
+        str.indexOf('-') in -1..0 && str.countElement('-') in 0..1
     }
 
     val validateDecimal: (String) -> Boolean = { str ->
-        str.indexOf('.') != str.lastIndex && str.count { it == '.' } in 0..1
+        str.indexOf('.') != str.lastIndex && str.countElement('.') in 0..1
     }
 
     if (eIndex == -1 && !validateMinus(s) || !validateDecimal(s)) {
@@ -128,7 +130,7 @@ internal fun parseEFString(unparsed: String): ExactFraction {
         return ExactFraction(numerator, denominator)
     } catch (e: ArithmeticException) {
         throw e
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         throw NumberFormatException("Invalid EF string format")
     }
 }
@@ -142,13 +144,12 @@ internal fun parseEFString(unparsed: String): ExactFraction {
  */
 fun checkIsEFString(s: String): Boolean {
     val trimmed = s.trim()
-    return try {
+
+    return tryOrDefault(false) {
         val startEnd = trimmed.startsWith("EF[") && trimmed.endsWith("]")
         val split = trimmed.substring(3, s.lastIndex).split(" ")
         BigInteger(split[0])
         BigInteger(split[1])
         startEnd && split.size == 2
-    } catch (e: Exception) {
-        false
     }
 }

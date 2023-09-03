@@ -107,7 +107,7 @@ fun runPowTests() {
     exp = ExactFraction(6666666)
     try {
         base.pow(exp)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         throw AssertionError("Computation expected to succeed")
     }
 
@@ -115,7 +115,7 @@ fun runPowTests() {
     exp = ExactFraction(6666666)
     try {
         base.pow(exp)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         throw AssertionError("Computation expected to succeed")
     }
 
@@ -123,7 +123,7 @@ fun runPowTests() {
     exp = ExactFraction(1000000)
     try {
         base.pow(exp)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         throw AssertionError("Computation expected to succeed")
     }
 
