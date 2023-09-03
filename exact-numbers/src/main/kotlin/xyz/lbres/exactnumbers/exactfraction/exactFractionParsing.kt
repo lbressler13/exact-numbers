@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.int.ext.isNegative
 import xyz.lbres.kotlinutils.int.ext.isZero
 import xyz.lbres.kotlinutils.string.ext.substringTo
@@ -12,81 +13,69 @@ import kotlin.math.abs
  * Standard format is a string which may start with "-", but otherwise consists of at least one digit and up to 1 "."
  *
  * @param unparsed [String]: string to parse
- * @return parsed ExactFraction
- * @throws NumberFormatException in case of improperly formatted number string
+ * @return [ExactFraction]: parse value
  */
 internal fun parseDecimal(unparsed: String): ExactFraction {
     var currentState: String = unparsed.trim().lowercase()
 
     validateDecimalString(currentState)
 
+    // remove negative sign
     val isNegative = currentState.startsWith("-")
     val timesNeg = if (isNegative) -BigInteger.ONE else BigInteger.ONE
     if (isNegative) {
         currentState = currentState.substring(1)
     }
 
+    // remove e-value
     val eIndex = currentState.indexOf('e')
-    var eMultiplier = 0
+    var eValue = 0
     if (eIndex != -1) {
-        eMultiplier = currentState.substring(eIndex + 1).toInt()
+        eValue = currentState.substring(eIndex + 1).toInt()
         currentState = currentState.substringTo(eIndex)
     }
 
     val decimalIndex: Int = currentState.indexOf('.')
+    val ef: ExactFraction
 
-    val ef = when (decimalIndex) {
-        -1 -> {
-            val numerator = BigInteger(currentState)
-            ExactFraction(numerator * timesNeg)
-        }
-        0 -> {
-            currentState = currentState.substring(1)
-            val numerator = BigInteger(currentState)
+    // generate fraction
+    if (decimalIndex == -1) {
+        val numerator = BigInteger(currentState)
+        ef = ExactFraction(numerator * timesNeg)
+    } else {
+        val wholeString = simpleIf(decimalIndex == 0, "0", currentState.substringTo(decimalIndex))
+        val decimalString = currentState.substring(decimalIndex + 1)
+        val whole = BigInteger(wholeString)
+        val decimal = BigInteger(decimalString)
 
-            if (numerator.isZero()) {
-                return ExactFraction(0)
-            }
-
-            val zeros = "0".repeat(currentState.length)
+        if (decimal.isZero()) {
+            ef = ExactFraction(whole * timesNeg) // also covers the case where number is 0
+        } else {
+            val zeros = "0".repeat(decimalString.length)
             val denomString = "1$zeros"
+
             val denominator = BigInteger(denomString)
+            val numerator = whole * denominator + decimal
 
-            ExactFraction(numerator * timesNeg, denominator)
-        }
-        else -> {
-            val wholeString = currentState.substringTo(decimalIndex)
-            val decimalString = currentState.substring(decimalIndex + 1)
-            val whole = BigInteger(wholeString)
-            val decimal = BigInteger(decimalString)
-
-            if (decimal.isZero()) {
-                ExactFraction(whole * timesNeg) // also covers the case where number is 0
-            } else {
-                val zeros = "0".repeat(decimalString.length)
-                val denomString = "1$zeros"
-
-                val denominator = BigInteger(denomString)
-                val numerator = whole * denominator + decimal
-
-                ExactFraction(numerator * timesNeg, denominator)
-            }
+            ef = ExactFraction(numerator * timesNeg, denominator)
         }
     }
-    return applyEMultiplier(eMultiplier, ef)
-}
 
-private fun applyEMultiplier(eMultiplier: Int, ef: ExactFraction): ExactFraction {
-    val mult = BigInteger.TEN.pow(abs(eMultiplier))
-
+    // apply e-value
+    val eMultiplier = BigInteger.TEN.pow(abs(eValue))
     return when {
-        eMultiplier.isZero() -> ef
-        eMultiplier.isNegative() -> ExactFraction(ef.numerator, mult * ef.denominator)
-        else -> ExactFraction(mult * ef.numerator, ef.denominator)
+        eValue.isZero() -> ef
+        eValue.isNegative() -> ExactFraction(ef.numerator, eMultiplier * ef.denominator)
+        else -> ExactFraction(eMultiplier * ef.numerator, ef.denominator)
     }
 }
 
-// assumes s is trimmed and lowercase
+/**
+ * Validate that a decimal string is in a parseable format, and throw [NumberFormatException] if it is not.
+ * Assumes string is trimmed and lowercase.
+ *
+ * @param s [String]: string to validate
+ */
 private fun validateDecimalString(s: String) {
     val exception = NumberFormatException()
 
@@ -122,8 +111,7 @@ private fun validateDecimalString(s: String) {
  * EF string format is "EF[num denom]"
  *
  * @param unparsed [String]: string to parse
- * @return parsed ExactFraction
- * @throws NumberFormatException in case of improperly formatted number string
+ * @return [ExactFraction]: parsed value
  */
 internal fun parseEFString(unparsed: String): ExactFraction {
     if (!checkIsEFString(unparsed)) {
@@ -150,7 +138,7 @@ internal fun parseEFString(unparsed: String): ExactFraction {
  * EF string format is "EF[num denom]"
  *
  * @param s [String]: string to check
- * @return true if s is in EF string format, false otherwise
+ * @return [Boolean]: `true` if s is in EF string format, `false` otherwise
  */
 fun checkIsEFString(s: String): Boolean {
     val trimmed = s.trim()
