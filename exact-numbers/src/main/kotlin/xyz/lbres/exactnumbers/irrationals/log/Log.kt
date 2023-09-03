@@ -197,10 +197,10 @@ class Log private constructor(
                 return Pair(ExactFraction.ZERO, emptyList())
             }
 
-            val simplifiedNums = numbers.map { it.getSimplified() }
-            val coeff = simplifiedNums.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
+            val simplifiedNumbers = numbers.map { it.getSimplified() }
+            val coeff = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            val combinedNums: List<Log> = simplifiedNums.map { it.second }
+            val combinedNums: List<Log> = simplifiedNumbers.map { it.second }
                 .groupBy { Pair(it.argument, it.base) }
                 .flatMap { pair ->
                     if (Log(pair.key.first, pair.key.second) == ONE) {

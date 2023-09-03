@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 // Numerator and denominator are explicitly checked to ensure correct initialization
-// Simplication is tested separately
+// Simplification is tested separately
 
 fun runConstructorTests() {
     testSingleValConstructor()

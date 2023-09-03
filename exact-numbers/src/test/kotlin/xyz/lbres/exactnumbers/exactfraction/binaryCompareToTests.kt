@@ -4,6 +4,7 @@ import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@Suppress("KotlinConstantConditions")
 fun runCompareToTests() {
     // equal values
     var first = ExactFraction(0)
