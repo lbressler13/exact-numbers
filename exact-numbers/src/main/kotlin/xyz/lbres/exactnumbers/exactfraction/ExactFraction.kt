@@ -1,7 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.common.divideByZero
-import xyz.lbres.exactnumbers.exception.NumberOverflowException
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.kotlinutils.biginteger.ext.ifZero
@@ -20,7 +19,7 @@ import java.math.RoundingMode
 class ExactFraction private constructor() : Comparable<ExactFraction>, Number() {
     // These values are re-assigned in all constructors
     private var _numerator: BigInteger = BigInteger.ZERO
-    private var _denominator: BigInteger = BigInteger.ZERO
+    private var _denominator: BigInteger = BigInteger.ONE
 
     /**
      * Numerator of number
@@ -34,14 +33,12 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     val denominator: BigInteger
         get() = _denominator
 
-    // CONSTRUCTORS
-
     /**
      * Private constructor using numerator, denominator, and a flag to indicate if the provided values have been simplified.
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
-     * @param fullySimplified [Boolean]: if numerator and denominator are already fully simplified
+     * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are fully simplified
      */
     private constructor (numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : this() {
         _numerator = numerator
@@ -66,13 +63,8 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     operator fun unaryPlus(): ExactFraction = ExactFraction(numerator, denominator, fullySimplified = true)
     operator fun not(): Boolean = isZero()
 
-    operator fun inc(): ExactFraction {
-        return ExactFraction(numerator + denominator, denominator, fullySimplified = false)
-    }
-
-    operator fun dec(): ExactFraction {
-        return ExactFraction(numerator - denominator, denominator, fullySimplified = false)
-    }
+    operator fun inc(): ExactFraction = ExactFraction(numerator + denominator, denominator, fullySimplified = true)
+    operator fun dec(): ExactFraction = ExactFraction(numerator - denominator, denominator, fullySimplified = true)
 
     // BINARY OPERATORS
 
@@ -167,15 +159,14 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
             }
         } catch (e: ArithmeticException) {
             if (e.message == "BigInteger would overflow supported range") {
-                throw NumberOverflowException("ExactFraction would overflow supported range")
+                throw ExactFractionOverflowException()
             }
 
             throw e
         }
 
-        val numerator = simpleIf(other.isNegative(), powDenominator, powNumerator)
-        val denominator = simpleIf(other.isNegative(), powNumerator, powDenominator)
-        return ExactFraction(numerator, denominator, fullySimplified = false)
+        val result = ExactFraction(powNumerator, powDenominator, fullySimplified = false)
+        return simpleIf(other.isNegative(), { result.inverse() }, { result })
     }
 
     // UNARY NON-OPERATORS
@@ -224,7 +215,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         }
 
         // simplify using greatest common divisor
-        if (numerator != BigInteger.ZERO && numerator != BigInteger.ONE) {
+        if (numerator != BigInteger.ZERO) {
             val gcd = getGCD(numerator, denominator)
             _numerator /= gcd
             _denominator /= gcd
@@ -260,9 +251,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      *
      * @return string representation of number in fractional format
      */
-    fun toFractionString(): String {
-        return simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
-    }
+    fun toFractionString() = simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
 
     fun toPairString(): String = "($numerator, $denominator)"
     fun toEFString(): String = "EF[$numerator $denominator]"
@@ -273,6 +262,14 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
+    /**
+     * Cast to a type of whole number, or throw [ExactFractionOverflowException] if fraction exceeds allowed range
+     *
+     * @param minValue [String]: minimum value in allowed range
+     * @param maxValue [String]: maximum value in allowed range
+     * @param type [String]: name of type to cast to
+     * @param cast ([BigInteger]) -> T: perform cast on fraction
+     */
     private fun <T> castToWholeNumber(minValue: String, maxValue: String, type: String, cast: (BigInteger) -> T): T {
         val value = toBigInteger()
 
@@ -282,7 +279,27 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
             return cast(value)
         }
 
-        throw overflowException(type)
+        throw ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
+    }
+
+    /**
+     * Cast to a type of decimal number, or throw [ExactFractionOverflowException] if fraction exceeds allowed range
+     *
+     * @param minValue [String]: minimum value in allowed range
+     * @param maxValue [String]: maximum value in allowed range
+     * @param type [String]: name of type to cast to
+     * @param cast ([BigDecimal]) -> T: perform cast on fraction
+     */
+    private fun <T> castToDecimalNumber(minValue: String, maxValue: String, type: String, cast: (BigDecimal) -> T): T {
+        val value = toBigDecimal()
+
+        val minDecimal = BigDecimal(minValue)
+        val maxDecimal = BigDecimal(maxValue)
+        if (value in minDecimal..maxDecimal) {
+            return cast(value)
+        }
+
+        throw ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
     }
 
     /**
@@ -338,18 +355,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         return castToWholeNumber(Long.MIN_VALUE.toString(), Long.MAX_VALUE.toString(), "Long") { it.toLong() }
     }
 
-    private fun <T> castToDecimalNumber(minValue: String, maxValue: String, type: String, cast: (BigDecimal) -> T): T {
-        val value = toBigDecimal()
-
-        val minDecimal = BigDecimal(minValue)
-        val maxDecimal = BigDecimal(maxValue)
-        if (value in minDecimal..maxDecimal) {
-            return cast(value)
-        }
-
-        throw overflowException(type)
-    }
-
     /**
      * If value is between min and max Double values, cast to Double, using division with precision of 20.
      *
@@ -377,8 +382,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         val mc = MathContext(precision, RoundingMode.HALF_UP)
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
-
-    private fun overflowException(type: String): Exception = ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
 
     override fun hashCode(): Int {
         var result = 31 * numerator.hashCode()

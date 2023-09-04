@@ -108,8 +108,8 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
-            radicand.isZero() -> return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ZERO, true))
-            radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ONE, true))
+            radicand.isZero() -> return Pair(ExactFraction.ONE, ZERO)
+            radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, ONE)
         }
 
         val numWhole = extractWholeOf(radicand.numerator)

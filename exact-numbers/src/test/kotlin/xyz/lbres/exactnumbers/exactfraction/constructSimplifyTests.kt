@@ -5,6 +5,7 @@ import java.math.BigInteger
 import kotlin.test.assertEquals
 
 // Numerator and denominator are explicitly checked to ensure correct initialization
+
 fun runConstructorTests() {
     // error
     assertDivByZero { ExactFraction(BigInteger.ONE, BigInteger.ZERO) }
