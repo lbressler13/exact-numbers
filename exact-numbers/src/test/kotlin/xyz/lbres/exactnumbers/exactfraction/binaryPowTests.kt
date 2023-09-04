@@ -102,6 +102,38 @@ fun runPowTests() {
     expected = ExactFraction(1953125, -512)
     assertEquals(expected, base.pow(exp))
 
+    base = ExactFraction.TWO
+    exp = ExactFraction(6666666)
+    try {
+        base.pow(exp)
+    } catch (_: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
+    base = -ExactFraction.TWO
+    exp = ExactFraction(6666666)
+    try {
+        base.pow(exp)
+    } catch (_: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
+    base = ExactFraction(59)
+    exp = ExactFraction(1000000)
+    try {
+        base.pow(exp)
+    } catch (_: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
+    base = ExactFraction.ONE
+    exp = ExactFraction("-9999999999999999999999999999999999999")
+    try {
+        base.pow(exp)
+    } catch (_: Exception) {
+        throw AssertionError("Computation expected to succeed")
+    }
+
     // non-whole
     val expectedError = "Exponents must be whole numbers"
     base = ExactFraction.FOUR
@@ -114,4 +146,12 @@ fun runPowTests() {
     base = ExactFraction(3, 7)
     exp = ExactFraction(3, 7)
     assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
+
+    base = ExactFraction.TWO
+    exp = ExactFraction(999999999999)
+    assertFailsWith<ExactFractionOverflowException> { base.pow(exp) }
+
+    base = ExactFraction.HALF
+    exp = ExactFraction(999999999999)
+    assertFailsWith<ExactFractionOverflowException> { base.pow(exp) }
 }

@@ -8,6 +8,7 @@ import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
 import kotlin.math.abs
@@ -55,15 +56,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
     operator fun div(other: Pi): Term = div(other as Irrational)
     operator fun div(other: Sqrt): Term = div(other as Irrational)
 
-    override fun toString(): String {
-        val pi = "π"
-
-        return if (isDivided) {
-            "[1/$pi]"
-        } else {
-            "[$pi]"
-        }
-    }
+    override fun toString(): String = simpleIf(isDivided, "[1/π]", "[π]")
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
 
@@ -79,7 +72,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {
-                return listOf()
+                return emptyList()
             }
 
             @Suppress("UNCHECKED_CAST")
@@ -89,11 +82,7 @@ class Pi(override val isDivided: Boolean) : Irrational {
             val negative = numbers.size - positive
             val diff = abs(positive - negative)
 
-            return when {
-                positive == negative -> listOf()
-                positive < negative -> List(diff) { Pi(isDivided = true) }
-                else -> List(diff) { Pi(isDivided = false) }
-            }
+            return List(diff) { Pi(isDivided = positive < negative) }
         }
     }
 }

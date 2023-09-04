@@ -9,6 +9,7 @@ import xyz.lbres.exactnumbers.irrationals.common.times
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -105,16 +106,10 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      * @return [Pair<ExactFraction, Sqrt>]: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
      */
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
-        if (fullySimplified) {
-            return Pair(ExactFraction.ONE, this)
-        }
-
-        if (radicand.isZero()) {
-            return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ZERO, true))
-        }
-
-        if (radicand == ExactFraction.ONE) {
-            return Pair(ExactFraction.ONE, Sqrt(ExactFraction.ONE, true))
+        when {
+            fullySimplified -> return Pair(ExactFraction.ONE, this)
+            radicand.isZero() -> return Pair(ExactFraction.ONE, ZERO)
+            radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, ONE)
         }
 
         val numWhole = extractWholeOf(radicand.numerator)
@@ -131,13 +126,13 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun compareTo(other: Sqrt): Int = radicand.compareTo(other.radicand)
 
     override fun toString(): String {
-        val numString = if (radicand.denominator == BigInteger.ONE) {
+        val radicandString = if (radicand.denominator == BigInteger.ONE) {
             radicand.numerator.toString()
         } else {
             "${radicand.numerator}/${radicand.denominator}"
         }
 
-        return "[√($numString)]"
+        return "[√($radicandString)]"
     }
 
     override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
@@ -157,14 +152,14 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
          */
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
             if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, listOf())
+                return Pair(ExactFraction.ONE, emptyList())
             }
 
             @Suppress("UNCHECKED_CAST")
             numbers as List<Sqrt>
 
             if (numbers.any(Sqrt::isZero)) {
-                return Pair(ExactFraction.ZERO, listOf())
+                return Pair(ExactFraction.ZERO, emptyList())
             }
 
             // combine all roots into single root, and return that value
@@ -177,12 +172,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val root = Sqrt(ExactFraction(numRoot, denomRoot), true)
             val coeff = ExactFraction(numWhole, denomWhole)
 
-            val rootList = if (root == ONE) {
-                listOf()
-            } else {
-                listOf(root)
-            }
-
+            val rootList = simpleIf(root == ONE, emptyList(), listOf(root))
             return Pair(coeff, rootList)
         }
     }

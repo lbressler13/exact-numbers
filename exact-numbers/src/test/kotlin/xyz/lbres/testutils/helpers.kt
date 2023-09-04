@@ -1,3 +1,5 @@
+package xyz.lbres
+
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException
 import kotlin.test.assertEquals

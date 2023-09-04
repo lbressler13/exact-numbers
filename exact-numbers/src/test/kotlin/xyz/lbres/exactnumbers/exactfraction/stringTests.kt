@@ -17,6 +17,10 @@ fun runParseDecimalTests() {
     expected = ExactFraction(11)
     assertEquals(expected, parseDecimal(s))
 
+    s = "   0000011\n"
+    expected = ExactFraction(11)
+    assertEquals(expected, parseDecimal(s))
+
     s = "-31"
     expected = ExactFraction(-31)
     assertEquals(expected, parseDecimal(s))
@@ -90,6 +94,23 @@ fun runParseDecimalTests() {
     expected = ExactFraction(BigInteger(n), BigInteger(d))
     assertEquals(expected, parseDecimal(s))
 
+    // e-notation
+    s = "3.90E-3" // 0.00390
+    expected = ExactFraction(39, 10000)
+    assertEquals(expected, parseDecimal(s))
+
+    s = "-5E-10" // -0.0000000005
+    expected = ExactFraction(-5, 10000000000)
+    assertEquals(expected, parseDecimal(s))
+
+    s = "-5E10" // -50000000000
+    expected = ExactFraction(BigInteger("-50000000000"))
+    assertEquals(expected, parseDecimal(s))
+
+    s = "172E14" // 17200000000000000
+    expected = ExactFraction(BigInteger("17200000000000000"))
+    assertEquals(expected, parseDecimal(s))
+
     // errors
     s = "abc"
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
@@ -104,6 +125,36 @@ fun runParseDecimalTests() {
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
 
     s = "EF[1 1]"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "--1234"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "-12-34"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "123a456"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "3.90e-3"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "E10"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "e-1"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "123e"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "123e-"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "12E1.3"
+    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+
+    s = "1 e 1"
     assertFailsWith<NumberFormatException> { parseDecimal(s) }
 }
 
@@ -132,6 +183,9 @@ fun runParseEFStringTests() {
     assertFailsWith<NumberFormatException> { parseEFString(s) }
 
     s = "1.1"
+    assertFailsWith<NumberFormatException> { parseEFString(s) }
+
+    s = "4E2"
     assertFailsWith<NumberFormatException> { parseEFString(s) }
 
     s = "EF[1]"

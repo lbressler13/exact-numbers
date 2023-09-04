@@ -1,5 +1,6 @@
 package xyz.lbres.common
 
+import xyz.lbres.kotlinutils.general.tryOrDefault
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -15,7 +16,7 @@ import java.math.RoundingMode
 internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
     return try {
         bigDec1.divide(bigDec2)
-    } catch (e: ArithmeticException) {
+    } catch (_: ArithmeticException) {
         val mc = MathContext(20)
         bigDec1.divide(bigDec2, mc)
     }
@@ -26,24 +27,22 @@ internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDec
  * If so, returns the passing value. If both pass, the closer value will be returned.
  *
  * @param decimal [BigDecimal]: the number to round
- * @param checkInt [(BigInteger) -> Boolean]: function to check rounded value
- * @return [BigInteger?]: a rounded number that passes the checks, or null if there is none
+ * @param checkInt ([BigInteger]) -> Boolean: function to check rounded value
+ * @return [BigInteger]?: a rounded number that passes the checks, or null if there is none
  */
 internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Boolean): BigInteger? {
-    try {
+    return tryOrDefault(null) {
         val upInt = decimal.setScale(0, RoundingMode.UP).toBigInteger()
         val downInt = decimal.setScale(0, RoundingMode.DOWN).toBigInteger()
 
         val upPasses = checkInt(upInt)
         val downPasses = checkInt(downInt)
 
-        return when {
+        when {
             upPasses && downPasses -> decimal.setScale(0, RoundingMode.HALF_UP).toBigInteger()
             upPasses -> upInt
             downPasses -> downInt
             else -> null
         }
-    } catch (_: Exception) {
-        return null
     }
 }
