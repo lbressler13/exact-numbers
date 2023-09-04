@@ -53,44 +53,12 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     }
 
     /**
-     * Constructor using numerator and denominator. Simplifies values on initialization.
+     * Constructor for ExactFraction. Simplifies values on initialization.
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
-
-    /**
-     * Constructor using only numerator.
-     * Creates ExactFraction with integer value.
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     */
-    constructor (numerator: BigInteger) : this(numerator, BigInteger.ONE, fullySimplified = true)
-
-    /**
-     * Constructor which parses value from string
-     *
-     * @param s [String]: string to parse
-     */
-    // values are simplified during parsing, no need to re-simplify here
-    constructor (s: String) : this() {
-        val result = parse(s)
-        _numerator = result.numerator
-        _denominator = result.denominator
-    }
-
-    // constructors for combinations of Int, Long, and BigInteger
-    constructor (numerator: Int) : this(numerator.toBigInteger())
-    constructor (numerator: Long) : this(numerator.toBigInteger())
-    constructor (numerator: Int, denominator: Int) : this(numerator.toBigInteger(), denominator.toBigInteger())
-    constructor (numerator: Long, denominator: Long) : this(numerator.toBigInteger(), denominator.toBigInteger())
-    constructor (numerator: Int, denominator: Long) : this(numerator.toBigInteger(), denominator.toBigInteger())
-    constructor (numerator: Long, denominator: Int) : this(numerator.toBigInteger(), denominator.toBigInteger())
-    constructor (numerator: BigInteger, denominator: Int) : this(numerator, denominator.toBigInteger())
-    constructor (numerator: Int, denominator: BigInteger) : this(numerator.toBigInteger(), denominator)
-    constructor (numerator: BigInteger, denominator: Long) : this(numerator, denominator.toBigInteger())
-    constructor (numerator: Long, denominator: BigInteger) : this(numerator.toBigInteger(), denominator)
 
     // UNARY OPERATORS
 
@@ -256,7 +224,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         }
 
         // simplify using greatest common divisor
-        if (!numerator.isZero()) {
+        if (numerator != BigInteger.ZERO && numerator != BigInteger.ONE) {
             val gcd = getGCD(numerator, denominator)
             _numerator /= gcd
             _denominator /= gcd
