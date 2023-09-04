@@ -50,8 +50,8 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
         val whole = BigInteger(wholeString)
         val decimal = BigInteger(decimalString)
 
-        ef = if (decimal.isZero()) {
-            ExactFraction(whole * timesNeg) // also covers the case where number is 0
+        if (decimal.isZero()) {
+            ef = ExactFraction(whole * timesNeg) // also covers the case where number is 0
         } else {
             val zeros = "0".repeat(decimalString.length)
             val denomString = "1$zeros"
@@ -59,7 +59,7 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
             val denominator = BigInteger(denomString)
             val numerator = whole * denominator + decimal
 
-            ExactFraction(numerator * timesNeg, denominator)
+            ef = ExactFraction(numerator * timesNeg, denominator)
         }
     }
 
@@ -88,12 +88,12 @@ private fun validateDecimalString(s: String) {
         throw exception
     }
 
-    val validateMinus: (String) -> Boolean = { str ->
-        str.indexOf('-') in -1..0 && str.countElement('-') in 0..1
+    val validateMinus: (String) -> Boolean = {
+        it.indexOf('-') in -1..0 && it.countElement('-') in 0..1
     }
 
-    val validateDecimal: (String) -> Boolean = { str ->
-        str.indexOf('.') != str.lastIndex && str.countElement('.') in 0..1
+    val validateDecimal: (String) -> Boolean = {
+        it.indexOf('.') != it.lastIndex && it.countElement('.') in 0..1
     }
 
     if (eIndex == -1 && !validateMinus(s) || !validateDecimal(s)) {
