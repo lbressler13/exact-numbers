@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.assertExactFractionOverflow
+import xyz.lbres.testutils.assertExactFractionOverflow
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.assertDivByZero
+import xyz.lbres.testutils.assertDivByZero
 import java.math.RoundingMode
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

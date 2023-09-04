@@ -1,7 +1,7 @@
 package xyz.lbres.common
 
-import xyz.lbres.assertDivByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.testutils.assertDivByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test

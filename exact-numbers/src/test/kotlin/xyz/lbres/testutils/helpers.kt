@@ -1,4 +1,4 @@
-package xyz.lbres
+package xyz.lbres.testutils
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException

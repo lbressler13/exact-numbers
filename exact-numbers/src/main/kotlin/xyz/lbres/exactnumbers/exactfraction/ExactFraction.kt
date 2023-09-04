@@ -19,7 +19,7 @@ import java.math.RoundingMode
 class ExactFraction private constructor() : Comparable<ExactFraction>, Number() {
     // These values are re-assigned in all constructors
     private var _numerator: BigInteger = BigInteger.ZERO
-    private var _denominator: BigInteger = BigInteger.ZERO
+    private var _denominator: BigInteger = BigInteger.ONE
 
     /**
      * Numerator of number
@@ -38,7 +38,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      *
      * @param numerator [BigInteger]: numerator of fraction
      * @param denominator [BigInteger]: denominator of fraction
-     * @param fullySimplified [Boolean]: if numerator and denominator are already fully simplified
+     * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are simplified
      */
     private constructor (numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : this() {
         _numerator = numerator
@@ -416,4 +416,3 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         fun isEFString(s: String): Boolean = checkIsEFString(s)
     }
 }
-

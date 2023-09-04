@@ -3,9 +3,9 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
-import xyz.lbres.assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.testutils.assertDivByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest
