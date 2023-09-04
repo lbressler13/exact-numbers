@@ -1,7 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import io.mockk.every
-import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.verify
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
@@ -17,8 +16,6 @@ private val seven = BigInteger("7")
 private val ten = BigInteger("10")
 
 fun runExtractWholeOfTests() {
-    mockkObject(Memoize)
-
     // exception
     assertFailsWith<ArithmeticException>("Cannot calculate root of negative number") { extractWholeOf(BigInteger("-25")) }
 

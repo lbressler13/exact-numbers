@@ -12,10 +12,10 @@ import java.math.BigInteger
 import kotlin.math.abs
 
 /**
- * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
+ * Representation of the product of several numbers. Consists of a rational coefficient and list of irrational numbers
  *
  * @param coefficient [ExactFraction]
- * @param numbers [List<Irrational>]
+ * @param numbers List<[Irrational]>
  */
 class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrational>) {
     val coefficient: ExactFraction

@@ -20,13 +20,13 @@ import kotlin.test.assertTrue
 
 class SqrtTest {
     @BeforeTest
-    fun createMocks() {
+    fun setupMockk() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
     }
 
     @AfterTest
-    fun clearMocks() {
+    fun clearMockk() {
         unmockkAll()
     }
 

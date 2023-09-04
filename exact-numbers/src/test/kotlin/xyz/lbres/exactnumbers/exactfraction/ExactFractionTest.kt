@@ -6,7 +6,6 @@ class ExactFractionTest {
     @Test fun testConstructor() = runConstructorTests()
 
     // simplify
-    // includes all private methods used in simplification
     @Test fun testSimplify() = runSimplifyTests()
 
     // unary operators

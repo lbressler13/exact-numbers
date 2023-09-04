@@ -128,6 +128,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
 
+    // TODO pow with other types
     fun pow(other: ExactFraction): ExactFraction {
         if (other.denominator != BigInteger.ONE) {
             throw ArithmeticException("Exponents must be whole numbers")
