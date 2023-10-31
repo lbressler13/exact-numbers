@@ -89,7 +89,6 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
  * @param num [BigInteger]: number to get root of
  * @return [BigDecimal]: the root of the number, using the current base
  */
-// TODO memoize
 internal fun getRootOf(num: BigInteger): BigDecimal {
     val mc = MathContext(20, RoundingMode.HALF_UP)
     val whole = extractWholeOf(num)

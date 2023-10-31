@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 fun runPowTests() {
+    // zero/one
     var base = ExactFraction.NINE
     var exp = ExactFraction.ZERO
     var expected = ExactFraction.ONE
@@ -46,11 +47,6 @@ fun runPowTests() {
     expected = 1048576.toExactFraction()
     assertEquals(expected, base.pow(exp))
 
-    base = -ExactFraction.TWO
-    exp = ExactFraction.SEVEN
-    expected = (-128).toExactFraction()
-    assertEquals(expected, base.pow(exp))
-
     base = ExactFraction.ONE
     exp = ExactFraction("3147483647") // bigger than int max
     expected = ExactFraction.ONE
@@ -82,11 +78,6 @@ fun runPowTests() {
     expected = ExactFraction(1, 1048576)
     assertEquals(expected, base.pow(exp))
 
-    base = -ExactFraction.TWO
-    exp = -ExactFraction.SEVEN
-    expected = ExactFraction(-1, 128)
-    assertEquals(expected, base.pow(exp))
-
     base = ExactFraction.ONE
     exp = ExactFraction("-3147483647") // smaller than int min
     expected = ExactFraction.ONE
@@ -102,8 +93,31 @@ fun runPowTests() {
     expected = ExactFraction(1953125, -512)
     assertEquals(expected, base.pow(exp))
 
-    base = ExactFraction.TWO
-    exp = ExactFraction(6666666)
+    // large exponent
+    runLargeExponentTests()
+
+    // non-whole
+    val expectedError = "Exponents must be whole numbers"
+    base = ExactFraction.FOUR
+    exp = ExactFraction(1, 2)
+    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
+
+    exp = ExactFraction(-8, 5)
+    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
+
+    base = ExactFraction(3, 7)
+    exp = ExactFraction(3, 7)
+    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
+
+    // other number types
+    runMultiTypePowTest(ExactFraction(0), 100, ExactFraction(0))
+    runMultiTypePowTest(ExactFraction(12, 49), 0, ExactFraction(1))
+    runMultiTypePowTest(ExactFraction(3, 8), -3, ExactFraction(512, 27))
+}
+
+private fun runLargeExponentTests() {
+    var base = ExactFraction.TWO
+    var exp = ExactFraction(6666666)
     try {
         base.pow(exp)
     } catch (_: Exception) {
@@ -134,19 +148,6 @@ fun runPowTests() {
         throw AssertionError("Computation expected to succeed")
     }
 
-    // non-whole
-    val expectedError = "Exponents must be whole numbers"
-    base = ExactFraction.FOUR
-    exp = ExactFraction(1, 2)
-    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
-
-    exp = ExactFraction(-8, 5)
-    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
-
-    base = ExactFraction(3, 7)
-    exp = ExactFraction(3, 7)
-    assertFailsWith<ArithmeticException>(expectedError) { base.pow(exp) }
-
     base = ExactFraction.TWO
     exp = ExactFraction(999999999999)
     assertFailsWith<ExactFractionOverflowException> { base.pow(exp) }
@@ -154,4 +155,17 @@ fun runPowTests() {
     base = ExactFraction.HALF
     exp = ExactFraction(999999999999)
     assertFailsWith<ExactFractionOverflowException> { base.pow(exp) }
+}
+
+/**
+ * Run test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: base number
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [ExactFraction]: expected result
+ */
+private fun runMultiTypePowTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
+    assertEquals(expected, ef.pow(other))
+    assertEquals(expected, ef.pow(other.toLong()))
+    assertEquals(expected, ef.pow(other.toBigInteger()))
 }

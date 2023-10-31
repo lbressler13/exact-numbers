@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 /**
  * Assert that a divide by zero exception is thrown when code is run
  *
- * @param test () -> Unit: text to run
+ * @param test () -> Unit: test to run
  */
 fun assertDivByZero(test: () -> Unit) {
     assertFailsWith<ArithmeticException>("divide by zero") { test() }

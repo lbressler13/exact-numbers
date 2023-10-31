@@ -33,13 +33,14 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
             throw divideByZero
         }
 
-        val simplifiedValues = if (fullySimplified) {
-            Pair(numerator, denominator)
+        if (fullySimplified) {
+            this.numerator = numerator
+            this.denominator = denominator
         } else {
-            simplify(Pair(numerator, denominator))
+            val simplifiedValues = simplify(Pair(numerator, denominator))
+            this.numerator = simplifiedValues.first
+            this.denominator = simplifiedValues.second
         }
-        this.numerator = simplifiedValues.first
-        this.denominator = simplifiedValues.second
     }
 
     /**
@@ -94,8 +95,10 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
     operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
 
-    // TODO pow with other types
     fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
+    fun pow(other: Int): ExactFraction = pow(other.toExactFraction())
+    fun pow(other: Long): ExactFraction = pow(other.toExactFraction())
+    fun pow(other: BigInteger): ExactFraction = pow(other.toExactFraction())
 
     // UNARY NON-OPERATORS
 
