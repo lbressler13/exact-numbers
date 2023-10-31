@@ -3,8 +3,6 @@ package xyz.lbres.exactnumbers.exactfraction
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigInteger
 
-// TODO unit tests
-
 /**
  * Add two ExactFractions
  *

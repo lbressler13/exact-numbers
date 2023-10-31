@@ -7,8 +7,6 @@ import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 
-// TODO unit tests
-
 /**
  * Simplify a pair of numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
  *
