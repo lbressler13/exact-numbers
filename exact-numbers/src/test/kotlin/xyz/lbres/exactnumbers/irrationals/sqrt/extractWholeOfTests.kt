@@ -205,6 +205,24 @@ fun runExtractWholeOfTests() {
             Pair(BigInteger("200"), ten)
         )
     )
+
+    // irrelevant memoization
+    num = BigInteger("200")
+    expected = ten
+    runSingleExtractWholeOfTest(
+        num, expected, mapOf(BigInteger("49") to BigInteger("7"), BigInteger("1225") to BigInteger("35")),
+        listOf(
+            Pair(two, one),
+            Pair(five, one),
+            Pair(BigInteger("50"), five),
+            Pair(BigInteger("200"), ten)
+        )
+    )
+
+    // incorrect value
+    num = BigInteger("100")
+    expected = BigInteger("95")
+    runSingleExtractWholeOfTest(num, expected, mapOf(BigInteger("100") to BigInteger("95")), emptyList())
 }
 
 /**
