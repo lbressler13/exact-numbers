@@ -16,7 +16,6 @@ import java.math.RoundingMode
  *
  * @param num [BigInteger]: value to extract from, required to be non-negative
  * @return [BigInteger]: the whole number that was extracted
- * @throws [ArithmeticException] if [num] is negative
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
     if (num.isNegative()) {
@@ -90,6 +89,7 @@ internal fun extractWholeOf(num: BigInteger): BigInteger {
  * @param num [BigInteger]: number to get root of
  * @return [BigDecimal]: the root of the number, using the current base
  */
+// TODO memoize
 internal fun getRootOf(num: BigInteger): BigDecimal {
     val mc = MathContext(20, RoundingMode.HALF_UP)
     val whole = extractWholeOf(num)

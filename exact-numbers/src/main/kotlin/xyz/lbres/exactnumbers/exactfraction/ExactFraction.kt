@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.exactfraction
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
-import xyz.lbres.kotlinutils.biginteger.ext.ifZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.biginteger.getGCD
@@ -15,38 +14,30 @@ import java.math.RoundingMode
 
 /**
  * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
+ *
+ * @param numerator [BigInteger]: numerator of fraction
+ * @param denominator [BigInteger]: denominator of fraction
+ * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are simplified
  */
-class ExactFraction private constructor() : Comparable<ExactFraction>, Number() {
-    // These values are re-assigned in all constructors
-    private var _numerator: BigInteger = BigInteger.ZERO
-    private var _denominator: BigInteger = BigInteger.ONE
-
+class ExactFraction private constructor(numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : Comparable<ExactFraction>, Number() {
     /**
      * Numerator of number
      */
     val numerator: BigInteger
-        get() = _numerator
 
     /**
      * Denominator of number
      */
     val denominator: BigInteger
-        get() = _denominator
 
-    /**
-     * Private constructor using numerator, denominator, and a flag to indicate if the provided values have been simplified.
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     * @param denominator [BigInteger]: denominator of fraction
-     * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are simplified
-     */
-    private constructor (numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : this() {
-        _numerator = numerator
-        _denominator = denominator.ifZero { throw divideByZero }
-
-        if (!fullySimplified) {
-            simplify()
+    init {
+        if (denominator.isZero()) {
+            throw divideByZero
         }
+
+        val simplifiedValues = simpleIf(fullySimplified, { Pair(numerator, denominator) }, { simplify(numerator, denominator)} )
+        this.numerator = simplifiedValues.first
+        this.denominator = simplifiedValues.second
     }
 
     /**
@@ -203,24 +194,29 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     /**
      * Simplify numerator and denominator to smallest values with same ratio, and move all negatives into numerator
      */
-    private fun simplify() {
+    private fun simplify(numerator: BigInteger, denominator: BigInteger): Pair<BigInteger, BigInteger> {
+        var newNumerator = numerator
+        var newDenominator = denominator
+
         // set denominator to 1 when numerator is 0
-        if (numerator.isZero()) {
-            _denominator = BigInteger.ONE
+        if (newNumerator.isZero()) {
+            newDenominator = BigInteger.ONE
         }
 
         // move negatives to numerator
-        if (denominator.isNegative()) {
-            _numerator = -numerator
-            _denominator = -denominator
+        if (newDenominator.isNegative()) {
+            newNumerator = -newNumerator
+            newDenominator = -newDenominator
         }
 
         // simplify using greatest common divisor
-        if (numerator != BigInteger.ZERO) {
-            val gcd = getGCD(numerator, denominator)
-            _numerator /= gcd
-            _denominator /= gcd
+        if (newNumerator != BigInteger.ZERO) {
+            val gcd = getGCD(newNumerator, newDenominator)
+            newNumerator /= gcd
+            newDenominator /= gcd
         }
+
+        return Pair(newNumerator, newDenominator)
     }
 
     // STRING METHODS
