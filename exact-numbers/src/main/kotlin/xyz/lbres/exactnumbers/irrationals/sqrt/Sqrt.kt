@@ -4,6 +4,7 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -14,7 +15,7 @@ import java.math.BigInteger
  * @param radicand [ExactFraction]: value to compute root of
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  */
-class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Comparable<Sqrt>, Irrational {
+class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : IrrationalNumber<Sqrt>() {
     override val type = TYPE
     override val isDivided = false
 

@@ -3,6 +3,7 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -13,7 +14,7 @@ import kotlin.math.abs
  *
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational, Number() {
+class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
     override val type: String = TYPE
 
     // constructor with reduced params
@@ -47,14 +48,6 @@ class Pi(override val isDivided: Boolean) : Comparable<Pi>, Irrational, Number()
             other is Pi &&
             isDivided == other.isDivided
     }
-
-    override fun toByte(): Byte = getValue().toByte()
-    override fun toChar(): Char = getValue().toInt().toChar()
-    override fun toShort(): Short = getValue().toShort()
-    override fun toInt(): Int = getValue().toInt()
-    override fun toLong(): Long = getValue().toLong()
-    override fun toDouble(): Double = getValue().toDouble()
-    override fun toFloat(): Float = getValue().toFloat()
 
     override fun toString(): String = simpleIf(isDivided, "[1/π]", "[π]")
 

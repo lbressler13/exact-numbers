@@ -4,6 +4,7 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -22,7 +23,7 @@ class Log private constructor(
     val base: Int,
     override val isDivided: Boolean,
     private val fullySimplified: Boolean
-) : Comparable<Log>, Irrational {
+) : IrrationalNumber<Log>() {
     override val type = TYPE
 
     init {
