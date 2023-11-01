@@ -93,8 +93,60 @@ class PiTest {
         assertEquals(expected, piNum.toString())
     }
 
+    @Test
+    fun testCompareTo() {
+        assertEquals(Pi(), Pi())
+        assertEquals(Pi(true), Pi(true))
+        assertTrue(Pi(true) < Pi())
+        assertTrue(Pi() > Pi(true))
+    }
+
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
+
+    @Test
+    fun testToByte() {
+        assertEquals(3, Pi().toByte())
+        assertEquals(0, Pi(true).toByte())
+    }
+
+    @Test
+    fun testToChar() {
+        assertEquals(3.toChar(), Pi().toChar())
+        assertEquals(0.toChar(), Pi(true).toChar())
+    }
+
+    @Test
+    fun testToShort() {
+        assertEquals(3, Pi().toShort())
+        assertEquals(0, Pi(true).toShort())
+    }
+
+    @Test
+    fun testToInt() {
+        assertEquals(3, Pi().toInt())
+        assertEquals(0, Pi(true).toInt())
+    }
+
+    @Test
+    fun testToLong() {
+        assertEquals(3, Pi().toLong())
+        assertEquals(0, Pi(true).toLong())
+    }
+
+    @Test
+    fun testToFloat() {
+        // kotlin representation of pi: 3.141592653589793
+        assertEquals(3.1415927f, Pi().toFloat())
+        assertEquals(0.31830987f, Pi(true).toFloat())
+    }
+
+    @Test
+    fun testToDouble() {
+        // kotlin representation of pi: 3.141592653589793
+        assertEquals(3.141592653589793, Pi().toDouble())
+        assertEquals(0.3183098861837907, Pi(true).toDouble())
+    }
 
     @Test fun testSimplifyList() = runSimplifyListTests()
 }
