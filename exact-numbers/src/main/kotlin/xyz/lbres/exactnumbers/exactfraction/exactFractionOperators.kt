@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigInteger
 
 /**
@@ -21,7 +20,7 @@ internal fun efAdd(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
 
     val newNumerator = scaled1 + scaled2
     val newDenominator = ef1.denominator * ef2.denominator
-    return ExactFraction(newNumerator, newDenominator)
+    return ExactFraction(newNumerator, newDenominator) // fullySimplified = false
 }
 
 /**
@@ -34,7 +33,7 @@ internal fun efAdd(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
 internal fun efTimes(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
     val newNumerator = ef1.numerator * ef2.numerator
     val newDenominator = ef1.denominator * ef2.denominator
-    return ExactFraction(newNumerator, newDenominator)
+    return ExactFraction(newNumerator, newDenominator) // fullySimplified = false
 }
 
 /**
@@ -57,7 +56,7 @@ internal fun efPow(base: ExactFraction, exponent: ExactFraction): ExactFraction 
 
     var powNumerator = BigInteger.ONE
     var powDenominator = BigInteger.ONE
-    var remaining = exponent.absoluteValue().numerator.abs()
+    var remaining = exponent.numerator.abs()
     val intMax = Int.MAX_VALUE
 
     try {
@@ -81,8 +80,11 @@ internal fun efPow(base: ExactFraction, exponent: ExactFraction): ExactFraction 
         throw e
     }
 
-    val result = ExactFraction(powNumerator, powDenominator)
-    return simpleIf(exponent.isNegative(), { result.inverse() }, { result })
+    return if (exponent.isNegative()) {
+        ExactFraction(powDenominator, powNumerator) // fullySimplified = false
+    } else {
+        ExactFraction(powNumerator, powDenominator) // fullySimplified = false
+    }
 }
 
 /**

@@ -64,9 +64,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
         /**
          * Simplify list of pis
          *
-         * @param numbers [List<Irrational>] : list to simplify, expected to consist of only Pis
-         * @return [List<Pi>]: simplified list
-         * @throws [ClassCastException] if any of the numbers are not a Pi
+         * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
+         * @return [List]<Pi>: simplified list
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {

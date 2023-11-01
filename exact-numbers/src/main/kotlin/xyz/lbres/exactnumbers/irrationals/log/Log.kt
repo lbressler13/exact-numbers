@@ -19,7 +19,6 @@ import java.math.BigInteger
  * @param base [Int]: base to use when computing log
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
- * @throws [ArithmeticException] if number is not positive, base is less than 1, or value is 0 when isDivided is true
  */
 class Log private constructor(
     val argument: ExactFraction,
@@ -87,12 +86,12 @@ class Log private constructor(
     /**
      * Get the value of the log as a rational value if rational
      *
-     * @return [ExactFraction?]: value of the log, or null if the value is irrational
+     * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
     override fun getRationalValue(): ExactFraction? {
         when {
             !isRational() -> return null
-            isZero() -> ExactFraction.ZERO
+            isZero() -> return ExactFraction.ZERO
         }
 
         val numLog = getLogOf(argument.numerator, base).toBigInteger()
@@ -115,19 +114,14 @@ class Log private constructor(
      */
     override fun getValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-
-        if (!isDivided) {
-            return logValue
-        }
-
-        return divideBigDecimals(BigDecimal.ONE, logValue)
+        return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
     }
 
     /**
      * Simplify log into a coefficient and a log value.
      * Extracts rational value as coefficient and returns log as 1, or returns coefficient as 1 with the existing log for irrational logs.
      *
-     * @return [Pair<ExactFraction, Log>]: a pair of coefficient and log such that the product has the same value as the current log
+     * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
      */
     // TODO: improve the process of simplifying
     fun getSimplified(): Pair<ExactFraction, Log> {
@@ -178,9 +172,8 @@ class Log private constructor(
         /**
          * Extract rational values and simplify remaining list of irrationals
          *
-         * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Logs
-         * @return [Pair<ExactFraction, List<Log>>]: product of rational values and simplified list of irrational values
-         * @throws [ClassCastException] if any of the numbers are not a Log
+         * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Logs
+         * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
          */
         // TODO: improve simplification by looking at bases
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {

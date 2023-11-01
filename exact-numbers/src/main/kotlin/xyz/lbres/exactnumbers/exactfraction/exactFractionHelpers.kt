@@ -3,6 +3,7 @@ package xyz.lbres.exactnumbers.exactfraction
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.biginteger.getGCD
+import xyz.lbres.kotlinutils.pair.TypePair
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
@@ -10,10 +11,10 @@ import java.math.RoundingMode
 /**
  * Simplify a pair of numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
  *
- * @param values [Pair]<BigInteger, BigInteger>: pair to simplify, where the first value represents a numerator and the second represents a denominator
- * @return [Pair]<BigInteger, BigInteger>: pair where first value represents simplified numerator, and second value represents simplified denominator
+ * @param values [TypePair]<BigInteger>: pair to simplify, where the first value represents a numerator and the second represents a denominator
+ * @return [TypePair]<BigInteger>: pair where first value represents simplified numerator, and second value represents simplified denominator
  */
-internal fun simplify(values: Pair<BigInteger, BigInteger>): Pair<BigInteger, BigInteger> {
+internal fun simplify(values: TypePair<BigInteger>): TypePair<BigInteger> {
     var newNumerator = values.first
     var newDenominator = values.second
 
