@@ -2,7 +2,6 @@ package xyz.lbres.exactnumbers.irrationals.pi
 
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -62,7 +61,7 @@ class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
          * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
          * @return [List]<Pi>: simplified list
          */
-        internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
+        internal fun simplifyList(numbers: List<IrrationalNumber<*>>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {
                 return emptyList()
             }

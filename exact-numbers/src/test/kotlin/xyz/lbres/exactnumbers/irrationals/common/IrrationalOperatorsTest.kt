@@ -13,8 +13,8 @@ class IrrationalOperatorsTest {
     @Test
     fun testTimes() {
         // Log
-        var num1: Irrational = Log.ZERO
-        var num2: Irrational = Log.ZERO
+        var num1: IrrationalNumber<*> = Log.ZERO
+        var num2: IrrationalNumber<*> = Log.ZERO
         var expected = Term(ExactFraction.ONE, listOf(Log.ZERO, Log.ZERO))
         assertEquals(expected, num1 * num2)
 
@@ -84,8 +84,8 @@ class IrrationalOperatorsTest {
         assertDivByZero { Log.ONE / Log.ZERO }
 
         // Log
-        var num1: Irrational = Log(ExactFraction.EIGHT)
-        var num2: Irrational = Log(ExactFraction(15, 4), 7)
+        var num1: IrrationalNumber<*> = Log(ExactFraction.EIGHT)
+        var num2: IrrationalNumber<*> = Log(ExactFraction(15, 4), 7)
         var expected = Term(ExactFraction.ONE, listOf(Log(ExactFraction.EIGHT), Log(ExactFraction(15, 4), 7, true)))
         assertEquals(expected, num1 / num2)
 

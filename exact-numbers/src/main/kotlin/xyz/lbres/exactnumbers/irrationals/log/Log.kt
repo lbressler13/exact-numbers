@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.log
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
@@ -166,7 +165,7 @@ class Log private constructor(
          * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
          */
         // TODO: improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
+        internal fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }

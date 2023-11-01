@@ -1,7 +1,7 @@
 package xyz.lbres.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -16,7 +16,7 @@ fun runGetSimplifiedTests() {
     // simplified
     var term = Term(ExactFraction.EIGHT, listOf(Pi(), Pi(true)))
     var expectedCoeff = ExactFraction.EIGHT
-    var expectedNumbers: List<Irrational> = emptyList()
+    var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
     var result = term.getSimplified()
     assertEquals(expectedCoeff, result.coefficient)
     assertEquals(expectedNumbers, result.numbers)

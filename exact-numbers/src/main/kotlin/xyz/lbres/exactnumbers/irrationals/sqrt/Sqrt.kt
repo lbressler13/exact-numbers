@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -136,7 +135,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
          * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Sqrts
          * @return [Pair]<ExactFraction, List<Sqrt>>: product of rational values and a list containing a single, fully simplified irrational root
          */
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
+        internal fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Sqrt>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }
