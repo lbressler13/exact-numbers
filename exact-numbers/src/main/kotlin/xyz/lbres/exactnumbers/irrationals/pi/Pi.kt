@@ -3,9 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -45,14 +42,6 @@ class Pi(override val isDivided: Boolean) : Irrational {
             other is Pi &&
             isDivided == other.isDivided
     }
-
-    // public methods to expose general Irrational operators
-    operator fun times(other: Log): Term = super.times(other as Irrational)
-    operator fun times(other: Pi): Term = super.times(other as Irrational)
-    operator fun times(other: Sqrt): Term = super.times(other as Irrational)
-    operator fun div(other: Log): Term = super.div(other as Irrational)
-    operator fun div(other: Pi): Term = super.div(other as Irrational)
-    operator fun div(other: Sqrt): Term = super.div(other as Irrational)
 
     override fun toString(): String = simpleIf(isDivided, "[1/π]", "[π]")
 

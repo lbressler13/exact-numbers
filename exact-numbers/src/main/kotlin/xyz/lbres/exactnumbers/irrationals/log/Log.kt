@@ -4,9 +4,6 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -57,14 +54,6 @@ class Log private constructor(
     constructor(argument: BigInteger, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
 
     override fun equals(other: Any?): Boolean = other is Log && getValue() == other.getValue()
-
-    // public methods to expose general Irrational operators
-    operator fun times(other: Log): Term = super.times(other as Irrational)
-    operator fun times(other: Pi): Term = super.times(other as Irrational)
-    operator fun times(other: Sqrt): Term = super.times(other as Irrational)
-    operator fun div(other: Log): Term = super.div(other as Irrational)
-    operator fun div(other: Pi): Term = super.div(other as Irrational)
-    operator fun div(other: Sqrt): Term = super.div(other as Irrational)
 
     override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 

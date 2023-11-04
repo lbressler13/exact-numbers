@@ -3,6 +3,7 @@ package xyz.lbres.exactnumbers.exactfraction
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class ExactFractionsHelpersTest {
     @Test fun testSimplify() = runSimplifyTests()
@@ -29,6 +30,14 @@ class ExactFractionsHelpersTest {
         expected = "2.5"
         assertEquals(expected, createDecimalString(ef, 8))
 
+        ef = ExactFraction(5, 3)
+        expected = "2"
+        assertEquals(expected, createDecimalString(ef, 0))
+
+        ef = ExactFraction(4, 3)
+        expected = "1"
+        assertEquals(expected, createDecimalString(ef, 0))
+
         ef = ExactFraction(-1, 9)
         expected = "-0.111111111111"
         assertEquals(expected, createDecimalString(ef, 12))
@@ -54,5 +63,13 @@ class ExactFractionsHelpersTest {
         ef = ExactFraction(bi, 3)
         expected = "33333333333333333333.333333"
         assertEquals(expected, createDecimalString(ef, 6))
+
+        // exception
+        val error = assertFailsWith<IllegalArgumentException> { createDecimalString(ExactFraction(3), -3) }
+        assertEquals("Number of digits must be non-negative", error.message)
+
+        ef = ExactFraction(-3)
+        expected = "-3"
+        assertEquals(expected, createDecimalString(ef, 3))
     }
 }
