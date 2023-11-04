@@ -3,11 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.common.div
-import xyz.lbres.exactnumbers.irrationals.common.times
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -48,14 +43,6 @@ class Pi(override val isDivided: Boolean) : Irrational {
             isDivided == other.isDivided
     }
 
-    // public methods to expose general Irrational operators
-    operator fun times(other: Log): Term = times(other as Irrational)
-    operator fun times(other: Pi): Term = times(other as Irrational)
-    operator fun times(other: Sqrt): Term = times(other as Irrational)
-    operator fun div(other: Log): Term = div(other as Irrational)
-    operator fun div(other: Pi): Term = div(other as Irrational)
-    operator fun div(other: Sqrt): Term = div(other as Irrational)
-
     override fun toString(): String = simpleIf(isDivided, "[1/π]", "[π]")
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
@@ -66,9 +53,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
         /**
          * Simplify list of pis
          *
-         * @param numbers [List<Irrational>] : list to simplify, expected to consist of only Pis
-         * @return [List<Pi>]: simplified list
-         * @throws [ClassCastException] if any of the numbers are not a Pi
+         * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
+         * @return [List]<Pi>: simplified list
          */
         internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
             if (numbers.isNullOrEmpty()) {

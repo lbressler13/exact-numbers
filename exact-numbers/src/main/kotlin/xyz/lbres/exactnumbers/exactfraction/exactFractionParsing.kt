@@ -122,9 +122,9 @@ internal fun parseEFString(unparsed: String): ExactFraction {
 
     try {
         val numbers = unparsed.substring(3, unparsed.lastIndex)
-        val split = numbers.split(' ')
-        val numString = split[0].trim()
-        val denomString = split[1].trim()
+        val splitNumbers = numbers.split(' ')
+        val numString = splitNumbers[0].trim()
+        val denomString = splitNumbers[1].trim()
         val numerator = BigInteger(numString)
         val denominator = BigInteger(denomString)
         return ExactFraction(numerator, denominator)
@@ -148,6 +148,8 @@ fun checkIsEFString(s: String): Boolean {
     return tryOrDefault(false) {
         val startEnd = trimmed.startsWith("EF[") && trimmed.endsWith("]")
         val split = trimmed.substring(3, s.lastIndex).split(" ")
+
+        // try to parse numbers
         BigInteger(split[0])
         BigInteger(split[1])
         startEnd && split.size == 2

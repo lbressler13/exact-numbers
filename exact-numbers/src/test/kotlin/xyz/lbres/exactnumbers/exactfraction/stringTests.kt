@@ -241,16 +241,12 @@ fun runToDecimalStringTests() {
     expected = "-3"
     assertEquals(expected, ef.toDecimalString())
 
-    ef = ExactFraction(1, 2)
-    expected = "0.5"
-    assertEquals(expected, ef.toDecimalString())
-
-    ef = ExactFraction(3, 2)
-    expected = "1.5"
-    assertEquals(expected, ef.toDecimalString())
-
     ef = ExactFraction(3, 8)
     expected = "0.375"
+    assertEquals(expected, ef.toDecimalString())
+
+    ef = ExactFraction(5, 2)
+    expected = "2.5"
     assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(-1, 9)

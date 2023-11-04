@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@Suppress("KotlinConstantConditions")
 class NumberOperatorsTest {
     @Test
     fun testToExactFraction() {

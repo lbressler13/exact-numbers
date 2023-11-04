@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import org.junit.Test
-import xyz.lbres.assertDivByZero
+import xyz.lbres.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -9,6 +9,13 @@ import kotlin.test.assertFailsWith
 class ExactFractionAlternateConstructorsTest {
     @Test
     fun testExactFraction() {
+        runStringTests()
+        runSingleValTests()
+        runPairValTests()
+    }
+
+    // thorough testing is done in parsing tests
+    private fun runStringTests() {
         // Decimal string
         var ef = ExactFraction("1.51")
         assertEquals(151.toBigInteger(), ef.numerator)
@@ -21,14 +28,6 @@ class ExactFractionAlternateConstructorsTest {
 
         // Invalid
         assertFailsWith<NumberFormatException>("Invalid EF string format") { ExactFraction("[]") }
-
-        runStringTests()
-        runSingleValTests()
-        runPairValTests()
-    }
-
-    // thorough testing is done in parsing tests
-    private fun runStringTests() {
     }
 
     private fun runSingleValTests() {

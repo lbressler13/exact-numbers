@@ -4,11 +4,6 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.common.div
-import xyz.lbres.exactnumbers.irrationals.common.times
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
-import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -18,7 +13,6 @@ import java.math.BigInteger
  *
  * @param radicand [ExactFraction]: value to compute root of
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
- * @throws [ArithmeticException] if radicand is negative
  */
 class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : Comparable<Sqrt>, Irrational {
     override val type = TYPE
@@ -39,14 +33,6 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     private constructor(radicand: Int, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
     private constructor(radicand: Long, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
     private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
-
-    // public methods to expose general Irrational operators
-    operator fun times(other: Sqrt): Term = times(other as Irrational)
-    operator fun times(other: Log): Term = times(other as Irrational)
-    operator fun times(other: Pi): Term = times(other as Irrational)
-    operator fun div(other: Sqrt): Term = div(other as Irrational)
-    operator fun div(other: Log): Term = div(other as Irrational)
-    operator fun div(other: Pi): Term = div(other as Irrational)
 
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
@@ -72,7 +58,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     /**
      * Get the value of the root as a rational value if rational
      *
-     * @return [ExactFraction?]: value of the root, or null if the value is irrational
+     * @return [ExactFraction]?: value of the root, or null if the value is irrational
      */
     override fun getRationalValue(): ExactFraction? {
         if (!isRational()) {
@@ -96,14 +82,14 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         return divideBigDecimals(numRoot, denomRoot)
     }
 
-    override fun equals(other: Any?): Boolean = other != null && other is Sqrt && radicand == other.radicand
+    override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
 
     /**
      * Simplify log into a coefficient and a root.
      * Extracts rational component of root into coefficient, and leaves remaining piece as root.
-     * For example sqrt(50) returns coefficient 5 and sqrt(2)
+     * For example, sqrt(50) returns coefficient 5 and sqrt(2)
      *
-     * @return [Pair<ExactFraction, Sqrt>]: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
+     * @return [Pair]<ExactFraction, Sqrt>: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
      */
     fun getSimplified(): Pair<ExactFraction, Sqrt> {
         when {
@@ -146,9 +132,8 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         /**
          * Extract rational values and simplify remaining list of irrationals
          *
-         * @param numbers [List<Irrational>]: list to simplify, expected to consist of only Sqrts
-         * @return [Pair<ExactFraction, List<Sqrt>>]: product of rational values and a list containing a single, fully simplified irrational root
-         * @throws [ClassCastException] if any of the numbers are not a Sqrt
+         * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Sqrts
+         * @return [Pair]<ExactFraction, List<Sqrt>>: product of rational values and a list containing a single, fully simplified irrational root
          */
         internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Sqrt>> {
             if (numbers.isNullOrEmpty()) {

@@ -7,15 +7,16 @@ import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
 
 /**
- * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
+ * Representation of the product of several numbers. Consists of a rational coefficient and list of irrational numbers
  *
  * @param coefficient [ExactFraction]
- * @param numbers [List<Irrational>]
+ * @param numbers [List]<Irrational>
  */
 class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrational>) {
     val coefficient: ExactFraction
@@ -127,12 +128,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         }
 
         val numString = numbers.joinToString("x")
-
-        return if (numString.isEmpty()) {
-            "<$coeffString>"
-        } else {
-            "<${coeffString}x$numString>"
-        }
+        return simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
     }
 
     override fun hashCode(): Int = listOf("Term", coefficient, numbers).hashCode()
@@ -145,9 +141,10 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
          * Public method of constructing a Term, by providing information about irrationals
          *
          * @param coefficient [ExactFraction]
-         * @param logs [List<Log>]: list of log numbers
+         * @param logs [List]<Log>: list of log numbers
          * @param piCount [Int]: how many occurrence of Pi to include in the list of numbers.
          * A negative number corresponds to divided Pi values
+         * @param roots [List]<Sqrt>: list of sqrt numbers
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {

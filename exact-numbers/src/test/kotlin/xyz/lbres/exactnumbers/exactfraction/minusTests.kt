@@ -11,18 +11,12 @@ fun runMinusTests() {
     first = ExactFraction(4)
     second = ExactFraction(0)
     assertEquals(ExactFraction(4), first - second)
+    assertEquals(ExactFraction(-4), second - first)
 
     first = ExactFraction(-4)
     second = ExactFraction(0)
     assertEquals(ExactFraction(-4), first - second)
-
-    first = ExactFraction(0)
-    second = ExactFraction(4)
-    assertEquals(ExactFraction(-4), first - second)
-
-    first = ExactFraction(0)
-    second = ExactFraction(-4)
-    assertEquals(ExactFraction(4), first - second)
+    assertEquals(ExactFraction(4), second - first)
 
     // whole numbers
     first = ExactFraction(4)

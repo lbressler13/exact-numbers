@@ -3,9 +3,9 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
-import xyz.lbres.assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.testutils.assertDivByZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest
@@ -20,13 +20,13 @@ import kotlin.test.assertTrue
 
 class SqrtTest {
     @BeforeTest
-    fun createMocks() {
+    fun setupMockk() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
     }
 
     @AfterTest
-    fun clearMocks() {
+    fun clearMockk() {
         unmockkAll()
     }
 

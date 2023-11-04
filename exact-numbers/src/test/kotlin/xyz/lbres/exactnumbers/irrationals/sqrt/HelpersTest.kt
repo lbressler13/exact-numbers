@@ -7,18 +7,23 @@ import xyz.lbres.exactnumbers.irrationals.common.Memoize
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class HelpersTest {
+    @BeforeTest
+    fun setupMockk() {
+        mockkObject(Memoize)
+    }
+
     @AfterTest
-    fun clearMocks() {
+    fun clearMockk() {
         unmockkAll()
     }
 
     @Test
     fun testGetRootOf() {
-        mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
 
         // rational
