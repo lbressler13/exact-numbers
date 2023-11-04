@@ -135,14 +135,14 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
      *
      * @param digits [Int]: digits of precision in string. Defaults to 8.
      * Will be ignored if this number results in a string in exponential format
-     * @return string representation in decimal format
+     * @return [String]: representation in decimal format
      */
     fun toDecimalString(digits: Int = 8): String = createDecimalString(this, digits)
 
     /**
      * Create a fractional representation of the number, either as whole number or fraction
      *
-     * @return string representation of number in fractional format
+     * @return [String]: representation of number in fractional format
      */
     fun toFractionString() = simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
 
