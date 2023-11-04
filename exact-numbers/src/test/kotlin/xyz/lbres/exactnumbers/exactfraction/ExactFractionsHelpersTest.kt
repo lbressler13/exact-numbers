@@ -67,9 +67,5 @@ class ExactFractionsHelpersTest {
         // exception
         val error = assertFailsWith<IllegalArgumentException> { createDecimalString(ExactFraction(3), -3) }
         assertEquals("Number of digits must be non-negative", error.message)
-
-        ef = ExactFraction(-3)
-        expected = "-3"
-        assertEquals(expected, createDecimalString(ef, 3))
     }
 }

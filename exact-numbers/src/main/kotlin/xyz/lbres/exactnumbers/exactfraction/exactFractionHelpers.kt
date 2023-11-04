@@ -49,6 +49,10 @@ internal fun simplify(values: TypePair<BigInteger>): TypePair<BigInteger> {
  * @return [String]: representation in decimal format
  */
 internal fun createDecimalString(ef: ExactFraction, digits: Int): String {
+    if (digits < 0) {
+        throw IllegalArgumentException("Number of digits must be non-negative")
+    }
+
     if (ef.isWholeNumber()) {
         return ef.numerator.toString()
     }
