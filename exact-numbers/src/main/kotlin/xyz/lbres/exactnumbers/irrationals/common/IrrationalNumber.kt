@@ -1,13 +1,16 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
-import xyz.lbres.common.*
 import xyz.lbres.common.castNumberToByte
+import xyz.lbres.common.castNumberToChar
+import xyz.lbres.common.castNumberToDouble
+import xyz.lbres.common.castNumberToFloat
+import xyz.lbres.common.castNumberToInt
 import xyz.lbres.common.castNumberToLong
+import xyz.lbres.common.castNumberToShort
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
-import java.math.BigInteger
 
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
 

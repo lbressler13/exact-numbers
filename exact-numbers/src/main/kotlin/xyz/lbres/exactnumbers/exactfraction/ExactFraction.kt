@@ -1,5 +1,12 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.common.castNumberToByte
+import xyz.lbres.common.castNumberToChar
+import xyz.lbres.common.castNumberToDouble
+import xyz.lbres.common.castNumberToFloat
+import xyz.lbres.common.castNumberToInt
+import xyz.lbres.common.castNumberToLong
+import xyz.lbres.common.castNumberToShort
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
@@ -8,6 +15,7 @@ import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.MathContext
 import java.math.RoundingMode
 
 /**
@@ -155,16 +163,23 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = efToByte(this)
-    override fun toChar(): Char = efToChar(this)
-    override fun toShort(): Short = efToShort(this)
-    override fun toInt(): Int = efToInt(this)
-    override fun toLong(): Long = efToLong(this)
-    override fun toDouble(): Double = efToDouble(this)
-    override fun toFloat(): Float = efToFloat(this)
+    override fun toByte(): Byte = castNumberToByte(toBigDecimal()) { generateCastingError("Byte") }
+    override fun toChar(): Char = castNumberToChar(toBigDecimal()) { generateCastingError("Char") }
+    override fun toShort(): Short = castNumberToShort(toBigDecimal()) { generateCastingError("Short") }
+    override fun toInt(): Int = castNumberToInt(toBigDecimal()) { generateCastingError("Int") }
+    override fun toLong(): Long = castNumberToLong(toBigDecimal()) { generateCastingError("Long") }
+    override fun toFloat(): Float = castNumberToFloat(toBigDecimal()) { generateCastingError("Float") }
+    override fun toDouble(): Double = castNumberToDouble(toBigDecimal()) { generateCastingError("Double") }
 
     fun toBigInteger(): BigInteger = numerator / denominator
-    fun toBigDecimal(precision: Int = 20): BigDecimal = efToBigDecimal(this, precision)
+    fun toBigDecimal(precision: Int = 20): BigDecimal {
+        val mc = MathContext(precision, RoundingMode.HALF_UP)
+        return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
+    }
+
+    private fun generateCastingError(type: String): Exception {
+        return ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
+    }
 
     override fun hashCode(): Int {
         var result = 31 * numerator.hashCode()
