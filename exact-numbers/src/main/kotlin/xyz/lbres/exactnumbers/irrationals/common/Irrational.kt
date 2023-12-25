@@ -8,7 +8,7 @@ private const val replacementClass = "xyz.lbres.exactnumbers.irrational.common.I
 /**
  * Values needed for representation of an irrational number
  */
-@Deprecated("Interface deprecated in v1.0", ReplaceWith(replacementClass, replacementClass), DeprecationLevel.WARNING)
+@Deprecated("Interface deprecated in v1.0", ReplaceWith("IrrationalNumber", replacementClass), DeprecationLevel.WARNING)
 @Suppress("UNUSED", "DEPRECATION")
 internal interface Irrational {
     val type: String

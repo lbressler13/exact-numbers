@@ -26,13 +26,9 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
 
     // constructors with reduced params + other types
     constructor(radicand: ExactFraction) : this(radicand, false)
-
     constructor(radicand: Int) : this(ExactFraction(radicand), false)
     constructor(radicand: Long) : this(ExactFraction(radicand), false)
     constructor(radicand: BigInteger) : this(ExactFraction(radicand), false)
-    private constructor(radicand: Int, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
-    private constructor(radicand: Long, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
-    private constructor(radicand: BigInteger, fullySimplified: Boolean) : this(ExactFraction(radicand), fullySimplified)
 
     override fun isZero(): Boolean = radicand.isZero()
     override fun swapDivided(): Sqrt {
@@ -40,7 +36,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             throw divideByZero
         }
 
-        return Sqrt(radicand.inverse())
+        return Sqrt(radicand.inverse(), true)
     }
 
     /**
