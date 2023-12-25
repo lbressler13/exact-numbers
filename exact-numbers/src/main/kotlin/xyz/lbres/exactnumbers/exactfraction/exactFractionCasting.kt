@@ -131,3 +131,7 @@ private fun <T> castToDecimalNumber(number: ExactFraction, minValue: String, max
 
     throw ExactFractionOverflowException("Overflow when casting to $type", number.toFractionString())
 }
+
+private fun generateErrorMessage(type: String, value: ExactFraction): Exception {
+    return ExactFractionOverflowException("Overflow when casting to $type", value.toFractionString())
+}

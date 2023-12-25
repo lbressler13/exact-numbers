@@ -7,8 +7,10 @@ import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
+import java.math.BigInteger
 
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
+
     abstract val type: String
 
     abstract fun getValue(): BigDecimal
@@ -30,12 +32,16 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
 
     override fun compareTo(other: T): Int = getValue().compareTo(other.getValue())
 
-    override fun toByte(): Byte = castNumberToByte(getValue())
-    override fun toChar(): Char = castNumberToChar(getValue())
-    override fun toShort(): Short = castNumberToShort(getValue())
-    override fun toInt(): Int = castNumberToInt(getValue())
-    override fun toLong(): Long = castNumberToLong(getValue())
+    override fun toByte(): Byte = castNumberToByte(getValue(), getCastingError)
+    override fun toChar(): Char = castNumberToChar(getValue(), getCastingError)
+    override fun toShort(): Short = castNumberToShort(getValue(), getCastingError)
+    override fun toInt(): Int = castNumberToInt(getValue(), getCastingError)
+    override fun toLong(): Long = castNumberToLong(getValue(), getCastingError)
 
-    override fun toFloat(): Float = castNumberToFloat(getValue())
-    override fun toDouble(): Double = castNumberToDouble(getValue())
+    override fun toFloat(): Float = castNumberToFloat(getValue(), getCastingError)
+    override fun toDouble(): Double = castNumberToDouble(getValue(), getCastingError)
+
+    private val getCastingError: (BigDecimal) -> Exception = {
+        ArithmeticException("Value would overflow supported range")
+    }
 }
