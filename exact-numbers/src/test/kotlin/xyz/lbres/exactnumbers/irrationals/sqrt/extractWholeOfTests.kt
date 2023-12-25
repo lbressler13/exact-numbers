@@ -208,6 +208,12 @@ fun runExtractWholeOfTests() {
             Pair(BigInteger("200"), ten)
         )
     )
+
+    val intMax = Int.MAX_VALUE.toBigInteger()
+    num = intMax * intMax
+    expected = intMax
+    every { Memoize.individualWholeNumber } answers { mutableMapOf() }
+    assertEquals(expected, extractWholeOf(num))
 }
 
 /**
