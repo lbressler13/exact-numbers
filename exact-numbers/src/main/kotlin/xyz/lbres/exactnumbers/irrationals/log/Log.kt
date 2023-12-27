@@ -4,6 +4,7 @@ import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -152,8 +153,8 @@ class Log private constructor(
 
     override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
 
-    companion object {
-        const val TYPE = "log"
+    companion object : IrrationalNumberCompanion<Log>() {
+        public override val TYPE = "log"
 
         val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
         val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
@@ -165,7 +166,7 @@ class Log private constructor(
          * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
          */
         // TODO: improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Log>> {
+        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }
