@@ -3,6 +3,7 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -52,18 +53,19 @@ class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
 
-    companion object {
-        const val TYPE = "pi"
+    companion object : IrrationalNumberCompanion<Pi>() {
+        override val TYPE = "pi"
 
         /**
          * Simplify list of pis
          *
          * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
          * @return [List]<Pi>: simplified list
+         * @return [Pair]<ExactFraction, List<Pi>>: pair where first value is one, and the second value is the simplified list
          */
-        internal fun simplifyList(numbers: List<IrrationalNumber<*>>?): List<Pi> {
+        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Pi>> {
             if (numbers.isNullOrEmpty()) {
-                return emptyList()
+                return Pair(ExactFraction.ONE, emptyList())
             }
 
             @Suppress("UNCHECKED_CAST")
@@ -73,7 +75,8 @@ class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
             val negative = numbers.size - positive
             val diff = abs(positive - negative)
 
-            return List(diff) { Pi(isDivided = positive < negative) }
+            val pis = List(diff) { Pi(isDivided = positive < negative) }
+            return Pair(ExactFraction.ONE, pis)
         }
     }
 }

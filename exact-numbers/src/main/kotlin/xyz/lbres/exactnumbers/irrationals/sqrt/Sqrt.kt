@@ -121,7 +121,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
 
     companion object : IrrationalNumberCompanion<Sqrt>() {
-        public override val TYPE = "sqrt"
+        override val TYPE = "sqrt"
 
         val ZERO = Sqrt(ExactFraction.ZERO, fullySimplified = true)
         val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)

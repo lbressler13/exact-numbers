@@ -154,7 +154,7 @@ class Log private constructor(
     override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
 
     companion object : IrrationalNumberCompanion<Log>() {
-        public override val TYPE = "log"
+        override val TYPE = "log"
 
         val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
         val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
