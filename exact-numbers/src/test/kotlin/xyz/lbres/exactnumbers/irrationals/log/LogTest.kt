@@ -192,14 +192,13 @@ class LogTest {
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testSimplifyList() = runSimplifyListTests()
 
-    // TODO
-    // @Test fun testToByte() = runToByteTests()
-    // @Test fun testToChar() = runToCharTests()
-    // @Test fun testToShort() = runToShortTests()
-    // @Test fun testToInt() = runToIntTests()
-    // @Test fun testToLong() = runToLongTests()
-    // @Test fun testToDouble() = runToDoubleTests()
-    // @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToByte() = runToByteTests() // TODO
+    @Test fun testToChar() = runToCharTests() // TODO
+    @Test fun testToShort() = runToShortTests() // TODO
+    @Test fun testToInt() = runToIntTests() // TODO
+    @Test fun testToLong() = runToLongTests() // TODO
+    @Test fun testToDouble() = runToDoubleTests() // TODO
+    @Test fun testToFloat() = runToFloatTests() // TODO
 
     @Test
     fun testToString() {

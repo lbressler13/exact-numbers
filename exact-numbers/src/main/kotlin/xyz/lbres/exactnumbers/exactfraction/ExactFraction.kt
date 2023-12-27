@@ -1,12 +1,12 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.common.castNumberToByte
-import xyz.lbres.common.castNumberToChar
-import xyz.lbres.common.castNumberToDouble
-import xyz.lbres.common.castNumberToFloat
-import xyz.lbres.common.castNumberToInt
-import xyz.lbres.common.castNumberToLong
-import xyz.lbres.common.castNumberToShort
+import xyz.lbres.common.castToByte
+import xyz.lbres.common.castToChar
+import xyz.lbres.common.castToDouble
+import xyz.lbres.common.castToFloat
+import xyz.lbres.common.castToInt
+import xyz.lbres.common.castToLong
+import xyz.lbres.common.castToShort
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
@@ -163,13 +163,13 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = castNumberToByte(toBigDecimal()) { generateCastingError("Byte") }
-    override fun toChar(): Char = castNumberToChar(toBigDecimal()) { generateCastingError("Char") }
-    override fun toShort(): Short = castNumberToShort(toBigDecimal()) { generateCastingError("Short") }
-    override fun toInt(): Int = castNumberToInt(toBigDecimal()) { generateCastingError("Int") }
-    override fun toLong(): Long = castNumberToLong(toBigDecimal()) { generateCastingError("Long") }
-    override fun toFloat(): Float = castNumberToFloat(toBigDecimal()) { generateCastingError("Float") }
-    override fun toDouble(): Double = castNumberToDouble(toBigDecimal()) { generateCastingError("Double") }
+    override fun toByte(): Byte = castToByte(toBigDecimal()) { generateCastingError("Byte") }
+    override fun toChar(): Char = castToChar(toBigDecimal()) { generateCastingError("Char") }
+    override fun toShort(): Short = castToShort(toBigDecimal()) { generateCastingError("Short") }
+    override fun toInt(): Int = castToInt(toBigDecimal()) { generateCastingError("Int") }
+    override fun toLong(): Long = castToLong(toBigDecimal()) { generateCastingError("Long") }
+    override fun toFloat(): Float = castToFloat(toBigDecimal()) { generateCastingError("Float") }
+    override fun toDouble(): Double = castToDouble(toBigDecimal()) { generateCastingError("Double") }
 
     fun toBigInteger(): BigInteger = numerator / denominator
     fun toBigDecimal(precision: Int = 20): BigDecimal {
@@ -177,7 +177,7 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
 
-    private fun generateCastingError(type: String): Exception {
+    private fun generateCastingError(type: String): ArithmeticException {
         return ExactFractionOverflowException("Overflow when casting to $type", toFractionString())
     }
 
