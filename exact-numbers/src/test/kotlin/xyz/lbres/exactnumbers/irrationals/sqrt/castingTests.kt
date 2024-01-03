@@ -1,11 +1,11 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
-private val errorMessage = "Value would overflow supported range"
+private const val errorMessage = "Value would overflow supported range"
 
 fun runToByteTests() {
     var sqrt = Sqrt.ZERO
@@ -29,8 +29,7 @@ fun runToByteTests() {
 
     // overflow
     sqrt = Sqrt(max * max * BigInteger.TEN)
-    val exception = assertFailsWith<ArithmeticException> { sqrt.toByte() }
-    assertEquals(errorMessage, exception.message)
+    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toByte() }
 }
 
 fun runToCharTests() {
@@ -55,8 +54,7 @@ fun runToCharTests() {
 
     // overflow
     sqrt = Sqrt(max * max * BigInteger.TEN)
-    val exception = assertFailsWith<ArithmeticException> { sqrt.toChar() }
-    assertEquals(errorMessage, exception.message)
+    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toChar() }
 }
 
 fun runToShortTests() {
@@ -81,8 +79,7 @@ fun runToShortTests() {
 
     // overflow
     sqrt = Sqrt(max * max * BigInteger.TEN)
-    val exception = assertFailsWith<ArithmeticException> { sqrt.toShort() }
-    assertEquals(errorMessage, exception.message)
+    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toShort() }
 }
 
 fun runToIntTests() {
@@ -135,8 +132,7 @@ fun runToLongTests() {
 
     // overflow
     sqrt = Sqrt(max * max * BigInteger.TEN)
-    val exception = assertFailsWith<ArithmeticException> { sqrt.toLong() }
-    assertEquals(errorMessage, exception.message)
+    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toLong() }
 }
 
 fun runToDoubleTests() {
@@ -188,6 +184,5 @@ fun runToFloatTests() {
 
     // overflow
     sqrt = Sqrt((max * max * max).toBigInteger())
-    val exception = assertFailsWith<ArithmeticException> { sqrt.toFloat() }
-    assertEquals(errorMessage, exception.message)
+    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toFloat() }
 }

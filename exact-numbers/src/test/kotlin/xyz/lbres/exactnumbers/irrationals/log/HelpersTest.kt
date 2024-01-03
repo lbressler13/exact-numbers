@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
@@ -53,6 +54,9 @@ class HelpersTest {
         bi = 200.toBigInteger()
         expected = BigDecimal("7.643856189774724")
         assertEquals(expected, getLogOf(bi, base))
+
+        bi = BigInteger.TWO.pow(Short.MAX_VALUE.toInt())
+        assertFailsWithMessage<ArithmeticException>("Error calculating log") { getLogOf(bi, base) }
 
         // other
         bi = BigInteger.ONE

@@ -9,6 +9,8 @@ import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 
+// TODO store value and rational value
+
 /**
  * Representation of a square root with a rational radicand
  *

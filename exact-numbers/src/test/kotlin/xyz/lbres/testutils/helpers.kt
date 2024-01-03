@@ -23,6 +23,12 @@ fun assertDivByZero(test: () -> Unit) {
  */
 fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
     val errorMessage = "Overflow when casting to $type"
-    val error = assertFailsWith<ExactFractionOverflowException>(errorMessage) { cast() }
+    val error = assertFailsWith<ExactFractionOverflowException> { cast() }
+    assertEquals(errorMessage, error.message)
     assertEquals(value.toFractionString(), error.overflowValue)
+}
+
+inline fun <reified T : Exception> assertFailsWithMessage(message: String, test: () -> Unit) {
+    val error = assertFailsWith<T> { test() }
+    assertEquals(message, error.message)
 }
