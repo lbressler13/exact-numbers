@@ -10,8 +10,8 @@ fun runCompareToTests() {
     var second = ExactFraction(0)
     assertEquals(0, first.compareTo(second))
 
-    first = ExactFraction(100)
-    second = ExactFraction(100)
+    first = ExactFraction(100, 3)
+    second = ExactFraction(100, 3)
     assertEquals(0, first.compareTo(second))
 
     // pos less than zero
@@ -30,22 +30,30 @@ fun runCompareToTests() {
     assertTrue(first < second)
 
     // neg order
-    first = ExactFraction(-3)
+    first = ExactFraction(-3, 4)
     second = ExactFraction(-2)
-    assertTrue(first < second)
+    assertTrue(first > second)
+
+    first = ExactFraction(-3, 4)
+    second = ExactFraction(-4, 3)
+    assertTrue(first > second)
 
     // pos order
     first = ExactFraction(3)
     second = ExactFraction(2)
     assertTrue(first > second)
 
-    // Int, Long, BigInteger
+    first = ExactFraction(3, 4)
+    second = ExactFraction(4, 3)
+    assertTrue(first < second)
+
+    // other number types
     runMultiTypeCompareTest(0, ExactFraction.ZERO, 0) // eq
-    runMultiTypeCompareTest(100, ExactFraction(100), 0) // eq
-    runMultiTypeCompareTest(0, ExactFraction(3), 1) // gt
+    runMultiTypeCompareTest(100, ExactFraction(100, 3), -1) // lt
+    runMultiTypeCompareTest(0, ExactFraction(3, 2), 1) // gt
     runMultiTypeCompareTest(0, ExactFraction(-3), -1) // lt
     runMultiTypeCompareTest(1, ExactFraction(-1), -1) // lt
-    runMultiTypeCompareTest(-2, ExactFraction(-3), -1) // lt
+    runMultiTypeCompareTest(-2, ExactFraction(-3, 4), 1) // lt
     runMultiTypeCompareTest(2, ExactFraction(3), 1) // gt
 }
 
