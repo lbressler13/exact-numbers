@@ -17,7 +17,7 @@ private val ten = BigInteger("10")
 
 fun runExtractWholeOfTests() {
     // exception
-    assertFailsWithMessage<ArithmeticException>("Cannot calculate root of negative number") { extractWholeOf(BigInteger("-25")) }
+    assertFailsWithMessage<ArithmeticException>("Cannot calculate root of a negative number") { extractWholeOf(BigInteger("-25")) }
 
     // rational
     var num = BigInteger.ZERO

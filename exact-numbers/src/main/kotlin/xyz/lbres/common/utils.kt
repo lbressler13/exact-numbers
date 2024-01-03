@@ -14,6 +14,10 @@ import java.math.RoundingMode
  * @return [BigDecimal]: bigDec1 / bigDec2
  */
 internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
+    if (bigDec2 == BigDecimal.ZERO) {
+        throw ArithmeticException("divide by zero")
+    }
+
     return try {
         bigDec1.divide(bigDec2)
     } catch (_: ArithmeticException) {
