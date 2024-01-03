@@ -234,7 +234,7 @@ fun runToBigDecimalTests() {
     assertEquals(bd, ef.toBigDecimal())
 }
 
-private fun <T: Number> runWholeNumberCastingTests(getExpected: (Long) -> T, cast: (ExactFraction) -> T, minValue: T, maxValue: T, type: String) {
+private fun <T : Number> runWholeNumberCastingTests(getExpected: (Long) -> T, cast: (ExactFraction) -> T, minValue: T, maxValue: T, type: String) {
     var ef = ExactFraction(0)
     var expected = getExpected(0)
     assertEquals(expected, cast(ef))
