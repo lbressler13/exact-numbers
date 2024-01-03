@@ -30,21 +30,7 @@ fun runToPairTests() {
 }
 
 fun runToByteTests() {
-    runWholeNumberCastingTests({ it.toByte() }, { it.toByte() })
-
-    var ef = ExactFraction(Byte.MIN_VALUE.toInt())
-    var expected = Byte.MIN_VALUE
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(Byte.MAX_VALUE.toInt())
-    expected = Byte.MAX_VALUE
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(Byte.MAX_VALUE.toInt() + 1)
-    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
-
-    ef = ExactFraction(Byte.MIN_VALUE.toInt() - 1)
-    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
+    runWholeNumberCastingTests({ it.toByte() }, { it.toByte() }, Byte.MIN_VALUE, Byte.MAX_VALUE, "Byte")
 }
 
 // test accounts for fact that Char can't be negative
@@ -83,61 +69,15 @@ fun runToCharTests() {
 }
 
 fun runToShortTests() {
-    runWholeNumberCastingTests({ it.toShort() }, { it.toShort() })
-
-    var ef = ExactFraction(Short.MIN_VALUE.toInt())
-    var expected = Short.MIN_VALUE
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(Short.MAX_VALUE.toInt())
-    expected = Short.MAX_VALUE
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(Short.MAX_VALUE.toInt() + 1)
-    assertExactFractionOverflow("Short", ef) { ef.toShort() }
-
-    ef = ExactFraction(Short.MIN_VALUE.toInt() - 1)
-    assertExactFractionOverflow("Short", ef) { ef.toShort() }
+    runWholeNumberCastingTests({ it.toShort() }, { it.toShort() }, Short.MIN_VALUE, Short.MAX_VALUE, "Short")
 }
 
 fun runToIntTests() {
-    runWholeNumberCastingTests({ it.toInt() }, { it.toInt() })
-
-    var ef = ExactFraction(Int.MIN_VALUE)
-    var expected = Int.MIN_VALUE
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(Int.MAX_VALUE)
-    expected = Int.MAX_VALUE
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(Int.MAX_VALUE)
-    ef++
-    assertExactFractionOverflow("Int", ef) { ef.toInt() }
-
-    ef = ExactFraction(Int.MIN_VALUE)
-    ef--
-    assertExactFractionOverflow("Int", ef) { ef.toInt() }
+    runWholeNumberCastingTests({ it.toInt() }, { it.toInt() }, Int.MIN_VALUE, Int.MAX_VALUE, "Int")
 }
 
 fun runToLongTests() {
-    runWholeNumberCastingTests({ it }, { it.toLong() })
-
-    var ef = ExactFraction(Long.MIN_VALUE)
-    var expected = Long.MIN_VALUE
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(Long.MAX_VALUE)
-    expected = Long.MAX_VALUE
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(Long.MAX_VALUE)
-    ef++
-    assertExactFractionOverflow("Long", ef) { ef.toLong() }
-
-    ef = ExactFraction(Long.MIN_VALUE)
-    ef--
-    assertExactFractionOverflow("Long", ef) { ef.toLong() }
+    runWholeNumberCastingTests({ it }, { it.toLong() }, Long.MIN_VALUE, Long.MAX_VALUE, "Long")
 }
 
 fun runToDoubleTests() {
@@ -294,7 +234,7 @@ fun runToBigDecimalTests() {
     assertEquals(bd, ef.toBigDecimal())
 }
 
-private fun <T: Number> runWholeNumberCastingTests(getExpected: (Long) -> T, cast: (ExactFraction) -> T) {
+private fun <T: Number> runWholeNumberCastingTests(getExpected: (Long) -> T, cast: (ExactFraction) -> T, minValue: T, maxValue: T, type: String) {
     var ef = ExactFraction(0)
     var expected = getExpected(0)
     assertEquals(expected, cast(ef))
@@ -315,18 +255,17 @@ private fun <T: Number> runWholeNumberCastingTests(getExpected: (Long) -> T, cas
     expected = getExpected(-3)
     assertEquals(expected, cast(ef))
 
-    // TODO
-//    ef = ExactFraction(Byte.MIN_VALUE.toInt())
-//    expected = Byte.MIN_VALUE
-//    assertEquals(expected, ef.toByte())
-//
-//    ef = ExactFraction(Byte.MAX_VALUE.toInt())
-//    expected = Byte.MAX_VALUE
-//    assertEquals(expected, ef.toByte())
-//
-//    ef = ExactFraction(Byte.MAX_VALUE.toInt() + 1)
-//    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
-//
-//    ef = ExactFraction(Byte.MIN_VALUE.toInt() - 1)
-//    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
+    ef = ExactFraction(minValue.toLong())
+    assertEquals(minValue, cast(ef))
+
+    ef = ExactFraction(maxValue.toLong())
+    assertEquals(maxValue, cast(ef))
+
+    ef = ExactFraction(maxValue.toLong())
+    ef++
+    assertExactFractionOverflow(type, ef) { cast(ef) }
+
+    ef = ExactFraction(minValue.toLong())
+    ef--
+    assertExactFractionOverflow(type, ef) { cast(ef) }
 }
