@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -40,90 +39,18 @@ fun runCompareToTests() {
     second = ExactFraction(2)
     assertTrue(first > second)
 
-    // BigInteger
-    var ef = ExactFraction(0)
-    var bi = BigInteger.ZERO
-    assertEquals(0, ef.compareTo(bi))
+    // Int, Long, BigInteger
+    runMultiTypeCompareTest(0, ExactFraction.ZERO, 0) // eq
+    runMultiTypeCompareTest(100, ExactFraction(100), 0) // eq
+    runMultiTypeCompareTest(0, ExactFraction(3), 1) // gt
+    runMultiTypeCompareTest(0, ExactFraction(-3), -1) // lt
+    runMultiTypeCompareTest(1, ExactFraction(-1), -1) // lt
+    runMultiTypeCompareTest(-2, ExactFraction(-3), -1) // lt
+    runMultiTypeCompareTest(2, ExactFraction(3), 1) // gt
+}
 
-    ef = ExactFraction(100)
-    bi = 100.toBigInteger()
-    assertEquals(0, ef.compareTo(bi))
-
-    ef = ExactFraction(3)
-    bi = BigInteger.ZERO
-    assertTrue(ef > bi)
-
-    ef = ExactFraction(-3)
-    bi = BigInteger.ZERO
-    assertTrue(ef < bi)
-
-    ef = ExactFraction(-1)
-    bi = BigInteger.ONE
-    assertTrue(ef < bi)
-
-    ef = ExactFraction(-3)
-    bi = (-2).toBigInteger()
-    assertTrue(ef < bi)
-
-    ef = ExactFraction(3)
-    bi = 2.toBigInteger()
-    assertTrue(ef > bi)
-
-    // Int
-    ef = ExactFraction(0)
-    var i = 0
-    assertEquals(0, ef.compareTo(i))
-
-    ef = ExactFraction(100)
-    i = 100
-    assertEquals(0, ef.compareTo(i))
-
-    ef = ExactFraction(3)
-    i = 0
-    assertTrue(ef > i)
-
-    ef = ExactFraction(-3)
-    i = 0
-    assertTrue(ef < i)
-
-    ef = ExactFraction(-1)
-    i = 1
-    assertTrue(ef < i)
-
-    ef = ExactFraction(-3)
-    i = -2
-    assertTrue(ef < i)
-
-    ef = ExactFraction(3)
-    i = 2
-    assertTrue(ef > i)
-
-    // Long
-    ef = ExactFraction(0)
-    var l = 0L
-    assertEquals(0, ef.compareTo(l))
-
-    ef = ExactFraction(100)
-    l = 100L
-    assertEquals(0, ef.compareTo(l))
-
-    ef = ExactFraction(3)
-    l = 0L
-    assertTrue(ef > l)
-
-    ef = ExactFraction(-3)
-    l = 0L
-    assertTrue(ef < l)
-
-    ef = ExactFraction(-1)
-    l = 1L
-    assertTrue(ef < l)
-
-    ef = ExactFraction(-3)
-    l = -2L
-    assertTrue(ef < l)
-
-    ef = ExactFraction(3)
-    l = 2L
-    assertTrue(ef > l)
+private fun runMultiTypeCompareTest(value: Int, ef: ExactFraction, expected: Int) {
+    assertEquals(expected, ef.compareTo(value))
+    assertEquals(expected, ef.compareTo(value.toLong()))
+    assertEquals(expected, ef.compareTo(value.toBigInteger()))
 }

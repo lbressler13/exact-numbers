@@ -1,10 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 fun runEqualsTests() {
     assertEquals(ExactFraction(0), ExactFraction(0))
@@ -18,28 +15,15 @@ fun runEqualsTests() {
 }
 
 fun runEqTests() {
-    var ef = ExactFraction(0)
-    assertTrue(ef.eq(0))
-    assertTrue(ef.eq(0L))
-    assertTrue(ef.eq(BigInteger.ZERO))
+    runMultiTypeEqTest(ExactFraction(0), 0, true)
+    runMultiTypeEqTest(ExactFraction(-3), -3, true)
+    runMultiTypeEqTest(ExactFraction(10), -10, false)
+    runMultiTypeEqTest(ExactFraction(10, 7), 1, false)
+    runMultiTypeEqTest(ExactFraction(-70), 0, false)
+}
 
-    ef = ExactFraction(-3)
-    assertTrue(ef.eq(-3))
-    assertTrue(ef.eq(-3L))
-    assertTrue(ef.eq((-3).toBigInteger()))
-
-    ef = ExactFraction(10)
-    assertFalse(ef.eq(-10))
-    assertFalse(ef.eq(-10L))
-    assertFalse(ef.eq((-10).toBigInteger()))
-
-    ef = ExactFraction(10, 7)
-    assertFalse(ef.eq(1))
-    assertFalse(ef.eq(1L))
-    assertFalse(ef.eq(BigInteger.ONE))
-
-    ef = ExactFraction(-70)
-    assertFalse(ef.eq(0))
-    assertFalse(ef.eq(0L))
-    assertFalse(ef.eq(BigInteger.ZERO))
+private fun runMultiTypeEqTest(ef: ExactFraction, value: Int, expected: Boolean) {
+    assertEquals(expected, ef.eq(value))
+    assertEquals(expected, ef.eq(value.toLong()))
+    assertEquals(expected, ef.eq(value.toBigInteger()))
 }
