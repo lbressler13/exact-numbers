@@ -9,23 +9,23 @@ import kotlin.test.assertEquals
 
 fun runToPairTests() {
     var ef = ExactFraction(0)
-    var expected = Pair(0.toBigInteger(), 1.toBigInteger())
+    var expected = Pair(BigInteger("0"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(1)
-    expected = Pair(1.toBigInteger(), 1.toBigInteger())
+    expected = Pair(BigInteger("1"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(2, 7)
-    expected = Pair(2.toBigInteger(), 7.toBigInteger())
+    expected = Pair(BigInteger("2"), BigInteger("7"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(-1)
-    expected = Pair((-1).toBigInteger(), 1.toBigInteger())
+    expected = Pair(BigInteger("-1"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(-2, 7)
-    expected = Pair((-2).toBigInteger(), 7.toBigInteger())
+    expected = Pair(BigInteger("-2"), BigInteger("7"))
     assertEquals(expected, ef.toPair())
 }
 
@@ -67,7 +67,7 @@ fun runToByteTests() {
     assertExactFractionOverflow("Byte", ef) { ef.toByte() }
 }
 
-// test account for fact that Char can't be negative
+// test accounts for fact that Char can't be negative
 fun runToCharTests() {
     var ef = ExactFraction(0)
     var expected = 0.toChar()
