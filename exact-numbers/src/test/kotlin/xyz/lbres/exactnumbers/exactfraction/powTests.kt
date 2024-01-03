@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.exactnumbers.ext.toExactFraction
+import xyz.lbres.testutils.assertFailsWithMessage
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -113,14 +114,14 @@ private fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFrac
     val expectedError = "Exponents must be whole numbers"
     base = ExactFraction.FOUR
     exp = ExactFraction(1, 2)
-    assertFailsWith<ArithmeticException>(expectedError) { powFn(base, exp) }
+    assertFailsWithMessage<ArithmeticException>(expectedError) { powFn(base, exp) }
 
     exp = ExactFraction(-8, 5)
-    assertFailsWith<ArithmeticException>(expectedError) { powFn(base, exp) }
+    assertFailsWithMessage<ArithmeticException>(expectedError) { powFn(base, exp) }
 
     base = ExactFraction(3, 7)
     exp = ExactFraction(3, 7)
-    assertFailsWith<ArithmeticException>(expectedError) { powFn(base, exp) }
+    assertFailsWithMessage<ArithmeticException>(expectedError) { powFn(base, exp) }
 }
 
 private fun runLargeExponentTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
