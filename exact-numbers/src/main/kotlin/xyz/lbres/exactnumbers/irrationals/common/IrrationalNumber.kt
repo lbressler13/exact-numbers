@@ -13,16 +13,45 @@ import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
 
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
-    protected open var _isRational: Boolean? = null
-    protected open var _value: BigDecimal? = null
-    protected open var _rationalValue: ExactFraction? = null
+    private var _isRational: Boolean? = null
+    private var _value: BigDecimal? = null
+    private var _rationalValue: ExactFraction? = null
 
     abstract val type: String
 
-    abstract fun getValue(): BigDecimal
     abstract fun isZero(): Boolean
-    abstract fun isRational(): Boolean
-    abstract fun getRationalValue(): ExactFraction?
+
+    protected abstract fun protectedGetValue(): BigDecimal
+    protected abstract fun protectedIsRational(): Boolean
+    protected abstract fun protectedGetRationalValue(): ExactFraction?
+
+    fun getValue(): BigDecimal {
+        if (_value == null) {
+            _value = protectedGetValue()
+        }
+
+        return _value!!
+    }
+
+    fun isRational(): Boolean {
+        if (_isRational == null) {
+            _isRational = protectedIsRational()
+        }
+
+        return _isRational!!
+    }
+
+    fun getRationalValue(): ExactFraction? {
+        if (!isRational()) {
+            return null
+        }
+
+        if (_rationalValue == null) {
+            _rationalValue = protectedGetRationalValue()
+        }
+
+        return _rationalValue
+    }
 
     abstract val isDivided: Boolean
     abstract fun swapDivided(): T

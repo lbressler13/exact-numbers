@@ -65,16 +65,12 @@ class Log private constructor(
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun isRational(): Boolean {
-        if (_isRational == null) {
-            val numLog = getLogOf(argument.numerator, base)
-            val denomLog = getLogOf(argument.denominator, base)
+    override fun protectedIsRational(): Boolean {
+        val numLog = getLogOf(argument.numerator, base)
+        val denomLog = getLogOf(argument.denominator, base)
 
-            // rational if both values are whole numbers
-            _isRational = numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
-        }
-
-        return _isRational!!
+        // rational if both values are whole numbers
+        return numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
     }
 
     /**
@@ -82,9 +78,8 @@ class Log private constructor(
      *
      * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
-    override fun getRationalValue(): ExactFraction? {
+    override fun protectedGetRationalValue(): ExactFraction? {
         when {
-            _rationalValue != null -> return _rationalValue!!
             !isRational() -> return null
             isZero() -> return ExactFraction.ZERO
         }
@@ -98,8 +93,7 @@ class Log private constructor(
             else -> ExactFraction(numLog, denomLog)
         }
 
-        _rationalValue = simpleIf(isDivided, { result.inverse() }, { result })
-        return _rationalValue!!
+        return simpleIf(isDivided, { result.inverse() }, { result })
     }
 
     /**
@@ -108,13 +102,9 @@ class Log private constructor(
      *
      * @return [BigDecimal]
      */
-    override fun getValue(): BigDecimal {
-        if (_value == null) {
-            val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-            _value = simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
-        }
-
-        return _value!!
+    override fun protectedGetValue(): BigDecimal {
+        val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
+        return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
     }
 
     /**
