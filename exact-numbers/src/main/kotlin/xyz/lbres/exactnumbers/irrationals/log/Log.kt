@@ -65,7 +65,7 @@ class Log private constructor(
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun protectedIsRational(): Boolean {
+    override fun checkIsRational(): Boolean {
         val numLog = getLogOf(argument.numerator, base)
         val denomLog = getLogOf(argument.denominator, base)
 
@@ -78,7 +78,7 @@ class Log private constructor(
      *
      * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
-    override fun protectedGetRationalValue(): ExactFraction? {
+    override fun performGetRationalValue(): ExactFraction? {
         when {
             !isRational() -> return null
             isZero() -> return ExactFraction.ZERO
@@ -102,7 +102,7 @@ class Log private constructor(
      *
      * @return [BigDecimal]
      */
-    override fun protectedGetValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
         return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
     }

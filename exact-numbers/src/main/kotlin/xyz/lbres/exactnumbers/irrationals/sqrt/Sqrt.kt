@@ -45,7 +45,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun protectedIsRational(): Boolean {
+    override fun checkIsRational(): Boolean {
         val numRoot = getRootOf(radicand.numerator).toPlainString()
         val denomRoot = getRootOf(radicand.denominator).toPlainString()
 
@@ -57,7 +57,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      *
      * @return [ExactFraction]?: value of the root, or null if the value is irrational
      */
-    override fun protectedGetRationalValue(): ExactFraction? {
+    override fun performGetRationalValue(): ExactFraction? {
         if (!isRational()) {
             return null
         }
@@ -73,7 +73,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      *
      * @return [BigDecimal]
      */
-    override fun protectedGetValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val numRoot = getRootOf(radicand.numerator)
         val denomRoot = getRootOf(radicand.denominator)
         return divideBigDecimals(numRoot, denomRoot)

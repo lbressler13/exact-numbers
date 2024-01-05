@@ -20,14 +20,14 @@ class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
     // constructor with reduced params
     constructor() : this(false)
 
-    override fun protectedGetValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val base = PI.toBigDecimal()
         return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, base) }, { base })
     }
 
     override fun isZero(): Boolean = false
-    override fun protectedIsRational(): Boolean = false
-    override fun protectedGetRationalValue(): ExactFraction? = null
+    override fun checkIsRational(): Boolean = false
+    override fun performGetRationalValue(): ExactFraction? = null
     override fun swapDivided(): Pi = Pi(!isDivided)
 
     override fun compareTo(other: Pi): Int {
