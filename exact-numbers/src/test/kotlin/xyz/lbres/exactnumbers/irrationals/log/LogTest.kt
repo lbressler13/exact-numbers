@@ -202,8 +202,8 @@ class LogTest {
     @Test fun testToShort() = runToShortTests()
     @Test fun testToInt() = runToIntTests()
     @Test fun testToLong() = runToLongTests()
-//    @Test fun testToFloat() = runToFloatTests() // TODO
-//    @Test fun testToDouble() = runToDoubleTests() // TODO
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 
     @Test
     fun testToString() {
