@@ -5,7 +5,7 @@ import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ExactFractionsHelpersTest {
+class ExactFractionHelpersTest {
     @Test fun testSimplify() = runSimplifyTests()
 
     @Test

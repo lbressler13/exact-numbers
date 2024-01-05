@@ -212,30 +212,30 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
 /**
  * Run tests for a single type of decimal number
  *
- * @param castLong (Double) -> T: cast a double value to a value of the current number type
+ * @param castDouble (Double) -> T: cast a double value to a value of the current number type
  * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
  * @param maxValue T: maximum valid value for the current number type
  * @param type [String]: string representation of type, which is used in overflow exceptions
  */
-private fun <T : Number> runDecimalNumberCastingTests(castLong: (Double) -> T, castEF: (ExactFraction) -> T, maxValue: T, type: String) {
+private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T, castEF: (ExactFraction) -> T, maxValue: T, type: String) {
     var ef = ExactFraction(0)
-    var expected = castLong(0.0)
+    var expected = castDouble(0.0)
     assertEquals(expected, castEF(ef))
 
     ef = ExactFraction(5)
-    expected = castLong(5.0)
+    expected = castDouble(5.0)
     assertEquals(expected, castEF(ef))
 
     ef = ExactFraction(-5)
-    expected = castLong(-5.0)
+    expected = castDouble(-5.0)
     assertEquals(expected, castEF(ef))
 
     ef = ExactFraction(1, 2)
-    expected = castLong(0.5)
+    expected = castDouble(0.5)
     assertEquals(expected, castEF(ef))
 
     ef = ExactFraction(-3, 8)
-    expected = castLong(-0.375)
+    expected = castDouble(-0.375)
     assertEquals(expected, castEF(ef))
 
     val largeValue = maxValue.toDouble().toBigDecimal().toBigInteger()

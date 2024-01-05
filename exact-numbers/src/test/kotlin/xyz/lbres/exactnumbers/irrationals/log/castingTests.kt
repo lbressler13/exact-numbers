@@ -8,30 +8,7 @@ import kotlin.test.assertEquals
 private const val overflowErrorMessage = "Value would overflow supported range"
 
 fun runToByteTests() {
-    var log = Log.ZERO
-    assertEquals(0, log.toByte())
-
-    log = Log(5)
-    assertEquals(0, log.toByte())
-
-    log = Log(16, 2)
-    assertEquals(4, log.toByte())
-
-    log = Log(16, 2, true)
-    assertEquals(0, log.toByte())
-
-    log = Log(2, 16, true)
-    assertEquals(4, log.toByte())
-
-    log = Log(18, 2)
-    assertEquals(4, log.toByte())
-
-    log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4, log.toByte())
-
-    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
-    log = Log(arg, 2)
-    assertFailsWithMessage<ArithmeticException>(overflowErrorMessage) { log.toByte() }
+    runWholeNumberCastingTests(Int::toByte, Log::toByte, shouldOverflow = true)
 }
 
 fun runToCharTests() {
@@ -58,148 +35,98 @@ fun runToCharTests() {
 }
 
 fun runToShortTests() {
-    var log = Log.ZERO
-    assertEquals(0, log.toShort())
-
-    log = Log(5)
-    assertEquals(0, log.toShort())
-
-    log = Log(16, 2)
-    assertEquals(4, log.toShort())
-
-    log = Log(16, 2, true)
-    assertEquals(0, log.toShort())
-
-    log = Log(2, 16, true)
-    assertEquals(4, log.toShort())
-
-    log = Log(18, 2)
-    assertEquals(4, log.toShort())
-
-    log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4, log.toShort())
-
-    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
-    log = Log(arg, 2)
-    assertEquals(128, log.toShort())
+    runWholeNumberCastingTests(Int::toShort, Log::toShort)
 }
 
 fun runToIntTests() {
-    var log = Log.ZERO
-    assertEquals(0, log.toInt())
-
-    log = Log(5)
-    assertEquals(0, log.toInt())
-
-    log = Log(16, 2)
-    assertEquals(4, log.toInt())
-
-    log = Log(16, 2, true)
-    assertEquals(0, log.toInt())
-
-    log = Log(2, 16, true)
-    assertEquals(4, log.toInt())
-
-    log = Log(18, 2)
-    assertEquals(4, log.toInt())
-
-    log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4, log.toInt())
-
-    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
-    log = Log(arg, 2)
-    assertEquals(128, log.toInt())
+    runWholeNumberCastingTests({ it }, Log::toInt)
 }
 
 fun runToLongTests() {
-    var log = Log.ZERO
-    assertEquals(0, log.toLong())
-
-    log = Log(5)
-    assertEquals(0, log.toLong())
-
-    log = Log(16, 2)
-    assertEquals(4, log.toLong())
-
-    log = Log(16, 2, true)
-    assertEquals(0, log.toLong())
-
-    log = Log(2, 16, true)
-    assertEquals(4, log.toLong())
-
-    log = Log(18, 2)
-    assertEquals(4, log.toLong())
-
-    log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4, log.toLong())
-
-    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
-    log = Log(arg, 2)
-    assertEquals(128, log.toLong())
+    runWholeNumberCastingTests(Int::toLong, Log::toLong)
 }
 
 fun runToFloatTests() {
-    var log = Log.ZERO
-    assertEquals(0f, log.toFloat())
-
-    log = Log(5)
-    assertEquals(0.69897f, log.toFloat())
-
-    log = Log(16, 2)
-    assertEquals(4f, log.toFloat())
-
-    log = Log(16, 2, true)
-    assertEquals(0.25f, log.toFloat())
-
-    log = Log(2, 16, true)
-    assertEquals(4f, log.toFloat())
-
-    log = Log(18, 2)
-    assertEquals(4.169925f, log.toFloat())
-
-    log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4f, log.toFloat())
-
-    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
-    log = Log(arg, 2)
-    assertEquals(128f, log.toFloat())
-
-    log = Log(arg + BigInteger("4"), 19)
-    assertEquals(30.132341f, log.toFloat())
-
-    log = Log(arg + BigInteger("4"), 19, true)
-    assertEquals(0.033186935f, log.toFloat())
+    runDecimalCastingTests(Double::toFloat, Log::toFloat)
 }
 
 fun runToDoubleTests() {
+    runDecimalCastingTests({ it }, Log::toDouble)
+}
+
+/**
+ * Run tests for a single type of whole number
+ *
+ * @param castInt (Int) -> T: cast an int value to a value of the current number type
+ * @param castLog (Log) -> T: cast a log value to a value of the current number type
+ * @param shouldOverflow [Boolean]: if the cast should throw an overflow exception when casting 2^128. Defaults to `false`
+ */
+private fun <T : Number> runWholeNumberCastingTests(castInt: (Int) -> T, castLog: (Log) -> T, shouldOverflow: Boolean = false) {
     var log = Log.ZERO
-    assertEquals(0.0, log.toDouble())
+    assertEquals(castInt(0), castLog(log))
 
     log = Log(5)
-    assertEquals(0.6989700043360187, log.toDouble())
+    assertEquals(castInt(0), castLog(log))
 
     log = Log(16, 2)
-    assertEquals(4.0, log.toDouble())
+    assertEquals(castInt(4), castLog(log))
 
     log = Log(16, 2, true)
-    assertEquals(0.25, log.toDouble())
+    assertEquals(castInt(0), castLog(log))
 
     log = Log(2, 16, true)
-    assertEquals(4.0, log.toDouble())
+    assertEquals(castInt(4), castLog(log))
 
     log = Log(18, 2)
-    assertEquals(4.169925001442312, log.toDouble())
+    assertEquals(castInt(4), castLog(log))
 
     log = Log(ExactFraction(1, 16), 2)
-    assertEquals(-4.0, log.toDouble())
+    assertEquals(castInt(-4), castLog(log))
 
     val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
     log = Log(arg, 2)
-    assertEquals(128.0, log.toDouble())
+    if (shouldOverflow) {
+        assertFailsWithMessage<ArithmeticException>(overflowErrorMessage) { castLog(log) }
+    } else {
+        assertEquals(castInt(128), castLog(log))
+    }
+}
+
+/**
+ * Run tests for a single type of decimal number
+ *
+ * @param castDouble (Double) -> T: cast a double value to a value of the current number type
+ * @param castLog (Log) -> T: cast a log value to a value of the current number type
+ */
+private fun <T : Number> runDecimalCastingTests(castDouble: (Double) -> T, castLog: (Log) -> T) {
+    var log = Log.ZERO
+    assertEquals(castDouble(0.0), castLog(log))
+
+    log = Log(5)
+    assertEquals(castDouble(0.6989700043360187), castLog(log))
+
+    log = Log(16, 2)
+    assertEquals(castDouble(4.0), castLog(log))
+
+    log = Log(16, 2, true)
+    assertEquals(castDouble(0.25), castLog(log))
+
+    log = Log(2, 16, true)
+    assertEquals(castDouble(4.0), castLog(log))
+
+    log = Log(18, 2)
+    assertEquals(castDouble(4.169925001442312), castLog(log))
+
+    log = Log(ExactFraction(1, 16), 2)
+    assertEquals(castDouble(-4.0), castLog(log))
+
+    val arg = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
+    log = Log(arg, 2)
+    assertEquals(castDouble(128.0), castLog(log))
 
     log = Log(arg + BigInteger("4"), 19)
-    assertEquals(30.132340910929695, log.toDouble())
+    assertEquals(castDouble(30.132340910929695), castLog(log))
 
     log = Log(arg + BigInteger("4"), 19, true)
-    assertEquals(0.03318693369877801, log.toDouble())
+    assertEquals(castDouble(0.03318693369877801), castLog(log))
 }

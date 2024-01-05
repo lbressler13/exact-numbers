@@ -8,28 +8,7 @@ import kotlin.test.assertEquals
 private const val errorMessage = "Value would overflow supported range"
 
 fun runToByteTests() {
-    var sqrt = Sqrt.ZERO
-    assertEquals(0, sqrt.toByte())
-
-    sqrt = Sqrt(144)
-    assertEquals(12, sqrt.toByte())
-
-    sqrt = Sqrt(ExactFraction(1, 36))
-    assertEquals(0, sqrt.toByte())
-
-    sqrt = Sqrt(ExactFraction(25, 16))
-    assertEquals(1, sqrt.toByte())
-
-    sqrt = Sqrt(32)
-    assertEquals(5, sqrt.toByte())
-
-    val max = Byte.MAX_VALUE.toInt().toBigInteger()
-    sqrt = Sqrt(max * max)
-    assertEquals(max, sqrt.toByte().toInt().toBigInteger())
-
-    // overflow
-    sqrt = Sqrt(max * max * BigInteger.TEN)
-    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toByte() }
+    runWholeNumberCastingTests(Long::toByte, Sqrt::toByte, Byte.MAX_VALUE)
 }
 
 fun runToCharTests() {
@@ -58,81 +37,17 @@ fun runToCharTests() {
 }
 
 fun runToShortTests() {
-    var sqrt = Sqrt.ZERO
-    assertEquals(0, sqrt.toShort())
-
-    sqrt = Sqrt(144)
-    assertEquals(12, sqrt.toShort())
-
-    sqrt = Sqrt(ExactFraction(1, 36))
-    assertEquals(0, sqrt.toShort())
-
-    sqrt = Sqrt(ExactFraction(25, 16))
-    assertEquals(1, sqrt.toShort())
-
-    sqrt = Sqrt(32)
-    assertEquals(5, sqrt.toShort())
-
-    val max = Short.MAX_VALUE.toInt().toBigInteger()
-    sqrt = Sqrt(max * max)
-    assertEquals(max, sqrt.toShort().toInt().toBigInteger())
-
-    // overflow
-    sqrt = Sqrt(max * max * BigInteger.TEN)
-    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toShort() }
+    runWholeNumberCastingTests(Long::toShort, Sqrt::toShort, Short.MAX_VALUE)
 }
 
 fun runToIntTests() {
-    var sqrt = Sqrt.ZERO
-    assertEquals(0, sqrt.toInt())
-
-    sqrt = Sqrt(144)
-    assertEquals(12, sqrt.toInt())
-
-    sqrt = Sqrt(ExactFraction(1, 36))
-    assertEquals(0, sqrt.toInt())
-
-    sqrt = Sqrt(ExactFraction(25, 16))
-    assertEquals(1, sqrt.toInt())
-
-    sqrt = Sqrt(32)
-    assertEquals(5, sqrt.toInt())
-
+    runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, null)
     // TODO uncomment when bug is resolved
-    // val max = Int.MAX_VALUE.toBigInteger()
-    // Sqrt(max * max).getValue()
-    // sqrt = Sqrt(max * max + BigInteger.TEN)
-    // assertEquals(max, sqrt.toLong().toBigInteger())
-
-    // overflow
-    // sqrt = Sqrt(max * max * BigInteger.TEN)
-    // val exception = assertFailsWith<ArithmeticException> { sqrt.toInt() }
-    // assertEquals(errorMessage, exception.message)
+    // runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, Int.MAX_VALUE)
 }
 
 fun runToLongTests() {
-    var sqrt = Sqrt.ZERO
-    assertEquals(0, sqrt.toLong())
-
-    sqrt = Sqrt(144)
-    assertEquals(12, sqrt.toLong())
-
-    sqrt = Sqrt(ExactFraction(1, 36))
-    assertEquals(0, sqrt.toLong())
-
-    sqrt = Sqrt(ExactFraction(25, 16))
-    assertEquals(1, sqrt.toLong())
-
-    sqrt = Sqrt(32)
-    assertEquals(5, sqrt.toLong())
-
-    val max = Long.MAX_VALUE.toBigInteger()
-    sqrt = Sqrt(max * max)
-    assertEquals(max, sqrt.toLong().toBigInteger())
-
-    // overflow
-    sqrt = Sqrt(max * max * BigInteger.TEN)
-    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toLong() }
+    runWholeNumberCastingTests({ it }, Sqrt::toLong, Long.MAX_VALUE)
 }
 
 fun runToDoubleTests() {
@@ -185,4 +100,38 @@ fun runToFloatTests() {
     // overflow
     sqrt = Sqrt((max * max * max).toBigInteger())
     assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toFloat() }
+}
+
+/**
+ * Run tests for a single type of whole number
+ *
+ * @param castLong (Long) -> T: cast a long value to a value of the current number type
+ * @param castSqrt (Sqrt) -> T: cast a sqrt value to a value of the current number type
+ * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involved max value will not be run
+ */
+private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castSqrt: (Sqrt) -> T, maxValue: T?) {
+    var sqrt = Sqrt.ZERO
+    assertEquals(castLong(0), castSqrt(sqrt))
+
+    sqrt = Sqrt(144)
+    assertEquals(castLong(12), castSqrt(sqrt))
+
+    sqrt = Sqrt(ExactFraction(1, 36))
+    assertEquals(castLong(0), castSqrt(sqrt))
+
+    sqrt = Sqrt(ExactFraction(25, 16))
+    assertEquals(castLong(1), castSqrt(sqrt))
+
+    sqrt = Sqrt(32)
+    assertEquals(castLong(5), castSqrt(sqrt))
+
+    if (maxValue != null) {
+        val max = maxValue.toLong().toBigInteger()
+        sqrt = Sqrt(max * max)
+        assertEquals(max, castSqrt(sqrt).toLong().toBigInteger())
+
+        // overflow
+        sqrt = Sqrt(max * max * BigInteger.TEN)
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { castSqrt(sqrt) }
+    }
 }
