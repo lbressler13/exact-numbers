@@ -16,18 +16,19 @@ import kotlin.math.abs
  */
 class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
     override val type: String = TYPE
+    override var _isRational: Boolean? = false
+    override var _rationalValue: ExactFraction? = null
 
     // constructor with reduced params
     constructor() : this(false)
 
     override fun getValue(): BigDecimal {
-        val base = PI.toBigDecimal()
-
-        if (isDivided) {
-            return divideBigDecimals(BigDecimal.ONE, base)
+        if (_value == null) {
+            val base = PI.toBigDecimal()
+            _value = simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, base) }, { base })
         }
 
-        return base
+        return _value!!
     }
 
     override fun isZero(): Boolean = false

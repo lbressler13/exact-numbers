@@ -119,8 +119,10 @@ class SqrtTest {
 
         sqrt = Sqrt(ExactFraction(1, 64))
         assertTrue(sqrt.isRational())
+        assertTrue(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(81, 49))
+        assertTrue(sqrt.isRational())
         assertTrue(sqrt.isRational())
 
         // irrational
@@ -129,8 +131,10 @@ class SqrtTest {
 
         sqrt = Sqrt(8)
         assertFalse(sqrt.isRational())
+        assertFalse(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(1, 35))
+        assertFalse(sqrt.isRational())
         assertFalse(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(49, 10))
@@ -141,6 +145,7 @@ class SqrtTest {
     fun testGetRationalValue() {
         // irrational
         var sqrt = Sqrt(2)
+        assertNull(sqrt.getRationalValue())
         assertNull(sqrt.getRationalValue())
 
         sqrt = Sqrt(ExactFraction(64, 15))
@@ -169,9 +174,11 @@ class SqrtTest {
         sqrt = Sqrt(ExactFraction(1, 100))
         expected = ExactFraction(1, 10)
         assertEquals(expected, sqrt.getRationalValue())
+        assertEquals(expected, sqrt.getRationalValue())
 
         sqrt = Sqrt(ExactFraction(81, 64))
         expected = ExactFraction(9, 8)
+        assertEquals(expected, sqrt.getRationalValue())
         assertEquals(expected, sqrt.getRationalValue())
     }
 
@@ -196,9 +203,11 @@ class SqrtTest {
         sqrt = Sqrt(ExactFraction(25, 16))
         expected = BigDecimal("1.25")
         assertEquals(expected, sqrt.getValue())
+        assertEquals(expected, sqrt.getValue())
 
         sqrt = Sqrt(7)
         expected = BigDecimal("2.6457513110645905905")
+        assertEquals(expected, sqrt.getValue())
         assertEquals(expected, sqrt.getValue())
 
         sqrt = Sqrt(32)
@@ -207,6 +216,7 @@ class SqrtTest {
 
         sqrt = Sqrt(ExactFraction(17, 49))
         expected = BigDecimal("0.58901508937395150711")
+        assertEquals(expected, sqrt.getValue())
         assertEquals(expected, sqrt.getValue())
     }
 

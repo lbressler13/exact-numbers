@@ -40,9 +40,11 @@ class PiTest {
         var pi = Pi()
         var expected = BigDecimal("3.141592653589793")
         assertEquals(expected, pi.getValue())
+        assertEquals(expected, pi.getValue())
 
         pi = Pi(true)
         expected = BigDecimal("0.31830988618379069570")
+        assertEquals(expected, pi.getValue())
         assertEquals(expected, pi.getValue())
     }
 
@@ -59,8 +61,10 @@ class PiTest {
     fun testIsRational() {
         var pi = Pi()
         assertFalse(pi.isRational())
+        assertFalse(pi.isRational())
 
         pi = Pi(true)
+        assertFalse(pi.isRational())
         assertFalse(pi.isRational())
     }
 
@@ -68,8 +72,10 @@ class PiTest {
     fun testGetRationalValue() {
         var pi = Pi()
         assertNull(pi.getRationalValue())
+        assertNull(pi.getRationalValue())
 
         pi = Pi(true)
+        assertNull(pi.getRationalValue())
         assertNull(pi.getRationalValue())
     }
 

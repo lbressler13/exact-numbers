@@ -9,8 +9,6 @@ import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 
-// TODO store value and rational value
-
 /**
  * Representation of a square root with a rational radicand
  *
@@ -48,10 +46,14 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      * @return [Boolean]: true if the value is rational, false otherwise
      */
     override fun isRational(): Boolean {
-        val numRoot = getRootOf(radicand.numerator).toPlainString()
-        val denomRoot = getRootOf(radicand.denominator).toPlainString()
+        if (_isRational == null) {
+            val numRoot = getRootOf(radicand.numerator).toPlainString()
+            val denomRoot = getRootOf(radicand.denominator).toPlainString()
 
-        return numRoot.indexOf('.') == -1 && denomRoot.indexOf('.') == -1
+            _isRational = numRoot.indexOf('.') == -1 && denomRoot.indexOf('.') == -1
+        }
+
+        return _isRational!!
     }
 
     /**
@@ -64,9 +66,12 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             return null
         }
 
-        val numRoot = getRootOf(radicand.numerator).toBigInteger()
-        val denomRoot = getRootOf(radicand.denominator).toBigInteger()
-        return ExactFraction(numRoot, denomRoot)
+        if (_rationalValue == null) {
+            val numRoot = getRootOf(radicand.numerator).toBigInteger()
+            val denomRoot = getRootOf(radicand.denominator).toBigInteger()
+            _rationalValue = ExactFraction(numRoot, denomRoot)
+        }
+        return _rationalValue!!
     }
 
     /**
@@ -76,9 +81,13 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
      * @return [BigDecimal]
      */
     override fun getValue(): BigDecimal {
-        val numRoot = getRootOf(radicand.numerator)
-        val denomRoot = getRootOf(radicand.denominator)
-        return divideBigDecimals(numRoot, denomRoot)
+        if (_value == null) {
+            val numRoot = getRootOf(radicand.numerator)
+            val denomRoot = getRootOf(radicand.denominator)
+            _value = divideBigDecimals(numRoot, denomRoot)
+        }
+
+        return _value!!
     }
 
     override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand

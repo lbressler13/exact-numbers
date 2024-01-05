@@ -9,7 +9,6 @@ import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.math.log
 
 /**
  * Representation of a log, with an integer base and rational argument
@@ -26,10 +25,6 @@ class Log private constructor(
     private val fullySimplified: Boolean
 ) : IrrationalNumber<Log>() {
     override val type = TYPE
-
-    private var value: BigDecimal? = null
-    private var isRationalNumber: Boolean? = null
-    private var rationalValue: ExactFraction? = null
 
     init {
         when {
@@ -71,15 +66,15 @@ class Log private constructor(
      * @return [Boolean]: true if the value is rational, false otherwise
      */
     override fun isRational(): Boolean {
-        if (isRationalNumber == null) {
+        if (_isRational == null) {
             val numLog = getLogOf(argument.numerator, base)
             val denomLog = getLogOf(argument.denominator, base)
 
             // rational if both values are whole numbers
-            isRationalNumber = numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
+            _isRational = numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
         }
 
-        return isRationalNumber!!
+        return _isRational!!
     }
 
     /**
@@ -89,7 +84,7 @@ class Log private constructor(
      */
     override fun getRationalValue(): ExactFraction? {
         when {
-            rationalValue != null -> return rationalValue!!
+            _rationalValue != null -> return _rationalValue!!
             !isRational() -> return null
             isZero() -> return ExactFraction.ZERO
         }
@@ -103,8 +98,8 @@ class Log private constructor(
             else -> ExactFraction(numLog, denomLog)
         }
 
-        rationalValue = simpleIf(isDivided, { result.inverse() }, { result })
-        return rationalValue!!
+        _rationalValue = simpleIf(isDivided, { result.inverse() }, { result })
+        return _rationalValue!!
     }
 
     /**
@@ -114,12 +109,12 @@ class Log private constructor(
      * @return [BigDecimal]
      */
     override fun getValue(): BigDecimal {
-        if (value == null) {
+        if (_value == null) {
             val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-            value = simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
+            _value = simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
         }
 
-        return value!!
+        return _value!!
     }
 
     /**

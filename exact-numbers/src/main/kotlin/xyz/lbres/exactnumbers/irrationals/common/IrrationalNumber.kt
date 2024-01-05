@@ -13,6 +13,9 @@ import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
 
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
+    protected open var _isRational: Boolean? = null
+    protected open var _value: BigDecimal? = null
+    protected open var _rationalValue: ExactFraction? = null
 
     abstract val type: String
 

@@ -14,7 +14,6 @@ import kotlin.math.log
  */
 internal fun getLogOf(num: BigInteger, base: Int): BigDecimal {
     val logNum = log(num.toDouble(), base.toDouble())
-    println(Pair(logNum, logNum.isInfinite()))
 
     if (logNum.isNaN() || logNum.isInfinite()) {
         throw ArithmeticException("Error calculating log")
