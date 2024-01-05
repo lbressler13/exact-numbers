@@ -4,9 +4,9 @@ import io.mockk.every
 import io.mockk.spyk
 import io.mockk.verify
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 private val one = BigInteger.ONE
 private val two = BigInteger.TWO
@@ -17,7 +17,9 @@ private val ten = BigInteger("10")
 
 fun runExtractWholeOfTests() {
     // exception
-    assertFailsWith<ArithmeticException>("Cannot calculate root of negative number") { extractWholeOf(BigInteger("-25")) }
+    assertFailsWithMessage<ArithmeticException>("Cannot calculate root of a negative number") {
+        extractWholeOf(BigInteger("-25"))
+    }
 
     // rational
     var num = BigInteger.ZERO

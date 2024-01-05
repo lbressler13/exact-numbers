@@ -18,13 +18,13 @@ class ExactFractionAlternateConstructorsTest {
     private fun runStringTests() {
         // Decimal string
         var ef = ExactFraction("1.51")
-        assertEquals(151.toBigInteger(), ef.numerator)
-        assertEquals(100.toBigInteger(), ef.denominator)
+        assertEquals(BigInteger("151"), ef.numerator)
+        assertEquals(BigInteger("100"), ef.denominator)
 
         // EF string
         ef = ExactFraction("EF[-7 3]")
-        assertEquals((-7).toBigInteger(), ef.numerator)
-        assertEquals(3.toBigInteger(), ef.denominator)
+        assertEquals(BigInteger("-7"), ef.numerator)
+        assertEquals(BigInteger("3"), ef.denominator)
 
         // Invalid
         assertFailsWith<NumberFormatException>("Invalid EF string format") { ExactFraction("[]") }

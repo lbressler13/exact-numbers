@@ -27,6 +27,7 @@ A term is a way of representing the product of several numbers, which can includ
 Terms can be multiplied and divided, and the list of numbers is simplified as much as possible before calculating the final value.
 
 ## Project Structure
+
 ```project
 ├── exact-numbers
 │   ├── build                     <-- automatically generated build files

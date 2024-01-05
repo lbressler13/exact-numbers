@@ -2,9 +2,9 @@ package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.testutils.assertDivByZero
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -16,25 +16,25 @@ fun runConstructorTests() {
     assertDivByZero { Log(BigInteger.ONE, 10, isDivided = true) }
 
     var error = "Cannot calculate log of 0"
-    assertFailsWith<ArithmeticException>(error) { Log(ExactFraction.ZERO) }
-    assertFailsWith<ArithmeticException>(error) { Log(0) }
-    assertFailsWith<ArithmeticException>(error) { Log(0L) }
-    assertFailsWith<ArithmeticException>(error) { Log(BigInteger.ZERO) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.ZERO) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(0) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(0L) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(BigInteger.ZERO) }
 
     error = "Cannot calculate log of negative number"
-    assertFailsWith<ArithmeticException>(error) { Log(-ExactFraction.TEN) }
-    assertFailsWith<ArithmeticException>(error) { Log(-10) }
-    assertFailsWith<ArithmeticException>(error) { Log(-10L) }
-    assertFailsWith<ArithmeticException>(error) { Log(-BigInteger.TEN) }
-    assertFailsWith<ArithmeticException>(error) { Log(ExactFraction(-4, 3)) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(-ExactFraction.TEN) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(-10) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(-10L) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(-BigInteger.TEN) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction(-4, 3)) }
 
     error = "Log base must be greater than 1"
-    assertFailsWith<ArithmeticException>(error) { Log(ExactFraction.TEN, -1) }
-    assertFailsWith<ArithmeticException>(error) { Log(ExactFraction.TEN, 0) }
-    assertFailsWith<ArithmeticException>(error) { Log(ExactFraction.TEN, 1) }
-    assertFailsWith<ArithmeticException>(error) { Log(10, -1) }
-    assertFailsWith<ArithmeticException>(error) { Log(10L, 0) }
-    assertFailsWith<ArithmeticException>(error) { Log(BigInteger.TEN, 1) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, -1) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, 0) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, 1) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(10, -1) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(10L, 0) }
+    assertFailsWithMessage<ArithmeticException>(error) { Log(BigInteger.TEN, 1) }
 
     // ExactFraction
     // zero

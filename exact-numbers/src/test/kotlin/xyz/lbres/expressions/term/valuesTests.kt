@@ -18,43 +18,37 @@ fun runGetSimplifiedTests() {
     var expectedCoeff = ExactFraction.EIGHT
     var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
     var result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction(-3, 2), listOf(Pi(), Pi(true), Pi(), logNum1))
     expectedCoeff = ExactFraction(-3, 2)
     expectedNumbers = listOf(logNum1, Pi())
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.HALF, listOf(Log.ONE, logNum1))
     expectedCoeff = ExactFraction.HALF
     expectedNumbers = listOf(logNum1)
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(-ExactFraction.HALF, listOf(Log.ONE, Pi(true)))
     expectedCoeff = -ExactFraction.HALF
     expectedNumbers = listOf(Pi(true))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.TEN, listOf(Sqrt.ONE, Sqrt(ExactFraction(20, 33))))
     expectedCoeff = ExactFraction(20)
     expectedNumbers = listOf(Sqrt(ExactFraction(5, 33)))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
     expectedCoeff = ExactFraction(80, 7)
     expectedNumbers = listOf(Sqrt(ExactFraction(39)))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(
         ExactFraction(18, 5),
@@ -63,29 +57,25 @@ fun runGetSimplifiedTests() {
     expectedCoeff = ExactFraction(18, 5)
     expectedNumbers = listOf(logNum2, logNum1, Pi(true), Pi(true))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), Sqrt(ExactFraction(1, 4))))
     expectedCoeff = ExactFraction(12)
     expectedNumbers = emptyList()
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(-ExactFraction.EIGHT, listOf(Pi(true), Sqrt(ExactFraction(27, 98))))
     expectedCoeff = ExactFraction(-24, 7)
     expectedNumbers = listOf(Sqrt(ExactFraction(3, 2)), Pi(true))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3, true)))
     expectedCoeff = ExactFraction(-20, 3)
     expectedNumbers = emptyList()
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(
         ExactFraction(3, 5),
@@ -103,44 +93,38 @@ fun runGetSimplifiedTests() {
     expectedCoeff = ExactFraction(-6)
     expectedNumbers = listOf(Log(4), Log(1000, 12), Sqrt(ExactFraction(78, 7)), Pi())
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     // no changes
     term = Term(ExactFraction.EIGHT, emptyList())
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = emptyList()
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.EIGHT, listOf(logNum1))
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = listOf(logNum1)
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(1, 46))))
     expectedCoeff = ExactFraction.EIGHT
     expectedNumbers = listOf(Sqrt(ExactFraction(1, 46)))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction(-5, 6), listOf(Pi(true)))
     expectedCoeff = ExactFraction(-5, 6)
     expectedNumbers = listOf(Pi(true))
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 
     term = Term(ExactFraction.SEVEN, listOf(Pi(), Pi(), logNum1, logNum1, logNum2.swapDivided(), Sqrt(5)))
     expectedCoeff = ExactFraction.SEVEN
     expectedNumbers = listOf(logNum1, logNum1, logNum2.swapDivided(), Sqrt(5), Pi(), Pi())
     result = term.getSimplified()
-    assertEquals(expectedCoeff, result.coefficient)
-    assertEquals(expectedNumbers, result.numbers)
+    assertTermComponentsEqual(expectedCoeff, expectedNumbers, result)
 }
 
 fun runGetValueTests() {
