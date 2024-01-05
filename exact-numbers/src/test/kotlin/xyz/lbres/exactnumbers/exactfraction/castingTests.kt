@@ -169,7 +169,7 @@ fun runToBigDecimalTests() {
  * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
  * @param minValue T?: minimum valid value for the current number type. If the value is `null`, tests involved min value will not be run
  * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involved max value will not be run
- * @param type [String]: string representation in type, which is used in overflow exceptions
+ * @param type [String]: string representation of type, which is used in overflow exceptions
  */
 private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castEF: (ExactFraction) -> T, minValue: T?, maxValue: T?, type: String) {
     var ef = ExactFraction(0)
@@ -196,7 +196,6 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         ef = ExactFraction(minValue.toLong())
         assertEquals(minValue, castEF(ef))
 
-        ef = ExactFraction(minValue.toLong())
         ef--
         assertExactFractionOverflow(type, ef) { castEF(ef) }
     }
@@ -205,19 +204,18 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         ef = ExactFraction(maxValue.toLong())
         assertEquals(maxValue, castEF(ef))
 
-        ef = ExactFraction(maxValue.toLong())
         ef++
         assertExactFractionOverflow(type, ef) { castEF(ef) }
     }
 }
 
 /**
- * Run tests for a single type of whole number
+ * Run tests for a single type of decimal number
  *
  * @param castLong (Double) -> T: cast a double value to a value of the current number type
  * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
  * @param maxValue T: maximum valid value for the current number type
- * @param type [String]: string representation in type, which is used in overflow exceptions
+ * @param type [String]: string representation of type, which is used in overflow exceptions
  */
 private fun <T : Number> runDecimalNumberCastingTests(castLong: (Double) -> T, castEF: (ExactFraction) -> T, maxValue: T, type: String) {
     var ef = ExactFraction(0)

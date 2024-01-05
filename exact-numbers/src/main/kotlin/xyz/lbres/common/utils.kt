@@ -15,7 +15,7 @@ import java.math.RoundingMode
  */
 internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
     if (bigDec2 == BigDecimal.ZERO) {
-        throw ArithmeticException("divide by zero")
+        throw divideByZero
     }
 
     return try {

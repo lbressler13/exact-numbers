@@ -22,8 +22,15 @@ fun runEqTests() {
     runMultiTypeEqTest(ExactFraction(-70), 0, false)
 }
 
-private fun runMultiTypeEqTest(ef: ExactFraction, value: Int, expected: Boolean) {
-    assertEquals(expected, ef.eq(value))
-    assertEquals(expected, ef.eq(value.toLong()))
-    assertEquals(expected, ef.eq(value.toBigInteger()))
+/**
+ * Run test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: exact fraction
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [Boolean]: expected result
+ */
+private fun runMultiTypeEqTest(ef: ExactFraction, other: Int, expected: Boolean) {
+    assertEquals(expected, ef.eq(other))
+    assertEquals(expected, ef.eq(other.toLong()))
+    assertEquals(expected, ef.eq(other.toBigInteger()))
 }
