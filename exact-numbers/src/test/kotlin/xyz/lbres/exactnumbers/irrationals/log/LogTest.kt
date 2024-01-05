@@ -14,51 +14,51 @@ class LogTest {
     @Test
     fun testEquals() {
         // equals
-        var logNum = Log.ZERO
-        assertEquals(logNum, logNum)
+        var logNum1 = Log.ZERO
+        assertEquals(logNum1, logNum1)
 
-        logNum = Log(10)
-        assertEquals(logNum, logNum)
+        logNum1 = Log(10)
+        assertEquals(logNum1, logNum1)
 
-        logNum = Log(30001)
-        assertEquals(logNum, logNum)
+        logNum1 = Log(30001)
+        assertEquals(logNum1, logNum1)
 
-        logNum = Log(ExactFraction(107, 12), 3)
-        assertEquals(logNum, logNum)
+        logNum1 = Log(ExactFraction(107, 12), 3)
+        assertEquals(logNum1, logNum1)
 
-        logNum = Log(ExactFraction(12, 107), 10, true)
-        assertEquals(logNum, logNum)
+        logNum1 = Log(ExactFraction(12, 107), 10, true)
+        assertEquals(logNum1, logNum1)
 
         // not equals
-        logNum = Log.ZERO
-        var other = Log(2)
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log.ZERO
+        var logNum2 = Log(2)
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
 
-        logNum = Log(8)
-        other = Log(8, 2)
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log(8)
+        logNum2 = Log(8, 2)
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
 
-        logNum = Log(15)
-        other = Log(1000)
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log(15)
+        logNum2 = Log(1000)
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
 
-        logNum = Log(ExactFraction.HALF)
-        other = Log(ExactFraction(5, 7))
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log(ExactFraction.HALF)
+        logNum2 = Log(ExactFraction(5, 7))
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
 
-        logNum = Log(ExactFraction(7, 8), 3)
-        other = Log(ExactFraction(8, 7), 3)
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log(ExactFraction(7, 8), 3)
+        logNum2 = Log(ExactFraction(8, 7), 3)
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
 
-        logNum = Log(8, 10, true)
-        other = Log(8, 10, false)
-        assertNotEquals(logNum, other)
-        assertNotEquals(other, logNum)
+        logNum1 = Log(8, 10, true)
+        logNum2 = Log(8, 10, false)
+        assertNotEquals(logNum1, logNum2)
+        assertNotEquals(logNum2, logNum1)
     }
 
     @Test
