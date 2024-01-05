@@ -6,13 +6,13 @@ import io.mockk.unmockkAll
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
 import xyz.lbres.testutils.assertDivByZero
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
@@ -34,11 +34,11 @@ class SqrtTest {
     fun testConstructor() {
         // errors
         val expectedMessage = "Cannot calculate root of a negative number"
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.EIGHT) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-8) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-8L) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(BigInteger("-8")) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.HALF) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.EIGHT) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-8) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-8L) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(BigInteger("-8")) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.HALF) }
 
         // no error
         var sqrts = listOf(Sqrt(ExactFraction.ZERO), Sqrt(0), Sqrt(0L), Sqrt(BigInteger.ZERO))
@@ -125,6 +125,9 @@ class SqrtTest {
 
         // irrational
         sqrt = Sqrt(2)
+        assertFalse(sqrt.isRational())
+
+        sqrt = Sqrt(8)
         assertFalse(sqrt.isRational())
 
         sqrt = Sqrt(ExactFraction(1, 35))

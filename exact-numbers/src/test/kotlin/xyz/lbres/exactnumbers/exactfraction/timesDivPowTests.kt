@@ -4,6 +4,17 @@ import xyz.lbres.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
+fun runTimesTests() {
+    runCommonTimesTests(ExactFraction::times)
+
+    // other number types
+    runMultiTypeTimesTest(ExactFraction(0), 3, ExactFraction(0))
+    runMultiTypeTimesTest(ExactFraction(3), 0, ExactFraction(0))
+    runMultiTypeTimesTest(ExactFraction(-5), 4, ExactFraction(-20))
+    runMultiTypeTimesTest(ExactFraction(5, 3), 4, ExactFraction(20, 3))
+    runMultiTypeTimesTest(ExactFraction(-5, 4), 4, ExactFraction(-5))
+}
+
 fun runDivTests() {
     // 0
     var first = ExactFraction(0)
@@ -74,6 +85,28 @@ fun runDivTests() {
     assertDivByZero { ExactFraction.ONE / BigInteger.ZERO }
 }
 
+fun runPowTests() {
+    runCommonPowTests(ExactFraction::pow)
+
+    // other number types
+    runMultiTypePowTest(ExactFraction(0), 100, ExactFraction(0))
+    runMultiTypePowTest(ExactFraction(12, 49), 0, ExactFraction(1))
+    runMultiTypePowTest(ExactFraction(3, 8), -3, ExactFraction(512, 27))
+}
+
+/**
+ * Run test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: first value in multiplication
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [ExactFraction]: expected result
+ */
+private fun runMultiTypeTimesTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
+    assertEquals(expected, ef * other)
+    assertEquals(expected, ef * other.toLong())
+    assertEquals(expected, ef * other.toBigInteger())
+}
+
 /**
  * Run test with Int, Long, and BigInteger values
  *
@@ -85,4 +118,17 @@ private fun runMultiTypeDivTest(ef: ExactFraction, other: Int, expected: ExactFr
     assertEquals(expected, ef / other)
     assertEquals(expected, ef / other.toLong())
     assertEquals(expected, ef / other.toBigInteger())
+}
+
+/**
+ * Run test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: base number
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [ExactFraction]: expected result
+ */
+private fun runMultiTypePowTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
+    assertEquals(expected, ef.pow(other))
+    assertEquals(expected, ef.pow(other.toLong()))
+    assertEquals(expected, ef.pow(other.toBigInteger()))
 }

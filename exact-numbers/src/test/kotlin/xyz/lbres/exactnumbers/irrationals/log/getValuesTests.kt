@@ -8,11 +8,11 @@ import kotlin.test.assertNull
 fun runGetValueTests() {
     // base 10
     var logNum = Log(ExactFraction.ONE)
-    var expected = 0.toBigDecimal()
+    var expected = BigDecimal.ZERO
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(100)
-    expected = 2.toBigDecimal()
+    expected = BigDecimal("2")
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(3333)
@@ -29,11 +29,11 @@ fun runGetValueTests() {
 
     // base 2
     logNum = Log(ExactFraction.ONE, 2)
-    expected = 0.toBigDecimal()
+    expected = BigDecimal.ZERO
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(ExactFraction(1, 8), 2)
-    expected = (-3).toBigDecimal()
+    expected = BigDecimal("-3")
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(200, 2)
@@ -42,7 +42,7 @@ fun runGetValueTests() {
 
     // other
     logNum = Log(216, 6)
-    expected = 3.toBigDecimal()
+    expected = BigDecimal("3")
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(15151515, 24)
