@@ -33,7 +33,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     /**
      * Determine if the value of the number is a rational number
      *
-     * @return [Boolean]: true if the value is rational, false otherwise
+     * @return [Boolean]: `true` if the value is rational, `false` otherwise
      */
     fun isRational(): Boolean {
         if (_isRational == null) {
@@ -73,7 +73,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return _rationalValue
     }
 
-    // implementation-specific implementations for isRational, getValue, and getRationalValue
+    // implementation-specific code for isRational, getValue, and getRationalValue
     protected abstract fun checkIsRational(): Boolean
     protected abstract fun performGetValue(): BigDecimal
     protected abstract fun performGetRationalValue(): ExactFraction?
@@ -94,7 +94,11 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return Term(ExactFraction.ONE, listOf(this, other.swapDivided()))
     }
 
-    override fun compareTo(other: T): Int = getValue().compareTo(other.getValue())
+    override operator fun compareTo(other: T): Int = getValue().compareTo(other.getValue())
+
+    override fun equals(other: Any?): Boolean {
+        return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
+    }
 
     override fun toByte(): Byte = castToByte(getValue(), getCastingError)
     override fun toChar(): Char = castToChar(getValue(), getCastingError)

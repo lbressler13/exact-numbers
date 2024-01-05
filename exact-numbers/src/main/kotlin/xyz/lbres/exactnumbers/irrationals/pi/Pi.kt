@@ -54,8 +54,7 @@ class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
         /**
          * Simplify list of pis
          *
-         * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
-         * @return [List]<Pi>: simplified list
+         * @param numbers [List]<IrrationalNumber> : list to simplify, expected to consist of only Pis
          * @return [Pair]<ExactFraction, List<Pi>>: pair where first value is one, and the second value is the simplified list
          */
         override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Pi>> {

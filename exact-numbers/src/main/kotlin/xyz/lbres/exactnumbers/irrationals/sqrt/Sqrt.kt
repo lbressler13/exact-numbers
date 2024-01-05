@@ -129,7 +129,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         /**
          * Extract rational values and simplify remaining list of irrationals
          *
-         * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Sqrts
+         * @param numbers [List]<IrrationalNumber>: list to simplify, expected to consist of only Sqrts
          * @return [Pair]<ExactFraction, List<Sqrt>>: product of rational values and a list containing a single, fully simplified irrational root
          */
         override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Sqrt>> {

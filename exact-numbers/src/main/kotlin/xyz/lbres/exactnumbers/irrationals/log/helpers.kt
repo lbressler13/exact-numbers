@@ -15,8 +15,9 @@ import kotlin.math.log
 internal fun getLogOf(num: BigInteger, base: Int): BigDecimal {
     val logNum = log(num.toDouble(), base.toDouble())
 
-    if (logNum.isNaN() || logNum.isInfinite()) {
-        throw ArithmeticException("Error calculating log")
+    when {
+        logNum.isNaN() -> throw ArithmeticException("Error calculating log")
+        logNum.isInfinite() -> throw ArithmeticException("Error calculating log: exceeded maximum value")
     }
 
     // account for imprecision with doubles

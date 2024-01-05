@@ -18,6 +18,7 @@ import java.math.BigInteger
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  */
+@Suppress("EqualsOrHashCode")
 class Log private constructor(
     val argument: ExactFraction,
     val base: Int,
@@ -53,10 +54,6 @@ class Log private constructor(
     constructor(argument: BigInteger, base: Int) : this(ExactFraction(argument), base)
     constructor(argument: BigInteger, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
     constructor(argument: BigInteger, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
-
-    override fun equals(other: Any?): Boolean = other is Log && getValue() == other.getValue()
-
-    override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
@@ -162,7 +159,7 @@ class Log private constructor(
         /**
          * Extract rational values and simplify remaining list of irrationals
          *
-         * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Logs
+         * @param numbers [List]<IrrationalNumber>: list to simplify, expected to consist of only Logs
          * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
          */
         // TODO: improve simplification by looking at bases
