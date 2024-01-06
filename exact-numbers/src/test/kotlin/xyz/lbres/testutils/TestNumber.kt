@@ -40,4 +40,6 @@ class TestNumber(val value: ExactFraction, override val isInverted: Boolean) : I
     }
 
     override fun hashCode(): Int = createHashCode(listOf(value, isInverted, type))
+
+    override fun toString(): String = "[${value.toFractionString()}, $isInverted]"
 }

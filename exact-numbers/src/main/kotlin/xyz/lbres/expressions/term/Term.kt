@@ -91,10 +91,8 @@ class Term {
     }
 
     operator fun times(other: Term): Term {
-        return Term(
-            coefficient * other.coefficient,
-            (_irrationals + other._irrationals).toConstMultiSet()
-        )
+        val newIrrationals = _irrationals + other._irrationals
+        return Term(coefficient * other.coefficient, newIrrationals.toConstMultiSet())
     }
 
     operator fun div(other: Term): Term {
@@ -102,10 +100,8 @@ class Term {
             throw divideByZero
         }
 
-        return Term(
-            coefficient / other.coefficient,
-            (_irrationals + other._irrationals.mapToSetConsistent { it.inverse() }).toConstMultiSet()
-        )
+        val newIrrationals = _irrationals + other._irrationals.mapToSetConsistent { it.inverse() }
+        return Term(coefficient / other.coefficient, newIrrationals.toConstMultiSet())
     }
 
     fun isZero(): Boolean = coefficient.isZero()
@@ -175,15 +171,15 @@ class Term {
 
     override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "${irrationalPackage}.log.Log"))
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "${irrationalPackage}.log.Log"), DeprecationLevel.WARNING)
     @JvmName("getLogsDeprecated")
     fun getLogs(): List<Log> = logs
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("piCount"))
+    @Deprecated("Method $deprecatedV1", ReplaceWith("piCount"), DeprecationLevel.WARNING)
     @JvmName("getPiCountDeprecated")
     fun getPiCount(): Int = piCount
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "${irrationalPackage}.sqrt.Sqrt"))
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "${irrationalPackage}.sqrt.Sqrt"), DeprecationLevel.WARNING)
     @JvmName("getSquareRootsDeprecated")
     fun getSquareRoots(): List<Sqrt> = squareRoots
 

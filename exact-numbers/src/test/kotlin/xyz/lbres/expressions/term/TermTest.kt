@@ -4,19 +4,22 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.testutils.TestNumber
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-// TODO tests with ohter irrational type
+// TODO tests with other irrational type
 
 class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
     private val logNum3 = Log(ExactFraction(19, 33)).inverse()
     private val logNum4 = Log(ExactFraction(25, 121))
+    private val testNumber1 = TestNumber(ExactFraction(5, 6))
+    private val testNumber2 = TestNumber(ExactFraction.SEVEN)
     private val one = ExactFraction.ONE
 
     @Test fun testConstructor() = runConstructorTests()
@@ -24,8 +27,8 @@ class TermTest {
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
 
-    @Test fun testGetSimplified() = runGetSimplifiedTests()
-    @Test fun testGetValue() = runGetValueTests()
+    @Test fun testGetSimplified() = runGetSimplifiedTests() // TODO
+    @Test fun testGetValue() = runGetValueTests() // TODO
 
     @Test
     fun testEquals() {
@@ -43,6 +46,9 @@ class TermTest {
         assertEquals(term1, term1)
 
         term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(15), Pi().inverse(), Pi()))
+        assertEquals(term1, term1)
+
+        term1 = Term.fromValues(one, listOf(Pi(), TestNumber(ExactFraction(5))))
         assertEquals(term1, term1)
 
         // not equal
@@ -115,6 +121,11 @@ class TermTest {
         term2 = Term.fromValues(ExactFraction(-17, 15), listOf(logNum1, logNum2, logNum3))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
+
+        term1 = Term.fromValues(ExactFraction.FOUR, listOf(Pi(), testNumber1))
+        term2 = Term.fromValues(ExactFraction.FOUR, listOf(Pi(), testNumber1.inverse()))
+        assertNotEquals(term1, term2)
+        assertNotEquals(term2, term1)
     }
 
     @Test
@@ -135,8 +146,8 @@ class TermTest {
         expected = Term.fromValues(one, listOf(Sqrt(32)))
         assertEquals(expected, -term)
 
-        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse()))
-        expected = Term.fromValues(ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse()))
+        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
+        expected = Term.fromValues(ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
         assertEquals(expected, -term)
 
         term = Term.fromValues(ExactFraction(15, 44), emptyList())
@@ -168,7 +179,7 @@ class TermTest {
         term = Term.fromValues(one, listOf(Sqrt.ONE))
         assertEquals(term, +term)
 
-        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(121), Pi().inverse()))
+        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(121), Pi().inverse(), testNumber2))
         assertEquals(term, +term)
 
         term = Term.fromValues(ExactFraction(15, 44), emptyList())
@@ -203,7 +214,7 @@ class TermTest {
         term = Term.fromValues(ExactFraction(5, 4), listOf(logNum2, logNum4, Sqrt(12), Pi().inverse()))
         assertFalse(term.isZero())
 
-        term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.inverse()))
+        term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.inverse(), testNumber1))
         assertFalse(term.isZero())
 
         term = Term.fromValues(-ExactFraction.HALF, listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
@@ -261,8 +272,8 @@ class TermTest {
         assertEquals(expected, term.toString())
 
         // mix
-        term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, Sqrt(12), Pi()))
-        expected = "<8x${logNum3}x${Sqrt(12)}x${Pi()}>"
+        term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, Sqrt(12), testNumber2, Pi()))
+        expected = "<8x${logNum3}x${Sqrt(12)}x${testNumber2}x${Pi()}>"
         assertEquals(expected, term.toString())
 
         val sqrt1 = Sqrt(ExactFraction(1000, 109))

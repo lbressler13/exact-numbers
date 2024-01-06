@@ -5,6 +5,7 @@ import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.testutils.TestNumber
 import kotlin.test.assertEquals
 
 private val logWhole = Log(1000)
@@ -19,6 +20,9 @@ private val sqrtDecimal = Sqrt(11)
 
 private val pi = Pi()
 private val piInverse = Pi().inverse()
+
+private val testNumber1 = TestNumber(ExactFraction(5, 6))
+private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 
 private val one = ExactFraction.ONE
 
@@ -38,7 +42,10 @@ private fun runFullListConstructorTests() {
     term = Term.fromValues(ExactFraction.THREE, listOf(Log.ZERO, pi, sqrtWholeEF, logWhole))
     checkTermIsZero(term)
 
-    term = Term.fromValues(ExactFraction.THREE, listOf(Sqrt.ZERO, pi, sqrtWholeEF, logWhole))
+    term = Term.fromValues(ExactFraction.THREE, listOf(Sqrt.ZERO, pi, sqrtWholeEF, testNumber1, logWhole))
+    checkTermIsZero(term)
+
+    term = Term.fromValues(ExactFraction.THREE, listOf(sqrtPartialWhole, pi, sqrtWholeEF, TestNumber(ExactFraction.ZERO), logWhole))
     checkTermIsZero(term)
 
     // single type
@@ -88,8 +95,8 @@ private fun runFullListConstructorTests() {
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis)
     checkTerm(term, ExactFraction(-1, 5), emptyList(), sqrts, pis, 1, sqrts + pis)
 
-    term = Term.fromValues(one, sqrts + pis + logs)
-    checkTerm(term, one, logs, sqrts, pis, 1, sqrts + pis + logs)
+    term = Term.fromValues(one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
+    checkTerm(term, one, logs, sqrts, pis, 1, sqrts + pis + logs + listOf(testNumber1, testNumber2))
 
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis + logs)
     checkTerm(term, ExactFraction(-1, 5), logs, sqrts, pis, 1, sqrts + pis + logs)
