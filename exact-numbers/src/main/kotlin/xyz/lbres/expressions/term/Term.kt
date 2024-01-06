@@ -12,6 +12,7 @@ import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.filterConsistent
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import kotlin.math.abs
@@ -22,17 +23,22 @@ import kotlin.math.abs
 class Term {
     val coefficient: ExactFraction
 
-    private val _irrationals: ConstMultiSet<IrrationalNumber<*>>
-    private val _logs: ConstMultiSet<Log>
-    private val _squareRoots: ConstMultiSet<Sqrt>
-    private val _pis: ConstMultiSet<Pi>
-    private val _otherIrrationals: ConstMultiSet<IrrationalNumber<*>>
+    private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
 
+    private val _irrationals: ConstMultiSet<IrrationalNumber<*>>
     val irrationals: List<IrrationalNumber<*>>
+
+    @Suppress("UNCHECKED_CAST")
     val logs: List<Log>
+        get() = getIrrationalsByType(Log.TYPE) as List<Log>
+    @Suppress("UNCHECKED_CAST")
     val squareRoots: List<Sqrt>
+        get() = getIrrationalsByType(Sqrt.TYPE) as List<Sqrt>
+    @Suppress("UNCHECKED_CAST")
     val pis: List<Pi>
+        get() = getIrrationalsByType(Pi.TYPE) as List<Pi>
     val piCount: Int
+        get() = calculatePiCount()
 
     // previously computed values for method returns
     private var simplified: Term? = null
@@ -45,34 +51,10 @@ class Term {
             this.coefficient = ExactFraction.ZERO
             this.irrationals = emptyList()
             this._irrationals = emptyConstMultiSet()
-
-            _logs = emptyConstMultiSet()
-            _squareRoots = emptyConstMultiSet()
-            _pis = emptyConstMultiSet()
-            piCount = 0
-            _otherIrrationals = emptyConstMultiSet()
-
-            logs = emptyList()
-            squareRoots = emptyList()
-            pis = emptyList()
         } else {
             this.coefficient = coefficient
             this.irrationals = irrationals
             this._irrationals = irrationals.toConstMultiSet()
-
-            val groups = irrationals.groupBy { it.type }
-            @Suppress("UNCHECKED_CAST")
-            logs = (groups[Log.TYPE] ?: emptyList()) as List<Log>
-            @Suppress("UNCHECKED_CAST")
-            squareRoots = (groups[Sqrt.TYPE] ?: emptyList()) as List<Sqrt>
-            @Suppress("UNCHECKED_CAST")
-            pis = (groups[Pi.TYPE] ?: emptyList()) as List<Pi>
-
-            _logs = logs.toConstMultiSet()
-            _squareRoots = squareRoots.toConstMultiSet()
-            _pis = pis.toConstMultiSet()
-            piCount = _pis.getCountOf(Pi()) - _pis.getCountOf(Pi(isInverted = true))
-            _otherIrrationals = irrationals.filter { it !is Log && it !is Sqrt && it !is Pi }.toConstMultiSet()
         }
     }
 
@@ -80,44 +62,20 @@ class Term {
     private constructor(
         coefficient: ExactFraction,
         irrationals: ConstMultiSet<IrrationalNumber<*>>,
-        logs: ConstMultiSet<Log>,
-        squareRoots: ConstMultiSet<Sqrt>,
-        pis: ConstMultiSet<Pi>,
-        otherIrrationals: ConstMultiSet<IrrationalNumber<*>>
     ) {
         if (coefficient.isZero() || irrationals.any { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
             this.irrationals = emptyList()
             this._irrationals = emptyConstMultiSet()
-
-            _logs = emptyConstMultiSet()
-            _squareRoots = emptyConstMultiSet()
-            _pis = emptyConstMultiSet()
-            piCount = 0
-            _otherIrrationals = emptyConstMultiSet()
-
-            this.logs = emptyList()
-            this.squareRoots = emptyList()
-            this.pis = emptyList()
         } else {
             this.coefficient = coefficient
             this.irrationals = irrationals.toList()
             this._irrationals = irrationals
-
-            this.logs = logs.toList()
-            this.squareRoots = squareRoots.toList()
-            this.pis = pis.toList()
-
-            _logs = logs
-            _squareRoots = squareRoots
-            _pis = pis
-            piCount = _pis.getCountOf(Pi()) - _pis.getCountOf(Pi(isInverted = true))
-            _otherIrrationals = otherIrrationals
         }
     }
 
-    operator fun unaryMinus(): Term = Term(-coefficient, _irrationals, _logs, _squareRoots, _pis, _otherIrrationals)
-    operator fun unaryPlus(): Term = Term(coefficient, _irrationals, _logs, _squareRoots, _pis, _otherIrrationals)
+    operator fun unaryMinus(): Term = Term(-coefficient, _irrationals)
+    operator fun unaryPlus(): Term = Term(coefficient, _irrationals)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Term) {
@@ -127,20 +85,13 @@ class Term {
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        return simplified.coefficient == otherSimplified.coefficient &&
-            simplified.piCount == otherSimplified.piCount &&
-            simplified._logs == otherSimplified._logs &&
-            simplified._squareRoots == otherSimplified._squareRoots
+        return simplified.coefficient == otherSimplified.coefficient && simplified._irrationals == otherSimplified._irrationals
     }
 
     operator fun times(other: Term): Term {
         return Term(
             coefficient * other.coefficient,
-            (_irrationals + other._irrationals).toConstMultiSet(),
-            (_logs + other._logs).toConstMultiSet(),
-            (_squareRoots + other._squareRoots).toConstMultiSet(),
-            (_pis + other._pis).toConstMultiSet(),
-            (_otherIrrationals + other._otherIrrationals).toConstMultiSet()
+            (_irrationals + other._irrationals).toConstMultiSet()
         )
     }
 
@@ -151,15 +102,20 @@ class Term {
 
         return Term(
             coefficient / other.coefficient,
-            (_irrationals + other._irrationals.mapToSetConsistent { it.inverse() }).toConstMultiSet(),
-            (_logs + other._logs.mapToSetConsistent(Log::inverse)).toConstMultiSet(),
-            (_squareRoots + other._squareRoots.mapToSetConsistent(Sqrt::inverse)).toConstMultiSet(),
-            (_pis + other._pis.mapToSetConsistent(Pi::inverse)).toConstMultiSet(),
-            (_otherIrrationals + other._otherIrrationals.mapToSetConsistent { it.inverse() }).toConstMultiSet()
+            (_irrationals + other._irrationals.mapToSetConsistent { it.inverse() }).toConstMultiSet()
         )
     }
 
     fun isZero(): Boolean = coefficient.isZero()
+
+    fun getIrrationalsByType(type: String): List<IrrationalNumber<*>> {
+        if (type !in irrationalTypes) {
+            val result = _irrationals.filterConsistent { it.type == type }
+            irrationalTypes[type] = result
+        }
+
+        return irrationalTypes[type]!!
+    }
 
     /**
      * Simplify all numbers, based on the simplify function for their type
@@ -184,16 +140,22 @@ class Term {
         if (value == null) {
             val simplified = getSimplified()
 
-            val logProduct = simplified._logs.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-            val sqrtProduct = simplified._squareRoots.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-            val piProduct = simplified._pis.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-            val numeratorProduct = logProduct * sqrtProduct * piProduct * simplified.coefficient.numerator.toBigDecimal()
+            val irrationalProduct = simplified.irrationals.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
+            val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * irrationalProduct
 
             val result = divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
             value = result
         }
 
         return value!!
+    }
+
+    private fun calculatePiCount(): Int {
+        @Suppress("UNCHECKED_CAST")
+        val pis = getIrrationalsByType(Pi.TYPE) as List<Pi>
+        val positive = pis.count { !it.isInverted }
+        val negative = pis.size - positive
+        return positive - negative
     }
 
     override fun toString(): String {
