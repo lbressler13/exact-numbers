@@ -28,7 +28,7 @@ class TermTest {
     @Test fun testDiv() = runDivTests()
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
-    @Test fun testGetValue() = runGetValueTests() // TODO
+    @Test fun testGetValue() = runGetValueTests()
 
     @Test fun testGetIrrationalsByType() {} // TODO
 

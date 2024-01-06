@@ -165,9 +165,9 @@ fun runGetValueTests() {
     expected = BigDecimal("-8.3775804095727813333")
     assertEquals(expected, term.getValue())
 
-    // term = Term.fromValues(ExactFraction.FOUR, listOf(Sqrt.ONE, testNumber1))
-    // expected = BigDecimal("3")
-    // assertEquals(expected, term.getValue())
+    term = Term.fromValues(ExactFraction.FOUR, listOf(Sqrt.ONE, testNumber2))
+    expected = BigDecimal("28")
+    assertEquals(expected, term.getValue())
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(Log(9), Sqrt(49), Sqrt(2)))
     expected = BigDecimal("75.57215112395364893851321831545508672")
@@ -186,7 +186,6 @@ fun runGetValueTests() {
     assertEquals(expected, term.getValue())
 
     term = Term.fromValues(one, listOf(testNumber2, testNumber2, testNumber1, Log(5, 2)))
-    // expected = BigDecimal("85.330857487110566284")
     expected = BigDecimal("85.33085748711055350")
     assertEquals(expected, term.getValue())
 }
