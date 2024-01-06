@@ -1,8 +1,10 @@
 package xyz.lbres.expressions.term
 
 import xyz.lbres.common.createHashCode
+import xyz.lbres.common.deprecatedV1
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
+import xyz.lbres.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
@@ -172,6 +174,18 @@ class Term {
     }
 
     override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "${irrationalPackage}.log.Log"))
+    @JvmName("getLogsDeprecated")
+    fun getLogs(): List<Log> = logs
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("piCount"))
+    @JvmName("getPiCountDeprecated")
+    fun getPiCount(): Int = piCount
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "${irrationalPackage}.sqrt.Sqrt"))
+    @JvmName("getSquareRootsDeprecated")
+    fun getSquareRoots(): List<Sqrt> = squareRoots
 
     companion object {
         val ZERO = Term(ExactFraction.ZERO, emptyList())

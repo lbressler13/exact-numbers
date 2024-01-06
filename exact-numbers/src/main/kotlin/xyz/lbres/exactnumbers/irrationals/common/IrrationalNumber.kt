@@ -8,6 +8,7 @@ import xyz.lbres.common.castToInt
 import xyz.lbres.common.castToLong
 import xyz.lbres.common.castToShort
 import xyz.lbres.common.createHashCode
+import xyz.lbres.common.deprecatedV1
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -31,7 +32,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
      * If the number is in the format `1/n`. True if the number is in that format, false otherwise
      */
     abstract val isInverted: Boolean
-    @Deprecated("Property deprecated in v1.0", ReplaceWith("isInverted"), DeprecationLevel.WARNING)
+    @Deprecated("Property $deprecatedV1", ReplaceWith("isInverted"), DeprecationLevel.WARNING)
     val isDivided: Boolean
         get() = isInverted
 
@@ -87,7 +88,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
      */
     abstract fun inverse(): T
 
-    @Deprecated("Method deprecated in v1.0", ReplaceWith("inverse"), DeprecationLevel.WARNING)
+    @Deprecated("Method $deprecatedV1", ReplaceWith("inverse"), DeprecationLevel.WARNING)
     fun swapDivided(): T = inverse()
 
     operator fun times(other: IrrationalNumber<*>): Term = Term.fromValues(ExactFraction.ONE, listOf(this, other))
