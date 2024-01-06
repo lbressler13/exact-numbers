@@ -159,11 +159,14 @@ class LogTest {
 
         logNum = Log(2048, 2)
         assertTrue(logNum.isRational())
+        assertTrue(logNum.isRational())
 
         logNum = Log(2048, 2, true)
         assertTrue(logNum.isRational())
+        assertTrue(logNum.isRational())
 
         logNum = Log(ExactFraction(1, 27), 3)
+        assertTrue(logNum.isRational())
         assertTrue(logNum.isRational())
 
         logNum = Log(ExactFraction(1, 1000), true)
@@ -175,8 +178,10 @@ class LogTest {
 
         logNum = Log(ExactFraction(1, 10), 5)
         assertFalse(logNum.isRational())
+        assertFalse(logNum.isRational())
 
         logNum = Log(1000, 100, true)
+        assertFalse(logNum.isRational())
         assertFalse(logNum.isRational())
 
         logNum = Log(ExactFraction(8, 1000), 2)
@@ -191,6 +196,14 @@ class LogTest {
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testSimplifyList() = runSimplifyListTests()
+
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 
     @Test
     fun testToString() {

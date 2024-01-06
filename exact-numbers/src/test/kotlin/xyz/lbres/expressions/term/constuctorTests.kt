@@ -1,7 +1,7 @@
 package xyz.lbres.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -13,7 +13,7 @@ private val logNum3 = Log(ExactFraction(19, 33), true)
 fun runConstructorTests() {
     // zero
     var expectedCoeff = ExactFraction.ZERO
-    var expectedNumbers: List<Irrational> = emptyList()
+    var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
 
     var term = Term(ExactFraction.ZERO, emptyList())
     assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
@@ -55,7 +55,7 @@ fun runConstructorTests() {
 fun runFromValuesTests() {
     // zero
     var expectedCoeff = ExactFraction.ZERO
-    var expectedNumbers: List<Irrational> = emptyList()
+    var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
 
     var term = Term.fromValues(ExactFraction.ZERO, emptyList(), emptyList(), 0)
     assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)

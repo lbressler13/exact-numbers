@@ -3,7 +3,8 @@ package xyz.lbres.exactnumbers.irrationals.log
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -17,12 +18,13 @@ import java.math.BigInteger
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  */
+@Suppress("EqualsOrHashCode")
 class Log private constructor(
     val argument: ExactFraction,
     val base: Int,
     override val isDivided: Boolean,
     private val fullySimplified: Boolean
-) : Comparable<Log>, Irrational {
+) : IrrationalNumber<Log>() {
     override val type = TYPE
 
     init {
@@ -53,10 +55,6 @@ class Log private constructor(
     constructor(argument: BigInteger, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
     constructor(argument: BigInteger, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
 
-    override fun equals(other: Any?): Boolean = other is Log && getValue() == other.getValue()
-
-    override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
-
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
     /**
@@ -64,7 +62,7 @@ class Log private constructor(
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun isRational(): Boolean {
+    override fun checkIsRational(): Boolean {
         val numLog = getLogOf(argument.numerator, base)
         val denomLog = getLogOf(argument.denominator, base)
 
@@ -77,7 +75,7 @@ class Log private constructor(
      *
      * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
-    override fun getRationalValue(): ExactFraction? {
+    override fun performGetRationalValue(): ExactFraction? {
         when {
             !isRational() -> return null
             isZero() -> return ExactFraction.ZERO
@@ -101,7 +99,7 @@ class Log private constructor(
      *
      * @return [BigDecimal]
      */
-    override fun getValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
         return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
     }
@@ -152,8 +150,8 @@ class Log private constructor(
 
     override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
 
-    companion object {
-        const val TYPE = "log"
+    companion object : IrrationalNumberCompanion<Log>() {
+        override val TYPE = "log"
 
         val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
         val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
@@ -161,11 +159,11 @@ class Log private constructor(
         /**
          * Extract rational values and simplify remaining list of irrationals
          *
-         * @param numbers [List]<Irrational>: list to simplify, expected to consist of only Logs
+         * @param numbers [List]<IrrationalNumber>: list to simplify, expected to consist of only Logs
          * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
          */
         // TODO: improve simplification by looking at bases
-        internal fun simplifyList(numbers: List<Irrational>?): Pair<ExactFraction, List<Log>> {
+        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Log>> {
             if (numbers.isNullOrEmpty()) {
                 return Pair(ExactFraction.ONE, emptyList())
             }

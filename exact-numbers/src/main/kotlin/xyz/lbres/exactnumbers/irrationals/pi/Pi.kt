@@ -2,7 +2,8 @@ package xyz.lbres.exactnumbers.irrationals.pi
 
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -13,29 +14,29 @@ import kotlin.math.abs
  *
  * @param isDivided [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val isDivided: Boolean) : Irrational {
+class Pi(override val isDivided: Boolean) : IrrationalNumber<Pi>() {
     override val type: String = TYPE
 
     // constructor with reduced params
     constructor() : this(false)
 
-    override fun getValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val base = PI.toBigDecimal()
-
-        if (isDivided) {
-            return divideBigDecimals(BigDecimal.ONE, base)
-        }
-
-        return base
+        return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, base) }, { base })
     }
 
     override fun isZero(): Boolean = false
-
-    override fun isRational(): Boolean = false
-
-    override fun getRationalValue(): ExactFraction? = null
-
+    override fun checkIsRational(): Boolean = false
+    override fun performGetRationalValue(): ExactFraction? = null
     override fun swapDivided(): Pi = Pi(!isDivided)
+
+    override fun compareTo(other: Pi): Int {
+        return when {
+            isDivided && !other.isDivided -> -1
+            !isDivided && other.isDivided -> 1
+            else -> 0
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         return other != null &&
@@ -47,18 +48,18 @@ class Pi(override val isDivided: Boolean) : Irrational {
 
     override fun hashCode(): Int = listOf(TYPE, PI, isDivided).hashCode()
 
-    companion object {
-        const val TYPE = "pi"
+    companion object : IrrationalNumberCompanion<Pi>() {
+        override val TYPE = "pi"
 
         /**
          * Simplify list of pis
          *
-         * @param numbers [List]<Irrational> : list to simplify, expected to consist of only Pis
-         * @return [List]<Pi>: simplified list
+         * @param numbers [List]<IrrationalNumber> : list to simplify, expected to consist of only Pis
+         * @return [Pair]<ExactFraction, List<Pi>>: pair where first value is one, and the second value is the simplified list
          */
-        internal fun simplifyList(numbers: List<Irrational>?): List<Pi> {
+        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Pi>> {
             if (numbers.isNullOrEmpty()) {
-                return emptyList()
+                return Pair(ExactFraction.ONE, emptyList())
             }
 
             @Suppress("UNCHECKED_CAST")
@@ -68,7 +69,8 @@ class Pi(override val isDivided: Boolean) : Irrational {
             val negative = numbers.size - positive
             val diff = abs(positive - negative)
 
-            return List(diff) { Pi(isDivided = positive < negative) }
+            val pis = List(diff) { Pi(isDivided = positive < negative) }
+            return Pair(ExactFraction.ONE, pis)
         }
     }
 }

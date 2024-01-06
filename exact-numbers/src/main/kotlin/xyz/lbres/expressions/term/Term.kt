@@ -3,7 +3,7 @@ package xyz.lbres.expressions.term
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -16,11 +16,11 @@ import kotlin.math.abs
  * Representation of the product of several numbers. Consists of a rational coefficient and list of irrational numbers
  *
  * @param coefficient [ExactFraction]
- * @param numbers [List]<Irrational>
+ * @param numbers [List]<IrrationalNumber>
  */
-class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrational>) {
+class Term internal constructor(coefficient: ExactFraction, numbers: List<IrrationalNumber<*>>) {
     val coefficient: ExactFraction
-    internal val numbers: List<Irrational>
+    internal val numbers: List<IrrationalNumber<*>>
 
     init {
         if (coefficient.isZero() || numbers.any { it.isZero() }) {
@@ -74,11 +74,12 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
      */
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
+        // TODO handle other irrational types
         val logs = Log.simplifyList(groups[Log.TYPE] ?: emptyList())
         val pis = Pi.simplifyList(groups[Pi.TYPE] ?: emptyList())
         val sqrts = Sqrt.simplifyList(groups[Sqrt.TYPE] ?: emptyList())
-        val newCoefficient = coefficient * logs.first * sqrts.first
-        val newNumbers = logs.second + sqrts.second + pis
+        val newCoefficient = coefficient * logs.first * sqrts.first * pis.first
+        val newNumbers = logs.second + sqrts.second + pis.second
 
         return Term(newCoefficient, newNumbers)
     }

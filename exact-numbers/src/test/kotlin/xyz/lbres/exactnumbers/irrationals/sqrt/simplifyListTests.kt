@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -18,7 +18,7 @@ fun runSimplifyListTests() {
 
     assertEquals(expected, Sqrt.simplifyList(null))
 
-    var numbers: List<Irrational> = emptyList()
+    var numbers: List<IrrationalNumber<*>> = emptyList()
     assertEquals(expected, Sqrt.simplifyList(numbers))
 
     // zero
