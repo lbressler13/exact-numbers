@@ -44,7 +44,8 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 │   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations
 ├── README
-└── settings.gradle.kts
+├── settings.gradle.kts
+└── signatures                    <-- markdown files with signatures for public functions and classes
 ```
 
 ## Building
