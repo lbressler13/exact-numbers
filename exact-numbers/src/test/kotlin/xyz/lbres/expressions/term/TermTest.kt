@@ -27,7 +27,7 @@ class TermTest {
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
 
-    @Test fun testGetSimplified() = runGetSimplifiedTests() // TODO
+    @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testGetValue() = runGetValueTests() // TODO
 
     @Test fun testGetIrrationalsByType() {} // TODO
