@@ -6,7 +6,10 @@ plugins {
 }
 
 group = "xyz.lbres"
-version = "1.0.0"
+version = "0.1.1" // TODO major version change, due to change in visibility of num/denom
+
+val githubUsername: String? = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+val githubPassword: String? = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
 
 repositories {
     mavenCentral()
@@ -15,20 +18,18 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/lbressler13/kotlin-utils")
         credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            username = githubUsername
+            password = githubPassword
         }
     }
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.4.0"
+    val kotlinUtilsVersion = "1.3.0"
     val mockkVersion = "1.12.4"
 
     implementation(kotlin("stdlib"))
-    // TODO fix gh import
-    implementation(files("libs/kotlin-utils-0.4.0-local.jar"))
-    // implementation("xyz.lbres:kotlin-utils:$kotlinUtilsVersion")
+    implementation("xyz.lbres:kotlin-utils:$kotlinUtilsVersion")
 
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -39,8 +40,8 @@ publishing {
         maven {
             url = uri("https://maven.pkg.github.com/lbressler13/exact-numbers")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                username = githubUsername
+                password = githubPassword
             }
         }
     }

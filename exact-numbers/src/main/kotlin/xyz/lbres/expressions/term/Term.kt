@@ -6,7 +6,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.kotlinutils.general.ternaryIf
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.generic.ext.ifNull
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
@@ -208,7 +208,7 @@ class Term {
             }
 
             val numString = (logs + squareRoots + pis).joinToString("x")
-            val result = ternaryIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
+            val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
 
             storedString = result
             result
@@ -232,7 +232,7 @@ class Term {
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
-            val pi = ternaryIf(piCount < 0, Pi().inverse(), Pi())
+            val pi = simpleIf(piCount < 0, Pi().inverse(), Pi())
             val piList = List(abs(piCount)) { pi }
 
             return Term(coefficient, logs, roots, piList)

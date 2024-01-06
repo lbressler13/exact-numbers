@@ -8,11 +8,13 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
-import xyz.lbres.kotlinutils.general.ternaryIf
-import xyz.lbres.kotlinutils.int.ext.isNegative
-import xyz.lbres.kotlinutils.int.ext.isZero
+import xyz.lbres.kotlinutils.collection.ext.toMultiSet
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
+import xyz.lbres.kotlinutils.set.multiset.filterNotToSet
+import xyz.lbres.kotlinutils.set.multiset.filterToSet
+import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
@@ -177,7 +179,7 @@ class Log private constructor(
             "${argument.numerator}/${argument.denominator}"
         }
 
-        return ternaryIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
+        return simpleIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
     }
 
     override fun hashCode(): Int = listOf(TYPE, argument, base, isInverted).hashCode()
@@ -195,24 +197,25 @@ class Log private constructor(
          * @return [Pair]<[ExactFraction], [MultiSet]<[Log]>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
+        // TODO use const multiset
         internal fun simplifySet(numbers: MultiSet<Log>): Pair<ExactFraction, MultiSet<Log>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
                 numbers.any(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyMultiSet())
             }
 
-            val simplifiedNumbers = numbers.map { it.getSimplified() }
+            val simplifiedNumbers = numbers.mapToSet { it.getSimplified() }
             val coefficient = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            val logValues: MultiSet<Log> = simplifiedNumbers.map { it.second }
+            val logValues: MultiSet<Log> = simplifiedNumbers.mapToSet { it.second }
 
             val invertedDistinct: Set<Log> = logValues
-                .filter { it.isInverted }
-                .map { it.inverse() }
+                .filterToSet { it.isInverted }
+                .mapToSet { it.inverse() }
                 .distinctValues
 
             val notInvertedDistinct: Set<Log> = logValues
-                .filterNot { it.isInverted }
+                .filterNotToSet { it.isInverted }
                 .distinctValues
 
             val bothTypesDistinct: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
@@ -232,7 +235,7 @@ class Log private constructor(
                 }
             }.fold(invertedOnlyValues + notInvertedOnlyValues) { acc, set -> acc + set }
 
-            return Pair(coefficient, allValues)
+            return Pair(coefficient, allValues.toMultiSet())
         }
     }
 }

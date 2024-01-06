@@ -7,7 +7,7 @@ import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.expressions.term.Term
-import xyz.lbres.kotlinutils.general.ternaryIf
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
 import xyz.lbres.kotlinutils.set.multiset.multiSetOf
@@ -173,7 +173,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val root = Sqrt(ExactFraction(numeratorRoot, denominatorRoot), true)
             val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
 
-            val rootList = ternaryIf(root == ONE, emptyMultiSet(), multiSetOf(root))
+            val rootList = simpleIf(root == ONE, emptyMultiSet(), multiSetOf(root))
 
             return Pair(coefficient, rootList)
         }

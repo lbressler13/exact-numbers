@@ -6,7 +6,7 @@ import xyz.lbres.exactnumbers.irrationals.common.Irrational
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
-import xyz.lbres.kotlinutils.general.ternaryIf
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
 import java.math.BigDecimal
@@ -67,7 +67,7 @@ class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>(
 
     override fun toString(): String {
         val pi = "π"
-        return ternaryIf(isInverted, "[1/$pi]", "[$pi]")
+        return simpleIf(isInverted, "[1/$pi]", "[$pi]")
     }
 
     override fun hashCode(): Int = listOf(TYPE, PI, isInverted).hashCode()

@@ -3,6 +3,9 @@ package xyz.lbres.exactnumbers.irrationals.log
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
+import xyz.lbres.kotlinutils.set.multiset.filterToSet
+import xyz.lbres.kotlinutils.set.multiset.filterNotToSet
+import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import xyz.lbres.kotlinutils.set.multiset.multiSetOf
 import kotlin.test.assertEquals
 
@@ -98,8 +101,8 @@ internal fun runSimplifySetTests() {
     // inverses
     logs = multiSetOf(Log(8), Log(8, 10).inverse())
     println(logs)
-    val invertedDistinct: Set<Log> = logs.filter { it.isInverted }.map { it.inverse() }.distinctValues
-    val notInvertedDistinct: Set<Log> = logs.filterNot { it.isInverted }.distinctValues
+    val invertedDistinct: Set<Log> = logs.filterToSet { it.isInverted }.mapToSet { it.inverse() }.distinctValues
+    val notInvertedDistinct: Set<Log> = logs.filterNotToSet { it.isInverted }.distinctValues
     println(invertedDistinct)
     println(notInvertedDistinct)
     println(invertedDistinct intersect notInvertedDistinct)
