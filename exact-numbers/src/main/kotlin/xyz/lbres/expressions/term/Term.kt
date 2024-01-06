@@ -74,6 +74,7 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
      */
     fun getSimplified(): Term {
         val groups = numbers.groupBy { it.type }
+        // TODO handle other irrational types
         val logs = Log.simplifyList(groups[Log.TYPE] ?: emptyList())
         val pis = Pi.simplifyList(groups[Pi.TYPE] ?: emptyList())
         val sqrts = Sqrt.simplifyList(groups[Sqrt.TYPE] ?: emptyList())

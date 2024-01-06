@@ -17,7 +17,7 @@ internal fun getLogOf(num: BigInteger, base: Int): BigDecimal {
 
     when {
         logNum.isNaN() -> throw ArithmeticException("Error calculating log")
-        logNum.isInfinite() -> throw ArithmeticException("Error calculating log: exceeded maximum value")
+        logNum.isInfinite() -> throw ArithmeticException("Error calculating log: overflow on log_$base($num)")
     }
 
     // account for imprecision with doubles

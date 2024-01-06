@@ -3,7 +3,7 @@ package xyz.lbres.exactnumbers.irrationals.common
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 
 /**
- * Generic class for companion object of an irrational number class
+ * Companion object for an irrational number class
  */
 abstract class IrrationalNumberCompanion<T : IrrationalNumber<T>> {
     abstract val TYPE: String

@@ -30,7 +30,12 @@ class HelpersTest {
 
         // error
         val bi = BigInteger.TWO.pow(Short.MAX_VALUE.toInt())
-        assertFailsWithMessage<ArithmeticException>("Error calculating log: exceeded maximum value") { getLogOf(bi, 2) }
+        var errorMessage = "Error calculating log: overflow on log_2($bi)"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(bi, 2) }
+
+        errorMessage = "Error calculating log"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(-BigInteger.TEN, 10) }
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(BigInteger.TEN, 1) }
     }
 
     private fun runSingleGetLogOfTest(arg: Int, base: Int, expected: String) {
