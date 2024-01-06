@@ -74,7 +74,7 @@ class Log private constructor(
     operator fun div(other: Pi): Term = div(other as Irrational)
     operator fun div(other: Sqrt): Term = div(other as Irrational)
 
-    override operator fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
+    override fun compareTo(other: Log): Int = getValue().compareTo(other.getValue())
 
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 

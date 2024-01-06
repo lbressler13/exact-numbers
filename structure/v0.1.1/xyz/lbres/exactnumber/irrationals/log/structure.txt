@@ -1,0 +1,45 @@
+class Log : Comparable<Log>, Irrational
+
+Log(argument: ExactionFraction)
+Log(argument: ExactFraction, base: Int)
+Log(argument: ExactFraction, isDivided: Boolean)
+Log(argument: ExactFraction, base: Int, isDivided: Boolean)
+Log(argument: Int)
+Log(argument: Int, base: Int)
+Log(argument: Int, isDivided: Boolean)
+Log(argument: Int, base: Int, isDivided: Boolean)
+Log(argument: Long)
+Log(argument: Long, base: Int)
+Log(argument: Long, isDivided: Boolean)
+Log(argument: Long, base: Int, isDivided: Boolean)
+Log(argument: BigInteger)
+Log(argument: BigInteger, base: Int)
+Log(argument: BigInteger, isDivided: Boolean)
+Log(argument: BigInteger, base: Int, isDivided: Boolean)
+
+val argument: ExactFraction
+val base: Int
+val type: String
+val isDivided: Boolean
+
+fun isZero(): Boolean
+fun isRational(): Boolean
+fun getRationalValue(): ExactFraction?
+fun getValue(): BigDecimal
+fun getSimplified(): Pair<ExactFraction, Log>
+fun swapDivided(): Log
+operator fun times(other: Log): Term
+operator fun times(other: Pi): Term
+operator fun times(other: Sqrt): Term
+operator fun div(other: Log): Term
+operator fun div(other: Pi): Term
+operator fun div(other: Sqrt): Term
+operator fun compareTo(other: Log): Int
+
+----------------------------------------------------------------------------
+
+object Log.Companion
+
+val TYPE: String
+val ZERO: Log
+val ONE: Log

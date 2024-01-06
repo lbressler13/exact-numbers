@@ -1,0 +1,101 @@
+class ExactionFraction : Comparable<ExactFraction>, Number()
+
+ExactFraction(numerator: BigInteger): ExactFraction
+ExactFraction(numerator: BigInteger, denominator: BigInteger): ExactFraction
+ExactFraction(s: String): ExactFraction
+ExactFraction(numerator: Int): ExactFraction
+ExactFraction(numerator: Long): ExactFraction
+ExactFraction(numerator: Int, denominator: Int): ExactFraction
+ExactFraction(numerator: Long, denominator: Long): ExactFraction
+ExactFraction(numerator: Int, denominator: Long): ExactFraction
+ExactFraction(numerator: Long, denominator: Int): ExactFraction
+ExactFraction(numerator: BigInteger, denominator: Int): ExactFraction
+ExactFraction(numerator: Int, denominator: BigInteger): ExactFraction
+ExactFraction(numerator: BigInteger, denominator: Long): ExactFraction
+ExactFraction(numerator: Long, denominator: BigInteger): ExactFraction
+
+var numerator: BigInteger
+var denominator: BigInteger
+
+operator fun unaryMinus(): ExactFraction
+operator fun unaryPlus(): ExactFraction
+operator fun not(): Boolean
+operator fun inc(): ExactFraction
+operator fun dec(): ExactFraction
+operator fun plus(other: ExactFraction): ExactFraction
+operator fun plus(other: BigInteger): ExactFraction
+operator fun plus(other: Long): ExactFraction
+operator fun plus(other: Int): ExactFraction
+operator fun minus(other: ExactFraction): ExactFraction
+operator fun minus(other: BigInteger): ExactFraction
+operator fun minus(other: Long): ExactFraction
+operator fun minus(other: Int): ExactFraction
+operator fun times(other: ExactFraction): ExactFraction
+operator fun times(other: BigInteger): ExactFraction
+operator fun times(other: Long): ExactFraction
+operator fun times(other: Int): ExactFraction
+operator fun div(other: ExactFraction): ExactFraction
+operator fun div(other: BigInteger): ExactFraction
+operator fun div(other: Long): ExactFraction
+operator fun div(other: Int): ExactFraction
+fun eq(other: Int): Boolean
+fun eq(other: Long): Boolean
+fun eq(other: BigInteger): Boolean
+fun compareTo(other: ExactFraction): ExactFraction
+fun compareTo(other: Int): Int
+fun compareTo(other: Long): Int
+fun compareTo(other: BigInteger): Int
+fun pow(other: ExactFraction): ExactFraction
+fun inverse(): ExactFraction
+fun absoluteValue(): ExactFraction
+fun isNegative(): Boolean
+fun isZero(): Boolean
+fun toDecimalString(digits: Int = 8): String
+fun toFractionString(): String
+fun toPairString(): String
+fun toEFString(): String
+fun toPair(): Pair<BigInteger, BigInteger>
+override fun toByte(): Byte
+override fun toChar(): Char
+override fun toShort(): Short
+override fun toInt(): Int
+override fun toLong(): Long
+override fun toDouble(): Double
+override fun toFloat(): Float
+fun toBigInteger(): BigInteger
+fun toBigDecimal(precision: Int = 20): BigDecimal
+
+----------------------------------------------------------------------------
+
+object ExactFraction.Companion
+
+val ZERO: ExactFraction
+val ONE: ExactFraction
+val TWO: ExactFraction
+val THREE: ExactFraction
+val FOUR: ExactFraction
+val FIVE: ExactFraction
+val SIX: ExactFraction
+val SEVEN: ExactFraction
+val EIGHT: ExactFraction
+val NINE: ExactFraction
+val TEN: ExactFraction
+val NEG_ONE: ExactFraction
+val HALF: ExactFraction
+fun parse(s: String): ExactFraction
+fun isEFString(s: String): Boolean
+
+----------------------------------------------------------------------------
+
+class ExactFractionOverflowException: ArithmeticException
+
+var message: String? = null
+var overflowValue: String? = null
+
+ExactFractionOverflowException()
+ExactFractionOverflowException(message: String)
+ExactFractionOverflowException(message: String, overflowValue: String)
+
+----------------------------------------------------------------------------
+
+fun checkIsEFString(s: String): Boolean
