@@ -2,13 +2,11 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import kotlin.test.Test
 
-internal class ExactFractionTest {
-    // all constructors
+class ExactFractionTest {
     @Test fun testConstructor() = runConstructorTests()
 
     // simplify
-    // includes all private methods used in simplification
-    @Test fun testSimplify() = runSimplifyTests()
+    @Test fun testSimplify() = runSimplifyConstructedTests()
 
     // unary operators
     @Test fun testUnaryMinus() = runUnaryMinusTests()
@@ -32,6 +30,8 @@ internal class ExactFractionTest {
     @Test fun testAbsoluteValue() = runAbsoluteValueTests()
     @Test fun testIsNegative() = runIsNegativeTests()
     @Test fun testIsZero() = runIsZeroTests()
+    @Test fun testRoundToWhole() = runRoundToWholeTests()
+    @Test fun testIsWholeNumber() = runIsWholeNumberTests()
 
     // parsing + toString
     @Test fun testParseDecimal() = runParseDecimalTests()

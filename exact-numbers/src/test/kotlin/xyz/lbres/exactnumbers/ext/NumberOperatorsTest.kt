@@ -4,8 +4,10 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-internal class NumberOperatorsTest {
+@Suppress("KotlinConstantConditions")
+class NumberOperatorsTest {
     @Test
     fun testToExactFraction() {
         // Int
@@ -59,46 +61,21 @@ internal class NumberOperatorsTest {
 
     @Test
     fun testEq() {
-        // BigInteger, Int
-        var i = 0
-        var bi = BigInteger(i.toString())
-        assert(bi.eq(i))
+        // Int
+        runSingleIntEqTest("0", 0)
+        runSingleIntEqTest("-1", -1)
+        runSingleIntEqTest("1", 1)
+        runSingleIntEqTest(Int.MIN_VALUE.toString(), Int.MIN_VALUE)
+        runSingleIntEqTest(Int.MAX_VALUE.toString(), Int.MAX_VALUE)
 
-        i = -1
-        bi = BigInteger(i.toString())
-        assert(bi.eq(i))
-
-        i = 1
-        bi = BigInteger(i.toString())
-        assert(bi.eq(i))
-
-        i = Int.MIN_VALUE
-        bi = BigInteger(i.toString())
-        assert(bi.eq(i))
-
-        i = Int.MAX_VALUE
-        bi = BigInteger(i.toString())
-        assert(bi.eq(i))
-
-        // BigInteger, Long
-        var l = 0L
-        bi = BigInteger(l.toString())
-        assert(bi.eq(l))
-
-        l = -1
-        bi = BigInteger(l.toString())
-        assert(bi.eq(l))
-
-        l = 1
-        bi = BigInteger(l.toString())
-        assert(bi.eq(l))
-
-        l = Long.MIN_VALUE
-        bi = BigInteger(l.toString())
-        assert(bi.eq(l))
-
-        l = Long.MAX_VALUE
-        bi = BigInteger(l.toString())
-        assert(bi.eq(l))
+        // Long
+        runSingleLongEqTest("0", 0)
+        runSingleLongEqTest("-1", -1)
+        runSingleLongEqTest("1", 1)
+        runSingleLongEqTest(Long.MIN_VALUE.toString(), Long.MIN_VALUE)
+        runSingleLongEqTest(Long.MAX_VALUE.toString(), Long.MAX_VALUE)
     }
+
+    private fun runSingleIntEqTest(string: String, int: Int) = assertTrue { BigInteger(string).eq(int) }
+    private fun runSingleLongEqTest(string: String, long: Long) = assertTrue { BigInteger(string).eq(long) }
 }

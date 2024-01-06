@@ -2,10 +2,8 @@ package xyz.lbres.exactnumbers.irrationals.pi
 
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.Irrational
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.expressions.term.Term
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
@@ -18,28 +16,20 @@ import kotlin.math.abs
  *
  * @param isInverted [Boolean]: if the inverse of the value should be calculated
  */
-class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>() {
+class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     override val type: String = TYPE
 
     // constructor with reduced params
     constructor() : this(false)
 
-    override fun getValue(): BigDecimal {
+    override fun performGetValue(): BigDecimal {
         val base = PI.toBigDecimal()
-
-        if (isInverted) {
-            return divideBigDecimals(BigDecimal.ONE, base)
-        }
-
-        return base
+        return simpleIf(isInverted, { divideBigDecimals(BigDecimal.ONE, base) }, { base })
     }
 
     override fun isZero(): Boolean = false
-
-    override fun isRational(): Boolean = false
-
-    override fun getRationalValue(): ExactFraction? = null
-
+    override fun checkIsRational(): Boolean = false
+    override fun performGetRationalValue(): ExactFraction? = null
     override fun inverse(): Pi = Pi(!isInverted)
 
     override fun equals(other: Any?): Boolean {
@@ -56,45 +46,30 @@ class Pi private constructor(override val isInverted: Boolean) : Irrational<Pi>(
         }
     }
 
-    operator fun times(other: ExactFraction): Term = Term.fromValues(other, listOf(this))
-    operator fun times(other: Log): Term = Term.fromValues(listOf(other), listOf(this))
-    operator fun times(other: Pi): Term = Term.fromValues(listOf(this, other))
-    operator fun times(other: Sqrt): Term = Term.fromValues(listOf(other), listOf(this))
-    operator fun div(other: ExactFraction): Term = Term.fromValues(other.inverse(), listOf(this))
-    operator fun div(other: Log): Term = Term.fromValues(listOf(other.inverse()), listOf(this))
-    operator fun div(other: Pi): Term = Term.fromValues(listOf(this, other.inverse()))
-    operator fun div(other: Sqrt): Term = Term.fromValues(listOf(other.inverse()), listOf(this))
-
-    override fun toString(): String {
-        val pi = "π"
-        return simpleIf(isInverted, "[1/$pi]", "[$pi]")
-    }
+    override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
 
     override fun hashCode(): Int = listOf(TYPE, PI, isInverted).hashCode()
 
-    companion object {
-        const val TYPE = "pi"
+    companion object : IrrationalNumberCompanion<Pi>() {
+        override val TYPE = "pi"
 
         /**
          * Simplify set of pis
          *
          * @param numbers [MultiSet]<[Pi]> : list to simplify
-         * @return [MultiSet]<[Pi]>: simplified list
+         * @return [Pair]<[ExactFraction], [MultiSet]<[Pi]>>: pair where first value is 1, and second value is simplified set
          */
-        internal fun simplifySet(numbers: MultiSet<Pi>): MultiSet<Pi> {
+        override fun simplifySet(numbers: MultiSet<Pi>): Pair<ExactFraction, MultiSet<Pi>> {
             if (numbers.isEmpty()) {
-                return emptyMultiSet()
+                return Pair(ExactFraction.ONE, emptyMultiSet())
             }
 
             val positive = numbers.getCountOf(Pi())
             val negative = numbers.getCountOf(Pi(isInverted = true))
             val diff = abs(positive - negative)
 
-            return when {
-                positive == negative -> emptyMultiSet()
-                positive < negative -> MultiSet(diff) { Pi(isInverted = true) }
-                else -> MultiSet(diff) { Pi(isInverted = false) }
-            }
+            val pis = MultiSet(diff) { Pi(isInverted = positive < negative) }
+            return Pair(ExactFraction.ONE, pis)
         }
     }
 }

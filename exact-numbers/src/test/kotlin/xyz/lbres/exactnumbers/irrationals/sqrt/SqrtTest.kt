@@ -5,22 +5,22 @@ import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
-internal class SqrtTest {
+class SqrtTest {
     @BeforeTest
-    fun createMocks() {
+    fun setupMockk() {
         mockkObject(Memoize)
         every { Memoize.individualWholeNumber } answers { mutableMapOf() }
     }
 
     @AfterTest
-    fun clearMocks() {
+    fun clearMockk() {
         unmockkAll()
     }
 
@@ -28,11 +28,11 @@ internal class SqrtTest {
     fun testConstructor() {
         // errors
         val expectedMessage = "Cannot calculate root of a negative number"
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.EIGHT) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-8) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-8L) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(BigInteger("-8")) }
-        assertFailsWith<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.HALF) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.EIGHT) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-8) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-8L) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(BigInteger("-8")) }
+        assertFailsWithMessage<ArithmeticException>(expectedMessage) { Sqrt(-ExactFraction.HALF) }
 
         // no error
         var sqrts = listOf(Sqrt(ExactFraction.ZERO), Sqrt(0), Sqrt(0L), Sqrt(BigInteger.ZERO))
@@ -71,38 +71,36 @@ internal class SqrtTest {
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testSimplifySet() = runSimplifySetTests()
 
+    @Test
+    fun testToString() {
+        // whole number
+        var sqrt = Sqrt(ExactFraction.ZERO)
+        var expected = "[√(0)]"
+        assertEquals(expected, sqrt.toString())
+
+        sqrt = Sqrt(10)
+        expected = "[√(10)]"
+        assertEquals(expected, sqrt.toString())
+
+        sqrt = Sqrt(1234567)
+        expected = "[√(1234567)]"
+        assertEquals(expected, sqrt.toString())
+
+        // fraction
+        sqrt = Sqrt(ExactFraction.HALF)
+        expected = "[√(1/2)]"
+        assertEquals(expected, sqrt.toString())
+
+        sqrt = Sqrt(ExactFraction(12, 35))
+        expected = "[√(12/35)]"
+        assertEquals(expected, sqrt.toString())
+    }
+
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
     @Test fun testToShort() = runToShortTests()
     @Test fun testToInt() = runToIntTests()
     @Test fun testToLong() = runToLongTests()
-    @Test fun testToFloat() = runToFloatTests()
     @Test fun testToDouble() = runToDoubleTests()
-
-    @Test
-    fun testToString() {
-        val symbol = "√"
-
-        // whole number
-        var sqrt = Sqrt(ExactFraction.ZERO)
-        var expected = "[$symbol(0)]"
-        assertEquals(expected, sqrt.toString())
-
-        sqrt = Sqrt(10)
-        expected = "[$symbol(10)]"
-        assertEquals(expected, sqrt.toString())
-
-        sqrt = Sqrt(1234567)
-        expected = "[$symbol(1234567)]"
-        assertEquals(expected, sqrt.toString())
-
-        // fraction
-        sqrt = Sqrt(ExactFraction.HALF)
-        expected = "[$symbol(1/2)]"
-        assertEquals(expected, sqrt.toString())
-
-        sqrt = Sqrt(ExactFraction(12, 35))
-        expected = "[$symbol(12/35)]"
-        assertEquals(expected, sqrt.toString())
-    }
+    @Test fun testToFloat() = runToFloatTests()
 }

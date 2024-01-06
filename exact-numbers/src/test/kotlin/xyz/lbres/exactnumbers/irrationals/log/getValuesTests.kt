@@ -5,14 +5,14 @@ import java.math.BigDecimal
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-internal fun runGetValueTests() {
+fun runGetValueTests() {
     // base 10
     var logNum = Log(ExactFraction.ONE)
-    var expected = 0.toBigDecimal()
+    var expected = BigDecimal.ZERO
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(100)
-    expected = 2.toBigDecimal()
+    expected = BigDecimal("2")
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(3333)
@@ -22,6 +22,7 @@ internal fun runGetValueTests() {
     logNum = Log(ExactFraction.HALF)
     expected = BigDecimal("-0.30102999566398114")
     assertEquals(expected, logNum.getValue())
+    assertEquals(expected, logNum.getValue())
 
     logNum = Log(ExactFraction(21, 2))
     expected = BigDecimal("1.02118929906993786")
@@ -29,20 +30,22 @@ internal fun runGetValueTests() {
 
     // base 2
     logNum = Log(ExactFraction.ONE, 2)
-    expected = 0.toBigDecimal()
+    expected = BigDecimal.ZERO
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(ExactFraction(1, 8), 2)
-    expected = (-3).toBigDecimal()
+    expected = BigDecimal("-3")
+    assertEquals(expected, logNum.getValue())
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(200, 2)
     expected = BigDecimal("7.643856189774724")
     assertEquals(expected, logNum.getValue())
+    assertEquals(expected, logNum.getValue())
 
     // other
     logNum = Log(216, 6)
-    expected = 3.toBigDecimal()
+    expected = BigDecimal("3")
     assertEquals(expected, logNum.getValue())
 
     logNum = Log(15151515, 24)
@@ -69,18 +72,20 @@ internal fun runGetValueTests() {
     logNum = Log(ExactFraction(1, 4), 10).inverse()
     expected = BigDecimal("-1.6609640474436814234")
     assertEquals(expected, logNum.getValue())
+    assertEquals(expected, logNum.getValue())
 
     logNum = Log(12, 4).inverse()
     expected = BigDecimal("0.55788589130225962125")
     assertEquals(expected, logNum.getValue())
 }
 
-internal fun runGetRationalValueTests() {
+fun runGetRationalValueTests() {
     // irrational
     var logNum = Log(6)
     assertNull(logNum.getRationalValue())
 
     logNum = Log(1000, 5)
+    assertNull(logNum.getRationalValue())
     assertNull(logNum.getRationalValue())
 
     logNum = Log(ExactFraction(5, 12), 5)
@@ -101,6 +106,7 @@ internal fun runGetRationalValueTests() {
     logNum = Log(ExactFraction(1, 27), 3)
     expected = -ExactFraction.THREE
     assertEquals(expected, logNum.getRationalValue())
+    assertEquals(expected, logNum.getRationalValue())
 
     logNum = Log(ExactFraction(1, 1000))
     expected = -ExactFraction.THREE
@@ -108,5 +114,6 @@ internal fun runGetRationalValueTests() {
 
     logNum = Log(ExactFraction(1, 1000)).inverse()
     expected = ExactFraction(-1, 3)
+    assertEquals(expected, logNum.getRationalValue())
     assertEquals(expected, logNum.getRationalValue())
 }

@@ -3,8 +3,8 @@ package xyz.lbres.exactnumbers.irrationals.log
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
-import xyz.lbres.kotlinutils.set.multiset.filterToSet
 import xyz.lbres.kotlinutils.set.multiset.filterNotToSet
+import xyz.lbres.kotlinutils.set.multiset.filterToSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import xyz.lbres.kotlinutils.set.multiset.multiSetOf
 import kotlin.test.assertEquals
@@ -12,10 +12,10 @@ import kotlin.test.assertEquals
 private val one = Log.ONE
 private val fractionOne = ExactFraction.ONE
 
-internal fun runGetSimplifiedTests() {
+fun runGetSimplifiedTests() {
     // zero
     var logNum = Log.ZERO
-    var expected = Pair(ExactFraction.ONE, Log.ZERO)
+    var expected = Pair(fractionOne, Log.ZERO)
     assertEquals(expected, logNum.getSimplified())
 
     // one

@@ -1,5 +1,7 @@
 package xyz.lbres.exactnumbers.common
 
+// TODO use for all casting
+
 /**
  * ArithmeticException specifically for overflows when casting numbers
  */

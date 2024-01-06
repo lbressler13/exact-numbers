@@ -1,73 +1,44 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
+import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class HelpersTest {
+class HelpersTest {
     @Test
     fun testGetLogOf() {
         // base 10
-        var base = 10
-
-        var bi = BigInteger.ONE
-        var expected = BigDecimal.ZERO
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = BigInteger.TEN
-        expected = BigDecimal.ONE
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 100.toBigInteger()
-        expected = 2.toBigDecimal()
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 200.toBigInteger()
-        expected = BigDecimal("2.301029995663981")
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 3333.toBigInteger()
-        expected = BigDecimal("3.52283531366053")
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 300.toBigInteger()
-        expected = BigDecimal("2.477121254719662")
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 77.toBigInteger()
-        expected = BigDecimal("1.8864907251724818")
-        assertEquals(expected, getLogOf(bi, base))
+        runSingleGetLogOfTest(1, 10, "0")
+        runSingleGetLogOfTest(10, 10, "1")
+        runSingleGetLogOfTest(100, 10, "2")
+        runSingleGetLogOfTest(200, 10, "2.301029995663981")
+        runSingleGetLogOfTest(3333, 10, "3.52283531366053")
+        runSingleGetLogOfTest(300, 10, "2.477121254719662")
+        runSingleGetLogOfTest(77, 10, "1.8864907251724818")
 
         // base 2
-        base = 2
+        runSingleGetLogOfTest(1, 2, "0")
+        runSingleGetLogOfTest(32, 2, "5")
+        runSingleGetLogOfTest(200, 2, "7.643856189774724")
 
-        bi = BigInteger.ONE
-        expected = BigDecimal.ZERO
-        assertEquals(expected, getLogOf(bi, base))
+        // other base
+        runSingleGetLogOfTest(1, 7, "0")
+        runSingleGetLogOfTest(216, 6, "3")
+        runSingleGetLogOfTest(15151515, 24, "5.202432673429519")
 
-        bi = 32.toBigInteger()
-        expected = 5.toBigDecimal()
-        assertEquals(expected, getLogOf(bi, base))
+        // error
+        val bi = BigInteger.TWO.pow(Short.MAX_VALUE.toInt())
+        var errorMessage = "Error calculating log: overflow on log_2($bi)"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(bi, 2) }
 
-        bi = 200.toBigInteger()
-        expected = BigDecimal("7.643856189774724")
-        assertEquals(expected, getLogOf(bi, base))
+        errorMessage = "Error calculating log"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(-BigInteger.TEN, 10) }
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(BigInteger.TEN, 1) }
+    }
 
-        // other
-        bi = BigInteger.ONE
-        base = 7
-        expected = BigDecimal.ZERO
-        assertEquals(expected, getLogOf(bi, base))
-
-        bi = 216.toBigInteger()
-        base = 6
-        expected = 3.toBigDecimal()
-        assertEquals(expected, getLogOf(bi, base))
-
-        base = 24
-        bi = 15151515.toBigInteger()
-        expected = BigDecimal("5.202432673429519")
-        assertEquals(expected, getLogOf(bi, base))
+    private fun runSingleGetLogOfTest(arg: Int, base: Int, expected: String) {
+        assertEquals(BigDecimal(expected), getLogOf(arg.toBigInteger(), base))
     }
 }

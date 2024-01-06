@@ -3,6 +3,7 @@ package xyz.lbres.expressions.term
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -16,6 +17,7 @@ import java.math.BigInteger
 import kotlin.math.abs
 
 // TODO still support old interfaces
+// TODO allow other types of irrational numbers
 
 /**
  * Representation of the product of several numbers, represented as a rational coefficient and lists of irrational numbers
@@ -137,9 +139,9 @@ class Term {
             val simplifiedLogs = Log.simplifySet(logsSet)
             val simplifiedSqrts = Sqrt.simplifySet(squareRootsSet)
             val simplifiedPis = Pi.simplifySet(pisSet)
-            val newCoefficient = coefficient * simplifiedLogs.first * simplifiedSqrts.first
+            val newCoefficient = coefficient * simplifiedLogs.first * simplifiedSqrts.first * simplifiedPis.first
 
-            val result = Term(newCoefficient, simplifiedLogs.second, simplifiedSqrts.second, simplifiedPis)
+            val result = Term(newCoefficient, simplifiedLogs.second, simplifiedSqrts.second, simplifiedPis.second)
             storedSimplified = result
             result
         }
@@ -298,9 +300,18 @@ class Term {
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, pis: List<Pi>) =
             fromValues(coefficient, logs, emptyList(), pis)
 
-        @JvmName("termFromCoeffsRootsPis")
+        @JvmName("termFromCoeffRootsPis")
         fun fromValues(coefficient: ExactFraction, roots: List<Sqrt>, pis: List<Pi>) =
             fromValues(coefficient, emptyList(), roots, pis)
+
+        @JvmName("termCoeffNumbers")
+        fun fromValues(coefficient: ExactFraction, numbers: List<IrrationalNumber<*>>): Term {
+            val groupedNumbers = numbers.groupBy { it.type }
+            val logs: List<Log> = (groupedNumbers[Log.TYPE] ?: emptyList()) as List<Log>
+            val roots: List<Sqrt> = (groupedNumbers[Sqrt.TYPE] ?: emptyList()) as List <Sqrt>
+            val pis: List<Pi> = (groupedNumbers[Pi.TYPE] ?: emptyList()) as List<Pi>
+            return Term(coefficient, logs, roots, pis)
+        }
 
         // single rational or irrational value
         fun fromValue(coefficient: ExactFraction) = fromValues(coefficient, emptyList(), emptyList(), emptyList())
