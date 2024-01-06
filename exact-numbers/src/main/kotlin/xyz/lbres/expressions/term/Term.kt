@@ -168,15 +168,7 @@ class Term {
      */
     fun getSimplified(): Term {
         if (simplified == null) {
-            val simplifiedLogs = Log.simplifySet(_logs)
-            val simplifiedSqrts = Sqrt.simplifySet(_squareRoots)
-            val simplifiedPis = Pi.simplifySet(_pis)
-            val simplifiedIrrationals = simplifiedLogs.second + simplifiedSqrts.second + simplifiedPis.second + _otherIrrationals
-            val newCoefficient = coefficient * simplifiedLogs.first * simplifiedSqrts.first * simplifiedPis.first
-
-            // TODO simplify other irrationals
-            val result = Term(newCoefficient, simplifiedIrrationals.toConstMultiSet(), simplifiedLogs.second, simplifiedSqrts.second, simplifiedPis.second, _otherIrrationals)
-            simplified = result
+            simplified = simplifyTerm(this)
         }
 
         return simplified!!
