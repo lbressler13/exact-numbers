@@ -178,7 +178,7 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
 
-    private fun overflowException(type: String): ArithmeticException = CastingOverflowException("ExactFraction", type, toFractionString(), this)
+    private fun overflowException(type: String): ArithmeticException = CastingOverflowException("ExactFraction", type, toEFString(), this)
 
     override fun hashCode(): Int {
         var result = 31 * numerator.hashCode()

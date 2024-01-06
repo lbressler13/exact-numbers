@@ -168,7 +168,7 @@ fun runToBigDecimalTests() {
  *
  * @param type [String]: the type of the value being cast to
  * @param value [ExactFraction]: the value to cast
- * @param cast [() -> Unit]: the call to cast the value
+ * @param cast () -> Unit: the call to cast the value
  */
 private fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
     val errorMessage = "Overflow casting value $value of type ExactFraction to $type"

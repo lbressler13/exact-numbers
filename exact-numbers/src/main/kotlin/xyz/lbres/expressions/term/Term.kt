@@ -305,6 +305,7 @@ class Term {
             fromValues(coefficient, emptyList(), roots, pis)
 
         @JvmName("termCoeffNumbers")
+        @Suppress("UNCHECKED_CAST")
         fun fromValues(coefficient: ExactFraction, numbers: List<IrrationalNumber<*>>): Term {
             val groupedNumbers = numbers.groupBy { it.type }
             val logs: List<Log> = (groupedNumbers[Log.TYPE] ?: emptyList()) as List<Log>
