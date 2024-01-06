@@ -8,6 +8,7 @@ import xyz.lbres.common.castToInt
 import xyz.lbres.common.castToLong
 import xyz.lbres.common.castToShort
 import xyz.lbres.common.divideByZero
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
@@ -112,16 +113,16 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
     }
 
-    override fun toByte(): Byte = castToByte(getValue(), getCastingError)
-    override fun toChar(): Char = castToChar(getValue(), getCastingError)
-    override fun toShort(): Short = castToShort(getValue(), getCastingError)
-    override fun toInt(): Int = castToInt(getValue(), getCastingError)
-    override fun toLong(): Long = castToLong(getValue(), getCastingError)
+    override fun toByte(): Byte = castToByte(getValue()) { getCastingError("Byte") }
+    override fun toChar(): Char = castToChar(getValue()) { getCastingError("Char") }
+    override fun toShort(): Short = castToShort(getValue()) { getCastingError("Short") }
+    override fun toInt(): Int = castToInt(getValue()) { getCastingError("Int") }
+    override fun toLong(): Long = castToLong(getValue()) { getCastingError("Long") }
 
-    override fun toFloat(): Float = castToFloat(getValue(), getCastingError)
-    override fun toDouble(): Double = castToDouble(getValue(), getCastingError)
+    override fun toFloat(): Float = castToFloat(getValue()) { getCastingError("Float") }
+    override fun toDouble(): Double = castToDouble(getValue()) { getCastingError("Double") }
 
-    private val getCastingError: () -> ArithmeticException = {
-        ArithmeticException("Value would overflow supported range")
+    private val getCastingError: (String) -> ArithmeticException = { newType ->
+        CastingOverflowException(this::class.simpleName ?: this::class.toString(), newType, toString(), this)
     }
 }

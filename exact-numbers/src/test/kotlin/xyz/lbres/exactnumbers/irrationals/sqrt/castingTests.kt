@@ -1,14 +1,13 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
-private const val errorMessage = "Value would overflow supported range"
-
 fun runToByteTests() {
-    runWholeNumberCastingTests(Long::toByte, Sqrt::toByte, Byte.MAX_VALUE)
+    runWholeNumberCastingTests(Long::toByte, Sqrt::toByte, Byte.MAX_VALUE, "Byte")
 }
 
 fun runToCharTests() {
@@ -33,21 +32,23 @@ fun runToCharTests() {
 
     // overflow
     sqrt = Sqrt(max * max * BigInteger.TEN)
-    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toChar() }
+    val errorMessage = "Overflow casting value $sqrt of type Sqrt to Char"
+    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { sqrt.toChar() }
+    assertEquals(sqrt, error.overflowValue)
 }
 
 fun runToShortTests() {
-    runWholeNumberCastingTests(Long::toShort, Sqrt::toShort, Short.MAX_VALUE)
+    runWholeNumberCastingTests(Long::toShort, Sqrt::toShort, Short.MAX_VALUE, "Short")
 }
 
 fun runToIntTests() {
-    runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, null)
+    runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, null, "Int")
     // TODO uncomment when bug is resolved
-    // runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, Int.MAX_VALUE)
+    // runWholeNumberCastingTests(Long::toInt, Sqrt::toInt, Int.MAX_VALUE, "Int")
 }
 
 fun runToLongTests() {
-    runWholeNumberCastingTests({ it }, Sqrt::toLong, Long.MAX_VALUE)
+    runWholeNumberCastingTests({ it }, Sqrt::toLong, Long.MAX_VALUE, "Long")
 }
 
 fun runToDoubleTests() {
@@ -99,7 +100,9 @@ fun runToFloatTests() {
 
     // overflow
     sqrt = Sqrt((max * max * max).toBigInteger())
-    assertFailsWithMessage<ArithmeticException>(errorMessage) { sqrt.toFloat() }
+    val errorMessage = "Overflow casting value $sqrt of type Sqrt to Float"
+    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { sqrt.toFloat() }
+    assertEquals(sqrt, error.overflowValue)
 }
 
 /**
@@ -108,8 +111,9 @@ fun runToFloatTests() {
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
  * @param castSqrt (Sqrt) -> T: cast a sqrt value to a value of the current number type
  * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involved max value will not be run
+ * @param type [String]: type which is being cast to
  */
-private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castSqrt: (Sqrt) -> T, maxValue: T?) {
+private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castSqrt: (Sqrt) -> T, maxValue: T?, type: String) {
     var sqrt = Sqrt.ZERO
     assertEquals(castLong(0), castSqrt(sqrt))
 
@@ -132,6 +136,8 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castS
 
         // overflow
         sqrt = Sqrt(max * max * BigInteger.TEN)
-        assertFailsWithMessage<ArithmeticException>(errorMessage) { castSqrt(sqrt) }
+        val errorMessage = "Overflow casting value $sqrt of type Sqrt to $type"
+        val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { castSqrt(sqrt) }
+        assertEquals(sqrt, error.overflowValue)
     }
 }
