@@ -40,7 +40,7 @@ internal fun castToShort(value: BigDecimal, getCastingError: () -> ArithmeticExc
 }
 
 /**
- * Cast a number to a Int, or throw the given exception if number exceeds values for a Int
+ * Cast a number to an Int, or throw the given exception if number exceeds values for an Int
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -91,7 +91,7 @@ internal fun castToDouble(value: BigDecimal, getCastingError: () -> ArithmeticEx
  * @param maxValue T: maximum allowed value
  * @param cast (BigDecimal) -> T: function to cast [value]
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
- * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole numbe or a decimal
+ * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole number or a decimal
  * @return [Double] value as a double
  */
 private fun <T : Number> castNumber(

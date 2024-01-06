@@ -9,9 +9,7 @@ import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))
 private val logNum2 = Log(8, 7)
-private val sqrt1 = Sqrt(64)
-private val sqrt2 = Sqrt(ExactFraction(20, 33))
-private val one = ExactFraction.ONE
+private val sqrt = Sqrt(ExactFraction(20, 33))
 
 fun runGetSimplifiedTests() {
     // simplified
@@ -35,7 +33,7 @@ fun runGetSimplifiedTests() {
     expectedPis = listOf(Pi().inverse())
     runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), expectedPis)
 
-    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt2))
+    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt))
     expectedCoeff = ExactFraction(20)
     var expectedSqrts = listOf(Sqrt(ExactFraction(5, 33)))
     runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), expectedSqrts, emptyList())
