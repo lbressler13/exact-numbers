@@ -99,7 +99,7 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
     fun eq(other: Long): Boolean = isWholeNumber() && numerator.eq(other)
     fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
 
-    override operator fun compareTo(other: ExactFraction): Int = efCompare(this, other)
+    override fun compareTo(other: ExactFraction): Int = efCompare(this, other)
     operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
