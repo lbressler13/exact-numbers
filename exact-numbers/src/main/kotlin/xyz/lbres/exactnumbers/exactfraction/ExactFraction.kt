@@ -144,7 +144,7 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun eq(other: Long): Boolean = numerator.eq(other) && denominator.eq(1)
     fun eq(other: BigInteger): Boolean = numerator == other && denominator.eq(1)
 
-    override operator fun compareTo(other: ExactFraction): Int {
+    override fun compareTo(other: ExactFraction): Int {
         val difference = minus(other)
         return when {
             difference.isNegative() -> -1
