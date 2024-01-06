@@ -6,6 +6,7 @@
 * [ ] Unit tests have been written for all new functionality
 * [ ] ktlint has run successfully
 * [ ] I have updated the version number (if needed)
+* [ ] I have updated the signature files (if needed)
 
 ## Testing
 How was this tested?
