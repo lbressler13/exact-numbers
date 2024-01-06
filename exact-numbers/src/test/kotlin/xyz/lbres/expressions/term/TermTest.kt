@@ -30,6 +30,8 @@ class TermTest {
     @Test fun testGetSimplified() = runGetSimplifiedTests() // TODO
     @Test fun testGetValue() = runGetValueTests() // TODO
 
+    @Test fun testGetIrrationalsByType() {} // TODO
+
     @Test
     fun testEquals() {
         // equal

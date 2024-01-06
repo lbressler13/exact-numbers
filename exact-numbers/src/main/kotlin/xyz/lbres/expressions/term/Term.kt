@@ -171,7 +171,7 @@ class Term {
 
     override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "${irrationalPackage}.log.Log"), DeprecationLevel.WARNING)
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "$irrationalPackage.log.Log"), DeprecationLevel.WARNING)
     @JvmName("getLogsDeprecated")
     fun getLogs(): List<Log> = logs
 
@@ -179,7 +179,7 @@ class Term {
     @JvmName("getPiCountDeprecated")
     fun getPiCount(): Int = piCount
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "${irrationalPackage}.sqrt.Sqrt"), DeprecationLevel.WARNING)
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "$irrationalPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
     @JvmName("getSquareRootsDeprecated")
     fun getSquareRoots(): List<Sqrt> = squareRoots
 

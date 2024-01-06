@@ -1,9 +1,11 @@
 package xyz.lbres.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
@@ -16,56 +18,53 @@ fun runGetSimplifiedTests() {
     // simplified
     var term = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
     var expectedCoeff = ExactFraction.EIGHT
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
 
     term = Term.fromValues(ExactFraction(-3, 2), listOf(logNum1, Pi(), Pi().inverse(), Pi()))
     expectedCoeff = ExactFraction(-3, 2)
-    var expectedLogs = listOf(logNum1)
-    var expectedPis = listOf(Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, emptyList(), expectedPis)
+    var expectedIrrationals: List<IrrationalNumber<*>> = listOf(logNum1, Pi())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.HALF, listOf(Log.ONE, logNum1))
     expectedCoeff = ExactFraction.HALF
-    expectedLogs = listOf(logNum1)
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, emptyList(), emptyList())
+    expectedIrrationals = listOf(logNum1)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(-ExactFraction.HALF, listOf(Log.ONE, Pi().inverse()))
     expectedCoeff = -ExactFraction.HALF
-    expectedPis = listOf(Pi().inverse())
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), expectedPis)
+    expectedIrrationals = listOf(Pi().inverse())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt))
     expectedCoeff = ExactFraction(20)
-    var expectedSqrts = listOf(Sqrt(ExactFraction(5, 33)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), expectedSqrts, emptyList())
+    expectedIrrationals = listOf(Sqrt(ExactFraction(5, 33)))
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
     expectedCoeff = ExactFraction(80, 7)
-    expectedSqrts = listOf(Sqrt(ExactFraction(39)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), expectedSqrts, emptyList())
+    expectedIrrationals = listOf(Sqrt(ExactFraction(39)))
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(
         ExactFraction(18, 5),
         listOf(logNum2, logNum2, logNum1, logNum2.inverse(), Pi().inverse(), Pi().inverse(), Pi().inverse(), Pi())
     )
     expectedCoeff = ExactFraction(18, 5)
-    expectedLogs = listOf(logNum2, logNum1)
-    expectedPis = listOf(Pi().inverse(), Pi().inverse())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, emptyList(), expectedPis)
+    expectedIrrationals = listOf(logNum2, logNum1, Pi().inverse(), Pi().inverse())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), Sqrt(ExactFraction(1, 4))))
     expectedCoeff = ExactFraction(12)
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
 
     term = Term.fromValues(-ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(27, 98)), Pi().inverse()))
     expectedCoeff = ExactFraction(-24, 7)
-    expectedSqrts = listOf(Sqrt(ExactFraction(3, 2)))
-    expectedPis = listOf(Pi().inverse())
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), expectedSqrts, expectedPis)
+    expectedIrrationals = listOf(Sqrt(ExactFraction(3, 2)), Pi().inverse())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3).inverse()))
     expectedCoeff = ExactFraction(-20, 3)
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
 
     term = Term.fromValues(
         ExactFraction(3, 5),
@@ -76,37 +75,33 @@ fun runGetSimplifiedTests() {
         )
     )
     expectedCoeff = ExactFraction(-6)
-    expectedLogs = listOf(Log(4), Log(1000, 12))
-    expectedSqrts = listOf(Sqrt(ExactFraction(78, 7)))
-    expectedPis = listOf(Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, expectedSqrts, expectedPis)
+    expectedIrrationals = listOf(Log(4), Log(1000, 12), Sqrt(ExactFraction(78, 7)), Pi())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     // no changes
     term = Term.fromValues(ExactFraction.EIGHT, emptyList())
     expectedCoeff = ExactFraction.EIGHT
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1))
     expectedCoeff = ExactFraction.EIGHT
-    expectedLogs = listOf(logNum1)
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, emptyList(), emptyList())
+    expectedIrrationals = listOf(logNum1)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(1, 46))))
     expectedCoeff = ExactFraction.EIGHT
-    expectedSqrts = listOf(Sqrt(ExactFraction(1, 46)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), expectedSqrts, emptyList())
+    expectedIrrationals = listOf(Sqrt(ExactFraction(1, 46)))
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction(-5, 6), listOf(Pi().inverse()))
     expectedCoeff = ExactFraction(-5, 6)
-    expectedPis = listOf(Pi().inverse())
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), emptyList(), expectedPis)
+    expectedIrrationals = listOf(Pi().inverse())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 
     term = Term.fromValues(ExactFraction.SEVEN, listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), Pi(), Pi()))
     expectedCoeff = ExactFraction.SEVEN
-    expectedLogs = listOf(logNum1, logNum1, logNum2.inverse())
-    expectedSqrts = listOf(Sqrt(5))
-    expectedPis = listOf(Pi(), Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedLogs, expectedSqrts, expectedPis)
+    expectedIrrationals = listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), Pi(), Pi())
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
 }
 
 fun runGetValueTests() {
@@ -184,10 +179,8 @@ fun runGetValueTests() {
     assertEquals(expected, term.getValue())
 }
 
-private fun runSingleGetSimplifiedTest(term: Term, expectedCoeff: ExactFraction, expectedLogs: List<Log>, expectedSqrts: List<Sqrt>, expectedPis: List<Pi>) {
+private fun runSingleGetSimplifiedTest(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>) {
     val result = term.getSimplified()
     assertEquals(result.coefficient, expectedCoeff)
-    assertEquals(result.logs.sorted(), expectedLogs.sorted())
-    assertEquals(result.squareRoots.sorted(), expectedSqrts.sorted())
-    assertEquals(result.pis.sorted(), expectedPis.sorted())
+    assertEquals(expectedIrrationals.toConstMultiSet(), result.irrationals.toConstMultiSet())
 }
