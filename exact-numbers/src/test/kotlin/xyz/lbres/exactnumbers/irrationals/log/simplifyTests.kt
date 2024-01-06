@@ -4,9 +4,6 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
-import xyz.lbres.kotlinutils.set.multiset.filterNotToSet
-import xyz.lbres.kotlinutils.set.multiset.filterToSet
-import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import kotlin.test.assertEquals
 
 private val one = Log.ONE
@@ -100,13 +97,6 @@ fun runSimplifySetTests() {
 
     // inverses
     logs = constMultiSetOf(Log(8), Log(8, 10).inverse())
-    println(logs)
-    val invertedDistinct: Set<Log> = logs.filterToSet { it.isInverted }.mapToSet { it.inverse() }.distinctValues
-    val notInvertedDistinct: Set<Log> = logs.filterNotToSet { it.isInverted }.distinctValues
-    println(invertedDistinct)
-    println(notInvertedDistinct)
-    println(invertedDistinct intersect notInvertedDistinct)
-
     expected = Pair(fractionOne, constMultiSetOf())
     assertEquals(expected, Log.simplifySet(logs))
 

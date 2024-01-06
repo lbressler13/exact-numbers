@@ -89,6 +89,7 @@ Tests can be run using an IDE, or with the following command:
 ```./gradlew test```
 
 ### Resources
+
 When writing tests for irrationals, it can be useful to use a high-precision calculator, such as [this](https://www.mathsisfun.com/scientific-calculator.html) or [this](https://www.mathsisfun.com/calculator-precision.html), to calculate expected values.
 
 ## Linting

@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -121,7 +122,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         return "[√($radicandString)]"
     }
 
-    override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(radicand, this::class.toString()))
 
     companion object : IrrationalNumberCompanion<Sqrt>() {
         override val TYPE = "sqrt"

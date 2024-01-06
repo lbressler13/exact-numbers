@@ -14,7 +14,6 @@ val githubPassword: String? = project.findProperty("gpr.key") as String? ?: Syst
 repositories {
     mavenCentral()
 
-    // kotlin-utils
     maven {
         url = uri("https://maven.pkg.github.com/lbressler13/kotlin-utils")
         credentials {

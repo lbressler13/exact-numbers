@@ -1,5 +1,6 @@
 package xyz.lbres.expressions.term
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -13,7 +14,6 @@ import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
-import java.math.BigInteger
 import kotlin.math.abs
 
 /**
@@ -206,12 +206,8 @@ class Term {
 
     override fun toString(): String {
         if (string == null) {
-            val coeffString = if (coefficient.denominator == BigInteger.ONE) {
-                coefficient.numerator.toString()
-            } else {
-                "[${coefficient.numerator}/${coefficient.denominator}]"
-            }
-
+            val fractionString = coefficient.toFractionString()
+            val coeffString = simpleIf(coefficient.isWholeNumber(), fractionString, "[$fractionString]")
             val numString = _irrationals.joinToString("x")
             val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
 
@@ -221,11 +217,11 @@ class Term {
         return string!!
     }
 
-    override fun hashCode(): Int = listOf("Term", coefficient, logs, squareRoots, pis).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
 
     companion object {
-        val ZERO = Term(ExactFraction.ZERO, emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet())
-        val ONE = Term(ExactFraction.ONE, emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet(), emptyConstMultiSet())
+        val ZERO = Term(ExactFraction.ZERO, emptyList())
+        val ONE = Term(ExactFraction.ONE, emptyList())
 
         /**
          * Construct a term by providing information about coefficient and irrationals

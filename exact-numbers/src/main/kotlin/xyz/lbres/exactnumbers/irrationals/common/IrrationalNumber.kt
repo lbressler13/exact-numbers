@@ -7,6 +7,7 @@ import xyz.lbres.common.castToFloat
 import xyz.lbres.common.castToInt
 import xyz.lbres.common.castToLong
 import xyz.lbres.common.castToShort
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -32,7 +33,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     abstract val isInverted: Boolean
     @Deprecated("Property deprecated in v1.0", ReplaceWith("isInverted"), DeprecationLevel.WARNING)
     val isDivided: Boolean
-        get() { return isInverted }
+        get() = isInverted
 
     /**
      * If the number is zero
@@ -127,9 +128,5 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         CastingOverflowException(this::class.simpleName ?: this::class.toString(), newType, toString(), this)
     }
 
-    override fun hashCode(): Int {
-        var result = getValue().hashCode()
-        result = 31 * result + this::class.toString().hashCode()
-        return result
-    }
+    override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))
 }

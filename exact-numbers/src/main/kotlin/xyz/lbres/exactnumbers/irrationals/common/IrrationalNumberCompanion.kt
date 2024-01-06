@@ -14,7 +14,7 @@ abstract class IrrationalNumberCompanion<T : IrrationalNumber<T>> {
      *
      * @param numbers [ConstMultiSet]<T> : values to simplify
      * @return [Pair]<ExactFraction, ConstMultiSet<T>>: pair where first value is a coefficient and the second value is the simplified set,
-     * and the product of all values is equal to the product of the initial list of [numbers]
+     * where the product of all values in the set is equal to the product of [numbers]
      */
     internal abstract fun simplifySet(numbers: ConstMultiSet<T>): Pair<ExactFraction, ConstMultiSet<T>>
 }

@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.common.*
 import xyz.lbres.common.castToByte
 import xyz.lbres.common.castToChar
 import xyz.lbres.common.castToDouble
@@ -7,6 +8,7 @@ import xyz.lbres.common.castToFloat
 import xyz.lbres.common.castToInt
 import xyz.lbres.common.castToLong
 import xyz.lbres.common.castToShort
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.ext.eq
@@ -180,12 +182,7 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     private fun overflowException(type: String): ArithmeticException = CastingOverflowException("ExactFraction", type, toEFString(), this)
 
-    override fun hashCode(): Int {
-        var result = 31 * numerator.hashCode()
-        result = 31 * result + denominator.hashCode()
-        result = 31 * result + javaClass.name.hashCode()
-        return result
-    }
+    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, this::class.toString()))
 
     companion object {
         val ZERO = ExactFraction(0)

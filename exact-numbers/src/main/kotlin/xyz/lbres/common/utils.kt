@@ -50,3 +50,11 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
         }
     }
 }
+
+internal fun createHashCode(values: List<*>): Int {
+    var result = 0
+    for (value in values) {
+        result = 31 * result + value.hashCode()
+    }
+    return result
+}

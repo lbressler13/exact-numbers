@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
@@ -161,7 +162,7 @@ class Log private constructor(
         return simpleIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
     }
 
-    override fun hashCode(): Int = listOf(TYPE, argument, base, isInverted).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(argument, base, isInverted, this::class.toString()))
 
     companion object : IrrationalNumberCompanion<Log>() {
         override val TYPE = "log"

@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
@@ -48,7 +49,7 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
 
     override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
 
-    override fun hashCode(): Int = listOf(TYPE, PI, isInverted).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(PI, isInverted, this::class.toString()))
 
     companion object : IrrationalNumberCompanion<Pi>() {
         override val TYPE = "pi"
@@ -57,7 +58,7 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
          * Simplify set of pis
          *
          * @param numbers [ConstMultiSet]<Pi> : list to simplify
-         * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is 1, and second value is simplified set
+         * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is one, and second value is the simplified set
          */
         override fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
             if (numbers.isEmpty()) {
