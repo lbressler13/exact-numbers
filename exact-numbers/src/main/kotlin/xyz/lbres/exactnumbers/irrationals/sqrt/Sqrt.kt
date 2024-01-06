@@ -6,9 +6,9 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.MultiSet
-import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
-import xyz.lbres.kotlinutils.set.multiset.multiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -132,13 +132,13 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         /**
          * Extract rational values and simplify remaining set of sqrts
          *
-         * @param numbers [MultiSet]<[Sqrt]>: set to simplify
-         * @return [Pair]<[ExactFraction], [MultiSet]<[Sqrt]>>: product of rational values and a set containing a single, fully simplified irrational root
+         * @param numbers [ConstMultiSet]<Sqrt>: set to simplify
+         * @return [Pair]<ExactFraction, ConstMultiSet<Sqrt>>: product of rational values and a set containing a single, fully simplified irrational root
          */
-        override fun simplifySet(numbers: MultiSet<Sqrt>): Pair<ExactFraction, MultiSet<Sqrt>> {
+        override fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
             when {
-                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
-                numbers.any(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyMultiSet())
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
+                numbers.any(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
             // combine all roots into single root, and return that value
@@ -151,7 +151,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val root = Sqrt(ExactFraction(numeratorRoot, denominatorRoot), true)
             val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
 
-            val rootList = simpleIf(root == ONE, emptyMultiSet(), multiSetOf(root))
+            val rootList = simpleIf(root == ONE, emptyConstMultiSet(), constMultiSetOf(root))
 
             return Pair(coefficient, rootList)
         }

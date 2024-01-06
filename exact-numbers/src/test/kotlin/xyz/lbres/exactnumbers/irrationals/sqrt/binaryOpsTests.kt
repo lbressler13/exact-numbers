@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-internal fun runTimesTests() {
+fun runTimesTests() {
     // zero
     assertEquals(Term.ZERO, Sqrt.ZERO * Sqrt.ONE)
     assertEquals(Term.ZERO, Sqrt.ONE * Log.ZERO)
@@ -60,7 +60,7 @@ internal fun runTimesTests() {
     assertEquals(expected, sqrt1 * pi)
 }
 
-internal fun runDivTests() {
+fun runDivTests() {
     // zero
     assertDivByZero { Sqrt.ONE / Sqrt.ZERO }
     assertDivByZero { Sqrt.ONE / Log.ZERO }
@@ -111,7 +111,7 @@ internal fun runDivTests() {
     assertEquals(expected, sqrt1 / pi)
 }
 
-internal fun runCompareToTests() {
+fun runCompareToTests() {
     // equal
     var sqrt1 = Sqrt.ZERO
     assertEquals(sqrt1, sqrt1)
@@ -141,7 +141,7 @@ internal fun runCompareToTests() {
     assertTrue(sqrt2 > sqrt1)
 }
 
-internal fun runEqualsTests() {
+fun runEqualsTests() {
     // equal
     var sqrt1 = Sqrt.ZERO
     assertEquals(sqrt1, sqrt1)

@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.kotlinutils.set.multiset.MultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 
 /**
  * Companion object for an irrational number class
@@ -12,9 +12,9 @@ abstract class IrrationalNumberCompanion<T : IrrationalNumber<T>> {
     /**
      * Simplify a list of irrational values
      *
-     * @param numbers [MultiSet]<T> : values to simplify
-     * @return [Pair]<ExactFraction, MultiSet<T>>: pair where first value is a coefficient and the second value is the simplified set,
+     * @param numbers [ConstMultiSet]<T> : values to simplify
+     * @return [Pair]<ExactFraction, ConstMultiSet<T>>: pair where first value is a coefficient and the second value is the simplified set,
      * and the product of all values is equal to the product of the initial list of [numbers]
      */
-    internal abstract fun simplifySet(numbers: MultiSet<T>): Pair<ExactFraction, MultiSet<T>>
+    internal abstract fun simplifySet(numbers: ConstMultiSet<T>): Pair<ExactFraction, ConstMultiSet<T>>
 }

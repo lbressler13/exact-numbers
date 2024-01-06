@@ -6,13 +6,15 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
-import xyz.lbres.kotlinutils.collection.ext.toMultiSet
+import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.MultiSet
-import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
-import xyz.lbres.kotlinutils.set.multiset.filterNotToSet
-import xyz.lbres.kotlinutils.set.multiset.filterToSet
-import xyz.lbres.kotlinutils.set.multiset.mapToSet
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.filterConsistent
+import xyz.lbres.kotlinutils.set.multiset.filterNotToSetConsistent
+import xyz.lbres.kotlinutils.set.multiset.filterToSetConsistent
+import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
@@ -170,35 +172,34 @@ class Log private constructor(
         /**
          * Extract rational values and simplify remaining set of logs
          *
-         * @param numbers [MultiSet]<[Log]>: set to simplify
-         * @return [Pair]<[ExactFraction], [MultiSet]<[Log]>>: product of rational values and simplified set of logs
+         * @param numbers [ConstMultiSet]<Log>: set to simplify
+         * @return [Pair]<ExactFraction, ConstMultiSet<Log>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
-        // TODO use const multiset
-        override fun simplifySet(numbers: MultiSet<Log>): Pair<ExactFraction, MultiSet<Log>> {
+        override fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
             when {
-                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyMultiSet())
-                numbers.any(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyMultiSet())
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
+                numbers.any(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
-            val simplifiedNumbers = numbers.mapToSet { it.getSimplified() }
+            val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }
             val coefficient = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            val logValues: MultiSet<Log> = simplifiedNumbers.mapToSet { it.second }
+            val logValues: MultiSet<Log> = simplifiedNumbers.mapToSetConsistent { it.second }
 
             val invertedDistinct: Set<Log> = logValues
-                .filterToSet { it.isInverted }
-                .mapToSet { it.inverse() }
+                .filterToSetConsistent { it.isInverted }
+                .mapToSetConsistent { it.inverse() }
                 .distinctValues
 
             val notInvertedDistinct: Set<Log> = logValues
-                .filterNotToSet { it.isInverted }
+                .filterNotToSetConsistent { it.isInverted }
                 .distinctValues
 
             val bothTypesDistinct: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
 
-            val notInvertedOnlyValues = logValues.filter { it != ONE && !it.isInverted && it !in bothTypesDistinct }
-            val invertedOnlyValues = logValues.filter { it != ONE && it.isInverted && it.inverse() !in bothTypesDistinct }
+            val notInvertedOnlyValues = logValues.filterConsistent { it != ONE && !it.isInverted && it !in bothTypesDistinct }
+            val invertedOnlyValues = logValues.filterConsistent { it != ONE && it.isInverted && it.inverse() !in bothTypesDistinct }
 
             val allValues = bothTypesDistinct.map {
                 val notInvertedCount = logValues.getCountOf(it)
@@ -206,13 +207,13 @@ class Log private constructor(
                 val diff = notInvertedCount - invertedCount
 
                 when {
-                    it == ONE || diff == 0 -> emptyMultiSet()
-                    diff > 0 -> MultiSet(diff) { _ -> it }
-                    else -> MultiSet(abs(diff)) { _ -> it.inverse() }
+                    it == ONE || diff == 0 -> emptyConstMultiSet()
+                    diff > 0 -> ConstMultiSet(diff) { _ -> it }
+                    else -> ConstMultiSet(abs(diff)) { _ -> it.inverse() }
                 }
             }.fold(invertedOnlyValues + notInvertedOnlyValues) { acc, set -> acc + set }
 
-            return Pair(coefficient, allValues.toMultiSet())
+            return Pair(coefficient, allValues.toConstMultiSet())
         }
     }
 }

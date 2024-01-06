@@ -7,7 +7,7 @@ import xyz.lbres.expressions.term.Term
 import xyz.lbres.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
-internal fun runTimesTests() {
+fun runTimesTests() {
     val pi = Pi()
     val piInverse = Pi().inverse()
 
@@ -52,7 +52,7 @@ internal fun runTimesTests() {
     assertEquals(expected, piInverse * sqrt)
 }
 
-internal fun runDivTests() {
+fun runDivTests() {
     val pi = Pi()
     val piInverse = Pi().inverse()
 

@@ -21,7 +21,7 @@ private val piInverse = Pi().inverse()
 
 private val one = ExactFraction.ONE
 
-internal fun runConstructorTests() {
+fun runConstructorTests() {
     runSingleValueTests()
     runSingleTypeTests()
     runTwoTypeTests()

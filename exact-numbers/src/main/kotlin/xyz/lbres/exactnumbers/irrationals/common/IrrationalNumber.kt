@@ -99,6 +99,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
 
         return Term.fromValues(ExactFraction.ONE, listOf(this, other.inverse()))
     }
+
     operator fun div(other: ExactFraction): Term {
         if (other.isZero()) {
             throw divideByZero
@@ -124,5 +125,11 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
 
     private val getCastingError: (String) -> ArithmeticException = { newType ->
         CastingOverflowException(this::class.simpleName ?: this::class.toString(), newType, toString(), this)
+    }
+
+    override fun hashCode(): Int {
+        var result = getValue().hashCode()
+        result = 31 * result + this::class.toString().hashCode()
+        return result
     }
 }

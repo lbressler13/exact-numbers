@@ -16,7 +16,7 @@ private val sqrt2 = Sqrt(ExactFraction(64, 121))
 private val sqrt3 = Sqrt(ExactFraction(15, 44))
 private val one = ExactFraction.ONE
 
-internal fun runTimesTests() {
+fun runTimesTests() {
     // zero
     var term1 = Term.ZERO
     var expected = Term.ZERO
@@ -120,7 +120,7 @@ internal fun runTimesTests() {
     assertEquals(expected, term2 * term1)
 }
 
-internal fun runDivTests() {
+fun runDivTests() {
     // divide by zero
     assertDivByZero { Term.ONE / Term.ZERO }
 

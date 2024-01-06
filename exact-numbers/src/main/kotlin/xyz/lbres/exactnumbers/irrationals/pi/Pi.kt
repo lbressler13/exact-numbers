@@ -5,8 +5,8 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.MultiSet
-import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import java.math.BigDecimal
 import kotlin.math.PI
 import kotlin.math.abs
@@ -56,19 +56,19 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
         /**
          * Simplify set of pis
          *
-         * @param numbers [MultiSet]<[Pi]> : list to simplify
-         * @return [Pair]<[ExactFraction], [MultiSet]<[Pi]>>: pair where first value is 1, and second value is simplified set
+         * @param numbers [ConstMultiSet]<Pi> : list to simplify
+         * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is 1, and second value is simplified set
          */
-        override fun simplifySet(numbers: MultiSet<Pi>): Pair<ExactFraction, MultiSet<Pi>> {
+        override fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
             if (numbers.isEmpty()) {
-                return Pair(ExactFraction.ONE, emptyMultiSet())
+                return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
             val positive = numbers.getCountOf(Pi())
             val negative = numbers.getCountOf(Pi(isInverted = true))
             val diff = abs(positive - negative)
 
-            val pis = MultiSet(diff) { Pi(isInverted = positive < negative) }
+            val pis = ConstMultiSet(diff) { Pi(isInverted = positive < negative) }
             return Pair(ExactFraction.ONE, pis)
         }
     }

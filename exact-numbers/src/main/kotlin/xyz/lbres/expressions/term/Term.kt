@@ -7,11 +7,12 @@ import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.generic.ext.ifNull
-import xyz.lbres.kotlinutils.set.multiset.MultiSet
-import xyz.lbres.kotlinutils.set.multiset.emptyMultiSet
-import xyz.lbres.kotlinutils.set.multiset.multiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.math.abs
@@ -37,9 +38,9 @@ class Term {
     private var squareRootsList: List<Sqrt>? = null
     private var pisList: List<Pi>? = null
 
-    private val logsSet: MultiSet<Log>
-    private val squareRootsSet: MultiSet<Sqrt>
-    private val pisSet: MultiSet<Pi>
+    private val logsSet: ConstMultiSet<Log>
+    private val squareRootsSet: ConstMultiSet<Sqrt>
+    private val pisSet: ConstMultiSet<Pi>
 
     private var storedIsZero: Boolean? = null
     private var storedSimplified: Term? = null
@@ -50,26 +51,26 @@ class Term {
     private constructor(coefficient: ExactFraction, logs: List<Log>, squareRoots: List<Sqrt>, pis: List<Pi>) {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
-            logsSet = emptyMultiSet()
-            squareRootsSet = emptyMultiSet()
-            pisSet = emptyMultiSet()
+            logsSet = emptyConstMultiSet()
+            squareRootsSet = emptyConstMultiSet()
+            pisSet = emptyConstMultiSet()
             piCount = 0
         } else {
             this.coefficient = coefficient
-            logsSet = multiSetOf(*logs.toTypedArray())
-            squareRootsSet = multiSetOf(*squareRoots.toTypedArray())
-            pisSet = multiSetOf(*pis.toTypedArray())
+            logsSet = constMultiSetOf(*logs.toTypedArray())
+            squareRootsSet = constMultiSetOf(*squareRoots.toTypedArray())
+            pisSet = constMultiSetOf(*pis.toTypedArray())
             piCount = calculatePiCount()
         }
     }
 
     // Initialize values using multisets. Only used inside the class, to avoid unnecessary casts when creating new terms after operations
-    private constructor(coefficient: ExactFraction, logs: MultiSet<Log>, squareRoots: MultiSet<Sqrt>, pis: MultiSet<Pi>) {
+    private constructor(coefficient: ExactFraction, logs: ConstMultiSet<Log>, squareRoots: ConstMultiSet<Sqrt>, pis: ConstMultiSet<Pi>) {
         if (coefficient.isZero() || logs.any(Log::isZero) || squareRoots.any(Sqrt::isZero) || pis.any(Pi::isZero)) {
             this.coefficient = ExactFraction.ZERO
-            logsSet = emptyMultiSet()
-            squareRootsSet = emptyMultiSet()
-            pisSet = emptyMultiSet()
+            logsSet = emptyConstMultiSet()
+            squareRootsSet = emptyConstMultiSet()
+            pisSet = emptyConstMultiSet()
             piCount = 0
         } else {
             this.coefficient = coefficient
@@ -100,9 +101,9 @@ class Term {
     operator fun times(other: Term): Term {
         return Term(
             coefficient * other.coefficient,
-            logsSet + other.logsSet,
-            squareRootsSet + other.squareRootsSet,
-            pisSet + other.pisSet
+            (logsSet + other.logsSet).toConstMultiSet(),
+            (squareRootsSet + other.squareRootsSet).toConstMultiSet(),
+            (pisSet + other.pisSet).toConstMultiSet()
         )
     }
 

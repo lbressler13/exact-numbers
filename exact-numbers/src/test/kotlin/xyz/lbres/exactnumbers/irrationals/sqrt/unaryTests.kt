@@ -8,7 +8,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-internal fun runInverseTests() {
+fun runInverseTests() {
     // error
     assertDivByZero { Sqrt.ZERO.inverse() }
 
@@ -30,7 +30,7 @@ internal fun runInverseTests() {
     assertEquals(expected, sqrt.inverse())
 }
 
-internal fun runIsZeroTests() {
+fun runIsZeroTests() {
     // zero
     var sqrt = Sqrt.ZERO
     assertTrue(sqrt.isZero())
@@ -49,7 +49,7 @@ internal fun runIsZeroTests() {
     assertFalse(sqrt.isZero())
 }
 
-internal fun runIsRationalTests() {
+fun runIsRationalTests() {
     // rational
     var sqrt = Sqrt.ZERO
     assertTrue(sqrt.isRational())
@@ -77,7 +77,7 @@ internal fun runIsRationalTests() {
     assertFalse(sqrt.isRational())
 }
 
-internal fun runGetRationalValueTests() {
+fun runGetRationalValueTests() {
     // irrational
     var sqrt = Sqrt(2)
     assertNull(sqrt.getRationalValue())
@@ -114,7 +114,7 @@ internal fun runGetRationalValueTests() {
     assertEquals(expected, sqrt.getRationalValue())
 }
 
-internal fun runGetValueTests() {
+fun runGetValueTests() {
     var sqrt = Sqrt.ZERO
     var expected = BigDecimal.ZERO
     assertEquals(expected, sqrt.getValue())
