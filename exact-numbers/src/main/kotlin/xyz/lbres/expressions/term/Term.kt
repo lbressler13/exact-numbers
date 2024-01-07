@@ -95,15 +95,6 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
 
     fun isZero(): Boolean = coefficient.isZero()
 
-    fun getIrrationalsByType(type: String): List<IrrationalNumber<*>> {
-        if (type !in irrationalTypes) {
-            val result = _irrationals.filterConsistent { it.type == type }
-            irrationalTypes[type] = result
-        }
-
-        return irrationalTypes[type]!!
-    }
-
     /**
      * Simplify all numbers, based on the simplify function for their type
      *
@@ -137,6 +128,26 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
         return value!!
     }
 
+    /**
+     * Get list of irrational numbers with a given type
+     *
+     * @param type [String]: type to retrieve numbers for
+     * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have type [type]
+     */
+    fun getIrrationalsByType(type: String): List<IrrationalNumber<*>> {
+        if (type !in irrationalTypes) {
+            val result = _irrationals.filterConsistent { it.type == type }
+            irrationalTypes[type] = result
+        }
+
+        return irrationalTypes[type]!!
+    }
+
+    /**
+     * Calculate number of pis based on list of irrationals
+     *
+     * @return [Int]: number of pis
+     */
     private fun calculatePiCount(): Int {
         @Suppress("UNCHECKED_CAST")
         val pis = getIrrationalsByType(Pi.TYPE) as List<Pi>
