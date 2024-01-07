@@ -9,12 +9,11 @@ import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.MultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
-import xyz.lbres.kotlinutils.set.multiset.filterConsistent
-import xyz.lbres.kotlinutils.set.multiset.filterNotToSetConsistent
-import xyz.lbres.kotlinutils.set.multiset.filterToSetConsistent
+import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -194,35 +193,19 @@ class Log private constructor(
             val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }
             val coefficient = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            val logValues: MultiSet<Log> = simplifiedNumbers.mapToSetConsistent { it.second }
+            val logValues: ConstMultiSet<Log> = simplifiedNumbers.mapToSet { it.second }.toConstMultiSet()
+            val distinct = logValues.distinctValues.map { Log(it.argument, it.base) }.toSet()
 
-            val invertedDistinct: Set<Log> = logValues
-                .filterToSetConsistent { it.isInverted }
-                .mapToSetConsistent { it.inverse() }
-                .distinctValues
-
-            val notInvertedDistinct: Set<Log> = logValues
-                .filterNotToSetConsistent { it.isInverted }
-                .distinctValues
-
-            val valuesToSimplify: Set<Log> = invertedDistinct intersect notInvertedDistinct
-            val simplifiedValues = logValues.filterConsistent {
-                it != ONE && it !in valuesToSimplify && it.inverse() !in valuesToSimplify
+            val simplifiedValues: ConstMutableMultiSet<Log> = constMutableMultiSetOf()
+            for (log in distinct) {
+                if (log != ONE) {
+                    val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
+                    val simplified = ConstMultiSet(abs(diff)) { Log(log.argument, log.base, isInverted = diff < 0) }
+                    simplifiedValues.addAll(simplified)
+                }
             }
 
-            val allValues = valuesToSimplify.map { log ->
-                val notInvertedCount = logValues.getCountOf(log)
-                val invertedCount = logValues.getCountOf(log.inverse())
-                val diff = notInvertedCount - invertedCount
-
-                when {
-                    log == ONE || diff == 0 -> emptyConstMultiSet()
-                    diff > 0 -> ConstMultiSet(diff) { log }
-                    else -> ConstMultiSet(abs(diff)) { log.inverse() }
-                }
-            }.fold(simplifiedValues) { acc, set -> acc + set }
-
-            return Pair(coefficient, allValues.toConstMultiSet())
+            return Pair(coefficient, simplifiedValues)
         }
     }
 }
