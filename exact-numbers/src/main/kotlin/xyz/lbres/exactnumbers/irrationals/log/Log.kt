@@ -205,13 +205,12 @@ class Log private constructor(
                 .filterNotToSetConsistent { it.isInverted }
                 .distinctValues
 
-            val distinctIntersection: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
-            val nonIntersectValues = logValues.filterConsistent { it != ONE && it !in distinctIntersection }
+            val valuesToSimplify: Set<Log> = invertedDistinct intersect notInvertedDistinct
+            val simplifiedValues = logValues.filterConsistent {
+                it != ONE && it !in valuesToSimplify && it.inverse() !in valuesToSimplify
+            }
 
-            // val notInvertedValues = logValues.filterConsistent { it != ONE && !it.isInverted && it !in distinctIntersection }
-            // val invertedValues = logValues.filterConsistent { it != ONE && it.isInverted && it.inverse() !in distinctIntersection }
-
-            val allValues = distinctIntersection.map { log ->
+            val allValues = valuesToSimplify.map { log ->
                 val notInvertedCount = logValues.getCountOf(log)
                 val invertedCount = logValues.getCountOf(log.inverse())
                 val diff = notInvertedCount - invertedCount
@@ -221,7 +220,7 @@ class Log private constructor(
                     diff > 0 -> ConstMultiSet(diff) { log }
                     else -> ConstMultiSet(abs(diff)) { log.inverse() }
                 }
-            }.fold(nonIntersectValues) { acc, set -> acc + set }
+            }.fold(simplifiedValues) { acc, set -> acc + set }
 
             return Pair(coefficient, allValues.toConstMultiSet())
         }
