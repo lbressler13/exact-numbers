@@ -7,14 +7,12 @@ import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.testutils.TestNumber
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
-    private val logNum3 = Log(ExactFraction(19, 33)).inverse()
+    private val logNum3 = Log(ExactFraction(19, 33), true)
     private val logNum4 = Log(ExactFraction(25, 121))
     private val testNumber1 = TestNumber(ExactFraction(5, 6))
     private val testNumber2 = TestNumber(ExactFraction.SEVEN)
@@ -45,7 +43,7 @@ class TermTest {
         term1 = Term.fromValues(one, listOf(Pi(), Pi()))
         assertEquals(term1, term1)
 
-        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(15), Pi().inverse(), Pi()))
+        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(15), Pi(true), Pi()))
         assertEquals(term1, term1)
 
         term1 = Term.fromValues(one, listOf(Pi(), TestNumber(ExactFraction(5))))
@@ -83,12 +81,12 @@ class TermTest {
         assertNotEquals(term2, term1)
 
         term1 = Term.fromValues(one, listOf(Pi()))
-        term2 = Term.fromValues(one, listOf(Pi().inverse()))
+        term2 = Term.fromValues(one, listOf(Pi(true)))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(one, listOf(Pi(), Pi().inverse()))
-        term2 = Term.fromValues(one, listOf(Pi().inverse()))
+        term1 = Term.fromValues(one, listOf(Pi(), Pi(true)))
+        term2 = Term.fromValues(one, listOf(Pi(true)))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -112,12 +110,12 @@ class TermTest {
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(ExactFraction(5, 7), listOf(logNum1, logNum1, Pi(), Pi().inverse()))
-        term2 = Term.fromValues(ExactFraction.FIVE, listOf(logNum1, logNum1, Pi(), Pi().inverse()))
+        term1 = Term.fromValues(ExactFraction(5, 7), listOf(logNum1, logNum1, Pi(), Pi(true)))
+        term2 = Term.fromValues(ExactFraction.FIVE, listOf(logNum1, logNum1, Pi(), Pi(true)))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi().inverse()))
+        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi(true)))
         term2 = Term.fromValues(ExactFraction(-17, 15), listOf(logNum1, logNum2, logNum3))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
@@ -128,101 +126,9 @@ class TermTest {
         assertNotEquals(term2, term1)
     }
 
-    @Test
-    fun testUnaryMinus() {
-        var term = Term.ZERO
-        var expected = Term.ZERO
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(one, listOf(Log.ONE))
-        expected = Term.fromValues(ExactFraction.NEG_ONE, listOf(Log.ONE))
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(ExactFraction.NEG_ONE, listOf(Pi()))
-        expected = Term.fromValues(one, listOf(Pi()))
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(ExactFraction.NEG_ONE, listOf(Sqrt(32)))
-        expected = Term.fromValues(one, listOf(Sqrt(32)))
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
-        expected = Term.fromValues(ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(ExactFraction(15, 44), emptyList())
-        expected = Term.fromValues(ExactFraction(-15, 44), emptyList())
-        assertEquals(expected, -term)
-
-        term = Term.fromValues(
-            ExactFraction(-15, 44),
-            listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
-        )
-        expected = Term.fromValues(
-            ExactFraction(15, 44),
-            listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
-        )
-        assertEquals(expected, -term)
-    }
-
-    @Test
-    fun testUnaryPlus() {
-        var term = Term.ZERO
-        assertEquals(term, +term)
-
-        term = Term.fromValues(one, listOf(Log.ONE))
-        assertEquals(term, +term)
-
-        term = Term.fromValues(one, listOf(Pi()))
-        assertEquals(term, +term)
-
-        term = Term.fromValues(one, listOf(Sqrt.ONE))
-        assertEquals(term, +term)
-
-        term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(121), Pi().inverse(), testNumber2))
-        assertEquals(term, +term)
-
-        term = Term.fromValues(ExactFraction(15, 44), emptyList())
-        assertEquals(term, +term)
-
-        term = Term.fromValues(
-            ExactFraction(-15, 44),
-            listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(64, 9)), Pi(), Pi().inverse())
-        )
-        assertEquals(term, +term)
-    }
-
-    @Test
-    fun testIsZero() {
-        // zero
-        var term = Term.ZERO
-        assertTrue(term.isZero())
-
-        // not zero
-        term = Term.ONE
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(one, listOf(Log.ONE))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(one, listOf(Pi()))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(one, listOf(Sqrt.ONE))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(ExactFraction(5, 4), listOf(logNum2, logNum4, Sqrt(12), Pi().inverse()))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.inverse(), testNumber1))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(-ExactFraction.HALF, listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
-        assertFalse(term.isZero())
-
-        term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
-        assertFalse(term.isZero())
-    }
+    @Test fun testUnaryMinus() = runUnaryMinusTests()
+    @Test fun testUnaryPlus() = runUnaryPlusTests()
+    @Test fun testIsZero() = runIsZeroTests()
 
     @Test fun testGetLogs() = runGetLogsTests()
     @Test fun testGetPiCount() = runGetPiCountTests()
@@ -258,8 +164,8 @@ class TermTest {
         expected = "<1x${Pi()}>"
         assertEquals(expected, term.toString())
 
-        term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi()))
-        expected = "<1x${Pi()}x${Pi().inverse()}x${Pi()}>"
+        term = Term.fromValues(one, listOf(Pi(), Pi(true), Pi()))
+        expected = "<1x${Pi()}x${Pi(true)}x${Pi()}>"
         assertEquals(expected, term.toString())
 
         // just sqrt
@@ -280,9 +186,9 @@ class TermTest {
         val sqrt2 = Sqrt(5096)
         term = Term.fromValues(
             ExactFraction(-100, 333),
-            listOf(logNum2, logNum2, logNum4, logNum1, sqrt1, sqrt2, Pi().inverse(), Pi())
+            listOf(logNum2, logNum2, logNum4, logNum1, sqrt1, sqrt2, Pi(true), Pi())
         )
-        expected = "<[-100/333]x${logNum2}x${logNum2}x${logNum4}x${logNum1}x${sqrt1}x${sqrt2}x${Pi().inverse()}x${Pi()}>"
+        expected = "<[-100/333]x${logNum2}x${logNum2}x${logNum4}x${logNum1}x${sqrt1}x${sqrt2}x${Pi(true)}x${Pi()}>"
         assertEquals(expected, term.toString())
     }
 }

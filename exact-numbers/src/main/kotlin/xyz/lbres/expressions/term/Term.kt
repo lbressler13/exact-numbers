@@ -19,10 +19,13 @@ import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import kotlin.math.abs
 
+// TODO package structure -- all under exactnumbers
+// TODO implement number class
+
 /**
- * Representation of the product of several numbers, represented as a rational coefficient and lists of irrational numbers
+ * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
  */
-class Term {
+class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) {
     val coefficient: ExactFraction
 
     private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
@@ -33,12 +36,15 @@ class Term {
     @Suppress("UNCHECKED_CAST")
     val logs: List<Log>
         get() = getIrrationalsByType(Log.TYPE) as List<Log>
+
     @Suppress("UNCHECKED_CAST")
     val squareRoots: List<Sqrt>
         get() = getIrrationalsByType(Sqrt.TYPE) as List<Sqrt>
+
     @Suppress("UNCHECKED_CAST")
     val pis: List<Pi>
         get() = getIrrationalsByType(Pi.TYPE) as List<Pi>
+
     val piCount: Int
         get() = calculatePiCount()
 
@@ -47,24 +53,7 @@ class Term {
     private var value: BigDecimal? = null
     private var string: String? = null
 
-    // Initialize values using list of numbers. Accessible via the fromValues methods in the companion object.
-    private constructor(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>) {
-        if (coefficient.isZero() || irrationals.any { it.isZero() }) {
-            this.coefficient = ExactFraction.ZERO
-            this.irrationals = emptyList()
-            this._irrationals = emptyConstMultiSet()
-        } else {
-            this.coefficient = coefficient
-            this.irrationals = irrationals
-            this._irrationals = irrationals.toConstMultiSet()
-        }
-    }
-
-    // Initialize values using multisets. Only used inside the class, to avoid unnecessary casts when creating new terms after operations
-    private constructor(
-        coefficient: ExactFraction,
-        irrationals: ConstMultiSet<IrrationalNumber<*>>,
-    ) {
+    init {
         if (coefficient.isZero() || irrationals.any { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
             this.irrationals = emptyList()
@@ -184,8 +173,8 @@ class Term {
     fun getSquareRoots(): List<Sqrt> = squareRoots
 
     companion object {
-        val ZERO = Term(ExactFraction.ZERO, emptyList())
-        val ONE = Term(ExactFraction.ONE, emptyList())
+        val ZERO = Term(ExactFraction.ZERO, emptyConstMultiSet())
+        val ONE = Term(ExactFraction.ONE, emptyConstMultiSet())
 
         /**
          * Construct a term by providing information about coefficient and irrationals
@@ -194,7 +183,9 @@ class Term {
          * @param irrationals [List]<IrrationalNumber<*>>: list of all irrational numbers
          * @return [Term] with the given values
          */
-        fun fromValues(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>): Term = Term(coefficient, irrationals)
+        fun fromValues(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>): Term {
+            return Term(coefficient, irrationals.toConstMultiSet())
+        }
 
         /**
          * Construct a term by providing information about coefficient, logs, square roots, and pis
@@ -207,9 +198,8 @@ class Term {
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
-            val pi = simpleIf(piCount < 0, Pi().inverse(), Pi())
-            val piList = List(abs(piCount)) { pi }
-            return fromValues(coefficient, logs + roots + piList)
+            val pis = List(abs(piCount)) { Pi(isInverted = piCount < 0) }
+            return fromValues(coefficient, logs + roots + pis)
         }
     }
 }

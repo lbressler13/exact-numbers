@@ -33,11 +33,7 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     override fun performGetRationalValue(): ExactFraction? = null
     override fun inverse(): Pi = Pi(!isInverted)
 
-    override fun equals(other: Any?): Boolean {
-        return other != null &&
-            other is Pi &&
-            isInverted == other.isInverted
-    }
+    override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
 
     override fun compareTo(other: Pi): Int {
         return when {
@@ -65,11 +61,8 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
                 return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
-            val positive = numbers.getCountOf(Pi())
-            val negative = numbers.getCountOf(Pi(isInverted = true))
-            val diff = abs(positive - negative)
-
-            val pis = ConstMultiSet(diff) { Pi(isInverted = positive < negative) }
+            val diff = numbers.getCountOf(Pi()) - numbers.getCountOf(Pi(isInverted = true))
+            val pis = ConstMultiSet(abs(diff)) { Pi(isInverted = diff < 0) }
             return Pair(ExactFraction.ONE, pis)
         }
     }

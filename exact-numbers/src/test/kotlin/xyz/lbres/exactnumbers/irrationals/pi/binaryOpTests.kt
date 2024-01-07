@@ -11,7 +11,7 @@ private val one = ExactFraction.ONE
 
 fun runTimesTests() {
     val pi = Pi()
-    val piInverse = Pi().inverse()
+    val piInverse = Pi(true)
 
     // zero
     assertEquals(Term.ZERO, pi * Log.ZERO)
@@ -36,7 +36,7 @@ fun runTimesTests() {
     assertEquals(expected, piInverse * ef)
 
     // log
-    var log = Log(ExactFraction(33, 14), 5).inverse()
+    var log = Log(ExactFraction(33, 14), 5, true)
     expected = Term.fromValues(one, listOf(log, pi))
     assertEquals(expected, pi * log)
 
@@ -56,7 +56,7 @@ fun runTimesTests() {
 
 fun runDivTests() {
     val pi = Pi()
-    val piInverse = Pi().inverse()
+    val piInverse = Pi(true)
 
     // zero
     assertDivByZero { pi / Log.ZERO }
@@ -74,13 +74,11 @@ fun runDivTests() {
     assertEquals(expected, piInverse / piInverse)
 
     // exact fraction
-    var ef = ExactFraction.HALF
-    expected = Term.fromValues(ef.inverse(), listOf(pi))
-    assertEquals(expected, pi / ef)
+    expected = Term.fromValues(ExactFraction.TWO, listOf(pi))
+    assertEquals(expected, pi / ExactFraction.HALF)
 
-    ef = ExactFraction(1000)
-    expected = Term.fromValues(ef.inverse(), listOf(piInverse))
-    assertEquals(expected, piInverse / ef)
+    expected = Term.fromValues(ExactFraction(1, 1000), listOf(piInverse))
+    assertEquals(expected, piInverse / ExactFraction(1000))
 
     // log
     var log = Log(ExactFraction(33, 14), 5).inverse()

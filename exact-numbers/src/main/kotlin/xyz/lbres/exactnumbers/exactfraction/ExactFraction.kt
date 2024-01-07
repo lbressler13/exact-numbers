@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.common.CastingOverflowException
 import xyz.lbres.common.castToByte
 import xyz.lbres.common.castToChar
 import xyz.lbres.common.castToDouble
@@ -9,7 +10,6 @@ import xyz.lbres.common.castToLong
 import xyz.lbres.common.castToShort
 import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideByZero
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative

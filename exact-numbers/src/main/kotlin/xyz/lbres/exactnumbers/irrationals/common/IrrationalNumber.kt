@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
+import xyz.lbres.common.CastingOverflowException
 import xyz.lbres.common.castToByte
 import xyz.lbres.common.castToChar
 import xyz.lbres.common.castToDouble
@@ -10,7 +11,6 @@ import xyz.lbres.common.castToShort
 import xyz.lbres.common.createHashCode
 import xyz.lbres.common.deprecatedV1
 import xyz.lbres.common.divideByZero
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.expressions.term.Term
 import java.math.BigDecimal
@@ -84,7 +84,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     protected abstract fun performGetRationalValue(): ExactFraction?
 
     /**
-     * Get the value of the number such that `n * n.inverse() == 0`
+     * Get multiplicative inverse of value
      */
     abstract fun inverse(): T
 

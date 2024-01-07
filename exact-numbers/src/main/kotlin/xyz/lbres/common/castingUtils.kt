@@ -92,7 +92,7 @@ internal fun castToDouble(value: BigDecimal, getCastingError: () -> ArithmeticEx
  * @param cast (BigDecimal) -> T: function to cast [value]
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
  * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole number or a decimal
- * @return [Double] value as a double
+ * @return [T]: result of cast, if succeeded
  */
 private fun <T : Number> castNumber(
     value: BigDecimal,

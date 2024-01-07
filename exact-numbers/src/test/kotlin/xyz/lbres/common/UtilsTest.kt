@@ -85,6 +85,11 @@ class UtilsTest {
         runSingleGetIntFromDecimalTest(values) { true }
     }
 
+    @Test
+    fun testCreateHashCode() {
+        // TODO
+    }
+
     /**
      * Run single test for getIntFromDecimal
      *

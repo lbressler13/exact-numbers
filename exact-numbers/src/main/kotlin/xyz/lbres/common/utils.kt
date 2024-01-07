@@ -51,6 +51,12 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
     }
 }
 
+/**
+ * Generate hash code from a list of values
+ *
+ * @param values [List]<*>: values to use in hash code
+ * @return [Int]: hash code
+ */
 internal fun createHashCode(values: List<*>): Int {
     var result = 0
     for (value in values) {

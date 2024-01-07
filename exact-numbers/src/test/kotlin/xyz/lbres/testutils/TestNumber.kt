@@ -3,7 +3,7 @@ package xyz.lbres.testutils
 import xyz.lbres.common.createHashCode
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
-import java.math.BigDecimal
+import xyz.lbres.kotlinutils.general.simpleIf
 
 /**
  * Irrational implementation to use in tests
@@ -17,13 +17,7 @@ class TestNumber(val value: ExactFraction, override val isInverted: Boolean) : I
 
     override fun checkIsRational(): Boolean = value.isWholeNumber() && !isInverted
 
-    override fun performGetValue(): BigDecimal {
-        return if (isInverted) {
-            value.inverse().toBigDecimal()
-        } else {
-            value.toBigDecimal()
-        }
-    }
+    override fun performGetValue() = simpleIf(isInverted, { value.inverse().toBigDecimal() }, { value.toBigDecimal() })
 
     override fun performGetRationalValue(): ExactFraction? {
         return when {

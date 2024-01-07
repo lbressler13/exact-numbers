@@ -46,13 +46,13 @@ class Log private constructor(
         }
     }
 
-    // constructors with reduced params + other types
+    // constructors with reduced params
     constructor(argument: ExactFraction) : this(argument, base = 10, isInverted = false, false)
     constructor(argument: ExactFraction, base: Int) : this(argument, base, isInverted = false, false)
     constructor(argument: ExactFraction, isInverted: Boolean) : this(argument, base = 10, isInverted, false)
     constructor(argument: ExactFraction, base: Int, isInverted: Boolean) : this(argument, base, isInverted, false)
 
-    // constructors with reduced params + other types
+    // constructors with other types
     constructor(argument: Int) : this(ExactFraction(argument))
     constructor(argument: Int, base: Int) : this(ExactFraction(argument), base)
     constructor(argument: Int, isInverted: Boolean) : this(ExactFraction(argument), isInverted)
@@ -127,20 +127,28 @@ class Log private constructor(
             fullySimplified -> return Pair(ExactFraction.ONE, this)
             isZero() -> return Pair(ExactFraction.ONE, ZERO)
             equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
+            isRational() -> return Pair(getRationalValue()!!, ONE)
         }
 
-        val rational = getRationalValue()
-        if (rational == null) {
-            return Pair(ExactFraction.ONE, Log(argument, base, isInverted, true))
-        }
+        // var exp = 0
+        // var remaining = argument.numerator
+        // val baseBigInt = base.toBigInteger()
+        // while (remaining.mod(baseBigInt) == BigInteger.ZERO) {
+        // exp++
+        // remaining /= baseBigInt
+        // }
 
-        return Pair(rational, ONE)
+        // val rationalValue = ExactFraction(base).pow(exp)
+        // val remainingArgument = ExactFraction(remaining, argument.denominator)
+        // val remainingLog = Log(remainingArgument, base, isInverted,true)
+        // return Pair(rationalValue, remainingLog)
+
+        return Pair(ExactFraction.ONE, Log(argument, base, isInverted, true))
     }
 
     /**
-     * Create log with value 1/this.
-     *
-     * **This does not correspond to an inverse log**
+     * Get multiplicative inverse of value.
+     * This does not correspond to an inverse log.
      *
      * @return [Log]: log with value 1/this
      */
@@ -197,22 +205,23 @@ class Log private constructor(
                 .filterNotToSetConsistent { it.isInverted }
                 .distinctValues
 
-            val bothTypesDistinct: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
+            val distinctIntersection: Set<Log> = invertedDistinct intersect notInvertedDistinct // values that need to be simplified
+            val nonIntersectValues = logValues.filterConsistent { it != ONE && it !in distinctIntersection }
 
-            val notInvertedOnlyValues = logValues.filterConsistent { it != ONE && !it.isInverted && it !in bothTypesDistinct }
-            val invertedOnlyValues = logValues.filterConsistent { it != ONE && it.isInverted && it.inverse() !in bothTypesDistinct }
+            // val notInvertedValues = logValues.filterConsistent { it != ONE && !it.isInverted && it !in distinctIntersection }
+            // val invertedValues = logValues.filterConsistent { it != ONE && it.isInverted && it.inverse() !in distinctIntersection }
 
-            val allValues = bothTypesDistinct.map {
-                val notInvertedCount = logValues.getCountOf(it)
-                val invertedCount = logValues.getCountOf(it.inverse())
+            val allValues = distinctIntersection.map { log ->
+                val notInvertedCount = logValues.getCountOf(log)
+                val invertedCount = logValues.getCountOf(log.inverse())
                 val diff = notInvertedCount - invertedCount
 
                 when {
-                    it == ONE || diff == 0 -> emptyConstMultiSet()
-                    diff > 0 -> ConstMultiSet(diff) { _ -> it }
-                    else -> ConstMultiSet(abs(diff)) { _ -> it.inverse() }
+                    log == ONE || diff == 0 -> emptyConstMultiSet()
+                    diff > 0 -> ConstMultiSet(diff) { log }
+                    else -> ConstMultiSet(abs(diff)) { log.inverse() }
                 }
-            }.fold(invertedOnlyValues + notInvertedOnlyValues) { acc, set -> acc + set }
+            }.fold(nonIntersectValues) { acc, set -> acc + set }
 
             return Pair(coefficient, allValues.toConstMultiSet())
         }

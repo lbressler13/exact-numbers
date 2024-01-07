@@ -37,46 +37,46 @@ fun runConstructorTests() {
 
     // ExactFraction
     // zero
-    var expectedNumber = ExactFraction.ONE
+    var expectedArgument = ExactFraction.ONE
     var expectedBase = 10
     var logs = listOf(Log(ExactFraction.ONE), Log(1), Log(1L), Log(BigInteger.ONE))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
         assertFalse(it.isInverted)
     }
 
     // just number
-    expectedNumber = ExactFraction.TWO
+    expectedArgument = ExactFraction.TWO
     expectedBase = 10
     logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
         assertFalse(it.isInverted)
     }
 
     var logNum = Log(ExactFraction(107, 3))
-    expectedNumber = ExactFraction(107, 3)
+    expectedArgument = ExactFraction(107, 3)
     expectedBase = 10
-    assertEquals(expectedNumber, logNum.argument)
+    assertEquals(expectedArgument, logNum.argument)
     assertEquals(expectedBase, logNum.base)
     assertFalse(logNum.isInverted)
 
     // number + base
-    expectedNumber = ExactFraction.TWO
+    expectedArgument = ExactFraction.TWO
     expectedBase = 2
     logs = listOf(Log(ExactFraction.TWO, 2), Log(2, 2), Log(2L, 2), Log(BigInteger.TWO, 2))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
         assertFalse(it.isInverted)
     }
 
     logNum = Log(ExactFraction(107, 3), 5)
-    expectedNumber = ExactFraction(107, 3)
+    expectedArgument = ExactFraction(107, 3)
     expectedBase = 5
-    assertEquals(expectedNumber, logNum.argument)
+    assertEquals(expectedArgument, logNum.argument)
     assertEquals(expectedBase, logNum.base)
     assertFalse(logNum.isInverted)
 }

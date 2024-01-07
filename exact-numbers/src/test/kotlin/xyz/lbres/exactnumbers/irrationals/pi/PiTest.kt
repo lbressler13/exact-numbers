@@ -26,23 +26,12 @@ class PiTest {
         var pi1 = Pi()
         assertEquals(pi1, pi1)
 
-        pi1 = Pi().inverse()
+        pi1 = Pi(true)
         assertEquals(pi1, pi1)
 
         val pi2 = Pi()
         assertNotEquals(pi1, pi2)
         assertNotEquals(pi2, pi1)
-    }
-
-    @Test
-    fun testCompareTo() {
-        // equal
-        assertEquals(Pi(), Pi())
-        assertEquals(Pi().inverse(), Pi().inverse())
-
-        // not equal
-        assertTrue(Pi().inverse() < Pi())
-        assertTrue(Pi() > Pi().inverse())
     }
 
     @Test
@@ -53,7 +42,7 @@ class PiTest {
         assertEquals(expected, pi.getValue())
         assertEquals(expected, pi.getValue())
 
-        pi = Pi().inverse()
+        pi = Pi(true)
         expected = BigDecimal("0.31830988618379069570")
         assertEquals(expected, pi.getValue())
         assertEquals(expected, pi.getValue())
@@ -64,7 +53,7 @@ class PiTest {
         var pi = Pi()
         assertFalse(pi.isZero())
 
-        pi = Pi().inverse()
+        pi = Pi(true)
         assertFalse(pi.isZero())
     }
 
@@ -74,7 +63,7 @@ class PiTest {
         assertFalse(pi.isRational())
         assertFalse(pi.isRational())
 
-        pi = Pi().inverse()
+        pi = Pi(true)
         assertFalse(pi.isRational())
         assertFalse(pi.isRational())
     }
@@ -85,7 +74,7 @@ class PiTest {
         assertNull(pi.getRationalValue())
         assertNull(pi.getRationalValue())
 
-        pi = Pi().inverse()
+        pi = Pi(true)
         assertNull(pi.getRationalValue())
         assertNull(pi.getRationalValue())
     }
@@ -105,12 +94,21 @@ class PiTest {
         var expected = "[π]"
         assertEquals(expected, piNum.toString())
 
-        piNum = Pi().inverse()
+        piNum = Pi(true)
         expected = "[1/π]"
         assertEquals(expected, piNum.toString())
     }
 
-    @Test fun testSimplifySet() = runSimplifySetTests()
+    @Test
+    fun testCompareTo() {
+        // equal
+        assertEquals(Pi(), Pi())
+        assertEquals(Pi(true), Pi(true))
+
+        // not equal
+        assertTrue(Pi(true) < Pi())
+        assertTrue(Pi() > Pi(true))
+    }
 
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
@@ -158,4 +156,6 @@ class PiTest {
         assertEquals(3.141592653589793, Pi().toDouble())
         assertEquals(0.3183098861837907, Pi(true).toDouble())
     }
+
+    @Test fun testSimplifySet() = runSimplifySetTests()
 }

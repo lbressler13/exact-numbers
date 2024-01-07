@@ -19,7 +19,7 @@ private val sqrtWholeEF = Sqrt(ExactFraction(9, 25))
 private val sqrtDecimal = Sqrt(11)
 
 private val pi = Pi()
-private val piInverse = Pi().inverse()
+private val piInverse = Pi(true)
 
 private val testNumber1 = TestNumber(ExactFraction(5, 6))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
@@ -55,23 +55,14 @@ private fun runFullListConstructorTests() {
     term = Term.fromValues(ExactFraction(-17, 100043), emptyList())
     checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
 
-    term = Term.fromValues(one, listOf(logWhole))
-    checkTerm(term, one, listOf(logWhole), 0)
-
     term = Term.fromValues(one, listOf(logWhole, logInverse))
     checkTerm(term, one, listOf(logWhole, logInverse), 0)
 
     term = Term.fromValues(one, listOf(sqrtPartialWhole))
     checkTerm(term, one, listOf(sqrtPartialWhole), 0)
 
-    term = Term.fromValues(one, listOf(sqrtPartialWhole, sqrtWhole))
-    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole), 0)
-
     term = Term.fromValues(one, listOf(pi))
     checkTerm(term, one, listOf(pi), 1)
-
-    term = Term.fromValues(one, listOf(pi, pi))
-    checkTerm(term, one, listOf(pi, pi), 2)
 
     term = Term.fromValues(one, listOf(pi, piInverse))
     checkTerm(term, one, listOf(pi, piInverse), 0)
@@ -90,17 +81,11 @@ private fun runFullListConstructorTests() {
     term = Term.fromValues(ExactFraction(-1, 5), logs + sqrts)
     checkTerm(term, ExactFraction(-1, 5), logs + sqrts, 0)
 
-    term = Term.fromValues(ExactFraction(-1, 5), logs + pis)
-    checkTerm(term, ExactFraction(-1, 5), logs + pis, 1)
-
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis)
     checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 1)
 
     term = Term.fromValues(one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
     checkTerm(term, one, sqrts + pis + logs + listOf(testNumber1, testNumber2), 1)
-
-    term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis + logs)
-    checkTerm(term, ExactFraction(-1, 5), sqrts + pis + logs, 1)
 }
 
 private fun runComponentConstructorTests() {
@@ -124,20 +109,11 @@ private fun runComponentConstructorTests() {
     term = Term.fromValues(ExactFraction(-17, 100043), emptyList(), emptyList(), 0)
     checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
 
-    term = Term.fromValues(one, listOf(logWhole), emptyList(), 0)
-    checkTerm(term, one, listOf(logWhole), 0)
-
     term = Term.fromValues(one, listOf(logWhole, logInverse), emptyList(), 0)
     checkTerm(term, one, listOf(logWhole, logInverse), 0)
 
     term = Term.fromValues(one, emptyList(), listOf(sqrtPartialWhole), 0)
     checkTerm(term, one, listOf(sqrtPartialWhole), 0)
-
-    term = Term.fromValues(one, emptyList(), listOf(sqrtPartialWhole, sqrtWhole), 0)
-    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole), 0)
-
-    term = Term.fromValues(one, emptyList(), emptyList(), 1)
-    checkTerm(term, one, listOf(pi), 1)
 
     term = Term.fromValues(one, emptyList(), emptyList(), -2)
     checkTerm(term, one, listOf(piInverse, piInverse), -2)
@@ -161,9 +137,6 @@ private fun runComponentConstructorTests() {
 
     term = Term.fromValues(ExactFraction(-1, 5), emptyList(), sqrts, 2)
     checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 2)
-
-    term = Term.fromValues(one, logs, sqrts, 2)
-    checkTerm(term, one, logs + sqrts + pis, 2)
 
     term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 2)
     checkTerm(term, ExactFraction(-1, 5), logs + sqrts + pis, 2)

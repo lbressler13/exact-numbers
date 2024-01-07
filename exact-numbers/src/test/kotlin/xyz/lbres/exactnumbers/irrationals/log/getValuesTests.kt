@@ -61,20 +61,20 @@ fun runGetValueTests() {
     assertEquals(expected, logNum.getValue())
 
     // divided
-    logNum = Log(10, 10).inverse()
+    logNum = Log(10, 10, true)
     expected = BigDecimal.ONE
     assertEquals(expected, logNum.getValue())
 
-    logNum = Log(8, 2).inverse()
+    logNum = Log(8, 2, true)
     expected = BigDecimal("0.33333333333333333333")
     assertEquals(expected, logNum.getValue())
 
-    logNum = Log(ExactFraction(1, 4), 10).inverse()
+    logNum = Log(ExactFraction(1, 4), 10, true)
     expected = BigDecimal("-1.6609640474436814234")
     assertEquals(expected, logNum.getValue())
     assertEquals(expected, logNum.getValue())
 
-    logNum = Log(12, 4).inverse()
+    logNum = Log(12, 4, true)
     expected = BigDecimal("0.55788589130225962125")
     assertEquals(expected, logNum.getValue())
 }
@@ -91,7 +91,7 @@ fun runGetRationalValueTests() {
     logNum = Log(ExactFraction(5, 12), 5)
     assertNull(logNum.getRationalValue())
 
-    logNum = Log(ExactFraction(5, 12), 5).inverse()
+    logNum = Log(ExactFraction(5, 12), 5, true)
     assertNull(logNum.getRationalValue())
 
     // rational
@@ -112,7 +112,7 @@ fun runGetRationalValueTests() {
     expected = -ExactFraction.THREE
     assertEquals(expected, logNum.getRationalValue())
 
-    logNum = Log(ExactFraction(1, 1000)).inverse()
+    logNum = Log(ExactFraction(1, 1000), true)
     expected = ExactFraction(-1, 3)
     assertEquals(expected, logNum.getRationalValue())
     assertEquals(expected, logNum.getRationalValue())

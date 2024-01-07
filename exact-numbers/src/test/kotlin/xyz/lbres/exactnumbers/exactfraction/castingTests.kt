@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
+import xyz.lbres.common.CastingOverflowException
 import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -49,14 +49,14 @@ fun runToCharTests() {
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-5)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(2, 5)
     expected = 0.toChar()
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-18, 5)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MAX_VALUE.code)
     expected = Char.MAX_VALUE
@@ -67,10 +67,10 @@ fun runToCharTests() {
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(Char.MAX_VALUE.code + 1)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MIN_VALUE.code - 1)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 }
 
 fun runToShortTests() {
@@ -164,19 +164,6 @@ fun runToBigDecimalTests() {
 }
 
 /**
- * Assert that a correct casting exception is thrown when a cast overflows
- *
- * @param type [String]: the type of the value being cast to
- * @param value [ExactFraction]: the value to cast
- * @param cast () -> Unit: the call to cast the value
- */
-private fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
-    val errorMessage = "Overflow casting value $value of type ExactFraction to $type"
-    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { cast() }
-    assertEquals(value, error.overflowValue)
-}
-
-/**
  * Run tests for a single type of whole number
  *
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
@@ -211,7 +198,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         assertEquals(minValue, castEF(ef))
 
         ef--
-        assertExactFractionOverflow(type, ef) { castEF(ef) }
+        assertCastingOverflow(type, ef) { castEF(ef) }
     }
 
     if (maxValue != null) {
@@ -219,7 +206,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         assertEquals(maxValue, castEF(ef))
 
         ef++
-        assertExactFractionOverflow(type, ef) { castEF(ef) }
+        assertCastingOverflow(type, ef) { castEF(ef) }
     }
 }
 
@@ -257,9 +244,22 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
 
     ef = ExactFraction(largeValue)
     ef *= 2
-    assertExactFractionOverflow(type, ef) { castEF(ef) }
+    assertCastingOverflow(type, ef) { castEF(ef) }
 
     ef = ExactFraction(smallValue)
     ef *= 2
-    assertExactFractionOverflow(type, ef) { castEF(ef) }
+    assertCastingOverflow(type, ef) { castEF(ef) }
+}
+
+/**
+ * Assert that a CastingOverflowException is thrown, with the correct message and overflow value
+ *
+ * @param type [String]: the type of the value being cast to
+ * @param value [ExactFraction]: the value to cast
+ * @param cast () -> Unit: the call to cast the value
+ */
+private fun assertCastingOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
+    val errorMessage = "Overflow casting value $value of type ExactFraction to $type"
+    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { cast() }
+    assertEquals(value, error.overflowValue)
 }

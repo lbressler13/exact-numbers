@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
+import xyz.lbres.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
