@@ -19,9 +19,9 @@ import java.math.BigDecimal
  * Representation of an irrational number
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
-    private var _isRational: Boolean? = null
-    private var _value: BigDecimal? = null
-    private var _rationalValue: ExactFraction? = null
+    private var isRational: Boolean? = null
+    private var value: BigDecimal? = null
+    private var rationalValue: ExactFraction? = null
 
     /**
      * Type of number, should correspond to the type name for the class
@@ -29,7 +29,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     abstract val type: String
 
     /**
-     * If the number is in the format `1/n`. True if the number is in that format, false otherwise
+     * If the number is in the format `1/n`
      */
     abstract val isInverted: Boolean
     @Deprecated("Property $deprecatedV1", ReplaceWith("isInverted"), DeprecationLevel.WARNING)
@@ -45,37 +45,37 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
      * If the number is a rational value
      */
     fun isRational(): Boolean {
-        if (_isRational == null) {
-            _isRational = checkIsRational()
+        if (isRational == null) {
+            isRational = checkIsRational()
         }
 
-        return _isRational!!
+        return isRational!!
     }
 
     /**
      * Get value of number
      */
     fun getValue(): BigDecimal {
-        if (_value == null) {
-            _value = performGetValue()
+        if (value == null) {
+            value = performGetValue()
         }
 
-        return _value!!
+        return value!!
     }
 
     /**
-     * Get the value of the number as a rational number. Return `null` if the number is irrational.
+     * Get the value of the number as a BigInteger. Returns `null` if the value of the number is not rational.
      */
     fun getRationalValue(): ExactFraction? {
         if (!isRational()) {
             return null
         }
 
-        if (_rationalValue == null) {
-            _rationalValue = performGetRationalValue()
+        if (rationalValue == null) {
+            rationalValue = performGetRationalValue()
         }
 
-        return _rationalValue
+        return rationalValue
     }
 
     // implementation-specific code for isRational, getValue, and getRationalValue
@@ -84,7 +84,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     protected abstract fun performGetRationalValue(): ExactFraction?
 
     /**
-     * Get multiplicative inverse of value
+     * Get multiplicative inverse
      */
     abstract fun inverse(): T
 

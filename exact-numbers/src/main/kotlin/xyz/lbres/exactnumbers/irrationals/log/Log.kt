@@ -9,6 +9,7 @@ import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
@@ -46,10 +47,10 @@ class Log private constructor(
     }
 
     // constructors with reduced params
-    constructor(argument: ExactFraction) : this(argument, base = 10, isInverted = false, false)
-    constructor(argument: ExactFraction, base: Int) : this(argument, base, isInverted = false, false)
-    constructor(argument: ExactFraction, isInverted: Boolean) : this(argument, base = 10, isInverted, false)
     constructor(argument: ExactFraction, base: Int, isInverted: Boolean) : this(argument, base, isInverted, false)
+    constructor(argument: ExactFraction, isInverted: Boolean) : this(argument, base = 10, isInverted)
+    constructor(argument: ExactFraction, base: Int) : this(argument, base, isInverted = false)
+    constructor(argument: ExactFraction) : this(argument, base = 10)
 
     // constructors with other types
     constructor(argument: Int) : this(ExactFraction(argument))
@@ -139,24 +140,21 @@ class Log private constructor(
 
         // val rationalValue = ExactFraction(base).pow(exp)
         // val remainingArgument = ExactFraction(remaining, argument.denominator)
-        // val remainingLog = Log(remainingArgument, base, isInverted,true)
+        // val remainingLog = Log(remainingArgument, base, isInverted, fullSimplified = true)
         // return Pair(rationalValue, remainingLog)
 
-        return Pair(ExactFraction.ONE, Log(argument, base, isInverted, true))
+        return Pair(ExactFraction.ONE, Log(argument, base, isInverted, fullySimplified = true))
     }
 
     /**
-     * Get multiplicative inverse of value.
-     * This does not correspond to an inverse log.
-     *
-     * @return [Log]: log with value 1/this
+     * Get multiplicative inverse. This does not correspond to an inverse log.
      */
     override fun inverse(): Log {
         if (isZero()) {
             throw divideByZero
         }
 
-        return Log(argument, base, !isInverted, false)
+        return Log(argument, base, !isInverted, fullySimplified = false)
     }
 
     override fun toString(): String {
@@ -187,7 +185,7 @@ class Log private constructor(
         override fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-                numbers.any(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+                numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
             val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }
@@ -196,6 +194,7 @@ class Log private constructor(
             val logValues: ConstMultiSet<Log> = simplifiedNumbers.mapToSet { it.second }.toConstMultiSet()
             val distinct = logValues.distinctValues.map { Log(it.argument, it.base) }.toSet()
 
+            // avoids creating a standard MultiSet for efficiency
             val simplifiedValues: ConstMutableMultiSet<Log> = constMutableMultiSetOf()
             for (log in distinct) {
                 if (log != ONE) {

@@ -7,6 +7,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
@@ -139,7 +140,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         override fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-                numbers.any(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+                numbers.anyConsistent(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
             // combine all roots into single root, and return that value
@@ -153,7 +154,6 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
             val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
 
             val rootList = simpleIf(root == ONE, emptyConstMultiSet(), constMultiSetOf(root))
-
             return Pair(coefficient, rootList)
         }
     }

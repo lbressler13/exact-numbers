@@ -10,7 +10,7 @@ abstract class IrrationalNumberCompanion<T : IrrationalNumber<T>> {
     abstract val TYPE: String
 
     /**
-     * Simplify a list of irrational values
+     * Simplify a set of irrational values
      *
      * @param numbers [ConstMultiSet]<T> : values to simplify
      * @return [Pair]<ExactFraction, ConstMultiSet<T>>: pair where first value is a coefficient and the second value is the simplified set,

@@ -33,15 +33,15 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     override fun performGetRationalValue(): ExactFraction? = null
     override fun inverse(): Pi = Pi(!isInverted)
 
-    override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
-
     override fun compareTo(other: Pi): Int {
         return when {
-            !isInverted && other.isInverted -> 1
             isInverted && !other.isInverted -> -1
+            !isInverted && other.isInverted -> 1
             else -> 0
         }
     }
+
+    override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
 
     override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
 
@@ -53,7 +53,7 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
         /**
          * Simplify set of pis
          *
-         * @param numbers [ConstMultiSet]<Pi> : list to simplify
+         * @param numbers [ConstMultiSet]<Pi>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is one, and second value is the simplified set
          */
         override fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {

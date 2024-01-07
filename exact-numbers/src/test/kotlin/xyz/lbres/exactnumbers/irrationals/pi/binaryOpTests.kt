@@ -4,6 +4,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.testutils.TestNumber
 import xyz.lbres.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
@@ -17,6 +18,7 @@ fun runTimesTests() {
     assertEquals(Term.ZERO, pi * Log.ZERO)
     assertEquals(Term.ZERO, pi * Sqrt.ZERO)
     assertEquals(Term.ZERO, pi * ExactFraction.ZERO)
+    assertEquals(Term.ZERO, pi * TestNumber(ExactFraction.ZERO))
 
     // pi only
     var expected = Term.fromValues(one, listOf(pi, pi))
@@ -52,6 +54,11 @@ fun runTimesTests() {
     sqrt = Sqrt(3)
     expected = Term.fromValues(one, listOf(sqrt, piInverse))
     assertEquals(expected, piInverse * sqrt)
+
+    // other
+    val testNumber = TestNumber(ExactFraction(18))
+    expected = Term.fromValues(one, listOf(testNumber, piInverse))
+    assertEquals(expected, piInverse * testNumber)
 }
 
 fun runDivTests() {
@@ -62,6 +69,7 @@ fun runDivTests() {
     assertDivByZero { pi / Log.ZERO }
     assertDivByZero { pi / Sqrt.ZERO }
     assertDivByZero { pi / ExactFraction.ZERO }
+    assertDivByZero { pi / TestNumber(ExactFraction.ZERO) }
 
     // pi only
     var expected = Term.fromValues(one, listOf(pi, piInverse))
@@ -97,4 +105,9 @@ fun runDivTests() {
     sqrt = Sqrt(3)
     expected = Term.fromValues(one, listOf(sqrt.inverse(), piInverse))
     assertEquals(expected, piInverse / sqrt)
+
+    // other
+    val testNumber = TestNumber(ExactFraction(18))
+    expected = Term.fromValues(one, listOf(piInverse, testNumber.inverse()))
+    assertEquals(expected, piInverse / testNumber)
 }

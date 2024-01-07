@@ -17,36 +17,36 @@ private val testNumber1 = TestNumber(ExactFraction(3, 4))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
 
-fun runGetSimplifiedTests() {
+fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     // simplified
     var term = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi(true)))
     var expectedCoeff = ExactFraction.EIGHT
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), simplify)
 
     term = Term.fromValues(ExactFraction(-3, 2), listOf(logNum1, Pi(), Pi(true), Pi()))
     expectedCoeff = ExactFraction(-3, 2)
     var expectedIrrationals: List<IrrationalNumber<*>> = listOf(logNum1, Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.HALF, listOf(Log.ONE, logNum1, testNumber2, testNumber2))
     expectedCoeff = ExactFraction(49, 2)
     expectedIrrationals = listOf(logNum1)
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(-ExactFraction.HALF, listOf(Log.ONE, Pi(true)))
     expectedCoeff = -ExactFraction.HALF
     expectedIrrationals = listOf(Pi(true))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt))
     expectedCoeff = ExactFraction(20)
     expectedIrrationals = listOf(Sqrt(ExactFraction(5, 33)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
     expectedCoeff = ExactFraction(80, 7)
     expectedIrrationals = listOf(Sqrt(ExactFraction(39)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(
         ExactFraction(18, 5),
@@ -54,20 +54,20 @@ fun runGetSimplifiedTests() {
     )
     expectedCoeff = ExactFraction(18, 5)
     expectedIrrationals = listOf(logNum2, logNum1, Pi(true), Pi(true))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), testNumber1, Sqrt(ExactFraction(1, 4))))
     expectedCoeff = ExactFraction(12)
-    runSingleGetSimplifiedTest(term, expectedCoeff, listOf(testNumber1))
+    runSingleGetSimplifiedTest(term, expectedCoeff, listOf(testNumber1), simplify)
 
     term = Term.fromValues(-ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(27, 98)), Pi(true)))
     expectedCoeff = ExactFraction(-24, 7)
     expectedIrrationals = listOf(Sqrt(ExactFraction(3, 2)), Pi(true))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3).inverse()))
     expectedCoeff = ExactFraction(-20, 3)
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), simplify)
 
     term = Term.fromValues(
         ExactFraction(3, 5),
@@ -84,32 +84,32 @@ fun runGetSimplifiedTests() {
     )
     expectedCoeff = ExactFraction(-6)
     expectedIrrationals = listOf(Log(4), Log(1000, 12), Sqrt(ExactFraction(78, 7)), Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     // no changes
     term = Term.fromValues(ExactFraction.EIGHT, emptyList())
     expectedCoeff = ExactFraction.EIGHT
-    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList())
+    runSingleGetSimplifiedTest(term, expectedCoeff, emptyList(), simplify)
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1))
     expectedCoeff = ExactFraction.EIGHT
     expectedIrrationals = listOf(logNum1)
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(1, 46))))
     expectedCoeff = ExactFraction.EIGHT
     expectedIrrationals = listOf(Sqrt(ExactFraction(1, 46)))
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction(-5, 6), listOf(Pi(true), testNumber1))
     expectedCoeff = ExactFraction(-5, 6)
     expectedIrrationals = listOf(Pi(true), testNumber1)
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.SEVEN, listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), Pi(), Pi()))
     expectedCoeff = ExactFraction.SEVEN
     expectedIrrationals = listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), Pi(), Pi())
-    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals)
+    runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 }
 
 fun runGetValueTests() {
@@ -195,8 +195,8 @@ fun runGetValueTests() {
     assertEquals(expected, term.getValue())
 }
 
-private fun runSingleGetSimplifiedTest(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>) {
-    val result = term.getSimplified()
+private fun runSingleGetSimplifiedTest(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>, simplify: (Term) -> Term) {
+    val result = simplify(term)
     assertEquals(result.coefficient, expectedCoeff)
     assertEquals(expectedIrrationals.toConstMultiSet(), result.irrationals.toConstMultiSet())
 }

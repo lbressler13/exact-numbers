@@ -60,7 +60,7 @@ fun runToDoubleTests() {
  *
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
  * @param castLog (Log) -> T: cast a log value to a value of the current number type
- * @param type [String]: type which is being cast to
+ * @param type [String]: name of target type
  * @param shouldOverflow [Boolean]: if the cast should throw an overflow exception when casting 2^128. Defaults to `false`
  */
 private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castLog: (Log) -> T, type: String, shouldOverflow: Boolean = false) {

@@ -23,13 +23,14 @@ import kotlin.math.abs
 // TODO implement number class
 
 /**
- * Representation of the product of several numbers, represented as a rational coefficient and list of irrational numbers
+ * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
  */
 class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) {
     val coefficient: ExactFraction
 
     private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
 
+    // TODO finalize property names
     private val _irrationals: ConstMultiSet<IrrationalNumber<*>>
     val irrationals: List<IrrationalNumber<*>>
 
@@ -159,7 +160,7 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
     override fun toString(): String {
         if (string == null) {
             val fractionString = coefficient.toFractionString()
-            val coeffString = simpleIf(coefficient.isWholeNumber(), fractionString, "[$fractionString]")
+            val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val numString = _irrationals.joinToString("x")
             val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
 
@@ -191,7 +192,7 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
          * Construct a term by providing information about coefficient and irrationals
          *
          * @param coefficient [ExactFraction]
-         * @param irrationals [List]<IrrationalNumber<*>>: list of all irrational numbers
+         * @param irrationals [List]<IrrationalNumber<*>>: list of irrational numbers
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>): Term {

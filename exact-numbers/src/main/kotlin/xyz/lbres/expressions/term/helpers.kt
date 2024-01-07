@@ -40,11 +40,11 @@ internal fun simplifyTerm(term: Term): Term {
 }
 
 /**
- * Simplify a list of irrational numbers by extracting the rational values
+ * Simplify a set of irrational numbers by extracting the rational values
  *
  * @param values [ConstMultiSet]<IrrationalNumber<*>>: list of values
  * @return [Pair]<ExactFraction, ConstMultiSet<IrrationalNumber<*>>: pair of values where first value is the product of the numbers
- * with rational values, and the second is a list of the irrational values
+ * with rational values, and the second is a set of the irrational values
  */
 private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>): Pair<ExactFraction, ConstMultiSet<IrrationalNumber<*>>> {
     var coefficient = ExactFraction.ONE

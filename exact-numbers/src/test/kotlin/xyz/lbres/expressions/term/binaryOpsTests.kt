@@ -32,7 +32,7 @@ fun runTimesTests() {
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
 
-    term2 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi().inverse()))
+    term2 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi(true)))
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
 
@@ -57,14 +57,14 @@ fun runTimesTests() {
     assertEquals(expected, term2 * term1)
 
     term1 = Term.fromValues(one, listOf(Pi(), Pi()))
-    term2 = Term.fromValues(one, listOf(Pi().inverse()))
-    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi().inverse()))
+    term2 = Term.fromValues(one, listOf(Pi(true)))
+    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi(true)))
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
 
-    term1 = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi()))
-    term2 = Term.fromValues(one, listOf(Pi().inverse(), Pi()))
-    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi(), Pi().inverse(), Pi().inverse()))
+    term1 = Term.fromValues(one, listOf(Pi(), Pi(true), Pi()))
+    term2 = Term.fromValues(one, listOf(Pi(true), Pi()))
+    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi(), Pi(true), Pi(true)))
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
 
@@ -108,19 +108,19 @@ fun runTimesTests() {
 
     // combination
     term1 = Term.fromValues(ExactFraction(1, 4), listOf(logNum1, sqrt1, testNumber1, testNumber1, Pi()))
-    term2 = Term.fromValues(ExactFraction(-1, 3), listOf(Pi().inverse(), testNumber1.inverse(), Pi()))
+    term2 = Term.fromValues(ExactFraction(-1, 3), listOf(Pi(true), testNumber1.inverse(), Pi()))
     expected = Term.fromValues(
         ExactFraction(-1, 12),
-        listOf(logNum1, sqrt1, Pi(), Pi(), Pi().inverse(), testNumber1, testNumber1, testNumber1.inverse())
+        listOf(logNum1, sqrt1, Pi(), Pi(), Pi(true), testNumber1, testNumber1, testNumber1.inverse())
     )
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
 
-    term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1, logNum4, sqrt3, Pi().inverse()))
+    term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1, logNum4, sqrt3, Pi(true)))
     term2 = Term.fromValues(ExactFraction(-15), listOf(logNum1, logNum2, sqrt1, Pi(), Pi()))
     expected = Term.fromValues(
         ExactFraction(-120),
-        listOf(logNum1, logNum1, logNum2, logNum4, sqrt3, sqrt1, Pi(), Pi(), Pi().inverse())
+        listOf(logNum1, logNum1, logNum2, logNum4, sqrt3, sqrt1, Pi(), Pi(), Pi(true))
     )
     assertEquals(expected, term1 * term2)
     assertEquals(expected, term2 * term1)
@@ -160,12 +160,12 @@ fun runDivTests() {
 
     term1 = Term.ONE
     term2 = Term.fromValues(one, listOf(Pi()))
-    expected = Term.fromValues(one, listOf(Pi().inverse()))
+    expected = Term.fromValues(one, listOf(Pi(true)))
     assertEquals(expected, term1 / term2)
 
-    term1 = Term.fromValues(one, listOf(Pi(), Pi(), Pi().inverse()))
-    term2 = Term.fromValues(one, listOf(Pi().inverse(), Pi(), Pi().inverse()))
-    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi(), Pi(), Pi().inverse(), Pi().inverse()))
+    term1 = Term.fromValues(one, listOf(Pi(), Pi(), Pi(true)))
+    term2 = Term.fromValues(one, listOf(Pi(true), Pi(), Pi(true)))
+    expected = Term.fromValues(one, listOf(Pi(), Pi(), Pi(), Pi(), Pi(true), Pi(true)))
     assertEquals(expected, term1 / term2)
 
     // just sqrt
@@ -204,18 +204,18 @@ fun runDivTests() {
     term1 = Term.fromValues(ExactFraction(1, 4), listOf(logNum1, testNumber2))
     term2 = Term.fromValues(ExactFraction(-1, 3), listOf(sqrt1, Pi()))
 
-    expected = Term.fromValues(ExactFraction(-3, 4), listOf(logNum1, sqrt1.inverse(), Pi().inverse(), testNumber2))
+    expected = Term.fromValues(ExactFraction(-3, 4), listOf(logNum1, sqrt1.inverse(), Pi(true), testNumber2))
     assertEquals(expected, term1 / term2)
 
     expected = Term.fromValues(ExactFraction(-4, 3), listOf(logNum1.inverse(), sqrt1, Pi(), testNumber2.inverse()))
     assertEquals(expected, term2 / term1)
 
-    term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum1, sqrt2, Pi().inverse(), Pi().inverse()))
+    term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum1, sqrt2, Pi(true), Pi(true)))
     term2 = Term.fromValues(ExactFraction(15), listOf(logNum4, logNum1.inverse(), sqrt3, Pi()))
 
     expected = Term.fromValues(
         ExactFraction(8, 15),
-        listOf(logNum1, logNum1, logNum3, logNum4.inverse(), sqrt2, sqrt3.inverse(), Pi().inverse(), Pi().inverse(), Pi().inverse())
+        listOf(logNum1, logNum1, logNum3, logNum4.inverse(), sqrt2, sqrt3.inverse(), Pi(true), Pi(true), Pi(true))
     )
     assertEquals(expected, term1 / term2)
 

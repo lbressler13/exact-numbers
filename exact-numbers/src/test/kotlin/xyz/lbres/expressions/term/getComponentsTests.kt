@@ -195,7 +195,7 @@ fun runGetSquareRootsTests() {
  *
  * @param term [Term]
  * @param types [StringList]: types to check
- * @param expectedValues [Map]<String, List<Irrational<*>>: map of type names to expected values.
+ * @param expectedValues [Map]<String, List<IrrationalNumber<*>>: map of type names to expected values.
  * If type is not in map, expected value is assumed to be empty list
  */
 private fun runSingleIrrationalsByTypeTest(term: Term, types: StringList, expectedValues: Map<String, List<IrrationalNumber<*>>>) {

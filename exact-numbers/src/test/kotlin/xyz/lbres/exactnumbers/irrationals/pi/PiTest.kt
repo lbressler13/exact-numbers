@@ -81,11 +81,8 @@ class PiTest {
 
     @Test
     fun testInverse() {
-        var pi = Pi()
-        assertTrue(pi.inverse().isInverted)
-
-        pi = Pi().inverse()
-        assertFalse(pi.inverse().isInverted)
+        assertTrue(Pi().inverse().isInverted)
+        assertFalse(Pi(true).inverse().isInverted)
     }
 
     @Test

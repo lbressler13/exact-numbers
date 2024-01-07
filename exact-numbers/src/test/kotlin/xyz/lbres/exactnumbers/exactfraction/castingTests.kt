@@ -254,9 +254,9 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
 /**
  * Assert that a CastingOverflowException is thrown, with the correct message and overflow value
  *
- * @param type [String]: the type of the value being cast to
- * @param value [ExactFraction]: the value to cast
- * @param cast () -> Unit: the call to cast the value
+ * @param type [String]: name of target type
+ * @param value [ExactFraction]: value to cast
+ * @param cast () -> Unit: function to perform the cast
  */
 private fun assertCastingOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
     val errorMessage = "Overflow casting value $value of type ExactFraction to $type"
