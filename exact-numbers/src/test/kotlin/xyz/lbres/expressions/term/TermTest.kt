@@ -11,8 +11,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-// TODO tests with other irrational type
-
 class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
@@ -30,7 +28,7 @@ class TermTest {
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun testGetValue() = runGetValueTests()
 
-    @Test fun testGetIrrationalsByType() {} // TODO
+    @Test fun testGetIrrationalsByType() = runGetIrrationalsByTypeTests()
 
     @Test
     fun testEquals() {

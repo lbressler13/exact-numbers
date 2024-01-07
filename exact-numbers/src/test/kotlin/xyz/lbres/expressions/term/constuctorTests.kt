@@ -50,56 +50,57 @@ private fun runFullListConstructorTests() {
 
     // single type
     term = Term.fromValues(one, emptyList())
-    checkTerm(term, ExactFraction.ONE, emptyList())
+    checkTerm(term, ExactFraction.ONE, emptyList(), 0)
 
     term = Term.fromValues(ExactFraction(-17, 100043), emptyList())
-    checkTerm(term, ExactFraction(-17, 100043), emptyList())
+    checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
 
     term = Term.fromValues(one, listOf(logWhole))
-    checkTerm(term, one, listOf(logWhole))
+    checkTerm(term, one, listOf(logWhole), 0)
 
     term = Term.fromValues(one, listOf(logWhole, logInverse))
-    checkTerm(term, one, listOf(logWhole, logInverse))
+    checkTerm(term, one, listOf(logWhole, logInverse), 0)
 
     term = Term.fromValues(one, listOf(sqrtPartialWhole))
-    checkTerm(term, one, listOf(sqrtPartialWhole))
+    checkTerm(term, one, listOf(sqrtPartialWhole), 0)
 
     term = Term.fromValues(one, listOf(sqrtPartialWhole, sqrtWhole))
-    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole))
+    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole), 0)
 
     term = Term.fromValues(one, listOf(pi))
-    checkTerm(term, one, listOf(pi))
+    checkTerm(term, one, listOf(pi), 1)
 
     term = Term.fromValues(one, listOf(pi, pi))
-    checkTerm(term, one, listOf(pi, pi))
+    checkTerm(term, one, listOf(pi, pi), 2)
 
     term = Term.fromValues(one, listOf(pi, piInverse))
-    checkTerm(term, one, listOf(pi, piInverse))
+    checkTerm(term, one, listOf(pi, piInverse), 0)
 
     // multi type
     term = Term.fromValues(ExactFraction(-17, 100043), listOf(logWhole))
-    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole))
+    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole), 0)
 
     term = Term.fromValues(ExactFraction.NEG_ONE, listOf(piInverse, logWhole))
-    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse, logWhole))
+    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse, logWhole), -1)
 
     val logs = listOf(logChangeBase, logInverse, logDecimal)
     val sqrts = listOf(sqrtDecimal, Sqrt.ONE)
     val pis = listOf(pi, pi, piInverse)
+
     term = Term.fromValues(ExactFraction(-1, 5), logs + sqrts)
-    checkTerm(term, ExactFraction(-1, 5), logs + sqrts)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts, 0)
 
     term = Term.fromValues(ExactFraction(-1, 5), logs + pis)
-    checkTerm(term, ExactFraction(-1, 5), logs + pis)
+    checkTerm(term, ExactFraction(-1, 5), logs + pis, 1)
 
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis)
-    checkTerm(term, ExactFraction(-1, 5), sqrts + pis)
+    checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 1)
 
     term = Term.fromValues(one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
-    checkTerm(term, one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
+    checkTerm(term, one, sqrts + pis + logs + listOf(testNumber1, testNumber2), 1)
 
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis + logs)
-    checkTerm(term, ExactFraction(-1, 5), sqrts + pis + logs)
+    checkTerm(term, ExactFraction(-1, 5), sqrts + pis + logs, 1)
 }
 
 private fun runComponentConstructorTests() {
@@ -118,59 +119,60 @@ private fun runComponentConstructorTests() {
 
     // single type
     term = Term.fromValues(one, emptyList(), emptyList(), 0)
-    checkTerm(term, ExactFraction.ONE, emptyList())
+    checkTerm(term, ExactFraction.ONE, emptyList(), 0)
 
     term = Term.fromValues(ExactFraction(-17, 100043), emptyList(), emptyList(), 0)
-    checkTerm(term, ExactFraction(-17, 100043), emptyList())
+    checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
 
     term = Term.fromValues(one, listOf(logWhole), emptyList(), 0)
-    checkTerm(term, one, listOf(logWhole))
+    checkTerm(term, one, listOf(logWhole), 0)
 
     term = Term.fromValues(one, listOf(logWhole, logInverse), emptyList(), 0)
-    checkTerm(term, one, listOf(logWhole, logInverse))
+    checkTerm(term, one, listOf(logWhole, logInverse), 0)
 
     term = Term.fromValues(one, emptyList(), listOf(sqrtPartialWhole), 0)
-    checkTerm(term, one, listOf(sqrtPartialWhole))
+    checkTerm(term, one, listOf(sqrtPartialWhole), 0)
 
     term = Term.fromValues(one, emptyList(), listOf(sqrtPartialWhole, sqrtWhole), 0)
-    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole))
+    checkTerm(term, one, listOf(sqrtPartialWhole, sqrtWhole), 0)
 
     term = Term.fromValues(one, emptyList(), emptyList(), 1)
-    checkTerm(term, one, listOf(pi))
+    checkTerm(term, one, listOf(pi), 1)
 
     term = Term.fromValues(one, emptyList(), emptyList(), -2)
-    checkTerm(term, one, listOf(piInverse, piInverse))
+    checkTerm(term, one, listOf(piInverse, piInverse), -2)
 
     // multi type
     term = Term.fromValues(ExactFraction(-17, 100043), listOf(logWhole), emptyList(), 0)
-    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole))
+    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole), 0)
 
     term = Term.fromValues(ExactFraction.NEG_ONE, emptyList(), emptyList(), -1)
-    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse))
+    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse), -1)
 
     val logs = listOf(logChangeBase, logInverse, logDecimal)
     val sqrts = listOf(sqrtDecimal, Sqrt.ONE)
     val pis = listOf(pi, pi)
 
     term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 0)
-    checkTerm(term, ExactFraction(-1, 5), logs + sqrts)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts, 0)
 
     term = Term.fromValues(ExactFraction(-1, 5), logs, emptyList(), 2)
-    checkTerm(term, ExactFraction(-1, 5), logs + pis)
+    checkTerm(term, ExactFraction(-1, 5), logs + pis, 2)
 
     term = Term.fromValues(ExactFraction(-1, 5), emptyList(), sqrts, 2)
-    checkTerm(term, ExactFraction(-1, 5), sqrts + pis)
+    checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 2)
 
     term = Term.fromValues(one, logs, sqrts, 2)
-    checkTerm(term, one, logs + sqrts + pis)
+    checkTerm(term, one, logs + sqrts + pis, 2)
 
     term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 2)
-    checkTerm(term, ExactFraction(-1, 5), logs + sqrts + pis)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts + pis, 2)
 }
 
-private fun checkTerm(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>) {
+private fun checkTerm(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>, expectedPiCount: Int) {
     assertEquals(expectedCoeff, term.coefficient)
     assertEquals(expectedIrrationals, term.irrationals)
+    assertEquals(expectedPiCount, term.piCount)
 }
 
-private fun checkTermIsZero(term: Term) = checkTerm(term, ExactFraction.ZERO, emptyList())
+private fun checkTermIsZero(term: Term) = checkTerm(term, ExactFraction.ZERO, emptyList(), 0)

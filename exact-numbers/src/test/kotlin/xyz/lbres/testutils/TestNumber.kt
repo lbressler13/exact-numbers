@@ -9,7 +9,7 @@ import java.math.BigDecimal
  * Irrational implementation to use in tests
  */
 class TestNumber(val value: ExactFraction, override val isInverted: Boolean) : IrrationalNumber<TestNumber>() {
-    override val type: String = "Test"
+    override val type: String = TYPE
 
     constructor(value: ExactFraction) : this(value, false)
 
@@ -42,4 +42,8 @@ class TestNumber(val value: ExactFraction, override val isInverted: Boolean) : I
     override fun hashCode(): Int = createHashCode(listOf(value, isInverted, type))
 
     override fun toString(): String = "[${value.toFractionString()}, $isInverted]"
+
+    companion object {
+        const val TYPE = "Test"
+    }
 }

@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.common.*
 import xyz.lbres.common.castToByte
 import xyz.lbres.common.castToChar
 import xyz.lbres.common.castToDouble

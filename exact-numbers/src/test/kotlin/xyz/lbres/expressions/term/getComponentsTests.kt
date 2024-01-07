@@ -1,16 +1,65 @@
 package xyz.lbres.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.list.StringList
+import xyz.lbres.testutils.TestNumber
 import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))
 private val logNum2 = Log(8, 7)
 private val logNum3 = Log(ExactFraction(19, 33)).inverse()
 private val logNum4 = Log(ExactFraction(25, 121))
+private val testNumber1 = TestNumber(ExactFraction(3, 4))
+private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
+
+fun runGetIrrationalsByTypeTests() {
+    val types = listOf(Log.TYPE, Pi.TYPE, Sqrt.TYPE, TestNumber.TYPE)
+
+    // zero
+    var term = Term.fromValues(ExactFraction.ZERO, emptyList())
+    checkIrrationalsByType(term, types, emptyMap())
+
+    term = Term.fromValues(one, listOf(logNum1, logNum2, testNumber1, Pi(), TestNumber(ExactFraction.ZERO)))
+    checkIrrationalsByType(term, types, emptyMap())
+
+    // non-zero
+    term = Term.fromValues(ExactFraction(4, 7), emptyList())
+    checkIrrationalsByType(term, types, emptyMap())
+
+    term = Term.fromValues(ExactFraction(4, 7), listOf(Pi(), Sqrt(47), Pi(), Pi().inverse()))
+    checkIrrationalsByType(
+        term, types,
+        mapOf(
+            Pi.TYPE to listOf(Pi(), Pi(), Pi(true)),
+            Sqrt.TYPE to listOf(Sqrt(47))
+        )
+    )
+
+    term = Term.fromValues(one, listOf(testNumber1, logNum2, testNumber2.inverse(), Pi(true)))
+    checkIrrationalsByType(
+        term, types,
+        mapOf(
+            TestNumber.TYPE to listOf(testNumber1, testNumber2.inverse()),
+            Log.TYPE to listOf(logNum2),
+            Pi.TYPE to listOf(Pi(true))
+        )
+    )
+
+    term = Term.fromValues(one, listOf(logNum4, logNum4, logNum2), listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))), -2)
+    checkIrrationalsByType(
+        term, types,
+        mapOf(
+            Log.TYPE to listOf(logNum4, logNum4, logNum2),
+            Sqrt.TYPE to listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))),
+            Pi.TYPE to listOf(Pi(true), Pi(true))
+        )
+    )
+}
 
 fun runGetLogsTests() {
     // empty
@@ -139,4 +188,11 @@ fun runGetSquareRootsTests() {
     term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1, logNum2, Sqrt.ONE, Sqrt(97), Sqrt(ExactFraction(9, 25)), Pi()))
     expected = listOf(Sqrt.ONE, Sqrt(97), Sqrt(ExactFraction(9, 25)))
     assertEquals(expected, term.squareRoots)
+}
+
+private fun checkIrrationalsByType(term: Term, types: StringList, expectedValues: Map<String, List<IrrationalNumber<*>>>) {
+    for (type in types) {
+        val expectedValue = expectedValues.getOrDefault(type, emptyList())
+        assertEquals(expectedValue, term.getIrrationalsByType(type))
+    }
 }
