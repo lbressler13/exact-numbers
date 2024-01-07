@@ -17,7 +17,7 @@ Therefore, operations with ExactFractions can be performed without losing precis
 Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational numbers related to the irrational.
 This allows numbers to be multiplied, divided, and simplified before computing the final value, which allows for greater precision when getting the value.
 
-Irrational numbers implement the Irrational interface.
+Irrational numbers extend the IrrationalNumber class.
 
 ## Expression Types
 
@@ -90,7 +90,7 @@ Tests can be run using an IDE, or with the following command:
 
 ### Resources
 
-When writing tests for irrationals, it can be useful to use a high-precision calculator, such as [this one](https://www.mathsisfun.com/scientific-calculator.html), to calculate expected values.
+When writing tests for irrationals, it can be useful to use a high-precision calculator, such as [this](https://www.mathsisfun.com/scientific-calculator.html) or [this](https://www.mathsisfun.com/calculator-precision.html), to calculate expected values.
 
 ## Linting
 

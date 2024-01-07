@@ -4,86 +4,110 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.expressions.term.Term
+import xyz.lbres.testutils.TestNumber
 import xyz.lbres.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE
 
 fun runTimesTests() {
-    // Log
-    var pi1 = Pi()
-    var log = Log.ZERO
-    var expected = Term(one, listOf(Pi(), Log.ZERO))
-    assertEquals(expected, pi1 * log)
+    val pi = Pi()
+    val piInverse = Pi(true)
 
-    pi1 = Pi(true)
-    log = Log(100, 4, true)
-    expected = Term(one, listOf(Pi(true), Log(100, 4, true)))
-    assertEquals(expected, pi1 * log)
+    // zero
+    assertEquals(Term.ZERO, pi * Log.ZERO)
+    assertEquals(Term.ZERO, pi * Sqrt.ZERO)
+    assertEquals(Term.ZERO, pi * ExactFraction.ZERO)
+    assertEquals(Term.ZERO, pi * TestNumber(ExactFraction.ZERO))
 
-    // Pi
-    pi1 = Pi()
-    var pi2 = Pi(true)
-    expected = Term(one, listOf(Pi(), Pi(true)))
-    assertEquals(expected, pi1 * pi2)
+    // pi only
+    var expected = Term.fromValues(one, listOf(pi, pi))
+    assertEquals(expected, pi * pi)
 
-    pi1 = Pi(true)
-    pi2 = Pi(true)
-    expected = Term(one, listOf(Pi(true), Pi(true)))
-    assertEquals(expected, pi1 * pi2)
+    expected = Term.fromValues(one, listOf(pi, piInverse))
+    assertEquals(expected, pi * piInverse)
+    assertEquals(expected, piInverse * pi)
 
-    // Sqrt
-    pi1 = Pi()
-    var sqrt = Sqrt.ZERO
-    expected = Term(one, listOf(Pi(), Sqrt.ZERO))
-    assertEquals(expected, pi1 * sqrt)
+    // exact fraction
+    var ef = ExactFraction.HALF
+    expected = Term.fromValues(ef, listOf(pi))
+    assertEquals(expected, pi * ef)
 
-    pi1 = Pi(true)
-    sqrt = Sqrt(1234)
-    expected = Term(one, listOf(Pi(true), Sqrt(1234)))
-    assertEquals(expected, pi1 * sqrt)
+    ef = ExactFraction(1000)
+    expected = Term.fromValues(ef, listOf(piInverse))
+    assertEquals(expected, piInverse * ef)
+
+    // log
+    var log = Log(ExactFraction(33, 14), 5, true)
+    expected = Term.fromValues(one, listOf(log, pi))
+    assertEquals(expected, pi * log)
+
+    log = Log(ExactFraction(1, 100))
+    expected = Term.fromValues(one, listOf(log, piInverse))
+    assertEquals(expected, piInverse * log)
+
+    // sqrt
+    var sqrt = Sqrt(ExactFraction(19, 5))
+    expected = Term.fromValues(one, listOf(sqrt, pi))
+    assertEquals(expected, pi * sqrt)
+
+    sqrt = Sqrt(3)
+    expected = Term.fromValues(one, listOf(sqrt, piInverse))
+    assertEquals(expected, piInverse * sqrt)
+
+    // other
+    val testNumber = TestNumber(ExactFraction(18))
+    expected = Term.fromValues(one, listOf(testNumber, piInverse))
+    assertEquals(expected, piInverse * testNumber)
 }
 
 fun runDivTests() {
-    // Log
-    assertDivByZero { Pi() / Log.ZERO }
+    val pi = Pi()
+    val piInverse = Pi(true)
 
-    var pi1 = Pi()
-    var log = Log.ONE
-    var expected = Term(one, listOf(Pi(), Log(10, 10, true)))
-    assertEquals(expected, pi1 / log)
+    // zero
+    assertDivByZero { pi / Log.ZERO }
+    assertDivByZero { pi / Sqrt.ZERO }
+    assertDivByZero { pi / ExactFraction.ZERO }
+    assertDivByZero { pi / TestNumber(ExactFraction.ZERO) }
 
-    pi1 = Pi()
-    log = Log(32, 2)
-    expected = Term(one, listOf(Pi(), Log(32, 2, true)))
-    assertEquals(expected, pi1 / log)
+    // pi only
+    var expected = Term.fromValues(one, listOf(pi, piInverse))
+    assertEquals(expected, pi / pi)
 
-    pi1 = Pi()
-    log = Log(ExactFraction(12, 19), true)
-    expected = Term(one, listOf(Pi(), Log(ExactFraction(12, 19))))
-    assertEquals(expected, pi1 / log)
+    expected = Term.fromValues(one, listOf(pi, pi))
+    assertEquals(expected, pi / piInverse)
 
-    // Pi
-    pi1 = Pi(true)
-    var pi2 = Pi(true)
-    expected = Term(one, listOf(Pi(true), Pi()))
-    assertEquals(expected, pi1 / pi2)
+    expected = Term.fromValues(one, listOf(piInverse, pi))
+    assertEquals(expected, piInverse / piInverse)
 
-    pi1 = Pi(true)
-    pi2 = Pi()
-    expected = Term(one, listOf(Pi(true), Pi(true)))
-    assertEquals(expected, pi1 / pi2)
+    // exact fraction
+    expected = Term.fromValues(ExactFraction.TWO, listOf(pi))
+    assertEquals(expected, pi / ExactFraction.HALF)
 
-    // Sqrt
-    assertDivByZero { Pi() / Sqrt.ZERO }
+    expected = Term.fromValues(ExactFraction(1, 1000), listOf(piInverse))
+    assertEquals(expected, piInverse / ExactFraction(1000))
 
-    pi1 = Pi()
-    var sqrt = Sqrt.ONE
-    expected = Term(one, listOf(Pi(), Sqrt.ONE))
-    assertEquals(expected, pi1 / sqrt)
+    // log
+    var log = Log(ExactFraction(33, 14), 5).inverse()
+    expected = Term.fromValues(one, listOf(log.inverse(), pi))
+    assertEquals(expected, pi / log)
 
-    pi1 = Pi(true)
-    sqrt = Sqrt(ExactFraction(15, 8))
-    expected = Term(one, listOf(Pi(true), Sqrt(ExactFraction(8, 15))))
-    assertEquals(expected, pi1 / sqrt)
+    log = Log(ExactFraction(1, 100))
+    expected = Term.fromValues(one, listOf(log.inverse(), piInverse))
+    assertEquals(expected, piInverse / log)
+
+    // sqrt
+    var sqrt = Sqrt(ExactFraction(19, 5))
+    expected = Term.fromValues(one, listOf(sqrt.inverse(), pi))
+    assertEquals(expected, pi / sqrt)
+
+    sqrt = Sqrt(3)
+    expected = Term.fromValues(one, listOf(sqrt.inverse(), piInverse))
+    assertEquals(expected, piInverse / sqrt)
+
+    // other
+    val testNumber = TestNumber(ExactFraction(18))
+    expected = Term.fromValues(one, listOf(piInverse, testNumber.inverse()))
+    assertEquals(expected, piInverse / testNumber)
 }

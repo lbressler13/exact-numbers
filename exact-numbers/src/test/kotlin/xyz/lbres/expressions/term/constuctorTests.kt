@@ -5,105 +5,147 @@ import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.testutils.TestNumber
+import kotlin.test.assertEquals
 
-private val logNum1 = Log(ExactFraction(15, 4))
-private val logNum2 = Log(8, 7)
-private val logNum3 = Log(ExactFraction(19, 33), true)
+private val logWhole = Log(1000)
+private val logDecimal = Log(ExactFraction(25, 121))
+private val logChangeBase = Log(8, 7)
+private val logInverse = Log(ExactFraction(19, 33)).inverse()
+
+private val sqrtWhole = Sqrt(289)
+private val sqrtPartialWhole = Sqrt(8)
+private val sqrtWholeEF = Sqrt(ExactFraction(9, 25))
+private val sqrtDecimal = Sqrt(11)
+
+private val pi = Pi()
+private val piInverse = Pi(true)
+
+private val testNumber1 = TestNumber(ExactFraction(5, 6))
+private val testNumber2 = TestNumber(ExactFraction.SEVEN)
+
+private val one = ExactFraction.ONE
 
 fun runConstructorTests() {
-    // zero
-    var expectedCoeff = ExactFraction.ZERO
-    var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
-
-    var term = Term(ExactFraction.ZERO, emptyList())
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(ExactFraction.ZERO, listOf(logNum1, Sqrt(35), logNum3, Pi()))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(ExactFraction.FIVE, listOf(logNum1, Log.ZERO))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(ExactFraction.FIVE, listOf(logNum1, Sqrt.ZERO))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    // others
-    term = Term(-ExactFraction.FIVE, emptyList())
-    expectedCoeff = -ExactFraction.FIVE
-    expectedNumbers = emptyList()
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(ExactFraction(17, 3), listOf(Pi(), logNum2))
-    expectedCoeff = ExactFraction(17, 3)
-    expectedNumbers = listOf(Pi(), logNum2)
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(ExactFraction(17, 3), listOf(Pi(), logNum2, Sqrt(ExactFraction(9, 25))))
-    expectedCoeff = ExactFraction(17, 3)
-    expectedNumbers = listOf(Pi(), logNum2, Sqrt(ExactFraction(9, 25)))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
-
-    term = Term(
-        ExactFraction(-4, 5),
-        listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), Sqrt(32), logNum2, Sqrt(109))
-    )
-    expectedCoeff = ExactFraction(-4, 5)
-    expectedNumbers = listOf(Pi(true), logNum2, logNum1, Pi(), logNum1.swapDivided(), Sqrt(32), logNum2, Sqrt(109))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    runFullListConstructorTests()
+    runComponentConstructorTests()
 }
 
-fun runFromValuesTests() {
+private fun runFullListConstructorTests() {
     // zero
-    var expectedCoeff = ExactFraction.ZERO
-    var expectedNumbers: List<IrrationalNumber<*>> = emptyList()
+    var term = Term.fromValues(ExactFraction.ZERO, emptyList())
+    checkTermIsZero(term)
 
+    term = Term.fromValues(ExactFraction.ZERO, listOf(pi, sqrtWholeEF, logWhole))
+    checkTermIsZero(term)
+
+    term = Term.fromValues(ExactFraction.THREE, listOf(Log.ZERO, pi, sqrtWholeEF, logWhole))
+    checkTermIsZero(term)
+
+    term = Term.fromValues(ExactFraction.THREE, listOf(Sqrt.ZERO, pi, sqrtWholeEF, testNumber1, logWhole))
+    checkTermIsZero(term)
+
+    term = Term.fromValues(ExactFraction.THREE, listOf(sqrtPartialWhole, pi, sqrtWholeEF, TestNumber(ExactFraction.ZERO), logWhole))
+    checkTermIsZero(term)
+
+    // single type
+    term = Term.fromValues(one, emptyList())
+    checkTerm(term, ExactFraction.ONE, emptyList(), 0)
+
+    term = Term.fromValues(ExactFraction(-17, 100043), emptyList())
+    checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
+
+    term = Term.fromValues(one, listOf(logWhole, logInverse))
+    checkTerm(term, one, listOf(logWhole, logInverse), 0)
+
+    term = Term.fromValues(one, listOf(sqrtPartialWhole))
+    checkTerm(term, one, listOf(sqrtPartialWhole), 0)
+
+    term = Term.fromValues(one, listOf(pi))
+    checkTerm(term, one, listOf(pi), 1)
+
+    term = Term.fromValues(one, listOf(pi, piInverse))
+    checkTerm(term, one, listOf(pi, piInverse), 0)
+
+    // multi type
+    term = Term.fromValues(ExactFraction(-17, 100043), listOf(logWhole))
+    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole), 0)
+
+    term = Term.fromValues(ExactFraction.NEG_ONE, listOf(piInverse, logWhole))
+    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse, logWhole), -1)
+
+    val logs = listOf(logChangeBase, logInverse, logDecimal)
+    val sqrts = listOf(sqrtDecimal, Sqrt.ONE)
+    val pis = listOf(pi, pi, piInverse)
+
+    term = Term.fromValues(ExactFraction(-1, 5), logs + sqrts)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts, 0)
+
+    term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis)
+    checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 1)
+
+    term = Term.fromValues(one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
+    checkTerm(term, one, sqrts + pis + logs + listOf(testNumber1, testNumber2), 1)
+}
+
+private fun runComponentConstructorTests() {
+    // zero
     var term = Term.fromValues(ExactFraction.ZERO, emptyList(), emptyList(), 0)
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    checkTermIsZero(term)
 
-    term = Term.fromValues(ExactFraction.ZERO, listOf(logNum1, Log.ONE), listOf(Sqrt.ONE), 8)
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(ExactFraction.ZERO, listOf(logWhole), listOf(sqrtWholeEF), 1)
+    checkTermIsZero(term)
 
-    term = Term.fromValues(-ExactFraction.EIGHT, listOf(logNum1, logNum2, Log.ZERO, logNum3), listOf(Sqrt(64)), 5)
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(ExactFraction.THREE, listOf(Log.ZERO, logWhole), listOf(sqrtWholeEF), 1)
+    checkTermIsZero(term)
 
-    term = Term.fromValues(
-        ExactFraction.TWO, listOf(logNum1), listOf(Sqrt(64), Sqrt.ZERO, Sqrt(ExactFraction(3, 19))), -2
-    )
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(ExactFraction.THREE, listOf(logWhole), listOf(Sqrt.ZERO, sqrtWholeEF), 1)
+    checkTermIsZero(term)
 
-    // nonzero
-    term = Term.fromValues(ExactFraction(-5, 7), emptyList(), emptyList(), 0)
-    expectedCoeff = ExactFraction(-5, 7)
-    expectedNumbers = emptyList()
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    // single type
+    term = Term.fromValues(one, emptyList(), emptyList(), 0)
+    checkTerm(term, ExactFraction.ONE, emptyList(), 0)
 
-    term = Term.fromValues(ExactFraction.EIGHT, emptyList(), emptyList(), 3)
-    expectedCoeff = ExactFraction.EIGHT
-    expectedNumbers = listOf(Pi(), Pi(), Pi())
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(ExactFraction(-17, 100043), emptyList(), emptyList(), 0)
+    checkTerm(term, ExactFraction(-17, 100043), emptyList(), 0)
 
-    term = Term.fromValues(ExactFraction.EIGHT, emptyList(), emptyList(), -3)
-    expectedCoeff = ExactFraction.EIGHT
-    expectedNumbers = listOf(Pi(true), Pi(true), Pi(true))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(one, listOf(logWhole, logInverse), emptyList(), 0)
+    checkTerm(term, one, listOf(logWhole, logInverse), 0)
 
-    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum1), emptyList(), 0)
-    expectedCoeff = ExactFraction(-2, 191)
-    expectedNumbers = listOf(logNum1, logNum2, logNum1)
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(one, emptyList(), listOf(sqrtPartialWhole), 0)
+    checkTerm(term, one, listOf(sqrtPartialWhole), 0)
 
-    term = Term.fromValues(ExactFraction(-2, 191), emptyList(), listOf(Sqrt.ONE, Sqrt(52)), 0)
-    expectedCoeff = ExactFraction(-2, 191)
-    expectedNumbers = listOf(Sqrt.ONE, Sqrt(52))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(one, emptyList(), emptyList(), -2)
+    checkTerm(term, one, listOf(piInverse, piInverse), -2)
 
-    term = Term.fromValues(ExactFraction(-2, 191), listOf(logNum1, logNum2, logNum3), listOf(Sqrt(12), Sqrt(99)), 2)
-    expectedCoeff = ExactFraction(-2, 191)
-    expectedNumbers = listOf(logNum1, logNum2, logNum3, Sqrt(12), Sqrt(99), Pi(), Pi())
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    // multi type
+    term = Term.fromValues(ExactFraction(-17, 100043), listOf(logWhole), emptyList(), 0)
+    checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole), 0)
 
-    term = Term.fromValues(ExactFraction(22), listOf(logNum1, logNum2, logNum3), listOf(Sqrt(12), Sqrt(99)), -2)
-    expectedCoeff = ExactFraction(22)
-    expectedNumbers = listOf(logNum1, logNum2, logNum3, Sqrt(12), Sqrt(99), Pi(true), Pi(true))
-    assertTermComponentsEqual(expectedCoeff, expectedNumbers, term)
+    term = Term.fromValues(ExactFraction.NEG_ONE, emptyList(), emptyList(), -1)
+    checkTerm(term, ExactFraction.NEG_ONE, listOf(piInverse), -1)
+
+    val logs = listOf(logChangeBase, logInverse, logDecimal)
+    val sqrts = listOf(sqrtDecimal, Sqrt.ONE)
+    val pis = listOf(pi, pi)
+
+    term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 0)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts, 0)
+
+    term = Term.fromValues(ExactFraction(-1, 5), logs, emptyList(), 2)
+    checkTerm(term, ExactFraction(-1, 5), logs + pis, 2)
+
+    term = Term.fromValues(ExactFraction(-1, 5), emptyList(), sqrts, 2)
+    checkTerm(term, ExactFraction(-1, 5), sqrts + pis, 2)
+
+    term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 2)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts + pis, 2)
 }
+
+private fun checkTerm(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>, expectedPiCount: Int) {
+    assertEquals(expectedCoeff, term.coefficient)
+    assertEquals(expectedIrrationals, term.irrationals)
+    assertEquals(expectedPiCount, term.piCount)
+}
+
+private fun checkTermIsZero(term: Term) = checkTerm(term, ExactFraction.ZERO, emptyList(), 0)

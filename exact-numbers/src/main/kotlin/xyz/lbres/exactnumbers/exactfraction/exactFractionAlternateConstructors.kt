@@ -14,14 +14,14 @@ fun ExactFraction(numerator: BigInteger) = ExactFraction(numerator, BigInteger.O
  *
  * @param numerator [Int]
  */
-fun ExactFraction(numerator: Int) = ExactFraction(numerator.toBigInteger(), BigInteger.ONE)
+fun ExactFraction(numerator: Int) = ExactFraction(numerator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator only. Denominator is set to [BigInteger.ONE]
  *
  * @param numerator [Long]
  */
-fun ExactFraction(numerator: Long) = ExactFraction(numerator.toBigInteger(), BigInteger.ONE)
+fun ExactFraction(numerator: Long) = ExactFraction(numerator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator

@@ -142,7 +142,7 @@ internal fun parseEFString(unparsed: String): ExactFraction {
  * @param s [String]: string to check
  * @return [Boolean]: `true` if s is in EF string format, `false` otherwise
  */
-fun checkIsEFString(s: String): Boolean {
+internal fun checkIsEFString(s: String): Boolean {
     val trimmed = s.trim()
 
     return tryOrDefault(false) {

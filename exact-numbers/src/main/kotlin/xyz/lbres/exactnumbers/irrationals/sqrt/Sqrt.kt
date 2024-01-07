@@ -1,11 +1,16 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -17,7 +22,7 @@ import java.math.BigInteger
  */
 class Sqrt private constructor(val radicand: ExactFraction, private val fullySimplified: Boolean) : IrrationalNumber<Sqrt>() {
     override val type = TYPE
-    override val isDivided = false
+    override val isInverted = false
 
     init {
         if (radicand.isNegative()) {
@@ -32,7 +37,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     constructor(radicand: BigInteger) : this(ExactFraction(radicand), false)
 
     override fun isZero(): Boolean = radicand.isZero()
-    override fun swapDivided(): Sqrt {
+    override fun inverse(): Sqrt {
         if (isZero()) {
             throw divideByZero
         }
@@ -118,7 +123,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         return "[√($radicandString)]"
     }
 
-    override fun hashCode(): Int = listOf(TYPE, radicand).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(radicand, this::class.toString()))
 
     companion object : IrrationalNumberCompanion<Sqrt>() {
         override val TYPE = "sqrt"
@@ -127,35 +132,29 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
         val ONE = Sqrt(ExactFraction.ONE, fullySimplified = true)
 
         /**
-         * Extract rational values and simplify remaining list of irrationals
+         * Extract rational values and simplify remaining set of sqrts
          *
-         * @param numbers [List]<IrrationalNumber>: list to simplify, expected to consist of only Sqrts
-         * @return [Pair]<ExactFraction, List<Sqrt>>: product of rational values and a list containing a single, fully simplified irrational root
+         * @param numbers [ConstMultiSet]<Sqrt>: set to simplify
+         * @return [Pair]<ExactFraction, ConstMultiSet<Sqrt>>: product of rational values and a set containing a single, fully simplified irrational root
          */
-        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Sqrt>> {
-            if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, emptyList())
-            }
-
-            @Suppress("UNCHECKED_CAST")
-            numbers as List<Sqrt>
-
-            if (numbers.any(Sqrt::isZero)) {
-                return Pair(ExactFraction.ZERO, emptyList())
+        override fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
+            when {
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
+                numbers.anyConsistent(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
             // combine all roots into single root, and return that value
-            val total = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
-            val numWhole = extractWholeOf(total.numerator)
-            val denomWhole = extractWholeOf(total.denominator)
-            val numRoot = total.numerator / (numWhole * numWhole)
-            val denomRoot = total.denominator / (denomWhole * denomWhole)
+            val totalProduct = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
+            val numeratorWhole = extractWholeOf(totalProduct.numerator)
+            val denominatorWhole = extractWholeOf(totalProduct.denominator)
+            val numeratorRoot = totalProduct.numerator / (numeratorWhole * numeratorWhole)
+            val denominatorRoot = totalProduct.denominator / (denominatorWhole * denominatorWhole)
 
-            val root = Sqrt(ExactFraction(numRoot, denomRoot), true)
-            val coeff = ExactFraction(numWhole, denomWhole)
+            val root = Sqrt(ExactFraction(numeratorRoot, denominatorRoot), true)
+            val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
 
-            val rootList = simpleIf(root == ONE, emptyList(), listOf(root))
-            return Pair(coeff, rootList)
+            val rootList = simpleIf(root == ONE, emptyConstMultiSet(), constMultiSetOf(root))
+            return Pair(coefficient, rootList)
         }
     }
 }

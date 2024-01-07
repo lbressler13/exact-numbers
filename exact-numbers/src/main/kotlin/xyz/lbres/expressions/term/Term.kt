@@ -1,39 +1,73 @@
 package xyz.lbres.expressions.term
 
+import xyz.lbres.common.createHashCode
+import xyz.lbres.common.deprecatedV1
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
+import xyz.lbres.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.filterConsistent
+import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
-import java.math.BigInteger
 import kotlin.math.abs
 
+// TODO package structure -- all under exactnumbers
+// TODO implement number class
+
 /**
- * Representation of the product of several numbers. Consists of a rational coefficient and list of irrational numbers
- *
- * @param coefficient [ExactFraction]
- * @param numbers [List]<IrrationalNumber>
+ * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
  */
-class Term internal constructor(coefficient: ExactFraction, numbers: List<IrrationalNumber<*>>) {
+class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) {
     val coefficient: ExactFraction
-    internal val numbers: List<IrrationalNumber<*>>
+
+    private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
+
+    // TODO finalize property names
+    private val _irrationals: ConstMultiSet<IrrationalNumber<*>>
+    val irrationals: List<IrrationalNumber<*>>
+
+    @Suppress("UNCHECKED_CAST")
+    val logs: List<Log>
+        get() = getIrrationalsByType(Log.TYPE) as List<Log>
+
+    @Suppress("UNCHECKED_CAST")
+    val squareRoots: List<Sqrt>
+        get() = getIrrationalsByType(Sqrt.TYPE) as List<Sqrt>
+
+    @Suppress("UNCHECKED_CAST")
+    val pis: List<Pi>
+        get() = getIrrationalsByType(Pi.TYPE) as List<Pi>
+
+    val piCount: Int
+        get() = calculatePiCount()
+
+    // previously computed values for method returns
+    private var simplified: Term? = null
+    private var value: BigDecimal? = null
+    private var string: String? = null
 
     init {
-        if (coefficient.isZero() || numbers.any { it.isZero() }) {
+        if (coefficient.isZero() || irrationals.any { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
-            this.numbers = emptyList()
+            this.irrationals = emptyList()
+            this._irrationals = emptyConstMultiSet()
         } else {
             this.coefficient = coefficient
-            this.numbers = numbers
+            this.irrationals = irrationals.toList()
+            this._irrationals = irrationals
         }
     }
 
-    operator fun unaryMinus(): Term = Term(-coefficient, numbers)
-    operator fun unaryPlus(): Term = this
+    operator fun unaryMinus(): Term = Term(-coefficient, _irrationals)
+    operator fun unaryPlus(): Term = Term(coefficient, _irrationals)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Term) {
@@ -43,16 +77,12 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
         val simplified = getSimplified()
         val otherSimplified = other.getSimplified()
 
-        return simplified.coefficient == otherSimplified.coefficient &&
-            simplified.getPiCount() == otherSimplified.getPiCount() &&
-            simplified.getLogs().sorted() == otherSimplified.getLogs().sorted() &&
-            simplified.getSquareRoots().sorted() == otherSimplified.getSquareRoots().sorted()
+        return simplified.coefficient == otherSimplified.coefficient && simplified._irrationals == otherSimplified._irrationals
     }
 
     operator fun times(other: Term): Term {
-        val newCoeff = coefficient * other.coefficient
-        val newNumbers = numbers + other.numbers
-        return Term(newCoeff, newNumbers)
+        val newIrrationals = _irrationals + other._irrationals
+        return Term(coefficient * other.coefficient, newIrrationals.toConstMultiSet())
     }
 
     operator fun div(other: Term): Term {
@@ -60,12 +90,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
             throw divideByZero
         }
 
-        val newCoeff = coefficient / other.coefficient
-        val newNumbers = numbers + other.numbers.map { it.swapDivided() }
-        return Term(newCoeff, newNumbers)
+        val newIrrationals = _irrationals + other._irrationals.mapToSetConsistent { it.inverse() }
+        return Term(coefficient / other.coefficient, newIrrationals.toConstMultiSet())
     }
 
-    fun isZero(): Boolean = coefficient.isZero() || numbers.any { it.isZero() }
+    fun isZero(): Boolean = coefficient.isZero()
 
     /**
      * Simplify all numbers, based on the simplify function for their type
@@ -73,15 +102,11 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
      * @return [Term] simplified version of this term
      */
     fun getSimplified(): Term {
-        val groups = numbers.groupBy { it.type }
-        // TODO handle other irrational types
-        val logs = Log.simplifyList(groups[Log.TYPE] ?: emptyList())
-        val pis = Pi.simplifyList(groups[Pi.TYPE] ?: emptyList())
-        val sqrts = Sqrt.simplifyList(groups[Sqrt.TYPE] ?: emptyList())
-        val newCoefficient = coefficient * logs.first * sqrts.first * pis.first
-        val newNumbers = logs.second + sqrts.second + pis.second
+        if (simplified == null) {
+            simplified = simplifyTerm(this)
+        }
 
-        return Term(newCoefficient, newNumbers)
+        return simplified!!
     }
 
     /**
@@ -91,68 +116,102 @@ class Term internal constructor(coefficient: ExactFraction, numbers: List<Irrati
      * @return [BigDecimal]
      */
     fun getValue(): BigDecimal {
-        val simplified = getSimplified()
+        if (value == null) {
+            val simplified = getSimplified()
 
-        val numbersProduct = simplified.numbers.fold(BigDecimal.ONE) { acc, num -> acc * num.getValue() }
-        val numeratorProduct = numbersProduct * simplified.coefficient.numerator.toBigDecimal()
+            val irrationalProduct = simplified.irrationals.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
+            val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * irrationalProduct
 
-        return divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
+            val result = divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
+            value = result
+        }
+
+        return value!!
     }
 
     /**
-     * Get all logs from numbers
+     * Get list of irrational numbers with a given type
+     *
+     * @param type [String]: type to retrieve numbers for
+     * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have type [type]
      */
-    @Suppress("UNCHECKED_CAST")
-    fun getLogs(): List<Log> = numbers.filter { it.type == Log.TYPE } as List<Log>
+    fun getIrrationalsByType(type: String): List<IrrationalNumber<*>> {
+        if (type !in irrationalTypes) {
+            val result = _irrationals.filterConsistent { it.type == type }
+            irrationalTypes[type] = result
+        }
+
+        return irrationalTypes[type]!!
+    }
 
     /**
-     * Get number of Pi in numbers. Divided Pi is counted as -1
+     * Calculate number of pis based on list of irrationals
+     *
+     * @return [Int]: number of pis
      */
-    fun getPiCount(): Int {
-        val pis = numbers.filter { it.type == Pi.TYPE }
-        val positive = pis.count { !it.isDivided }
+    private fun calculatePiCount(): Int {
+        @Suppress("UNCHECKED_CAST")
+        val pis = getIrrationalsByType(Pi.TYPE) as List<Pi>
+        val positive = pis.count { !it.isInverted }
         val negative = pis.size - positive
         return positive - negative
     }
 
-    /**
-     * Get all square roots from numbers
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun getSquareRoots(): List<Sqrt> = numbers.filter { it.type == Sqrt.TYPE } as List<Sqrt>
-
     override fun toString(): String {
-        val coeffString = if (coefficient.denominator == BigInteger.ONE) {
-            coefficient.numerator.toString()
-        } else {
-            "[${coefficient.numerator}/${coefficient.denominator}]"
+        if (string == null) {
+            val fractionString = coefficient.toFractionString()
+            val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
+            val numString = _irrationals.joinToString("x")
+            val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
+
+            string = result
         }
 
-        val numString = numbers.joinToString("x")
-        return simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
+        return string!!
     }
 
-    override fun hashCode(): Int = listOf("Term", coefficient, numbers).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "$irrationalPackage.log.Log"), DeprecationLevel.WARNING)
+    @JvmName("getLogsDeprecated")
+    fun getLogs(): List<Log> = logs
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("piCount"), DeprecationLevel.WARNING)
+    @JvmName("getPiCountDeprecated")
+    fun getPiCount(): Int = piCount
+
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "$irrationalPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
+    @JvmName("getSquareRootsDeprecated")
+    fun getSquareRoots(): List<Sqrt> = squareRoots
 
     companion object {
-        val ZERO = Term(ExactFraction.ZERO, emptyList())
-        val ONE = Term(ExactFraction.ONE, emptyList())
+        val ZERO = Term(ExactFraction.ZERO, emptyConstMultiSet())
+        val ONE = Term(ExactFraction.ONE, emptyConstMultiSet())
 
         /**
-         * Public method of constructing a Term, by providing information about irrationals
+         * Construct a term by providing information about coefficient and irrationals
+         *
+         * @param coefficient [ExactFraction]
+         * @param irrationals [List]<IrrationalNumber<*>>: list of irrational numbers
+         * @return [Term] with the given values
+         */
+        fun fromValues(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>): Term {
+            return Term(coefficient, irrationals.toConstMultiSet())
+        }
+
+        /**
+         * Construct a term by providing information about coefficient, logs, square roots, and pis
          *
          * @param coefficient [ExactFraction]
          * @param logs [List]<Log>: list of log numbers
+         * @param roots [List]<Sqrt>: list of square root numbers
          * @param piCount [Int]: how many occurrence of Pi to include in the list of numbers.
          * A negative number corresponds to divided Pi values
-         * @param roots [List]<Sqrt>: list of sqrt numbers
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
-            val piDivided = piCount < 0
-            val piList = List(abs(piCount)) { Pi(isDivided = piDivided) }
-
-            return Term(coefficient, logs + roots + piList)
+            val pis = List(abs(piCount)) { Pi(isInverted = piCount < 0) }
+            return fromValues(coefficient, logs + roots + pis)
         }
     }
 }

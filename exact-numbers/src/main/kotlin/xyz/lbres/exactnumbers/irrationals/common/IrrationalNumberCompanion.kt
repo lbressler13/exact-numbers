@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 
 /**
  * Companion object for an irrational number class
@@ -9,11 +10,11 @@ abstract class IrrationalNumberCompanion<T : IrrationalNumber<T>> {
     abstract val TYPE: String
 
     /**
-     * Simplify a list of irrational values
+     * Simplify a set of irrational values
      *
-     * @param numbers [List]<IrrationalNumber> : list to simplify, expected to consist of only the current number type
-     * @return [Pair]<ExactFraction, List<T>>: pair where first value is a coefficient and the second value is the simplified list,
-     * and the product of all values is equal to the product of the initial list of [numbers]
+     * @param numbers [ConstMultiSet]<T> : values to simplify
+     * @return [Pair]<ExactFraction, ConstMultiSet<T>>: pair where first value is a coefficient and the second value is the simplified set,
+     * and the product of all values in the set is equal to the product of [numbers]
      */
-    internal abstract fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<T>>
+    internal abstract fun simplifySet(numbers: ConstMultiSet<T>): Pair<ExactFraction, ConstMultiSet<T>>
 }

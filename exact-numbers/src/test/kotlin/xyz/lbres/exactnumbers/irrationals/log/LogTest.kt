@@ -105,23 +105,26 @@ class LogTest {
         assertTrue(logNum2 > logNum1)
     }
 
+    @Test fun testTimes() = runTimesTests()
+    @Test fun testDiv() = runDivTests()
+
     @Test
-    fun testSwapDivided() {
+    fun testInverse() {
         // error
-        assertDivByZero { Log.ZERO.swapDivided() }
+        assertDivByZero { Log.ZERO.inverse() }
 
         // other
         var logNum = Log.ONE
-        var expected = Log(10, 10, true)
-        assertEquals(expected, logNum.swapDivided())
+        var expected = Log.ONE
+        assertEquals(expected, logNum.inverse())
 
-        logNum = Log(4, 3, false)
-        expected = Log(4, 3, true)
-        assertEquals(expected, logNum.swapDivided())
+        logNum = Log(ExactFraction(3, 8), 2)
+        expected = Log(ExactFraction(3, 8), 2, true)
+        assertEquals(expected, logNum.inverse())
 
-        logNum = Log(ExactFraction(3, 8), 2, true)
-        expected = Log(ExactFraction(3, 8), 2, false)
-        assertEquals(expected, logNum.swapDivided())
+        logNum = Log(4, 3, true)
+        expected = Log(4, 3)
+        assertEquals(expected, logNum.inverse())
     }
 
     @Test
@@ -188,14 +191,11 @@ class LogTest {
         assertFalse(logNum.isRational())
     }
 
-    @Test fun testTimes() = runTimesTests()
-    @Test fun testDiv() = runDivTests()
-
     @Test fun testGetRationalValue() = runGetRationalValueTests()
     @Test fun testGetValue() = runGetValueTests()
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
-    @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
 
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()

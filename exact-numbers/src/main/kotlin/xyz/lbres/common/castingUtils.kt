@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * Cast a number to a Byte, or throw the given exception if number exceeds values for a Byte
+ * Cast a number to Byte, or throw the given exception if number exceeds values for Byte
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -15,7 +15,7 @@ internal fun castToByte(value: BigDecimal, getCastingError: () -> ArithmeticExce
 }
 
 /**
- * Cast a number to a Char, or throw the given exception if number exceeds values for a Char
+ * Cast a number to Char, or throw the given exception if number exceeds values for Char
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -29,7 +29,7 @@ internal fun castToChar(value: BigDecimal, getCastingError: () -> ArithmeticExce
 }
 
 /**
- * Cast a number to a Short, or throw the given exception if number exceeds values for a Short
+ * Cast a number to Short, or throw the given exception if number exceeds values for Short
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -40,7 +40,7 @@ internal fun castToShort(value: BigDecimal, getCastingError: () -> ArithmeticExc
 }
 
 /**
- * Cast a number to a Int, or throw the given exception if number exceeds values for a Int
+ * Cast a number to Int, or throw the given exception if number exceeds values for Int
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -51,7 +51,7 @@ internal fun castToInt(value: BigDecimal, getCastingError: () -> ArithmeticExcep
 }
 
 /**
- * Cast a number to a Long, or throw the given exception if number exceeds values for a Long
+ * Cast a number to Long, or throw the given exception if number exceeds values for Long
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -62,7 +62,7 @@ internal fun castToLong(value: BigDecimal, getCastingError: () -> ArithmeticExce
 }
 
 /**
- * Cast a number to a Float, or throw the given exception if number exceeds values for a Float
+ * Cast a number to Float, or throw the given exception if number exceeds values for Float
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -73,7 +73,7 @@ internal fun castToFloat(value: BigDecimal, getCastingError: () -> ArithmeticExc
 }
 
 /**
- * Cast a number to a Double, or throw the given exception if number exceeds values for a Double
+ * Cast a number to Double, or throw the given exception if number exceeds values for Double
  *
  * @param value [BigDecimal]: number to cast
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
@@ -84,15 +84,15 @@ internal fun castToDouble(value: BigDecimal, getCastingError: () -> ArithmeticEx
 }
 
 /**
- * Cast a decimal to another number type, or throw the given exception if the decimal exceeds the given min and max values
+ * Cast a number to another number type, or throw the given exception if the number exceeds the given min and max values
  *
  * @param value [BigDecimal]: number to cast
  * @param minValue T: minimum allowed value
  * @param maxValue T: maximum allowed value
  * @param cast (BigDecimal) -> T: function to cast [value]
  * @param getCastingError () -> [ArithmeticException]: get exception to throw if number exceeds supported values
- * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole numbe or a decimal
- * @return [Double] value as a double
+ * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole number or a decimal
+ * @return [T]: result of cast, if succeeded
  */
 private fun <T : Number> castNumber(
     value: BigDecimal,

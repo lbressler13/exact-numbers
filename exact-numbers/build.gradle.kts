@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     kotlin("jvm") version "1.5.10"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0" // ktlint
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0" // ktlint
 }
 
 group = "xyz.lbres"

@@ -1,59 +1,70 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
+import xyz.lbres.common.createHashCode
 import xyz.lbres.common.divideBigDecimals
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
+import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
+import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.mapToSet
+import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.math.abs
 
 /**
  * Representation of a log, with an integer base and rational argument
  *
  * @param argument [ExactFraction]: value to compute log of
  * @param base [Int]: base to use when computing log
- * @param isDivided [Boolean]: if the inverse of the value should be calculated
+ * @param isInverted [Boolean]: if the inverse of the value should be calculated
  * @param fullySimplified [Boolean]: if the value has already been simplified, such that getSimplified will return the same value
  */
 @Suppress("EqualsOrHashCode")
 class Log private constructor(
     val argument: ExactFraction,
     val base: Int,
-    override val isDivided: Boolean,
+    override val isInverted: Boolean,
     private val fullySimplified: Boolean
 ) : IrrationalNumber<Log>() {
     override val type = TYPE
 
     init {
         when {
-            argument == ExactFraction.ONE && isDivided -> throw divideByZero
+            argument == ExactFraction.ONE && isInverted -> throw divideByZero
             argument.isZero() -> throw ArithmeticException("Cannot calculate log of 0")
             argument.isNegative() -> throw ArithmeticException("Cannot calculate log of negative number")
             base <= 1 -> throw ArithmeticException("Log base must be greater than 1")
         }
     }
 
-    // constructors with reduced params + other types
-    constructor(argument: ExactFraction) : this(argument, base = 10, isDivided = false, false)
-    constructor(argument: ExactFraction, base: Int) : this(argument, base, isDivided = false, false)
-    constructor(argument: ExactFraction, isDivided: Boolean) : this(argument, 10, isDivided, false)
-    constructor(argument: ExactFraction, base: Int, isDivided: Boolean) : this(argument, base, isDivided, false)
+    // constructors with reduced params
+    constructor(argument: ExactFraction, base: Int, isInverted: Boolean) : this(argument, base, isInverted, false)
+    constructor(argument: ExactFraction, isInverted: Boolean) : this(argument, base = 10, isInverted)
+    constructor(argument: ExactFraction, base: Int) : this(argument, base, isInverted = false)
+    constructor(argument: ExactFraction) : this(argument, base = 10)
 
+    // constructors with other types
     constructor(argument: Int) : this(ExactFraction(argument))
     constructor(argument: Int, base: Int) : this(ExactFraction(argument), base)
-    constructor(argument: Int, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
-    constructor(argument: Int, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
+    constructor(argument: Int, isInverted: Boolean) : this(ExactFraction(argument), isInverted)
+    constructor(argument: Int, base: Int, isInverted: Boolean) : this(ExactFraction(argument), base, isInverted)
     constructor(argument: Long) : this(ExactFraction(argument))
     constructor(argument: Long, base: Int) : this(ExactFraction(argument), base)
-    constructor(argument: Long, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
-    constructor(argument: Long, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
+    constructor(argument: Long, isInverted: Boolean) : this(ExactFraction(argument), isInverted)
+    constructor(argument: Long, base: Int, isInverted: Boolean) : this(ExactFraction(argument), base, isInverted)
     constructor(argument: BigInteger) : this(ExactFraction(argument))
     constructor(argument: BigInteger, base: Int) : this(ExactFraction(argument), base)
-    constructor(argument: BigInteger, isDivided: Boolean) : this(ExactFraction(argument), isDivided)
-    constructor(argument: BigInteger, base: Int, isDivided: Boolean) : this(ExactFraction(argument), base, isDivided)
+    constructor(argument: BigInteger, isInverted: Boolean) : this(ExactFraction(argument), isInverted)
+    constructor(argument: BigInteger, base: Int, isInverted: Boolean) : this(ExactFraction(argument), base, isInverted)
 
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
@@ -90,7 +101,7 @@ class Log private constructor(
             else -> ExactFraction(numLog, denomLog)
         }
 
-        return simpleIf(isDivided, { result.inverse() }, { result })
+        return simpleIf(isInverted, { result.inverse() }, { result })
     }
 
     /**
@@ -101,7 +112,7 @@ class Log private constructor(
      */
     override fun performGetValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-        return simpleIf(isDivided, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
+        return simpleIf(isInverted, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
     }
 
     /**
@@ -110,28 +121,40 @@ class Log private constructor(
      *
      * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
      */
-    // TODO: improve the process of simplifying
+    // TODO: improve the process of simplifying using exponents
     fun getSimplified(): Pair<ExactFraction, Log> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
             isZero() -> return Pair(ExactFraction.ONE, ZERO)
             equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
+            isRational() -> return Pair(getRationalValue()!!, ONE)
         }
 
-        val rational = getRationalValue()
-        if (rational == null) {
-            return Pair(ExactFraction.ONE, Log(argument, base, isDivided, true))
-        }
+        // var exp = 0
+        // var remaining = argument.numerator
+        // val baseBigInt = base.toBigInteger()
+        // while (remaining.mod(baseBigInt) == BigInteger.ZERO) {
+        // exp++
+        // remaining /= baseBigInt
+        // }
 
-        return Pair(rational, ONE)
+        // val rationalValue = ExactFraction(base).pow(exp)
+        // val remainingArgument = ExactFraction(remaining, argument.denominator)
+        // val remainingLog = Log(remainingArgument, base, isInverted, fullSimplified = true)
+        // return Pair(rationalValue, remainingLog)
+
+        return Pair(ExactFraction.ONE, Log(argument, base, isInverted, fullySimplified = true))
     }
 
-    override fun swapDivided(): Log {
+    /**
+     * Get multiplicative inverse. This does not correspond to an inverse log.
+     */
+    override fun inverse(): Log {
         if (isZero()) {
             throw divideByZero
         }
 
-        return Log(argument, base, !isDivided)
+        return Log(argument, base, !isInverted, fullySimplified = false)
     }
 
     override fun toString(): String {
@@ -141,66 +164,47 @@ class Log private constructor(
             "${argument.numerator}/${argument.denominator}"
         }
 
-        if (isDivided) {
-            return "[1/log_$base($numString)]"
-        }
-
-        return "[log_$base($numString)]"
+        return simpleIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
     }
 
-    override fun hashCode(): Int = listOf(TYPE, argument, base, isDivided).hashCode()
+    override fun hashCode(): Int = createHashCode(listOf(argument, base, isInverted, this::class.toString()))
 
     companion object : IrrationalNumberCompanion<Log>() {
         override val TYPE = "log"
 
-        val ZERO = Log(ExactFraction.ONE, 10, isDivided = false, fullySimplified = true)
-        val ONE = Log(ExactFraction.TEN, 10, isDivided = false, fullySimplified = true)
+        val ZERO = Log(ExactFraction.ONE, 10, isInverted = false, fullySimplified = true)
+        val ONE = Log(ExactFraction.TEN, 10, isInverted = false, fullySimplified = true)
 
         /**
-         * Extract rational values and simplify remaining list of irrationals
+         * Extract rational values and simplify remaining set of logs
          *
-         * @param numbers [List]<IrrationalNumber>: list to simplify, expected to consist of only Logs
-         * @return [Pair]<ExactFraction, List<Log>>: product of rational values and simplified list of irrational values
+         * @param numbers [ConstMultiSet]<Log>: set to simplify
+         * @return [Pair]<ExactFraction, ConstMultiSet<Log>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
-        override fun simplifyList(numbers: List<IrrationalNumber<*>>?): Pair<ExactFraction, List<Log>> {
-            if (numbers.isNullOrEmpty()) {
-                return Pair(ExactFraction.ONE, emptyList())
+        override fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
+            when {
+                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
+                numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
             }
 
-            @Suppress("UNCHECKED_CAST")
-            numbers as List<Log>
+            val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }
+            val coefficient = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
 
-            if (numbers.any(Log::isZero)) {
-                return Pair(ExactFraction.ZERO, emptyList())
-            }
+            val logValues: ConstMultiSet<Log> = simplifiedNumbers.mapToSet { it.second }.toConstMultiSet()
+            val distinct = logValues.distinctValues.map { Log(it.argument, it.base) }.toSet()
 
-            val simplifiedNumbers = numbers.map { it.getSimplified() }
-            val coeff = simplifiedNumbers.fold(ExactFraction.ONE) { acc, pair -> acc * pair.first }
-
-            val combinedNums: List<Log> = simplifiedNumbers.map { it.second }
-                .groupBy { Pair(it.argument, it.base) }
-                .flatMap { pair ->
-                    if (Log(pair.key.first, pair.key.second) == ONE) {
-                        emptyList()
-                    } else {
-                        val currentLogs = pair.value
-                        val countDivided = currentLogs.count { it.isDivided }
-                        val countNotDivided = currentLogs.size - countDivided
-
-                        when {
-                            countDivided == countNotDivided -> emptyList()
-                            countDivided > countNotDivided -> List(countDivided - countNotDivided) {
-                                Log(pair.key.first, pair.key.second, isDivided = true, fullySimplified = true)
-                            }
-                            else -> List(countNotDivided - countDivided) {
-                                Log(pair.key.first, pair.key.second, isDivided = false, fullySimplified = true)
-                            }
-                        }
-                    }
+            // avoids creating a standard MultiSet for efficiency
+            val simplifiedValues: ConstMutableMultiSet<Log> = constMutableMultiSetOf()
+            for (log in distinct) {
+                if (log != ONE) {
+                    val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
+                    val simplified = ConstMultiSet(abs(diff)) { Log(log.argument, log.base, isInverted = diff < 0) }
+                    simplifiedValues.addAll(simplified)
                 }
+            }
 
-            return Pair(coeff, combinedNums)
+            return Pair(coefficient, simplifiedValues)
         }
     }
 }

@@ -12,13 +12,13 @@ class PiTest {
     @Test
     fun testConstructor() {
         var pi = Pi()
-        assertFalse(pi.isDivided)
+        assertFalse(pi.isInverted)
 
-        pi = Pi(isDivided = false)
-        assertFalse(pi.isDivided)
+        pi = Pi(isInverted = false)
+        assertFalse(pi.isInverted)
 
-        pi = Pi(isDivided = true)
-        assertTrue(pi.isDivided)
+        pi = Pi(isInverted = true)
+        assertTrue(pi.isInverted)
     }
 
     @Test
@@ -80,12 +80,9 @@ class PiTest {
     }
 
     @Test
-    fun testSwapDivided() {
-        var pi = Pi()
-        assertTrue(pi.swapDivided().isDivided)
-
-        pi = Pi(true)
-        assertFalse(pi.swapDivided().isDivided)
+    fun testInverse() {
+        assertTrue(Pi().inverse().isInverted)
+        assertFalse(Pi(true).inverse().isInverted)
     }
 
     @Test
@@ -101,8 +98,11 @@ class PiTest {
 
     @Test
     fun testCompareTo() {
+        // equal
         assertEquals(Pi(), Pi())
         assertEquals(Pi(true), Pi(true))
+
+        // not equal
         assertTrue(Pi(true) < Pi())
         assertTrue(Pi() > Pi(true))
     }
@@ -154,5 +154,5 @@ class PiTest {
         assertEquals(0.3183098861837907, Pi(true).toDouble())
     }
 
-    @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
 }

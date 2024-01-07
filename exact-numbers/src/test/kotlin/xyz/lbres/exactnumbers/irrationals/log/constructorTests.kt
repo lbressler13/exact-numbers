@@ -6,14 +6,13 @@ import xyz.lbres.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 fun runConstructorTests() {
     // error
-    assertDivByZero { Log(ExactFraction.ONE, 10, isDivided = true) }
-    assertDivByZero { Log(1, 10, isDivided = true) }
-    assertDivByZero { Log(1L, 10, isDivided = true) }
-    assertDivByZero { Log(BigInteger.ONE, 10, isDivided = true) }
+    assertDivByZero { Log(ExactFraction.ONE, 10, isInverted = true) }
+    assertDivByZero { Log(1, 10, isInverted = true) }
+    assertDivByZero { Log(1L, 10, isInverted = true) }
+    assertDivByZero { Log(BigInteger.ONE, 10, isInverted = true) }
 
     var error = "Cannot calculate log of 0"
     assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.ZERO) }
@@ -38,82 +37,46 @@ fun runConstructorTests() {
 
     // ExactFraction
     // zero
-    var expectedNumber = ExactFraction.ONE
+    var expectedArgument = ExactFraction.ONE
     var expectedBase = 10
     var logs = listOf(Log(ExactFraction.ONE), Log(1), Log(1L), Log(BigInteger.ONE))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
-    }
-
-    // all fields
-    var logNum = Log(ExactFraction(13, 100), 100, true)
-    expectedNumber = ExactFraction(13, 100)
-    expectedBase = 100
-    assertEquals(expectedNumber, logNum.argument)
-    assertEquals(expectedBase, logNum.base)
-    assertTrue(logNum.isDivided)
-
-    expectedNumber = ExactFraction(30)
-    expectedBase = 100
-    logs = listOf(Log(ExactFraction(30), 100, true), Log(30, 100, true), Log(30L, 100, true), Log(BigInteger("30"), 100, true))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertTrue(it.isDivided)
+        assertFalse(it.isInverted)
     }
 
     // just number
-    expectedNumber = ExactFraction.TWO
+    expectedArgument = ExactFraction.TWO
     expectedBase = 10
     logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.isInverted)
     }
 
-    logNum = Log(ExactFraction(107, 3))
-    expectedNumber = ExactFraction(107, 3)
+    var logNum = Log(ExactFraction(107, 3))
+    expectedArgument = ExactFraction(107, 3)
     expectedBase = 10
-    assertEquals(expectedNumber, logNum.argument)
+    assertEquals(expectedArgument, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.isDivided)
+    assertFalse(logNum.isInverted)
 
     // number + base
-    expectedNumber = ExactFraction.TWO
+    expectedArgument = ExactFraction.TWO
     expectedBase = 2
     logs = listOf(Log(ExactFraction.TWO, 2), Log(2, 2), Log(2L, 2), Log(BigInteger.TWO, 2))
     logs.forEach {
-        assertEquals(expectedNumber, it.argument)
+        assertEquals(expectedArgument, it.argument)
         assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
+        assertFalse(it.isInverted)
     }
 
     logNum = Log(ExactFraction(107, 3), 5)
-    expectedNumber = ExactFraction(107, 3)
+    expectedArgument = ExactFraction(107, 3)
     expectedBase = 5
-    assertEquals(expectedNumber, logNum.argument)
+    assertEquals(expectedArgument, logNum.argument)
     assertEquals(expectedBase, logNum.base)
-    assertFalse(logNum.isDivided)
-
-    // number + divided
-    expectedNumber = ExactFraction.TWO
-    expectedBase = 10
-    logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertFalse(it.isDivided)
-    }
-
-    expectedNumber = ExactFraction.TWO
-    expectedBase = 10
-    logs = listOf(Log(ExactFraction.TWO, true), Log(2, true), Log(2L, true), Log(BigInteger.TWO, true))
-    logs.forEach {
-        assertEquals(expectedNumber, it.argument)
-        assertEquals(expectedBase, it.base)
-        assertTrue(it.isDivided)
-    }
+    assertFalse(logNum.isInverted)
 }
