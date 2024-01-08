@@ -19,7 +19,6 @@ import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import kotlin.math.abs
 
-// TODO package structure -- all under exactnumbers
 // TODO implement number class
 
 /**
