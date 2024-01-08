@@ -1,11 +1,11 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
-import xyz.lbres.expressions.term.Term
-import xyz.lbres.testutils.TestNumber
-import xyz.lbres.testutils.assertDivByZero
+import xyz.lbres.exactnumbers.testutils.TestNumber
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue

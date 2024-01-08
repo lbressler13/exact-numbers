@@ -1,6 +1,6 @@
-package xyz.lbres.testutils
+package xyz.lbres.exactnumbers.testutils
 
-import xyz.lbres.common.createHashCode
+import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf

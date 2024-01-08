@@ -5,7 +5,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
-import xyz.lbres.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

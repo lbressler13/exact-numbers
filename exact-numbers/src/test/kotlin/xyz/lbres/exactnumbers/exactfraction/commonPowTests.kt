@@ -1,8 +1,8 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.exactnumbers.ext.toExactFraction
-import xyz.lbres.testutils.assertFailsWithMessage
-import xyz.lbres.testutils.assertSucceeds
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

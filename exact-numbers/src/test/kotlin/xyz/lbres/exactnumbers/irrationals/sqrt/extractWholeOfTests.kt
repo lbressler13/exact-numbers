@@ -4,7 +4,7 @@ import io.mockk.every
 import io.mockk.spyk
 import io.mockk.verify
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
-import xyz.lbres.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
