@@ -2,26 +2,28 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import java.math.BigInteger
 
+fun ExactFraction(numerator: BigInteger, denominator: BigInteger): ExactFraction = ExactFractionImpl(numerator, denominator)
+
 /**
  * Create an ExactFraction by specifying numerator only. Denominator is set to [BigInteger.ONE]
  *
  * @param numerator [BigInteger]
  */
-fun ExactFraction(numerator: BigInteger) = ExactFraction(numerator, BigInteger.ONE)
+fun ExactFraction(numerator: BigInteger): ExactFraction = ExactFractionImpl(numerator, BigInteger.ONE)
 
 /**
  * Create an ExactFraction by specifying numerator only. Denominator is set to [BigInteger.ONE]
  *
  * @param numerator [Int]
  */
-fun ExactFraction(numerator: Int) = ExactFraction(numerator.toBigInteger())
+fun ExactFraction(numerator: Int): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), BigInteger.ONE)
 
 /**
  * Create an ExactFraction by specifying numerator only. Denominator is set to [BigInteger.ONE]
  *
  * @param numerator [Long]
  */
-fun ExactFraction(numerator: Long) = ExactFraction(numerator.toBigInteger())
+fun ExactFraction(numerator: Long): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), BigInteger.ONE)
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -29,7 +31,7 @@ fun ExactFraction(numerator: Long) = ExactFraction(numerator.toBigInteger())
  * @param numerator [Int]
  * @param denominator [Int]
  */
-fun ExactFraction(numerator: Int, denominator: Int) = ExactFraction(numerator.toBigInteger(), denominator.toBigInteger())
+fun ExactFraction(numerator: Int, denominator: Int): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -37,7 +39,7 @@ fun ExactFraction(numerator: Int, denominator: Int) = ExactFraction(numerator.to
  * @param numerator [Long]
  * @param denominator [Long]
  */
-fun ExactFraction(numerator: Long, denominator: Long) = ExactFraction(numerator.toBigInteger(), denominator.toBigInteger())
+fun ExactFraction(numerator: Long, denominator: Long): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -45,7 +47,7 @@ fun ExactFraction(numerator: Long, denominator: Long) = ExactFraction(numerator.
  * @param numerator [Int]
  * @param denominator [Long]
  */
-fun ExactFraction(numerator: Long, denominator: Int) = ExactFraction(numerator.toBigInteger(), denominator.toBigInteger())
+fun ExactFraction(numerator: Long, denominator: Int): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -53,7 +55,7 @@ fun ExactFraction(numerator: Long, denominator: Int) = ExactFraction(numerator.t
  * @param numerator [Int]
  * @param denominator [Long]
  */
-fun ExactFraction(numerator: Int, denominator: Long) = ExactFraction(numerator.toBigInteger(), denominator.toBigInteger())
+fun ExactFraction(numerator: Int, denominator: Long): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -61,7 +63,7 @@ fun ExactFraction(numerator: Int, denominator: Long) = ExactFraction(numerator.t
  * @param numerator [BigInteger]
  * @param denominator [Long]
  */
-fun ExactFraction(numerator: BigInteger, denominator: Int) = ExactFraction(numerator, denominator.toBigInteger())
+fun ExactFraction(numerator: BigInteger, denominator: Int): ExactFraction = ExactFractionImpl(numerator, denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -69,7 +71,7 @@ fun ExactFraction(numerator: BigInteger, denominator: Int) = ExactFraction(numer
  * @param numerator [Int]
  * @param denominator [BigInteger]
  */
-fun ExactFraction(numerator: Int, denominator: BigInteger) = ExactFraction(numerator.toBigInteger(), denominator)
+fun ExactFraction(numerator: Int, denominator: BigInteger): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator)
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -77,7 +79,7 @@ fun ExactFraction(numerator: Int, denominator: BigInteger) = ExactFraction(numer
  * @param numerator [BigInteger]
  * @param denominator [Long]
  */
-fun ExactFraction(numerator: BigInteger, denominator: Long) = ExactFraction(numerator, denominator.toBigInteger())
+fun ExactFraction(numerator: BigInteger, denominator: Long): ExactFraction = ExactFractionImpl(numerator, denominator.toBigInteger())
 
 /**
  * Create an ExactFraction by specifying numerator and denominator
@@ -85,11 +87,11 @@ fun ExactFraction(numerator: BigInteger, denominator: Long) = ExactFraction(nume
  * @param numerator [Long]
  * @param denominator [BigInteger]
  */
-fun ExactFraction(numerator: Long, denominator: BigInteger) = ExactFraction(numerator.toBigInteger(), denominator)
+fun ExactFraction(numerator: Long, denominator: BigInteger): ExactFraction = ExactFractionImpl(numerator.toBigInteger(), denominator)
 
 /**
  * Create ExactFraction by parsing a string
  *
  * @param string [String]
  */
-fun ExactFraction(string: String) = ExactFraction.parse(string)
+fun ExactFraction(string: String): ExactFraction = ExactFraction.parse(string)
