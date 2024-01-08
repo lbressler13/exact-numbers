@@ -22,6 +22,7 @@ class TermTest {
 
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
+    @Test fun testCompareTo() = runCompareToTests() // TODO
 
     @Test fun testGetSimplified() = runCommonSimplifyTests(Term::getSimplified)
     @Test fun testGetValue() = runGetValueTests()
@@ -191,4 +192,12 @@ class TermTest {
         expected = "<[-100/333]x${logNum2}x${logNum2}x${logNum4}x${logNum1}x${sqrt1}x${sqrt2}x${Pi(true)}x${Pi()}>"
         assertEquals(expected, term.toString())
     }
+
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 }

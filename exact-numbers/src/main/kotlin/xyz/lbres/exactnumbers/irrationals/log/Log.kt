@@ -121,7 +121,6 @@ class Log private constructor(
      *
      * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
      */
-    // TODO: improve the process of simplifying using exponents
     fun getSimplified(): Pair<ExactFraction, Log> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
@@ -129,19 +128,6 @@ class Log private constructor(
             equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
             isRational() -> return Pair(getRationalValue()!!, ONE)
         }
-
-        // var exp = 0
-        // var remaining = argument.numerator
-        // val baseBigInt = base.toBigInteger()
-        // while (remaining.mod(baseBigInt) == BigInteger.ZERO) {
-        // exp++
-        // remaining /= baseBigInt
-        // }
-
-        // val rationalValue = ExactFraction(base).pow(exp)
-        // val remainingArgument = ExactFraction(remaining, argument.denominator)
-        // val remainingLog = Log(remainingArgument, base, isInverted, fullSimplified = true)
-        // return Pair(rationalValue, remainingLog)
 
         return Pair(ExactFraction.ONE, Log(argument, base, isInverted, fullySimplified = true))
     }
@@ -154,6 +140,7 @@ class Log private constructor(
             throw divideByZero
         }
 
+        // TODO update inverse logic
         return Log(argument, base, !isInverted, fullySimplified = false)
     }
 

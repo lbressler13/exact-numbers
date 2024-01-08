@@ -125,8 +125,8 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     override fun toFloat(): Float = castToFloat(getValue()) { getCastingError("Float") }
     override fun toDouble(): Double = castToDouble(getValue()) { getCastingError("Double") }
 
-    private val getCastingError: (String) -> ArithmeticException = { newType ->
-        CastingOverflowException(this::class.simpleName ?: this::class.toString(), newType, toString(), this)
+    private fun getCastingError(targetType: String): ArithmeticException {
+        return CastingOverflowException(this::class.simpleName ?: this::class.toString(), targetType, toString(), this)
     }
 
     override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))

@@ -225,3 +225,6 @@ fun runDivTests() {
     )
     assertEquals(expected, term2 / term1)
 }
+
+fun runCompareToTests() {
+}

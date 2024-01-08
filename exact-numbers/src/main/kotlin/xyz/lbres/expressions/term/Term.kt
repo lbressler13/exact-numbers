@@ -1,5 +1,13 @@
 package xyz.lbres.expressions.term
 
+import xyz.lbres.common.CastingOverflowException
+import xyz.lbres.common.castToByte
+import xyz.lbres.common.castToChar
+import xyz.lbres.common.castToDouble
+import xyz.lbres.common.castToFloat
+import xyz.lbres.common.castToInt
+import xyz.lbres.common.castToLong
+import xyz.lbres.common.castToShort
 import xyz.lbres.common.createHashCode
 import xyz.lbres.common.deprecatedV1
 import xyz.lbres.common.divideBigDecimals
@@ -20,12 +28,11 @@ import java.math.BigDecimal
 import kotlin.math.abs
 
 // TODO package structure -- all under exactnumbers
-// TODO implement number class
 
 /**
  * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
  */
-class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) {
+class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) : Number(), Comparable<Term> {
     val coefficient: ExactFraction
 
     private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
@@ -144,6 +151,8 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
         return irrationalTypes[type]!!
     }
 
+    override fun compareTo(other: Term): Int = getValue().compareTo(other.getValue())
+
     /**
      * Calculate number of pis based on list of irrationals
      *
@@ -168,6 +177,19 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
         }
 
         return string!!
+    }
+
+    override fun toByte(): Byte = castToByte(getValue()) { getCastingError("Byte") }
+    override fun toChar(): Char = castToChar(getValue()) { getCastingError("Char") }
+    override fun toShort(): Short = castToShort(getValue()) { getCastingError("Short") }
+    override fun toInt(): Int = castToInt(getValue()) { getCastingError("Int") }
+    override fun toLong(): Long = castToLong(getValue()) { getCastingError("Long") }
+
+    override fun toFloat(): Float = castToFloat(getValue()) { getCastingError("Float") }
+    override fun toDouble(): Double = castToDouble(getValue()) { getCastingError("Double") }
+
+    private fun getCastingError(targetType: String): ArithmeticException {
+        return CastingOverflowException("Term", targetType, toString(), this)
     }
 
     override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
