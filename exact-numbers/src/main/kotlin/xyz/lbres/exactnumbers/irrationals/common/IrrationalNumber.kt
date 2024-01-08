@@ -7,7 +7,6 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.common.divideByZero
@@ -116,14 +115,14 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
     }
 
-    override fun toByte(): Byte = castToByte(getValue()) { createCastingException(this, "Byte") }
-    override fun toChar(): Char = castToChar(getValue()) { createCastingException(this, "Char") }
-    override fun toShort(): Short = castToShort(getValue()) { createCastingException(this, "Short") }
-    override fun toInt(): Int = castToInt(getValue()) { createCastingException(this, "Int") }
-    override fun toLong(): Long = castToLong(getValue()) { createCastingException(this, "Long") }
+    override fun toByte(): Byte = castToByte(getValue(), this)
+    override fun toChar(): Char = castToChar(getValue(), this)
+    override fun toShort(): Short = castToShort(getValue(), this)
+    override fun toInt(): Int = castToInt(getValue(), this)
+    override fun toLong(): Long = castToLong(getValue(), this)
 
-    override fun toFloat(): Float = castToFloat(getValue()) { createCastingException(this, "Float") }
-    override fun toDouble(): Double = castToDouble(getValue()) { createCastingException(this, "Double") }
+    override fun toFloat(): Float = castToFloat(getValue(), this)
+    override fun toDouble(): Double = castToDouble(getValue(), this)
 
     override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))
 }

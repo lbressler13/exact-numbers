@@ -7,7 +7,6 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
@@ -22,57 +21,34 @@ import java.math.RoundingMode
 
 /**
  * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
- *
- * @param numerator [BigInteger]: numerator of fraction
- * @param denominator [BigInteger]: denominator of fraction
- * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are simplified
  */
-class ExactFraction private constructor(numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : Comparable<ExactFraction>, Number() {
+class ExactFraction constructor(numerator: BigInteger, denominator: BigInteger) : Comparable<ExactFraction>, Number() {
+    private val implementation = ExactFractionImpl(numerator, denominator)
+
     /**
      * Numerator of number
      */
     val numerator: BigInteger
+        get() = implementation.numerator
 
     /**
      * Denominator of number
      */
     val denominator: BigInteger
-
-    init {
-        if (denominator.isZero()) {
-            throw divideByZero
-        }
-
-        if (fullySimplified) {
-            this.numerator = numerator
-            this.denominator = denominator
-        } else {
-            val simplifiedValues = simplify(Pair(numerator, denominator))
-            this.numerator = simplifiedValues.first
-            this.denominator = simplifiedValues.second
-        }
-    }
-
-    /**
-     * Constructor using numerator and denominator. Simplifies values on initialization.
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     * @param denominator [BigInteger]: denominator of fraction
-     */
-    constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
+        get() = implementation.denominator
 
     // UNARY OPERATORS
 
-    operator fun unaryMinus(): ExactFraction = ExactFraction(-numerator, denominator, fullySimplified = true)
-    operator fun unaryPlus(): ExactFraction = ExactFraction(numerator, denominator, fullySimplified = true)
+    operator fun unaryMinus(): ExactFraction = implementation.unaryMinus().toExactFraction()
+    operator fun unaryPlus(): ExactFraction = implementation.unaryPlus().toExactFraction()
     operator fun not(): Boolean = isZero()
 
-    operator fun inc(): ExactFraction = ExactFraction(numerator + denominator, denominator, fullySimplified = true)
-    operator fun dec(): ExactFraction = ExactFraction(numerator - denominator, denominator, fullySimplified = true)
+    operator fun inc(): ExactFraction = implementation.inc().toExactFraction()
+    operator fun dec(): ExactFraction = implementation.dec().toExactFraction()
 
     // BINARY OPERATORS
 
-    operator fun plus(other: ExactFraction): ExactFraction = efAdd(this, other)
+    operator fun plus(other: ExactFraction): ExactFraction = implementation.plus(other.implementation).toExactFraction()
     operator fun plus(other: BigInteger): ExactFraction = plus(other.toExactFraction())
     operator fun plus(other: Long): ExactFraction = plus(other.toExactFraction())
     operator fun plus(other: Int): ExactFraction = plus(other.toExactFraction())
@@ -82,48 +58,38 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
     operator fun minus(other: Long): ExactFraction = plus(-other)
     operator fun minus(other: Int): ExactFraction = plus(-other)
 
-    operator fun times(other: ExactFraction): ExactFraction = efTimes(this, other)
+    operator fun times(other: ExactFraction): ExactFraction = implementation.times(other.implementation).toExactFraction()
     operator fun times(other: BigInteger): ExactFraction = times(other.toExactFraction())
     operator fun times(other: Long): ExactFraction = times(other.toExactFraction())
     operator fun times(other: Int): ExactFraction = times(other.toExactFraction())
 
-    operator fun div(other: ExactFraction): ExactFraction = times(other.inverse())
+    operator fun div(other: ExactFraction): ExactFraction = implementation.div(other.implementation).toExactFraction()
     operator fun div(other: BigInteger): ExactFraction = div(other.toExactFraction())
     operator fun div(other: Long): ExactFraction = div(other.toExactFraction())
     operator fun div(other: Int): ExactFraction = div(other.toExactFraction())
 
-    override fun equals(other: Any?): Boolean {
-        return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
-    }
+    override fun equals(other: Any?): Boolean = other is ExactFraction && implementation == other.implementation
 
-    fun eq(other: Int): Boolean = isWholeNumber() && numerator.eq(other)
-    fun eq(other: Long): Boolean = isWholeNumber() && numerator.eq(other)
-    fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
+    fun eq(other: Int): Boolean = implementation.eq(other)
+    fun eq(other: Long): Boolean = implementation.eq(other)
+    fun eq(other: BigInteger): Boolean = implementation.eq(other)
 
-    override fun compareTo(other: ExactFraction): Int = efCompare(this, other)
+    override fun compareTo(other: ExactFraction): Int = implementation.compareTo(other.implementation)
     operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
     operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
 
-    fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
+    fun pow(other: ExactFraction): ExactFraction = implementation.pow(other.implementation).toExactFraction()
     fun pow(other: Int): ExactFraction = pow(other.toExactFraction())
     fun pow(other: Long): ExactFraction = pow(other.toExactFraction())
     fun pow(other: BigInteger): ExactFraction = pow(other.toExactFraction())
 
     // UNARY NON-OPERATORS
 
-    fun inverse(): ExactFraction {
-        if (numerator.isZero()) {
-            throw divideByZero
-        }
-
-        val signConverter = simpleIf(numerator.isNegative(), -BigInteger.ONE, BigInteger.ONE)
-        return ExactFraction(denominator * signConverter, numerator * signConverter, fullySimplified = true)
-    }
-
-    fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator, fullySimplified = true)
-    fun isNegative(): Boolean = numerator.isNegative()
-    fun isZero(): Boolean = numerator.isZero()
+    fun inverse(): ExactFraction = implementation.inverse().toExactFraction()
+    fun absoluteValue(): ExactFraction = implementation.absoluteValue().toExactFraction()
+    fun isNegative(): Boolean = implementation.isNegative()
+    fun isZero(): Boolean = implementation.isZero()
     fun isWholeNumber(): Boolean = denominator == BigInteger.ONE
 
     /**
@@ -165,13 +131,13 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = castToByte(toBigDecimal()) { createCastingException(this, "Byte") }
-    override fun toChar(): Char = castToChar(toBigDecimal()) { createCastingException(this, "Char") }
-    override fun toShort(): Short = castToShort(toBigDecimal()) { createCastingException(this, "Short") }
-    override fun toInt(): Int = castToInt(toBigDecimal()) { createCastingException(this, "Int") }
-    override fun toLong(): Long = castToLong(toBigDecimal()) { createCastingException(this, "Long") }
-    override fun toFloat(): Float = castToFloat(toBigDecimal()) { createCastingException(this, "Float") }
-    override fun toDouble(): Double = castToDouble(toBigDecimal()) { createCastingException(this, "Double") }
+    override fun toByte(): Byte = castToByte(toBigDecimal(), this)
+    override fun toChar(): Char = castToChar(toBigDecimal(), this)
+    override fun toShort(): Short = castToShort(toBigDecimal(), this)
+    override fun toInt(): Int = castToInt(toBigDecimal(), this)
+    override fun toLong(): Long = castToLong(toBigDecimal(), this)
+    override fun toFloat(): Float = castToFloat(toBigDecimal(), this)
+    override fun toDouble(): Double = castToDouble(toBigDecimal(), this)
 
     fun toBigInteger(): BigInteger = numerator / denominator
     fun toBigDecimal(precision: Int = 20): BigDecimal {
