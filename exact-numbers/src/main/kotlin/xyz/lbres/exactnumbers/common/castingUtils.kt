@@ -4,6 +4,20 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
+ * Creating a CastingOverflowException based on a value and type
+ *
+ * @param value [Any]: overflow value
+ * @param targetType [String]: type being cast to
+ * @param valueString [String]?: string representation of value. If `null`, the toString() method will be invoked.
+ * Defaults to `null`
+ * @return [CastingOverflowException] with overflowValue and message based on the provided values
+ */
+internal fun createCastingException(value: Any, targetType: String, valueString: String? = null): CastingOverflowException {
+    val className = value::class.simpleName ?: value::class.toString()
+    return CastingOverflowException(className, targetType, valueString ?: value.toString(), value)
+}
+
+/**
  * Cast a number to Byte, or throw the given exception if number exceeds values for Byte
  *
  * @param value [BigDecimal]: number to cast
