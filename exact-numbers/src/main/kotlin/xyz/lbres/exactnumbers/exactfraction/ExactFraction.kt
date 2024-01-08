@@ -18,7 +18,14 @@ import java.math.RoundingMode
  * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
  */
 sealed class ExactFraction : Comparable<ExactFraction>, Number() {
+    /**
+     * Numerator of number
+     */
     abstract val numerator: BigInteger
+
+    /**
+     * Denominator of number
+     */
     abstract val denominator: BigInteger
 
     // UNARY OPERATORS

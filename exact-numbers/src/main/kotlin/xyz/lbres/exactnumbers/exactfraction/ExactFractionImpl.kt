@@ -10,15 +10,9 @@ import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 
+// implementation of ExactFraction class
 internal class ExactFractionImpl private constructor(numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : ExactFraction() {
-    /**
-     * Numerator of number
-     */
     override val numerator: BigInteger
-
-    /**
-     * Denominator of number
-     */
     override val denominator: BigInteger
 
     init {
@@ -78,11 +72,6 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     override fun isZero(): Boolean = numerator.isZero()
     override fun isWholeNumber(): Boolean = denominator == BigInteger.ONE
 
-    /**
-     * Round ExactFraction to nearest whole number.
-     *
-     * @param roundingMode [RoundingMode]: mode to use for rounding number. Optional, defaults to [RoundingMode.HALF_UP]
-     */
     override fun roundToWhole(roundingMode: RoundingMode): ExactFraction {
         val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), roundingMode)
         val int = decimal.toBigInteger()
@@ -91,6 +80,7 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     }
 
     // CASTING
+
     override fun toBigInteger(): BigInteger = numerator / denominator
     override fun toBigDecimal(precision: Int): BigDecimal {
         val mc = MathContext(precision, RoundingMode.HALF_UP)
