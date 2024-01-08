@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.common.CastingOverflowException
-import xyz.lbres.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.common.CastingOverflowException
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext

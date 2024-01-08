@@ -1,18 +1,18 @@
-package xyz.lbres.expressions.term
+package xyz.lbres.exactnumbers.expressions.term
 
-import xyz.lbres.common.CastingOverflowException
-import xyz.lbres.common.castToByte
-import xyz.lbres.common.castToChar
-import xyz.lbres.common.castToDouble
-import xyz.lbres.common.castToFloat
-import xyz.lbres.common.castToInt
-import xyz.lbres.common.castToLong
-import xyz.lbres.common.castToShort
-import xyz.lbres.common.createHashCode
-import xyz.lbres.common.deprecatedV1
-import xyz.lbres.common.divideBigDecimals
-import xyz.lbres.common.divideByZero
-import xyz.lbres.common.irrationalPackage
+import xyz.lbres.exactnumbers.common.CastingOverflowException
+import xyz.lbres.exactnumbers.common.castToByte
+import xyz.lbres.exactnumbers.common.castToChar
+import xyz.lbres.exactnumbers.common.castToDouble
+import xyz.lbres.exactnumbers.common.castToFloat
+import xyz.lbres.exactnumbers.common.castToInt
+import xyz.lbres.exactnumbers.common.castToLong
+import xyz.lbres.exactnumbers.common.castToShort
+import xyz.lbres.exactnumbers.common.createHashCode
+import xyz.lbres.exactnumbers.common.deprecatedV1
+import xyz.lbres.exactnumbers.common.divideBigDecimals
+import xyz.lbres.exactnumbers.common.divideByZero
+import xyz.lbres.exactnumbers.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
@@ -26,8 +26,6 @@ import xyz.lbres.kotlinutils.set.multiset.filterConsistent
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import kotlin.math.abs
-
-// TODO package structure -- all under exactnumbers
 
 /**
  * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers

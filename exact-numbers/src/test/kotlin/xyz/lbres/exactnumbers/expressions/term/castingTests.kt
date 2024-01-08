@@ -1,12 +1,12 @@
-package xyz.lbres.expressions.term
+package xyz.lbres.exactnumbers.expressions.term
 
-import xyz.lbres.common.CastingOverflowException
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.testutils.assertFailsWithMessage
-import xyz.lbres.testutils.assertSucceeds
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE

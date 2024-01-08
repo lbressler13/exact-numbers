@@ -34,12 +34,12 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
-│   │   │   │   ├── common             <-- code that is shared between packages
 │   │   │   │   ├── exactnumbers       <-- source code for exact-numbers package
+│   │   │   │   │   ├── common         <-- shared classes and utils
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   ├── expressions        <-- source code for expressions package
+│   │   │   │   │   ├── expressions    <-- code for representations of expressions
 │   │   ├── test                  
 │   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations

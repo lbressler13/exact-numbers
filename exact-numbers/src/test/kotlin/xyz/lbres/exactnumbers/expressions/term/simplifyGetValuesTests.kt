@@ -1,12 +1,12 @@
-package xyz.lbres.expressions.term
+package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.TestNumber
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
-import xyz.lbres.testutils.TestNumber
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 

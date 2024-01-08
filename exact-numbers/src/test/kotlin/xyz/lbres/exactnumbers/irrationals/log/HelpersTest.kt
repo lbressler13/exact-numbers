@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import xyz.lbres.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
