@@ -22,7 +22,6 @@ class TermTest {
 
     @Test fun testTimes() = runTimesTests()
     @Test fun testDiv() = runDivTests()
-    @Test fun testCompareTo() = runCompareToTests() // TODO
 
     @Test fun testGetSimplified() = runCommonSimplifyTests(Term::getSimplified)
     @Test fun testGetValue() = runGetValueTests()

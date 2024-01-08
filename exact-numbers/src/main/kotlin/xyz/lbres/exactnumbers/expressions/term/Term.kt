@@ -30,7 +30,7 @@ import kotlin.math.abs
 /**
  * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
  */
-class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) : Number(), Comparable<Term> {
+class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) : Number() {
     val coefficient: ExactFraction
 
     private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
@@ -148,8 +148,6 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
 
         return irrationalTypes[type]!!
     }
-
-    override fun compareTo(other: Term): Int = getValue().compareTo(other.getValue())
 
     /**
      * Calculate number of pis based on list of irrationals
