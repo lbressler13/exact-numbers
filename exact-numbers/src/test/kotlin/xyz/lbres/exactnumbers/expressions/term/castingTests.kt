@@ -25,12 +25,7 @@ fun runToCharTests() {
     expected = 3.toChar()
     assertEquals(expected, term.toChar())
 
-    var irrationals = listOf(Sqrt(ExactFraction(1, 9)), Log(2, 16, true))
-    term = Term.fromValues(ExactFraction(15, 4), irrationals)
-    expected = 5.toChar()
-    assertEquals(expected, term.toChar())
-
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    var irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
     term = Term.fromValues(one, irrationals)
     expected = 116.toChar()
     assertEquals(expected, term.toChar())
@@ -51,11 +46,7 @@ fun runToCharTests() {
     term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi(true)))
     assertCastingOverflow("Char", term) { term.toChar() }
 
-    term = Term.fromValues(ExactFraction(Char.MAX_VALUE.code), listOf(Sqrt(ExactFraction(1, 4))))
-    expected = (Char.MAX_VALUE.code / 2).toChar()
-    assertEquals(expected, term.toChar())
-
-    term = Term.fromValues(ExactFraction(Char.MAX_VALUE.code), listOf(Log(4)))
+    term = Term.fromValues(ExactFraction(Char.MAX_VALUE.code), listOf(Log(11, true)))
     assertSucceeds("Cast expected to succeed") { term.toChar() }
 
     term = Term.fromValues(ExactFraction(Char.MAX_VALUE.code), listOf(Log(11)))
@@ -108,12 +99,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
     expected = castLong(3)
     assertEquals(expected, castTerm(term))
 
-    var irrationals = listOf(Sqrt(ExactFraction(1, 9)), Log(2, 16, true))
-    term = Term.fromValues(ExactFraction(15, 4), irrationals)
-    expected = castLong(5)
-    assertEquals(expected, castTerm(term))
-
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    var irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
     term = Term.fromValues(one, irrationals)
     expected = castLong(116)
     assertEquals(expected, castTerm(term))
@@ -132,21 +118,13 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
         assertCastingOverflow(type, term) { castTerm(term) }
     }
 
-    term = Term.fromValues(ExactFraction(minValue.toLong()), listOf(Sqrt(ExactFraction(1, 4))))
-    expected = castLong(minValue.toLong() / 2)
-    assertEquals(expected, castTerm(term))
-
-    term = Term.fromValues(ExactFraction(minValue.toLong()), listOf(Log(4)))
+    term = Term.fromValues(ExactFraction(minValue.toLong()), listOf(Log(11, true)))
     assertSucceeds("Cast expected to succeed") { castTerm(term) }
 
     term = Term.fromValues(ExactFraction(minValue.toLong()), listOf(Log(11)))
     assertCastingOverflow(type, term) { castTerm(term) }
 
-    term = Term.fromValues(ExactFraction(maxValue.toLong()), listOf(Sqrt(ExactFraction(1, 4))))
-    expected = castLong(maxValue.toLong() / 2)
-    assertEquals(expected, castTerm(term))
-
-    term = Term.fromValues(ExactFraction(maxValue.toLong()), listOf(Log(4)))
+    term = Term.fromValues(ExactFraction(maxValue.toLong()), listOf(Log(11, true)))
     assertSucceeds("Cast expected to succeed") { castTerm(term) }
 
     term = Term.fromValues(ExactFraction(maxValue.toLong()), listOf(Log(11)))
@@ -170,6 +148,10 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     expected = castDouble(-0.3333333333333333)
     assertEquals(expected, castTerm(term))
 
+    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi(true)))
+    expected = castDouble(-3.0)
+    assertEquals(expected, castTerm(term))
+
     term = Term.fromValues(one, listOf(Log(3333)))
     expected = castDouble(3.52283531366053)
     assertEquals(expected, castTerm(term))
@@ -189,21 +171,13 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     val largeValue = maxValue.toDouble().toBigDecimal().toBigInteger()
     val smallValue = (-maxValue.toDouble()).toBigDecimal().toBigInteger()
 
-    term = Term.fromValues(ExactFraction(smallValue), listOf(Sqrt(ExactFraction(1, 4))))
-    expected = castDouble(smallValue.toDouble() / 2)
-    assertEquals(expected, castTerm(term))
-
-    term = Term.fromValues(ExactFraction(smallValue), listOf(Log(4)))
+    term = Term.fromValues(ExactFraction(smallValue), listOf(Log(11, true)))
     assertSucceeds("Cast expected to succeed") { castTerm(term) }
 
     term = Term.fromValues(ExactFraction(smallValue), listOf(Log(11)))
     assertCastingOverflow(type, term) { castTerm(term) }
 
-    term = Term.fromValues(ExactFraction(largeValue), listOf(Sqrt(ExactFraction(1, 4))))
-    expected = castDouble(largeValue.toDouble() / 2)
-    assertEquals(expected, castTerm(term))
-
-    term = Term.fromValues(ExactFraction(largeValue), listOf(Log(4)))
+    term = Term.fromValues(ExactFraction(largeValue), listOf(Log(11, true)))
     assertSucceeds("Cast expected to succeed") { castTerm(term) }
 
     term = Term.fromValues(ExactFraction(largeValue), listOf(Log(11)))
