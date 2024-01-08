@@ -12,7 +12,7 @@ import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.expressions.term.Term
+import xyz.lbres.exactnumbers.expressions.term.Term
 import java.math.BigDecimal
 
 /**

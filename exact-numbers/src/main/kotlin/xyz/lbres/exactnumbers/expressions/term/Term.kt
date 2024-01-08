@@ -1,4 +1,4 @@
-package xyz.lbres.expressions.term
+package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1

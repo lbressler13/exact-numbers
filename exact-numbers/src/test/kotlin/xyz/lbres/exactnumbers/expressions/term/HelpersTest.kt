@@ -1,4 +1,4 @@
-package xyz.lbres.expressions.term
+package xyz.lbres.exactnumbers.expressions.term
 
 import org.junit.Test
 

@@ -1,11 +1,11 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.TestNumber
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
-import xyz.lbres.expressions.term.Term
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE
