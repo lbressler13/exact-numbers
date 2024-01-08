@@ -5,6 +5,7 @@ import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.TestNumber
+import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -50,9 +51,15 @@ class TermTest {
         term1 = Term.fromValues(one, listOf(Pi(), TestNumber(ExactFraction(5))))
         assertEquals(term1, term1)
 
+        term1 = Term.fromValues(ExactFraction.HALF, listOf(Pi(), Sqrt(4)))
+        var term2 = Term.fromValues(ExactFraction.TWO, listOf(Pi(), Log(2, 4)))
+        println(BigDecimal(term1.getValue().toString()))
+        println(BigDecimal(term2.getValue().toString()))
+        assertEquals(term1, term2)
+
         // not equal
         term1 = Term.ONE
-        var term2 = -Term.ONE
+        term2 = -Term.ONE
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
