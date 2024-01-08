@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.common.castToByte
 import xyz.lbres.exactnumbers.common.castToChar
 import xyz.lbres.exactnumbers.common.castToDouble
@@ -8,6 +7,7 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
+import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
@@ -165,21 +165,19 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = castToByte(toBigDecimal()) { overflowException("Byte") }
-    override fun toChar(): Char = castToChar(toBigDecimal()) { overflowException("Char") }
-    override fun toShort(): Short = castToShort(toBigDecimal()) { overflowException("Short") }
-    override fun toInt(): Int = castToInt(toBigDecimal()) { overflowException("Int") }
-    override fun toLong(): Long = castToLong(toBigDecimal()) { overflowException("Long") }
-    override fun toFloat(): Float = castToFloat(toBigDecimal()) { overflowException("Float") }
-    override fun toDouble(): Double = castToDouble(toBigDecimal()) { overflowException("Double") }
+    override fun toByte(): Byte = castToByte(toBigDecimal()) { createCastingException(this, "Byte") }
+    override fun toChar(): Char = castToChar(toBigDecimal()) { createCastingException(this, "Char") }
+    override fun toShort(): Short = castToShort(toBigDecimal()) { createCastingException(this, "Short") }
+    override fun toInt(): Int = castToInt(toBigDecimal()) { createCastingException(this, "Int") }
+    override fun toLong(): Long = castToLong(toBigDecimal()) { createCastingException(this, "Long") }
+    override fun toFloat(): Float = castToFloat(toBigDecimal()) { createCastingException(this, "Float") }
+    override fun toDouble(): Double = castToDouble(toBigDecimal()) { createCastingException(this, "Double") }
 
     fun toBigInteger(): BigInteger = numerator / denominator
     fun toBigDecimal(precision: Int = 20): BigDecimal {
         val mc = MathContext(precision, RoundingMode.HALF_UP)
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
-
-    private fun overflowException(type: String): ArithmeticException = CastingOverflowException("ExactFraction", type, toEFString(), this)
 
     override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, this::class.toString()))
 

@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.irrationals.common
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.common.castToByte
 import xyz.lbres.exactnumbers.common.castToChar
 import xyz.lbres.exactnumbers.common.castToDouble
@@ -8,6 +7,7 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
+import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.common.divideByZero
@@ -116,18 +116,14 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
     }
 
-    override fun toByte(): Byte = castToByte(getValue()) { getCastingError("Byte") }
-    override fun toChar(): Char = castToChar(getValue()) { getCastingError("Char") }
-    override fun toShort(): Short = castToShort(getValue()) { getCastingError("Short") }
-    override fun toInt(): Int = castToInt(getValue()) { getCastingError("Int") }
-    override fun toLong(): Long = castToLong(getValue()) { getCastingError("Long") }
+    override fun toByte(): Byte = castToByte(getValue()) { createCastingException(this, "Byte") }
+    override fun toChar(): Char = castToChar(getValue()) { createCastingException(this, "Char") }
+    override fun toShort(): Short = castToShort(getValue()) { createCastingException(this, "Short") }
+    override fun toInt(): Int = castToInt(getValue()) { createCastingException(this, "Int") }
+    override fun toLong(): Long = castToLong(getValue()) { createCastingException(this, "Long") }
 
-    override fun toFloat(): Float = castToFloat(getValue()) { getCastingError("Float") }
-    override fun toDouble(): Double = castToDouble(getValue()) { getCastingError("Double") }
-
-    private val getCastingError: (String) -> ArithmeticException = { newType ->
-        CastingOverflowException(this::class.simpleName ?: this::class.toString(), newType, toString(), this)
-    }
+    override fun toFloat(): Float = castToFloat(getValue()) { createCastingException(this, "Float") }
+    override fun toDouble(): Double = castToDouble(getValue()) { createCastingException(this, "Double") }
 
     override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))
 }

@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.testutils
 
+import xyz.lbres.exactnumbers.common.CastingOverflowException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -37,4 +38,19 @@ fun <T> assertSucceeds(errorMessage: String, test: () -> T) {
     } catch (_: Exception) {
         throw AssertionError(errorMessage)
     }
+}
+
+/**
+ * Generate a function to assert that a CastingOverthrowException is thrown, with the correct message and overflow value
+ *
+ * @param baseType [String]: name of type being cast from
+ * @return function validate error being thrown
+ */
+fun <T> getCastingOverflowAssertion(baseType: String): (String, T, () -> Unit) -> Unit {
+    val assertionFn: (String, T, () -> Unit) -> Unit = { targetType, value, cast ->
+        val errorMessage = "Overflow casting value $value of type $baseType to $targetType"
+        val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { cast() }
+        assertEquals(value, error.overflowValue)
+    }
+    return assertionFn
 }

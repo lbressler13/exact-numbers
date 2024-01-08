@@ -1,11 +1,19 @@
 package xyz.lbres.exactnumbers.expressions.term
 
+import xyz.lbres.exactnumbers.common.castToByte
+import xyz.lbres.exactnumbers.common.castToChar
+import xyz.lbres.exactnumbers.common.castToDouble
+import xyz.lbres.exactnumbers.common.castToFloat
+import xyz.lbres.exactnumbers.common.castToInt
+import xyz.lbres.exactnumbers.common.castToLong
+import xyz.lbres.exactnumbers.common.castToShort
+import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
@@ -19,12 +27,10 @@ import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 import kotlin.math.abs
 
-// TODO implement number class
-
 /**
  * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
  */
-class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) {
+class Term private constructor(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) : Number() {
     val coefficient: ExactFraction
 
     private val irrationalTypes: MutableMap<String, List<IrrationalNumber<*>>> = mutableMapOf()
@@ -121,7 +127,7 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
             val irrationalProduct = simplified.irrationals.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
             val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * irrationalProduct
 
-            val result = divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
+            val result = numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
             value = result
         }
 
@@ -168,6 +174,15 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
 
         return string!!
     }
+
+    override fun toByte(): Byte = castToByte(getValue()) { createCastingException(this, "Byte") }
+    override fun toChar(): Char = castToChar(getValue()) { createCastingException(this, "Char") }
+    override fun toShort(): Short = castToShort(getValue()) { createCastingException(this, "Short") }
+    override fun toInt(): Int = castToInt(getValue()) { createCastingException(this, "Int") }
+    override fun toLong(): Long = castToLong(getValue()) { createCastingException(this, "Long") }
+
+    override fun toFloat(): Float = castToFloat(getValue()) { createCastingException(this, "Float") }
+    override fun toDouble(): Double = castToDouble(getValue()) { createCastingException(this, "Double") }
 
     override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
 

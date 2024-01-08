@@ -1,8 +1,8 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
@@ -25,7 +25,7 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
 
     override fun performGetValue(): BigDecimal {
         val base = PI.toBigDecimal()
-        return simpleIf(isInverted, { divideBigDecimals(BigDecimal.ONE, base) }, { base })
+        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(base) }, { base })
     }
 
     override fun isZero(): Boolean = false

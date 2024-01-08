@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
@@ -112,7 +112,7 @@ class Log private constructor(
      */
     override fun performGetValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-        return simpleIf(isInverted, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
+        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(logValue) }, { logValue })
     }
 
     /**
@@ -121,7 +121,6 @@ class Log private constructor(
      *
      * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
      */
-    // TODO: improve the process of simplifying using exponents
     fun getSimplified(): Pair<ExactFraction, Log> {
         when {
             fullySimplified -> return Pair(ExactFraction.ONE, this)
@@ -129,19 +128,6 @@ class Log private constructor(
             equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
             isRational() -> return Pair(getRationalValue()!!, ONE)
         }
-
-        // var exp = 0
-        // var remaining = argument.numerator
-        // val baseBigInt = base.toBigInteger()
-        // while (remaining.mod(baseBigInt) == BigInteger.ZERO) {
-        // exp++
-        // remaining /= baseBigInt
-        // }
-
-        // val rationalValue = ExactFraction(base).pow(exp)
-        // val remainingArgument = ExactFraction(remaining, argument.denominator)
-        // val remainingLog = Log(remainingArgument, base, isInverted, fullSimplified = true)
-        // return Pair(rationalValue, remainingLog)
 
         return Pair(ExactFraction.ONE, Log(argument, base, isInverted, fullySimplified = true))
     }

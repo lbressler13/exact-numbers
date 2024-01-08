@@ -1,10 +1,11 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
+import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import java.math.BigInteger
 import kotlin.test.assertEquals
+
+val assertCastingOverflow = getCastingOverflowAssertion<Log>("Log")
 
 fun runToByteTests() {
     runWholeNumberCastingTests(Long::toByte, Log::toByte, "Byte", shouldOverflow = true)
@@ -30,9 +31,7 @@ fun runToCharTests() {
     assertEquals(4.toChar(), log.toChar())
 
     log = Log(ExactFraction(1, 16), 2)
-    val errorMessage = "Overflow casting value $log of type Log to Char"
-    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { log.toChar() }
-    assertEquals(log, error.overflowValue)
+    assertCastingOverflow("Char", log) { log.toChar() }
 }
 
 fun runToShortTests() {
@@ -88,9 +87,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castL
     val largeValue = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
     log = Log(largeValue, 2)
     if (shouldOverflow) {
-        val errorMessage = "Overflow casting value $log of type Log to $type"
-        val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { castLog(log) }
-        assertEquals(log, error.overflowValue)
+        assertCastingOverflow(type, log) { castLog(log) }
     } else {
         assertEquals(castLong(128), castLog(log))
     }
