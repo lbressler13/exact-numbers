@@ -115,14 +115,14 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
     }
 
-    override fun toByte(): Byte = castToByte(getValue(), this)
-    override fun toChar(): Char = castToChar(getValue(), this)
-    override fun toShort(): Short = castToShort(getValue(), this)
-    override fun toInt(): Int = castToInt(getValue(), this)
-    override fun toLong(): Long = castToLong(getValue(), this)
+    override fun toByte(): Byte = castToByte(getValue(), this, type)
+    override fun toChar(): Char = castToChar(getValue(), this, type)
+    override fun toShort(): Short = castToShort(getValue(), this, type)
+    override fun toInt(): Int = castToInt(getValue(), this, type)
+    override fun toLong(): Long = castToLong(getValue(), this, type)
 
-    override fun toFloat(): Float = castToFloat(getValue(), this)
-    override fun toDouble(): Double = castToDouble(getValue(), this)
+    override fun toFloat(): Float = castToFloat(getValue(), this, type)
+    override fun toDouble(): Double = castToDouble(getValue(), this, type)
 
-    override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(getValue(), type))
 }

@@ -130,7 +130,7 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
         return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
     }
 
-    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, "ExactFraction"))
 
     companion object {
         val ZERO = ExactFraction(0)
