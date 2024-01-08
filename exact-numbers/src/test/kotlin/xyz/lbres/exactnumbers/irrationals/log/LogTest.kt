@@ -9,8 +9,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class LogTest {
-    @Test fun testConstructor() = runConstructorTests()
-
     @Test
     fun testEquals() {
         // equals

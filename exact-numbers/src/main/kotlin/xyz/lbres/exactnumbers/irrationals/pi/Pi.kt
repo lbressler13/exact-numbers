@@ -32,3 +32,7 @@ sealed class Pi(removeThis: String?) : IrrationalNumber<Pi>() {
         }
     }
 }
+
+fun Pi(): Pi = PiImpl()
+// TODO remove this
+fun Pi(isInverted: Boolean): Pi = PiImpl(isInverted)

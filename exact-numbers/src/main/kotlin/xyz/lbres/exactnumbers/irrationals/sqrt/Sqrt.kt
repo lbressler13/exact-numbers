@@ -8,6 +8,7 @@ import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
+import java.math.BigInteger
 
 /**
  * Representation of a square root with a rational radicand
@@ -50,3 +51,8 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
         }
     }
 }
+
+fun Sqrt(radicand: ExactFraction): Sqrt = SqrtImpl(radicand)
+fun Sqrt(radicand: Int): Sqrt = SqrtImpl(ExactFraction(radicand))
+fun Sqrt(radicand: Long): Sqrt = SqrtImpl(ExactFraction(radicand))
+fun Sqrt(radicand: BigInteger): Sqrt = SqrtImpl(ExactFraction(radicand))
