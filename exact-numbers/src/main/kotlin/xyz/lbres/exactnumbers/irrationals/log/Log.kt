@@ -140,7 +140,6 @@ class Log private constructor(
             throw divideByZero
         }
 
-        // TODO update inverse logic
         return Log(argument, base, !isInverted, fullySimplified = false)
     }
 

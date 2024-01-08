@@ -165,13 +165,13 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = castToByte(toBigDecimal()) { overflowException("Byte") }
-    override fun toChar(): Char = castToChar(toBigDecimal()) { overflowException("Char") }
-    override fun toShort(): Short = castToShort(toBigDecimal()) { overflowException("Short") }
-    override fun toInt(): Int = castToInt(toBigDecimal()) { overflowException("Int") }
-    override fun toLong(): Long = castToLong(toBigDecimal()) { overflowException("Long") }
-    override fun toFloat(): Float = castToFloat(toBigDecimal()) { overflowException("Float") }
-    override fun toDouble(): Double = castToDouble(toBigDecimal()) { overflowException("Double") }
+    override fun toByte(): Byte = castToByte(toBigDecimal()) { getCastingError("Byte") }
+    override fun toChar(): Char = castToChar(toBigDecimal()) { getCastingError("Char") }
+    override fun toShort(): Short = castToShort(toBigDecimal()) { getCastingError("Short") }
+    override fun toInt(): Int = castToInt(toBigDecimal()) { getCastingError("Int") }
+    override fun toLong(): Long = castToLong(toBigDecimal()) { getCastingError("Long") }
+    override fun toFloat(): Float = castToFloat(toBigDecimal()) { getCastingError("Float") }
+    override fun toDouble(): Double = castToDouble(toBigDecimal()) { getCastingError("Double") }
 
     fun toBigInteger(): BigInteger = numerator / denominator
     fun toBigDecimal(precision: Int = 20): BigDecimal {
@@ -179,7 +179,9 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
 
-    private fun overflowException(type: String): ArithmeticException = CastingOverflowException("ExactFraction", type, toEFString(), this)
+    private fun getCastingError(targetType: String): ArithmeticException {
+        return CastingOverflowException("ExactFraction", targetType, toEFString(), this)
+    }
 
     override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, this::class.toString()))
 

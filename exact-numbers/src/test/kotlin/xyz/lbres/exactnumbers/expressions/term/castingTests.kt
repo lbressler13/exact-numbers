@@ -1,15 +1,16 @@
 package xyz.lbres.exactnumbers.expressions.term
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import xyz.lbres.exactnumbers.testutils.assertSucceeds
+import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE
+
+private val assertCastingOverflow = getCastingOverflowAssertion<Term>("Term")
 
 fun runToByteTests() {
     runWholeNumberCastingTests(Long::toByte, Term::toByte, Byte.MIN_VALUE, Byte.MAX_VALUE, "Byte")
@@ -207,17 +208,4 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
 
     term = Term.fromValues(ExactFraction(largeValue), listOf(Log(11)))
     assertCastingOverflow(type, term) { castTerm(term) }
-}
-
-/**
- * Assert that a CastingOverflowException is thrown, with the correct message and overflow value
- *
- * @param type [String]: name of target type
- * @param value [Term]: value to cast
- * @param cast () -> Unit: function to perform the cast
- */
-private fun assertCastingOverflow(type: String, value: Term, cast: () -> Unit) {
-    val errorMessage = "Overflow casting value $value of type Term to $type"
-    val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { cast() }
-    assertEquals(value, error.overflowValue)
 }
