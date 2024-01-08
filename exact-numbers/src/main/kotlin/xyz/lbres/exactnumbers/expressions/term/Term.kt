@@ -10,10 +10,10 @@ import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
@@ -127,7 +127,7 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
             val irrationalProduct = simplified.irrationals.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
             val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * irrationalProduct
 
-            val result = divideBigDecimals(numeratorProduct, simplified.coefficient.denominator.toBigDecimal())
+            val result = numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
             value = result
         }
 

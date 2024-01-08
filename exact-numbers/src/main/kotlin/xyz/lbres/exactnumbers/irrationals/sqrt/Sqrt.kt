@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.general.simpleIf
@@ -81,7 +81,7 @@ class Sqrt private constructor(val radicand: ExactFraction, private val fullySim
     override fun performGetValue(): BigDecimal {
         val numRoot = getRootOf(radicand.numerator)
         val denomRoot = getRootOf(radicand.denominator)
-        return divideBigDecimals(numRoot, denomRoot)
+        return numRoot.divideBy(denomRoot)
     }
 
     override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand

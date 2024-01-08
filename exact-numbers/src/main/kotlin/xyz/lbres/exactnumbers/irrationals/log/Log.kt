@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideBigDecimals
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
@@ -112,7 +112,7 @@ class Log private constructor(
      */
     override fun performGetValue(): BigDecimal {
         val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
-        return simpleIf(isInverted, { divideBigDecimals(BigDecimal.ONE, logValue) }, { logValue })
+        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(logValue) }, { logValue })
     }
 
     /**

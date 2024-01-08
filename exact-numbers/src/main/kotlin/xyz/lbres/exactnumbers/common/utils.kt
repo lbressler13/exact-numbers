@@ -3,28 +3,7 @@ package xyz.lbres.exactnumbers.common
 import xyz.lbres.kotlinutils.general.tryOrDefault
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.MathContext
 import java.math.RoundingMode
-
-/**
- * Perform division of two BigDecimals, rounding to 20 digits if the result is irrational
- *
- * @param bigDec1 [BigDecimal]: number on left side of division
- * @param bigDec2 [BigDecimal]: number on right side of division
- * @return [BigDecimal]: bigDec1 / bigDec2
- */
-internal fun divideBigDecimals(bigDec1: BigDecimal, bigDec2: BigDecimal): BigDecimal {
-    if (bigDec2 == BigDecimal.ZERO) {
-        throw divideByZero
-    }
-
-    return try {
-        bigDec1.divide(bigDec2)
-    } catch (_: ArithmeticException) {
-        val mc = MathContext(20)
-        bigDec1.divide(bigDec2, mc)
-    }
-}
 
 /**
  * Round decimal to nearest ints, and determine if either value passes a check.
