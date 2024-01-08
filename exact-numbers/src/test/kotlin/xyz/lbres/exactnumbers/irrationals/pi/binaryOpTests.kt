@@ -3,9 +3,9 @@ package xyz.lbres.exactnumbers.irrationals.pi
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.TestNumber
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.expressions.term.Term
-import xyz.lbres.testutils.TestNumber
-import xyz.lbres.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE

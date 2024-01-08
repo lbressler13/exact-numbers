@@ -1,4 +1,4 @@
-package xyz.lbres.common
+package xyz.lbres.exactnumbers.common
 
 import xyz.lbres.kotlinutils.general.tryOrDefault
 import java.math.BigDecimal

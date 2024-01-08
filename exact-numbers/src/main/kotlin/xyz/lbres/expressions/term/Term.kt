@@ -1,10 +1,10 @@
 package xyz.lbres.expressions.term
 
-import xyz.lbres.common.createHashCode
-import xyz.lbres.common.deprecatedV1
-import xyz.lbres.common.divideBigDecimals
-import xyz.lbres.common.divideByZero
-import xyz.lbres.common.irrationalPackage
+import xyz.lbres.exactnumbers.common.createHashCode
+import xyz.lbres.exactnumbers.common.deprecatedV1
+import xyz.lbres.exactnumbers.common.divideBigDecimals
+import xyz.lbres.exactnumbers.common.divideByZero
+import xyz.lbres.exactnumbers.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log

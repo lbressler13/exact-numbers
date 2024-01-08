@@ -1,4 +1,4 @@
-package xyz.lbres.testutils
+package xyz.lbres.exactnumbers.testutils
 
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
