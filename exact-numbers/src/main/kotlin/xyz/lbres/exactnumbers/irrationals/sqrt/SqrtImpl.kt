@@ -106,5 +106,5 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
         return "[√($radicandString)]"
     }
 
-    override fun hashCode(): Int = createHashCode(listOf(radicand, this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(radicand, type))
 }

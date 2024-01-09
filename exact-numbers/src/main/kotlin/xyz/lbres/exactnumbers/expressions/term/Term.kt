@@ -39,15 +39,14 @@ sealed class Term : Number() {
     abstract fun isZero(): Boolean
 
     /**
-     * Simplify list of numbers and coefficient
+     * Simplify coefficients and irrationals
      *
      * @return [Term] simplified version of this term
      */
     abstract fun getSimplified(): Term
 
     /**
-     * Get value of term by multiplying numbers.
-     * Term is simplified before any computation is run
+     * Get value of term by multiplying numbers
      *
      * @return [BigDecimal]
      */

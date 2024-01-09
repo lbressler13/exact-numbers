@@ -119,13 +119,7 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
     /**
      * Calculate number of pis based on list of irrationals
      */
-    private fun calculatePiCount(): Int {
-        @Suppress("UNCHECKED_CAST")
-        val pis = getIrrationalsByType(Pi.TYPE) as List<Pi>
-        val positive = pis.count { !it.isInverted }
-        val negative = pis.size - positive
-        return positive - negative
-    }
+    private fun calculatePiCount(): Int = _irrationals.getCountOf(Pi()) - _irrationals.getCountOf(Pi().inverse())
 
     override fun toString(): String {
         if (string == null) {
@@ -141,7 +135,7 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other == null || other !is Term) {
+        if (other !is Term) {
             return false
         }
 
@@ -151,5 +145,5 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
         return simplified.coefficient == otherSimplified.coefficient && simplified._irrationals == otherSimplified._irrationals
     }
 
-    override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(coefficient, _irrationals, "Term"))
 }

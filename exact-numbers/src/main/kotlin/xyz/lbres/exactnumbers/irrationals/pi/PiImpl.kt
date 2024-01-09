@@ -31,5 +31,5 @@ internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
     override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
 
     override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
-    override fun hashCode(): Int = createHashCode(listOf(PI, isInverted, this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(PI, isInverted, type))
 }
