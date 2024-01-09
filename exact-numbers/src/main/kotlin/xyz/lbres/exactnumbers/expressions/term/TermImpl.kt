@@ -15,13 +15,14 @@ import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 
-internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<IrrationalNumber<*>>) : Term() {
+// implementation of Term class
+internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<IrrationalNumber<*>>) : Term() {
     override val coefficient: ExactFraction
 
     // mapping of irrational types to list of values
     private val factorTypeMapping: Map<String, List<IrrationalNumber<*>>>
 
-    private val _factors: ConstMultiSet<IrrationalNumber<*>>
+    private val factorSet: ConstMultiSet<IrrationalNumber<*>>
     override val factors: List<IrrationalNumber<*>>
 
     override val logs: List<Log>
@@ -35,10 +36,10 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
     private var string: String? = null
 
     init {
-        if (coefficient.isZero() || irrationals.any { it.isZero() }) {
+        if (coefficient.isZero() || factors.any { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
             this.factors = emptyList()
-            _factors = emptyConstMultiSet()
+            factorSet = emptyConstMultiSet()
             factorTypeMapping = emptyMap()
 
             logs = emptyList()
@@ -47,9 +48,9 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
             piCount = 0
         } else {
             this.coefficient = coefficient
-            this.factors = irrationals.toList()
-            this._factors = irrationals
-            this.factorTypeMapping = _factors.groupBy { it.type }
+            this.factors = factors.toList()
+            this.factorSet = factors
+            this.factorTypeMapping = factorSet.groupBy { it.type }
 
             @Suppress("UNCHECKED_CAST")
             logs = factorTypeMapping.getOrDefault(Log.TYPE, emptyList()) as List<Log>
@@ -57,16 +58,16 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
             squareRoots = factorTypeMapping.getOrDefault(Sqrt.TYPE, emptyList()) as List<Sqrt>
             @Suppress("UNCHECKED_CAST")
             pis = factorTypeMapping.getOrDefault(Pi.TYPE, emptyList()) as List<Pi>
-            piCount = _factors.getCountOf(Pi()) - _factors.getCountOf(Pi().inverse())
+            piCount = factorSet.getCountOf(Pi()) - factorSet.getCountOf(Pi().inverse())
         }
     }
 
-    override fun unaryMinus(): Term = TermImpl(-coefficient, _factors)
-    override fun unaryPlus(): Term = TermImpl(coefficient, _factors)
+    override fun unaryMinus(): Term = TermImpl(-coefficient, factorSet)
+    override fun unaryPlus(): Term = TermImpl(coefficient, factorSet)
 
     override fun times(other: Term): Term {
         other as TermImpl
-        val newIrrationals = _factors + other._factors
+        val newIrrationals = factorSet + other.factorSet
         return TermImpl(coefficient * other.coefficient, newIrrationals.toConstMultiSet())
     }
 
@@ -76,14 +77,14 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
         }
 
         other as TermImpl
-        val newIrrationals = _factors + other._factors.mapToSetConsistent { it.inverse() }
+        val newIrrationals = factorSet + other.factorSet.mapToSetConsistent { it.inverse() }
         return TermImpl(coefficient / other.coefficient, newIrrationals.toConstMultiSet())
     }
 
     override fun isZero(): Boolean = coefficient.isZero()
 
     /**
-     * Simplify all numbers, based on the simplify function for their type
+     * Simplify coefficient and factors
      *
      * @return [Term] simplified version of this term
      */
@@ -96,8 +97,8 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
     }
 
     /**
-     * Get value of term by multiplying numbers.
-     * Term is simplified before any computation is run
+     * Get value of term by multiplying coefficient and factors.
+     * Term is simplified before value is computed.
      *
      * @return [BigDecimal]
      */
@@ -129,7 +130,7 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
         if (string == null) {
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
-            val numString = _factors.joinToString("x")
+            val numString = factorSet.joinToString("x")
             val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
 
             string = result
@@ -146,8 +147,8 @@ internal class TermImpl(coefficient: ExactFraction, irrationals: ConstMultiSet<I
         val simplified = getSimplified() as TermImpl
         val otherSimplified = other.getSimplified() as TermImpl
 
-        return simplified.coefficient == otherSimplified.coefficient && simplified._factors == otherSimplified._factors
+        return simplified.coefficient == otherSimplified.coefficient && simplified.factorSet == otherSimplified.factorSet
     }
 
-    override fun hashCode(): Int = createHashCode(listOf(coefficient, _factors, "Term"))
+    override fun hashCode(): Int = createHashCode(listOf(coefficient, factorSet, "Term"))
 }

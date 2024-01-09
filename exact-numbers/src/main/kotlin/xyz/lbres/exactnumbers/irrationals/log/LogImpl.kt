@@ -7,16 +7,18 @@ import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
-import java.math.BigInteger
 
 @Suppress("EqualsOrHashCode")
-internal class LogImpl(
+// implementation of Log class
+internal class LogImpl private constructor(
     override val argument: ExactFraction,
     override val base: Int,
     override val isInverted: Boolean,
     private val fullySimplified: Boolean
 ) : Log() {
     override val type = TYPE
+
+    private var simplified: Pair<ExactFraction, Log>? = null
 
     init {
         when {
@@ -85,14 +87,18 @@ internal class LogImpl(
      * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
      */
     override fun getSimplified(): Pair<ExactFraction, Log> {
-        when {
-            fullySimplified -> return Pair(ExactFraction.ONE, this)
-            isZero() -> return Pair(ExactFraction.ONE, ZERO)
-            equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
-            isRational() -> return Pair(getRationalValue()!!, ONE)
+        if (simplified == null) {
+            when {
+                fullySimplified -> return Pair(ExactFraction.ONE, this)
+                isZero() -> return Pair(ExactFraction.ONE, ZERO)
+                equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
+                isRational() -> return Pair(getRationalValue()!!, ONE)
+            }
+
+            simplified = Pair(ExactFraction.ONE, LogImpl(argument, base, isInverted, fullySimplified = true))
         }
 
-        return Pair(ExactFraction.ONE, LogImpl(argument, base, isInverted, fullySimplified = true))
+        return simplified!!
     }
 
     /**
@@ -107,12 +113,7 @@ internal class LogImpl(
     }
 
     override fun toString(): String {
-        val numString = if (argument.denominator == BigInteger.ONE) {
-            argument.numerator.toString()
-        } else {
-            "${argument.numerator}/${argument.denominator}"
-        }
-
+        val numString = argument.toFractionString()
         return simpleIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
     }
 

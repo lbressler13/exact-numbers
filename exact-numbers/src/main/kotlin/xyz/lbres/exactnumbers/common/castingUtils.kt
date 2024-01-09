@@ -8,12 +8,11 @@ import java.math.BigInteger
  *
  * @param value [Any]: overflow value
  * @param targetType [String]: type being cast to
- * @param baseType [String]?: base type, can be `null`. Defaults to invoking string methods on class name
+ * @param baseType [String]: base type
  * @return [CastingOverflowException] with overflowValue and message based on the provided values
  */
-private fun createCastingException(value: Any, targetType: String, baseType: String?): CastingOverflowException {
-    val baseTypeString = baseType ?: value::class.simpleName ?: value::class.toString()
-    return CastingOverflowException(baseTypeString, targetType, value.toString(), value)
+private fun createCastingException(value: Any, targetType: String, baseType: String): CastingOverflowException {
+    return CastingOverflowException(baseType, targetType, value.toString(), value)
 }
 
 /**
@@ -21,10 +20,10 @@ private fun createCastingException(value: Any, targetType: String, baseType: Str
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Byte] value as a byte
  */
-internal fun <T> castToByte(decimal: BigDecimal, value: T, type: String? = null): Byte {
+internal fun <T> castToByte(decimal: BigDecimal, value: T, type: String): Byte {
     val createException = { createCastingException(value as Any, "Byte", type) }
     return castNumber(decimal, Byte.MIN_VALUE, Byte.MAX_VALUE, BigDecimal::toByte, createException, false)
 }
@@ -34,10 +33,10 @@ internal fun <T> castToByte(decimal: BigDecimal, value: T, type: String? = null)
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Char] value as a char
  */
-internal fun <T> castToChar(decimal: BigDecimal, value: T, type: String? = null): Char {
+internal fun <T> castToChar(decimal: BigDecimal, value: T, type: String): Char {
     val createException = { createCastingException(value as Any, "Char", type) }
 
     val minValue = Char.MIN_VALUE.code
@@ -51,10 +50,10 @@ internal fun <T> castToChar(decimal: BigDecimal, value: T, type: String? = null)
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Short] value as a short
  */
-internal fun <T> castToShort(decimal: BigDecimal, value: T, type: String? = null): Short {
+internal fun <T> castToShort(decimal: BigDecimal, value: T, type: String): Short {
     val createException = { createCastingException(value as Any, "Short", type) }
     return castNumber(decimal, Short.MIN_VALUE, Short.MAX_VALUE, BigDecimal::toShort, createException, false)
 }
@@ -64,10 +63,10 @@ internal fun <T> castToShort(decimal: BigDecimal, value: T, type: String? = null
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Int] value as an int
  */
-internal fun <T> castToInt(decimal: BigDecimal, value: T, type: String? = null): Int {
+internal fun <T> castToInt(decimal: BigDecimal, value: T, type: String): Int {
     val createException = { createCastingException(value as Any, "Int", type) }
     return castNumber(decimal, Int.MIN_VALUE, Int.MAX_VALUE, BigDecimal::toInt, createException, false)
 }
@@ -77,10 +76,10 @@ internal fun <T> castToInt(decimal: BigDecimal, value: T, type: String? = null):
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Long] value as a long
  */
-internal fun <T> castToLong(decimal: BigDecimal, value: T, type: String? = null): Long {
+internal fun <T> castToLong(decimal: BigDecimal, value: T, type: String): Long {
     val createException = { createCastingException(value as Any, "Long", type) }
     return castNumber(decimal, Long.MIN_VALUE, Long.MAX_VALUE, BigDecimal::toLong, createException, false)
 }
@@ -90,10 +89,10 @@ internal fun <T> castToLong(decimal: BigDecimal, value: T, type: String? = null)
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Float] value as a float
  */
-internal fun <T> castToFloat(decimal: BigDecimal, value: T, type: String? = null): Float {
+internal fun <T> castToFloat(decimal: BigDecimal, value: T, type: String): Float {
     val createException = { createCastingException(value as Any, "Float", type) }
     return castNumber(decimal, -Float.MAX_VALUE, Float.MAX_VALUE, BigDecimal::toFloat, createException, true)
 }
@@ -103,10 +102,10 @@ internal fun <T> castToFloat(decimal: BigDecimal, value: T, type: String? = null
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
- * @param type [String]?: base type, defaults to `null`
+ * @param type [String]: base type
  * @return [Double] value as a double
  */
-internal fun <T> castToDouble(decimal: BigDecimal, value: T, type: String? = null): Double {
+internal fun <T> castToDouble(decimal: BigDecimal, value: T, type: String): Double {
     val createException = { createCastingException(value as Any, "Double", type) }
     return castNumber(decimal, -Double.MAX_VALUE, Double.MAX_VALUE, BigDecimal::toDouble, createException, true)
 }

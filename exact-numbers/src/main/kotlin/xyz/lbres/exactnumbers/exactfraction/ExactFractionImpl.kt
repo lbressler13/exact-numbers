@@ -1,7 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.exactnumbers.common.divideByZero
-import xyz.lbres.exactnumbers.ext.eq
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
@@ -48,8 +47,6 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     override fun times(other: ExactFraction): ExactFraction = efTimes(this, other)
     override fun div(other: ExactFraction): ExactFraction = times(other.inverse())
 
-    override fun eq(other: Int): Boolean = isWholeNumber() && numerator.eq(other)
-    override fun eq(other: Long): Boolean = isWholeNumber() && numerator.eq(other)
     override fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
 
     override fun compareTo(other: ExactFraction): Int = efCompare(this, other)

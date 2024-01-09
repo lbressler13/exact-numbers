@@ -5,11 +5,13 @@ import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
 import java.math.BigDecimal
-import java.math.BigInteger
 
+// implementation of Sqrt class
 internal class SqrtImpl private constructor(override val radicand: ExactFraction, private val fullySimplified: Boolean) : Sqrt() {
     override val type = TYPE
     override val isInverted = false
+
+    private var simplified: Pair<ExactFraction, Sqrt>? = null
 
     init {
         if (radicand.isNegative()) {
@@ -67,8 +69,6 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
         return numRoot.divideBy(denomRoot)
     }
 
-    override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
-
     /**
      * Simplify log into a coefficient and a root.
      * Extracts rational component of root into coefficient, and leaves remaining piece as root.
@@ -77,34 +77,30 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
      * @return [Pair]<ExactFraction, Sqrt>: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
      */
     override fun getSimplified(): Pair<ExactFraction, Sqrt> {
-        when {
-            fullySimplified -> return Pair(ExactFraction.ONE, this)
-            radicand.isZero() -> return Pair(ExactFraction.ONE, ZERO)
-            radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, ONE)
+        if (simplified == null) {
+            when {
+                fullySimplified -> return Pair(ExactFraction.ONE, this)
+                radicand.isZero() -> return Pair(ExactFraction.ONE, ZERO)
+                radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, ONE)
+            }
+
+            val numWhole = extractWholeOf(radicand.numerator)
+            val denomWhole = extractWholeOf(radicand.denominator)
+            val whole = ExactFraction(numWhole, denomWhole)
+
+            val newNum = radicand.numerator / (numWhole * numWhole)
+            val newDenom = radicand.denominator / (denomWhole * denomWhole)
+            val newRadicand = ExactFraction(newNum, newDenom)
+
+            simplified = Pair(whole, SqrtImpl(newRadicand, true))
         }
 
-        val numWhole = extractWholeOf(radicand.numerator)
-        val denomWhole = extractWholeOf(radicand.denominator)
-        val whole = ExactFraction(numWhole, denomWhole)
-
-        val newNum = radicand.numerator / (numWhole * numWhole)
-        val newDenom = radicand.denominator / (denomWhole * denomWhole)
-        val newRadicand = ExactFraction(newNum, newDenom)
-
-        return Pair(whole, SqrtImpl(newRadicand, true))
+        return simplified!!
     }
 
     override fun compareTo(other: Sqrt): Int = radicand.compareTo(other.radicand)
 
-    override fun toString(): String {
-        val radicandString = if (radicand.denominator == BigInteger.ONE) {
-            radicand.numerator.toString()
-        } else {
-            "${radicand.numerator}/${radicand.denominator}"
-        }
-
-        return "[√($radicandString)]"
-    }
-
+    override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
+    override fun toString(): String = "[√(${radicand.toFractionString()})]"
     override fun hashCode(): Int = createHashCode(listOf(radicand, type))
 }

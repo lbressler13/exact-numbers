@@ -38,9 +38,9 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     expectedIrrationals = listOf(Pi().inverse())
     runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
-    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt))
+    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt, testNumber1, testNumber1, testNumber1.inverse(), testNumber1.inverse(), testNumber1.inverse()))
     expectedCoeff = ExactFraction(20)
-    expectedIrrationals = listOf(Sqrt(ExactFraction(5, 33)))
+    expectedIrrationals = listOf(Sqrt(ExactFraction(5, 33)), testNumber1.inverse())
     runSingleGetSimplifiedTest(term, expectedCoeff, expectedIrrationals, simplify)
 
     term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))

@@ -46,7 +46,7 @@ sealed class Term : Number() {
     abstract fun getSimplified(): Term
 
     /**
-     * Get value of term by multiplying numbers
+     * Get value of term by multiplying coefficient and factors
      *
      * @return [BigDecimal]
      */

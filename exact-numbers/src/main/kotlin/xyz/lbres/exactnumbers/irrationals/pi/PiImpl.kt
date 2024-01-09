@@ -7,6 +7,7 @@ import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
 
+// implementation of Pi class
 internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
     override val type: String = TYPE
 

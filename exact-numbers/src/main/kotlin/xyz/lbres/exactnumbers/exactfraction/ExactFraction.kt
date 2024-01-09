@@ -59,9 +59,9 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     operator fun div(other: Long): ExactFraction = div(other.toExactFraction())
     operator fun div(other: Int): ExactFraction = div(other.toExactFraction())
 
-    abstract fun eq(other: Int): Boolean
-    abstract fun eq(other: Long): Boolean
     abstract fun eq(other: BigInteger): Boolean
+    fun eq(other: Int): Boolean = eq(other.toBigInteger())
+    fun eq(other: Long): Boolean = eq(other.toBigInteger())
 
     abstract override fun compareTo(other: ExactFraction): Int
     operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
