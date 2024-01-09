@@ -12,7 +12,6 @@ import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
-import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import kotlin.math.abs
 
@@ -58,9 +57,7 @@ private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>
         values.anyConsistent { it.isZero() } -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
     }
 
-    // val distinct = logValues.distinctValues.map { Log(it.argument, it.base) }.toSet()
-    val distinct = values.map { simpleIf(it.isInverted, { it.inverse() }, { it }) }
-
+    val distinct = values.mapToSetConsistent { simpleIf(it.isInverted, { it.inverse() }, { it }) }.distinctValues
     var coefficient = ExactFraction.ONE
 
     // avoids creating a standard MultiSet for efficiency
@@ -80,17 +77,4 @@ private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>
     }
 
     return Pair(coefficient, simplifiedValues)
-//    var coefficient = ExactFraction.ONE
-//    val irrationalValues: ConstMutableMultiSet<IrrationalNumber<*>> = constMutableMultiSetOf()
-//
-//    values.forEach {
-//        val rationalValue = it.getRationalValue()
-//        if (rationalValue != null) {
-//            coefficient *= rationalValue
-//        } else {
-//            irrationalValues.add(it)
-//        }
-//    }
-//
-//    return Pair(coefficient, irrationalValues)
 }
