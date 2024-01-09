@@ -4,6 +4,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
+import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
@@ -25,8 +26,8 @@ sealed class Log : IrrationalNumber<Log>() {
     companion object : IrrationalNumberCompanion<Log>() {
         override val TYPE = "Log"
 
-        val ZERO = Log(ExactFraction.ONE, 10, isInverted = false)
-        val ONE = Log(ExactFraction.TEN, 10, isInverted = false)
+        val ZERO = Log(ExactFraction.ONE, 10)
+        val ONE = Log(ExactFraction.TEN, 10)
 
         /**
          * Extract rational values and simplify remaining set of logs
@@ -52,7 +53,9 @@ sealed class Log : IrrationalNumber<Log>() {
             for (log in distinct) {
                 if (log != ONE) {
                     val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
-                    val simplified = ConstMultiSet(abs(diff)) { Log(log.argument, log.base, isInverted = diff < 0) }
+                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) {
+                        simpleIf(diff < 0, { log.inverse() }, { log })
+                    }
                     simplifiedValues.addAll(simplified)
                 }
             }

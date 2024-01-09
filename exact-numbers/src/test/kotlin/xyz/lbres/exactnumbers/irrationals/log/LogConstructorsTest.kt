@@ -1,7 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.Test
@@ -12,11 +11,6 @@ class LogConstructorsTest {
     @Test
     fun testLog() {
         // error
-        assertDivByZero { Log(ExactFraction.ONE, 10, isInverted = true) }
-        assertDivByZero { Log(1, 10, isInverted = true) }
-        assertDivByZero { Log(1L, 10, isInverted = true) }
-        assertDivByZero { Log(BigInteger.ONE, 10, isInverted = true) }
-
         var error = "Cannot calculate log of 0"
         assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.ZERO) }
         assertFailsWithMessage<ArithmeticException>(error) { Log(0) }

@@ -52,7 +52,26 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
     }
 }
 
+/**
+ * Construct a Sqrt by specifying radicand
+ * @param radicand [ExactFraction]
+ */
 fun Sqrt(radicand: ExactFraction): Sqrt = SqrtImpl(radicand)
+
+/**
+ * Construct a Sqrt by specifying radicand
+ * @param radicand [Int]
+ */
 fun Sqrt(radicand: Int): Sqrt = SqrtImpl(ExactFraction(radicand))
+
+/**
+ * Construct a Sqrt by specifying radicand
+ * @param radicand [Long]
+ */
 fun Sqrt(radicand: Long): Sqrt = SqrtImpl(ExactFraction(radicand))
+
+/**
+ * Construct a Sqrt by specifying radicand
+ * @param radicand [BigInteger]
+ */
 fun Sqrt(radicand: BigInteger): Sqrt = SqrtImpl(ExactFraction(radicand))

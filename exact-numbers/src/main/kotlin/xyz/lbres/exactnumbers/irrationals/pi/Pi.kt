@@ -34,4 +34,7 @@ sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     }
 }
 
+/**
+ * Construct a Pi
+ */
 fun Pi(): Pi = PiImpl(false)

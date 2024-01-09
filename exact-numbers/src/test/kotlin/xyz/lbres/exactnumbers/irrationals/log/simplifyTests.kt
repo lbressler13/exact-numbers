@@ -33,7 +33,7 @@ fun runGetSimplifiedTests() {
     expected = Pair(ExactFraction.FIVE, one)
     assertEquals(expected, logNum.getSimplified())
 
-    logNum = Log(ExactFraction(32), 2, true)
+    logNum = Log(ExactFraction(32), 2).inverse()
     expected = Pair(ExactFraction(1, 5), one)
     assertEquals(expected, logNum.getSimplified())
 
@@ -87,29 +87,29 @@ fun runSimplifySetTests() {
     expected = Pair(fractionOne, constMultiSetOf())
     assertEquals(expected, Log.simplifySet(logs))
 
-    logs = constMultiSetOf(one, Log(8), Log(4, 3, true))
-    expected = Pair(fractionOne, constMultiSetOf(Log(8), Log(4, 3, true)))
+    logs = constMultiSetOf(one, Log(8), Log(4, 3).inverse())
+    expected = Pair(fractionOne, constMultiSetOf(Log(8), Log(4, 3).inverse()))
     assertEquals(expected, Log.simplifySet(logs))
 
-    logs = constMultiSetOf(one, Log(8), one, one, one, Log(4, 3, true))
-    expected = Pair(fractionOne, constMultiSetOf(Log(8), Log(4, 3, true)))
+    logs = constMultiSetOf(one, Log(8), one, one, one, Log(4, 3).inverse())
+    expected = Pair(fractionOne, constMultiSetOf(Log(8), Log(4, 3).inverse()))
     assertEquals(expected, Log.simplifySet(logs))
 
     // inverses
-    logs = constMultiSetOf(Log(8), Log(8, 10, true))
+    logs = constMultiSetOf(Log(8), Log(8, 10).inverse())
     expected = Pair(fractionOne, constMultiSetOf())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(
-        Log(4, 3, true),
-        Log(4, 3, true),
+        Log(4, 3).inverse(),
+        Log(4, 3).inverse(),
         Log(4, 3)
     )
-    expected = Pair(fractionOne, constMultiSetOf(Log(4, 3, true)))
+    expected = Pair(fractionOne, constMultiSetOf(Log(4, 3).inverse()))
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(
-        Log(4, 3, true),
+        Log(4, 3).inverse(),
         Log(4, 3),
         Log(4, 3)
     )
@@ -119,18 +119,18 @@ fun runSimplifySetTests() {
     logs = constMultiSetOf(
         Log(ExactFraction(7, 3)),
         Log(ExactFraction(5, 51)),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(4, 3, true),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(ExactFraction(5, 51), 5, true),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(4, 3).inverse(),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(ExactFraction(5, 51), 5).inverse(),
         Log(4, 3)
     )
     expected = Pair(
         fractionOne,
         constMultiSetOf(
-            Log(ExactFraction(7, 3), 10, true),
+            Log(ExactFraction(7, 3), 10).inverse(),
             Log(ExactFraction(5, 51)),
-            Log(ExactFraction(5, 51), 5, true)
+            Log(ExactFraction(5, 51), 5).inverse()
         )
     )
     assertEquals(expected, Log.simplifySet(logs))
@@ -145,7 +145,7 @@ fun runSimplifySetTests() {
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(
-        Log(ExactFraction(1, 1000), true),
+        Log(ExactFraction(1, 1000)).inverse(),
         Log(6),
         Log(ExactFraction(15, 4), 4),
         Log(ExactFraction(1, 16), 2)
@@ -162,15 +162,15 @@ fun runSimplifySetTests() {
     expected = Pair(fractionOne, logs)
     assertEquals(expected, Log.simplifySet(logs))
 
-    logs = constMultiSetOf(Log(3), Log(3, 9, true))
+    logs = constMultiSetOf(Log(3), Log(3, 9).inverse())
     expected = Pair(fractionOne, logs)
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(
         Log(ExactFraction(5, 51)),
-        Log(4, 3, true),
-        Log(ExactFraction(7, 3), 10, true),
-        Log(ExactFraction(5, 51), 5, true),
+        Log(4, 3).inverse(),
+        Log(ExactFraction(7, 3), 10).inverse(),
+        Log(ExactFraction(5, 51), 5).inverse(),
         Log(1000005, 3)
     )
     expected = Pair(fractionOne, logs)

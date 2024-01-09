@@ -10,7 +10,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 private val logNum2 = Log(8, 7)
-private val logNum3 = Log(ExactFraction(19, 33), true)
+private val logNum3 = Log(ExactFraction(19, 33)).inverse()
 private val logNum4 = Log(ExactFraction(25, 121))
 private val testNumber1 = TestNumber(ExactFraction(5, 6))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)

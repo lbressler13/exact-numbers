@@ -38,7 +38,7 @@ fun runTimesTests() {
     assertEquals(expected, piInverse * ef)
 
     // log
-    var log = Log(ExactFraction(33, 14), 5, true)
+    var log = Log(ExactFraction(33, 14), 5).inverse()
     expected = Term.fromValues(one, listOf(log, pi))
     assertEquals(expected, pi * log)
 

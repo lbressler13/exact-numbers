@@ -21,10 +21,10 @@ fun runToCharTests() {
     log = Log(16, 2)
     assertEquals(4.toChar(), log.toChar())
 
-    log = Log(16, 2, true)
+    log = Log(16, 2).inverse()
     assertEquals(0.toChar(), log.toChar())
 
-    log = Log(2, 16, true)
+    log = Log(2, 16).inverse()
     assertEquals(4.toChar(), log.toChar())
 
     log = Log(18, 2)
@@ -72,10 +72,10 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castL
     log = Log(16, 2)
     assertEquals(castLong(4), castLog(log))
 
-    log = Log(16, 2, true)
+    log = Log(16, 2).inverse()
     assertEquals(castLong(0), castLog(log))
 
-    log = Log(2, 16, true)
+    log = Log(2, 16).inverse()
     assertEquals(castLong(4), castLog(log))
 
     log = Log(18, 2)
@@ -109,10 +109,10 @@ private fun <T : Number> runDecimalCastingTests(castDouble: (Double) -> T, castL
     log = Log(16, 2)
     assertEquals(castDouble(4.0), castLog(log))
 
-    log = Log(16, 2, true)
+    log = Log(16, 2).inverse()
     assertEquals(castDouble(0.25), castLog(log))
 
-    log = Log(2, 16, true)
+    log = Log(2, 16).inverse()
     assertEquals(castDouble(4.0), castLog(log))
 
     log = Log(18, 2)
@@ -128,6 +128,6 @@ private fun <T : Number> runDecimalCastingTests(castDouble: (Double) -> T, castL
     log = Log(largeValue + BigInteger("4"), 19)
     assertEquals(castDouble(30.132340910929695), castLog(log))
 
-    log = Log(largeValue + BigInteger("4"), 19, true)
+    log = Log(largeValue + BigInteger("4"), 19).inverse()
     assertEquals(castDouble(0.03318693369877801), castLog(log))
 }
