@@ -20,7 +20,7 @@ internal fun simplifyTerm(term: Term): Term {
     var newCoefficient = term.coefficient
     val newValues: MutableList<IrrationalNumber<*>> = mutableListOf()
 
-    term.irrationals.groupBy { it.type }
+    term.factors.groupBy { it.type }
         .forEach { (type, values) ->
             val valueSet = values.toConstMultiSet()
 

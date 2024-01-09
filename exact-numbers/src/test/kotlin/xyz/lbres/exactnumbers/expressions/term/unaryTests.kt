@@ -41,9 +41,9 @@ fun runUnaryMinusTests() {
     expected = Term.fromValues(ExactFraction(-15, 44), emptyList())
     assertEquals(expected, -term)
 
-    val irrationals = listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
-    term = Term.fromValues(ExactFraction(-15, 44), irrationals)
-    expected = Term.fromValues(ExactFraction(15, 44), irrationals)
+    val factors = listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
+    term = Term.fromValues(ExactFraction(-15, 44), factors)
+    expected = Term.fromValues(ExactFraction(15, 44), factors)
     assertEquals(expected, -term)
 }
 

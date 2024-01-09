@@ -17,7 +17,7 @@ private val testNumber1 = TestNumber(ExactFraction(3, 4))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
 
-fun runGetIrrationalsByTypeTests() {
+fun runGetFactorsByTypeTests() {
     val types = listOf(Log.TYPE, Pi.TYPE, Sqrt.TYPE, TestNumber.TYPE)
 
     // zero
@@ -201,6 +201,6 @@ fun runGetSquareRootsTests() {
 private fun runSingleIrrationalsByTypeTest(term: Term, types: StringList, expectedValues: Map<String, List<IrrationalNumber<*>>>) {
     for (type in types) {
         val expectedValue = expectedValues.getOrDefault(type, emptyList())
-        assertEquals(expectedValue, term.getIrrationalsByType(type))
+        assertEquals(expectedValue, term.getFactorsByType(type))
     }
 }

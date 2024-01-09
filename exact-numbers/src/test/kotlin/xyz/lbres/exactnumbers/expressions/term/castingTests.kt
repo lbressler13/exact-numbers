@@ -25,18 +25,18 @@ fun runToCharTests() {
     expected = 3.toChar()
     assertEquals(expected, term.toChar())
 
-    var irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(one, irrationals)
+    var factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(one, factors)
     expected = 116.toChar()
     assertEquals(expected, term.toChar())
 
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(7, 17), irrationals)
+    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(7, 17), factors)
     expected = 48.toChar()
     assertEquals(expected, term.toChar())
 
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(123, 7), irrationals)
+    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(123, 7), factors)
     expected = 2050.toChar()
     assertEquals(expected, term.toChar())
 
@@ -99,18 +99,18 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
     expected = castLong(3)
     assertEquals(expected, castTerm(term))
 
-    var irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(one, irrationals)
+    var factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(one, factors)
     expected = castLong(116)
     assertEquals(expected, castTerm(term))
 
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(7, 17), irrationals)
+    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(7, 17), factors)
     expected = castLong(48)
     assertEquals(expected, castTerm(term))
 
-    irrationals = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(-123, 7), irrationals)
+    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(-123, 7), factors)
     if (minValue.toLong() <= -2050) {
         expected = castLong(-2050)
         assertEquals(expected, castTerm(term))

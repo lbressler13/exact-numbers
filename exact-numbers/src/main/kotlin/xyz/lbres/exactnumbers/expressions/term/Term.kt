@@ -20,11 +20,11 @@ import java.math.BigDecimal
 import kotlin.math.abs
 
 /**
- * Representation of the product of several numbers, as a rational coefficient and list of irrational numbers
+ * Representation of the product of several numbers, as a rational coefficient and list of irrational factors
  */
 sealed class Term : Number() {
     abstract val coefficient: ExactFraction
-    abstract val irrationals: List<IrrationalNumber<*>>
+    abstract val factors: List<IrrationalNumber<*>>
     abstract val logs: List<Log>
     abstract val squareRoots: List<Sqrt>
     abstract val pis: List<Pi>
@@ -39,7 +39,7 @@ sealed class Term : Number() {
     abstract fun isZero(): Boolean
 
     /**
-     * Simplify coefficients and irrationals
+     * Simplify coefficient and factors
      *
      * @return [Term] simplified version of this term
      */
@@ -53,12 +53,12 @@ sealed class Term : Number() {
     abstract fun getValue(): BigDecimal
 
     /**
-     * Get list of irrational numbers with a given type
+     * Get list of irrational factors with a given type
      *
-     * @param type [String]: type to retrieve numbers for
-     * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have type [type]
+     * @param irrationalType [String]: type to retrieve numbers for
+     * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have the provided type
      */
-    abstract fun getIrrationalsByType(type: String): List<IrrationalNumber<*>>
+    abstract fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
 
     override fun toByte(): Byte = castToByte(getValue(), this, "Term")
     override fun toChar(): Char = castToChar(getValue(), this, "Term")
@@ -86,14 +86,14 @@ sealed class Term : Number() {
         val ONE = fromValues(ExactFraction.ONE, emptyList())
 
         /**
-         * Construct a term by providing information about coefficient and irrationals
+         * Construct a term by providing information about coefficient and irrational factors
          *
          * @param coefficient [ExactFraction]
-         * @param irrationals [List]<IrrationalNumber<*>>: list of irrational numbers
+         * @param factors [List]<IrrationalNumber<*>>: list of irrational numbers
          * @return [Term] with the given values
          */
-        fun fromValues(coefficient: ExactFraction, irrationals: List<IrrationalNumber<*>>): Term {
-            return TermImpl(coefficient, irrationals.toConstMultiSet())
+        fun fromValues(coefficient: ExactFraction, factors: List<IrrationalNumber<*>>): Term {
+            return TermImpl(coefficient, factors.toConstMultiSet())
         }
 
         /**

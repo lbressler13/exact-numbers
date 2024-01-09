@@ -26,7 +26,7 @@ class TermTest {
     @Test fun testGetSimplified() = runCommonSimplifyTests(Term::getSimplified)
     @Test fun testGetValue() = runGetValueTests()
 
-    @Test fun testGetIrrationalsByType() = runGetIrrationalsByTypeTests()
+    @Test fun testGetFactorsByType() = runGetFactorsByTypeTests()
 
     @Test
     fun testEquals() {

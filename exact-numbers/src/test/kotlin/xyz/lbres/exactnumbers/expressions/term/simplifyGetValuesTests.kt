@@ -198,5 +198,5 @@ fun runGetValueTests() {
 private fun runSingleGetSimplifiedTest(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>, simplify: (Term) -> Term) {
     val result = simplify(term)
     assertEquals(result.coefficient, expectedCoeff)
-    assertEquals(expectedIrrationals.toConstMultiSet(), result.irrationals.toConstMultiSet())
+    assertEquals(expectedIrrationals.toConstMultiSet(), result.factors.toConstMultiSet())
 }

@@ -144,7 +144,7 @@ private fun runComponentConstructorTests() {
 
 private fun checkTerm(term: Term, expectedCoeff: ExactFraction, expectedIrrationals: List<IrrationalNumber<*>>, expectedPiCount: Int) {
     assertEquals(expectedCoeff, term.coefficient)
-    assertEquals(expectedIrrationals, term.irrationals)
+    assertEquals(expectedIrrationals, term.factors)
     assertEquals(expectedPiCount, term.piCount)
 }
 
