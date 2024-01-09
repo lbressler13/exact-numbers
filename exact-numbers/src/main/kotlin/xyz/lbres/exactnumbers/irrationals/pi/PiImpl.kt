@@ -11,14 +11,14 @@ import kotlin.math.PI
 internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
     override val type: String = TYPE
 
-    override fun performGetValue(): BigDecimal {
+    override fun getValue(): BigDecimal {
         val base = PI.toBigDecimal()
         return simpleIf(isInverted, { BigDecimal.ONE.divideBy(base) }, { base })
     }
 
     override fun isZero(): Boolean = false
-    override fun checkIsRational(): Boolean = false
-    override fun performGetRationalValue(): ExactFraction? = null
+    override fun isRational(): Boolean = false
+    override fun getRationalValue(): ExactFraction? = null
     override fun inverse(): Pi = PiImpl(!isInverted)
 
     override fun compareTo(other: Pi): Int {

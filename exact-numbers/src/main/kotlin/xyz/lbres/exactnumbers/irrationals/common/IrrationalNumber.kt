@@ -18,9 +18,9 @@ import java.math.BigDecimal
  * Representation of an irrational number
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
-    private var isRational: Boolean? = null
-    private var value: BigDecimal? = null
-    private var rationalValue: ExactFraction? = null
+    // private var isRational: Boolean? = null
+    // private var value: BigDecimal? = null
+    // private var rationalValue: ExactFraction? = null
 
     /**
      * Type of number, should correspond to the type name for the class
@@ -43,44 +43,17 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     /**
      * If the number is a rational value
      */
-    fun isRational(): Boolean {
-        if (isRational == null) {
-            isRational = checkIsRational()
-        }
-
-        return isRational!!
-    }
+    abstract fun isRational(): Boolean
 
     /**
      * Get value of number
      */
-    fun getValue(): BigDecimal {
-        if (value == null) {
-            value = performGetValue()
-        }
-
-        return value!!
-    }
+    abstract fun getValue(): BigDecimal
 
     /**
      * Get the value of the number as a BigInteger. Returns `null` if the value of the number is not rational.
      */
-    fun getRationalValue(): ExactFraction? {
-        if (!isRational()) {
-            return null
-        }
-
-        if (rationalValue == null) {
-            rationalValue = performGetRationalValue()
-        }
-
-        return rationalValue
-    }
-
-    // implementation-specific code for isRational, getValue, and getRationalValue
-    protected abstract fun checkIsRational(): Boolean
-    protected abstract fun performGetValue(): BigDecimal
-    protected abstract fun performGetRationalValue(): ExactFraction?
+    abstract fun getRationalValue(): ExactFraction?
 
     /**
      * Get multiplicative inverse

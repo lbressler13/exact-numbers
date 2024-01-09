@@ -18,6 +18,8 @@ internal class LogImpl private constructor(
 ) : Log() {
     override val type = TYPE
 
+    private var numLog: BigDecimal? = null
+    private var denomLog: BigDecimal? = null
     private var simplified: Pair<ExactFraction, Log>? = null
 
     init {
@@ -38,12 +40,10 @@ internal class LogImpl private constructor(
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun checkIsRational(): Boolean {
-        val numLog = getLogOf(argument.numerator, base)
-        val denomLog = getLogOf(argument.denominator, base)
-
+    override fun isRational(): Boolean {
+        setLogs()
         // rational if both values are whole numbers
-        return numLog.toPlainString().indexOf('.') == -1 && denomLog.toPlainString().indexOf('.') == -1
+        return numLog!!.toPlainString().indexOf('.') == -1 && denomLog!!.toPlainString().indexOf('.') == -1
     }
 
     /**
@@ -51,19 +51,20 @@ internal class LogImpl private constructor(
      *
      * @return [ExactFraction]?: value of the log, or null if the value is irrational
      */
-    override fun performGetRationalValue(): ExactFraction? {
+    override fun getRationalValue(): ExactFraction? {
         when {
             !isRational() -> return null
             isZero() -> return ExactFraction.ZERO
         }
 
-        val numLog = getLogOf(argument.numerator, base).toBigInteger()
-        val denomLog = getLogOf(argument.denominator, base).toBigInteger()
+        setLogs()
+        val numInt = numLog!!.toBigInteger()
+        val denomInt = denomLog!!.toBigInteger()
 
         val result = when {
-            numLog.isZero() -> -ExactFraction(denomLog) // numerator of argument is 1
-            denomLog.isZero() -> ExactFraction(numLog) // denominator of argument is 1
-            else -> ExactFraction(numLog, denomLog)
+            numInt.isZero() -> -ExactFraction(denomInt) // numerator of argument is 1
+            denomInt.isZero() -> ExactFraction(numInt) // denominator of argument is 1
+            else -> ExactFraction(numInt, denomInt)
         }
 
         return simpleIf(isInverted, { result.inverse() }, { result })
@@ -75,8 +76,9 @@ internal class LogImpl private constructor(
      *
      * @return [BigDecimal]
      */
-    override fun performGetValue(): BigDecimal {
-        val logValue = getLogOf(argument.numerator, base) - getLogOf(argument.denominator, base)
+    override fun getValue(): BigDecimal {
+        setLogs()
+        val logValue = numLog!! - denomLog!!
         return simpleIf(isInverted, { BigDecimal.ONE.divideBy(logValue) }, { logValue })
     }
 
@@ -110,6 +112,13 @@ internal class LogImpl private constructor(
         }
 
         return LogImpl(argument, base, !isInverted, fullySimplified = false)
+    }
+
+    private fun setLogs() {
+        if (numLog == null || denomLog == null) {
+            numLog = getLogOf(argument.numerator, base)
+            denomLog = getLogOf(argument.denominator, base)
+        }
     }
 
     override fun toString(): String {

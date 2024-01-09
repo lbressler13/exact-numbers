@@ -11,6 +11,8 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
     override val type = TYPE
     override val isInverted = false
 
+    private var numRoot: BigDecimal? = null
+    private var denomRoot: BigDecimal? = null
     private var simplified: Pair<ExactFraction, Sqrt>? = null
 
     init {
@@ -35,11 +37,9 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
      *
      * @return [Boolean]: true if the value is rational, false otherwise
      */
-    override fun checkIsRational(): Boolean {
-        val numRoot = getRootOf(radicand.numerator).toPlainString()
-        val denomRoot = getRootOf(radicand.denominator).toPlainString()
-
-        return numRoot.indexOf('.') == -1 && denomRoot.indexOf('.') == -1
+    override fun isRational(): Boolean {
+        setRoots()
+        return numRoot!!.toPlainString().indexOf('.') == -1 && denomRoot!!.toPlainString().indexOf('.') == -1
     }
 
     /**
@@ -47,14 +47,13 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
      *
      * @return [ExactFraction]?: value of the root, or null if the value is irrational
      */
-    override fun performGetRationalValue(): ExactFraction? {
+    override fun getRationalValue(): ExactFraction? {
         if (!isRational()) {
             return null
         }
 
-        val numRoot = getRootOf(radicand.numerator).toBigInteger()
-        val denomRoot = getRootOf(radicand.denominator).toBigInteger()
-        return ExactFraction(numRoot, denomRoot)
+        setRoots()
+        return ExactFraction(numRoot!!.toBigInteger(), denomRoot!!.toBigInteger())
     }
 
     /**
@@ -63,10 +62,9 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
      *
      * @return [BigDecimal]
      */
-    override fun performGetValue(): BigDecimal {
-        val numRoot = getRootOf(radicand.numerator)
-        val denomRoot = getRootOf(radicand.denominator)
-        return numRoot.divideBy(denomRoot)
+    override fun getValue(): BigDecimal {
+        setRoots()
+        return numRoot!!.divideBy(denomRoot!!)
     }
 
     /**
@@ -99,6 +97,16 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
     }
 
     override fun compareTo(other: Sqrt): Int = radicand.compareTo(other.radicand)
+
+    /**
+     * Populate numRoot and denomRoot, if not already set
+     */
+    private fun setRoots() {
+        if (numRoot == null || denomRoot == null) {
+            numRoot = getRootOf(radicand.numerator)
+            denomRoot = getRootOf(radicand.denominator)
+        }
+    }
 
     override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
     override fun toString(): String = "[√(${radicand.toFractionString()})]"
