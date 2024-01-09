@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
-import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion

@@ -37,7 +37,6 @@ fun Log(argument: BigInteger, base: Int): Log = Log(ExactFraction(argument), bas
  */
 fun Log(argument: ExactFraction): Log = Log(argument, base = 10)
 
-
 /**
  * Construct a Log by specifying argument only
  * @param argument [ExactFraction]
