@@ -33,15 +33,15 @@ fun runUnaryMinusTests() {
     expected = Term.fromValues(one, listOf(Sqrt(32)))
     assertEquals(expected, -term)
 
-    term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi(true), testNumber2))
-    expected = Term.fromValues(ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi(true), testNumber2))
+    term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
+    expected = Term.fromValues(ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(36), Pi().inverse(), testNumber2))
     assertEquals(expected, -term)
 
     term = Term.fromValues(ExactFraction(15, 44), emptyList())
     expected = Term.fromValues(ExactFraction(-15, 44), emptyList())
     assertEquals(expected, -term)
 
-    val irrationals = listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi(true), Pi())
+    val irrationals = listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
     term = Term.fromValues(ExactFraction(-15, 44), irrationals)
     expected = Term.fromValues(ExactFraction(15, 44), irrationals)
     assertEquals(expected, -term)
@@ -60,7 +60,7 @@ fun runUnaryPlusTests() {
     term = Term.fromValues(one, listOf(Sqrt.ONE))
     assertEquals(term, +term)
 
-    term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(121), Pi(true), testNumber2))
+    term = Term.fromValues(-ExactFraction.SIX, listOf(logNum3, logNum4, Sqrt(121), Pi().inverse(), testNumber2))
     assertEquals(term, +term)
 
     term = Term.fromValues(ExactFraction(15, 44), emptyList())
@@ -68,7 +68,7 @@ fun runUnaryPlusTests() {
 
     term = Term.fromValues(
         ExactFraction(-15, 44),
-        listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(64, 9)), Pi(), Pi(true))
+        listOf(logNum2, logNum3, logNum4, Sqrt(ExactFraction(64, 9)), Pi(), Pi().inverse())
     )
     assertEquals(term, +term)
 }
@@ -91,7 +91,7 @@ fun runIsZeroTests() {
     term = Term.fromValues(one, listOf(Sqrt.ONE))
     assertFalse(term.isZero())
 
-    term = Term.fromValues(ExactFraction(5, 4), listOf(logNum2, logNum4, Sqrt(12), Pi(true)))
+    term = Term.fromValues(ExactFraction(5, 4), listOf(logNum2, logNum4, Sqrt(12), Pi().inverse()))
     assertFalse(term.isZero())
 
     term = Term.fromValues(-ExactFraction.HALF, listOf(logNum2, logNum2.inverse(), testNumber1))
@@ -100,6 +100,6 @@ fun runIsZeroTests() {
     term = Term.fromValues(-ExactFraction.HALF, listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
     assertFalse(term.isZero())
 
-    term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Pi(true), Pi(true), Pi(true)))
+    term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
     assertFalse(term.isZero())
 }

@@ -19,7 +19,7 @@ private val sqrtWholeEF = Sqrt(ExactFraction(9, 25))
 private val sqrtDecimal = Sqrt(11)
 
 private val pi = Pi()
-private val piInverse = Pi(true)
+private val piInverse = Pi().inverse()
 
 private val testNumber1 = TestNumber(ExactFraction(5, 6))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)

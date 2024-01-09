@@ -223,7 +223,7 @@ class Term private constructor(coefficient: ExactFraction, irrationals: ConstMul
          * @return [Term] with the given values
          */
         fun fromValues(coefficient: ExactFraction, logs: List<Log>, roots: List<Sqrt>, piCount: Int): Term {
-            val pis = List(abs(piCount)) { Pi(isInverted = piCount < 0) }
+            val pis = List(abs(piCount)) { simpleIf(piCount < 0, { Pi().inverse() }, { Pi() }) }
             return fromValues(coefficient, logs + roots + pis)
         }
     }

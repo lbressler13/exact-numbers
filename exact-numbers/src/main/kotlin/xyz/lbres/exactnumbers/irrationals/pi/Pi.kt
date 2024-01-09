@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
+import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
@@ -10,8 +11,8 @@ import kotlin.math.abs
 /**
  * Representation of pi
  */
-// TODO remove param
-sealed class Pi(removeThis: String?) : IrrationalNumber<Pi>() {
+// parameter in constructor avoids conflicts with the Pi() function
+sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     companion object : IrrationalNumberCompanion<Pi>() {
         override val TYPE = "Pi"
 
@@ -26,13 +27,11 @@ sealed class Pi(removeThis: String?) : IrrationalNumber<Pi>() {
                 return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
-            val diff = numbers.getCountOf(PiImpl()) - numbers.getCountOf(PiImpl(isInverted = true))
-            val pis: ConstMultiSet<Pi> = ConstMultiSet(abs(diff)) { PiImpl(isInverted = diff < 0) }
+            val diff = numbers.getCountOf(Pi()) * 2 - numbers.size // positive - (numbers.size - positive)
+            val pis: ConstMultiSet<Pi> = ConstMultiSet(abs(diff)) { PiImpl(diff < 0) }
             return Pair(ExactFraction.ONE, pis)
         }
     }
 }
 
-fun Pi(): Pi = PiImpl()
-// TODO remove this
-fun Pi(isInverted: Boolean): Pi = PiImpl(isInverted)
+fun Pi(): Pi = PiImpl(false)

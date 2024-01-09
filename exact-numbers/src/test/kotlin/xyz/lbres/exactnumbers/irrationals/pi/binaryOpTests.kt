@@ -12,7 +12,7 @@ private val one = ExactFraction.ONE
 
 fun runTimesTests() {
     val pi = Pi()
-    val piInverse = Pi(true)
+    val piInverse = Pi().inverse()
 
     // zero
     assertEquals(Term.ZERO, pi * Log.ZERO)
@@ -63,7 +63,7 @@ fun runTimesTests() {
 
 fun runDivTests() {
     val pi = Pi()
-    val piInverse = Pi(true)
+    val piInverse = Pi().inverse()
 
     // zero
     assertDivByZero { pi / Log.ZERO }

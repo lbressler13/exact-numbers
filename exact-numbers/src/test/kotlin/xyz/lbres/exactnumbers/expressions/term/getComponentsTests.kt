@@ -31,22 +31,22 @@ fun runGetIrrationalsByTypeTests() {
     term = Term.fromValues(ExactFraction(4, 7), emptyList())
     runSingleIrrationalsByTypeTest(term, types, emptyMap())
 
-    term = Term.fromValues(ExactFraction(4, 7), listOf(Pi(), Sqrt(47), Pi(), Pi(true)))
+    term = Term.fromValues(ExactFraction(4, 7), listOf(Pi(), Sqrt(47), Pi(), Pi().inverse()))
     runSingleIrrationalsByTypeTest(
         term, types,
         mapOf(
-            Pi.TYPE to listOf(Pi(), Pi(), Pi(true)),
+            Pi.TYPE to listOf(Pi(), Pi(), Pi().inverse()),
             Sqrt.TYPE to listOf(Sqrt(47))
         )
     )
 
-    term = Term.fromValues(one, listOf(testNumber1, logNum2, testNumber2.inverse(), Pi(true)))
+    term = Term.fromValues(one, listOf(testNumber1, logNum2, testNumber2.inverse(), Pi().inverse()))
     runSingleIrrationalsByTypeTest(
         term, types + listOf("Random"),
         mapOf(
             TestNumber.TYPE to listOf(testNumber1, testNumber2.inverse()),
             Log.TYPE to listOf(logNum2),
-            Pi.TYPE to listOf(Pi(true))
+            Pi.TYPE to listOf(Pi().inverse())
         )
     )
 
@@ -56,7 +56,7 @@ fun runGetIrrationalsByTypeTests() {
         mapOf(
             Log.TYPE to listOf(logNum4, logNum4, logNum2),
             Sqrt.TYPE to listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))),
-            Pi.TYPE to listOf(Pi(true), Pi(true))
+            Pi.TYPE to listOf(Pi().inverse(), Pi().inverse())
         )
     )
 }
@@ -96,7 +96,7 @@ fun runGetLogsTests() {
     expected = listOf(logNum3)
     assertEquals(expected, term.logs)
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum2, logNum2, logNum3, logNum4, Sqrt(15), Pi(), Pi(true)))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum2, logNum2, logNum3, logNum4, Sqrt(15), Pi(), Pi().inverse()))
     expected = listOf(logNum2, logNum2, logNum3, logNum4)
     assertEquals(expected, term.logs)
 }
@@ -111,16 +111,16 @@ fun runGetPiCountTests() {
     term = Term.fromValues(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Pi(), Pi().inverse()))
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(Pi(), Pi(true), Pi(), Pi(true), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi(), Pi().inverse(), Pi(), Pi().inverse()))
     assertEquals(expected, term.piCount)
 
     term = Term.fromValues(one, listOf(logNum1, logNum2, Sqrt(ExactFraction(64, 9))))
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(logNum3, logNum4, logNum2, Pi(true), Pi(), Pi(true), Pi()))
+    term = Term.fromValues(one, listOf(logNum3, logNum4, logNum2, Pi().inverse(), Pi(), Pi().inverse(), Pi()))
     assertEquals(expected, term.piCount)
 
     // just pi
@@ -128,24 +128,24 @@ fun runGetPiCountTests() {
     expected = 1
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(Pi(true)))
+    term = Term.fromValues(one, listOf(Pi().inverse()))
     expected = -1
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(Pi(true), Pi(true), Pi(true)))
+    term = Term.fromValues(one, listOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
     expected = -3
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(one, listOf(Pi(), Pi(true), Pi(), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi(), Pi(), Pi().inverse()))
     expected = 1
     assertEquals(expected, term.piCount)
 
     // mix
-    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi(true)))
+    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi().inverse()))
     expected = -1
     assertEquals(expected, term.piCount)
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum2, Sqrt(36), Pi(), Pi(), Pi(true), Pi()))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum2, Sqrt(36), Pi(), Pi(), Pi().inverse(), Pi()))
     expected = 2
     assertEquals(expected, term.piCount)
 }
@@ -160,7 +160,7 @@ fun runGetSquareRootsTests() {
     term = Term.fromValues(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.squareRoots)
 
-    term = Term.fromValues(one, listOf(logNum1, logNum2, Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(logNum1, logNum2, Pi(), Pi().inverse()))
     assertEquals(expected, term.squareRoots)
 
     // just sqrt
@@ -181,7 +181,7 @@ fun runGetSquareRootsTests() {
     assertEquals(expected, term.squareRoots)
 
     // mix
-    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi(true)))
+    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi().inverse()))
     expected = listOf(Sqrt(2))
     assertEquals(expected, term.squareRoots)
 

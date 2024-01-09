@@ -7,11 +7,8 @@ import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
 
-internal class PiImpl(override val isInverted: Boolean) : Pi(null) {
+internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
     override val type: String = TYPE
-
-    // constructor with reduced params
-    constructor() : this(false)
 
     override fun performGetValue(): BigDecimal {
         val base = PI.toBigDecimal()

@@ -15,10 +15,10 @@ fun runSimplifySetTests() {
 
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(), Pi(true))
+    pis = constMultiSetOf(Pi(), Pi().inverse())
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(true), Pi(), Pi(true), Pi(), Pi(), Pi(true))
+    pis = constMultiSetOf(Pi().inverse(), Pi(), Pi().inverse(), Pi(), Pi(), Pi().inverse())
     assertEquals(expected, Pi.simplifySet(pis))
 
     // positive
@@ -30,28 +30,28 @@ fun runSimplifySetTests() {
     expected = Pair(one, constMultiSetOf(Pi(), Pi(), Pi()))
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(), Pi(), Pi(true))
+    pis = constMultiSetOf(Pi(), Pi(), Pi().inverse())
     expected = Pair(one, constMultiSetOf(Pi()))
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(), Pi(), Pi(), Pi(true), Pi(), Pi(true))
+    pis = constMultiSetOf(Pi(), Pi(), Pi(), Pi().inverse(), Pi(), Pi().inverse())
     expected = Pair(one, constMultiSetOf(Pi(), Pi()))
     assertEquals(expected, Pi.simplifySet(pis))
 
     // negative
-    pis = constMultiSetOf(Pi(true))
-    expected = Pair(one, constMultiSetOf(Pi(true)))
+    pis = constMultiSetOf(Pi().inverse())
+    expected = Pair(one, constMultiSetOf(Pi().inverse()))
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(true), Pi(true), Pi(true))
-    expected = Pair(one, constMultiSetOf(Pi(true), Pi(true), Pi(true)))
+    pis = constMultiSetOf(Pi().inverse(), Pi().inverse(), Pi().inverse())
+    expected = Pair(one, constMultiSetOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(true), Pi(true), Pi())
-    expected = Pair(one, constMultiSetOf(Pi(true)))
+    pis = constMultiSetOf(Pi().inverse(), Pi().inverse(), Pi())
+    expected = Pair(one, constMultiSetOf(Pi().inverse()))
     assertEquals(expected, Pi.simplifySet(pis))
 
-    pis = constMultiSetOf(Pi(true), Pi(true), Pi(true), Pi(), Pi(true), Pi())
-    expected = Pair(one, constMultiSetOf(Pi(true), Pi(true)))
+    pis = constMultiSetOf(Pi().inverse(), Pi().inverse(), Pi().inverse(), Pi(), Pi().inverse(), Pi())
+    expected = Pair(one, constMultiSetOf(Pi().inverse(), Pi().inverse()))
     assertEquals(expected, Pi.simplifySet(pis))
 }

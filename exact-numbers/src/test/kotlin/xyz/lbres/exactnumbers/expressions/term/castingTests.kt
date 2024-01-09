@@ -21,7 +21,7 @@ fun runToCharTests() {
     var expected = 0.toChar()
     assertEquals(expected, term.toChar())
 
-    term = Term.fromValues(one, listOf(Log(29, 3), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Log(29, 3), Pi(), Pi().inverse()))
     expected = 3.toChar()
     assertEquals(expected, term.toChar())
 
@@ -43,7 +43,7 @@ fun runToCharTests() {
     term = Term.fromValues(ExactFraction(-14, 11), emptyList())
     assertCastingOverflow("Char", term) { term.toChar() }
 
-    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi().inverse()))
     assertCastingOverflow("Char", term) { term.toChar() }
 
     term = Term.fromValues(ExactFraction(Char.MAX_VALUE.code), listOf(Log(11, true)))
@@ -91,11 +91,11 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
     expected = castLong(-1)
     assertEquals(expected, castTerm(term))
 
-    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi().inverse()))
     expected = castLong(-3)
     assertEquals(expected, castTerm(term))
 
-    term = Term.fromValues(one, listOf(Log(29, 3), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Log(29, 3), Pi(), Pi().inverse()))
     expected = castLong(3)
     assertEquals(expected, castTerm(term))
 
@@ -148,7 +148,7 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     expected = castDouble(-0.3333333333333333)
     assertEquals(expected, castTerm(term))
 
-    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi(true)))
+    term = Term.fromValues(one, listOf(Log(ExactFraction(1, 27), 3), Pi(), Pi().inverse()))
     expected = castDouble(-3.0)
     assertEquals(expected, castTerm(term))
 
@@ -160,7 +160,7 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     expected = castDouble(-8.377580409572781)
     assertEquals(expected, castTerm(term))
 
-    term = Term.fromValues(ExactFraction.HALF, listOf(Log(4, 2).inverse(), Log(123456789), Pi(true)))
+    term = Term.fromValues(ExactFraction.HALF, listOf(Log(4, 2).inverse(), Log(123456789), Pi().inverse()))
     expected = castDouble(0.6439023028592971)
     assertEquals(expected, castTerm(term))
 
