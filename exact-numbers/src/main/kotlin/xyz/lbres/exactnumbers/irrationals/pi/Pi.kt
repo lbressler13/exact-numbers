@@ -1,54 +1,18 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
-import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.ext.divideBy
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
-import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
-import java.math.BigDecimal
-import kotlin.math.PI
 import kotlin.math.abs
 
 /**
  * Representation of pi
- *
- * @param isInverted [Boolean]: if the inverse of the value should be calculated
  */
-class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
-    override val type: String = TYPE
-
-    // constructor with reduced params
-    constructor() : this(false)
-
-    override fun performGetValue(): BigDecimal {
-        val base = PI.toBigDecimal()
-        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(base) }, { base })
-    }
-
-    override fun isZero(): Boolean = false
-    override fun checkIsRational(): Boolean = false
-    override fun performGetRationalValue(): ExactFraction? = null
-    override fun inverse(): Pi = Pi(!isInverted)
-
-    override fun compareTo(other: Pi): Int {
-        return when {
-            isInverted && !other.isInverted -> -1
-            !isInverted && other.isInverted -> 1
-            else -> 0
-        }
-    }
-
-    override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
-
-    override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
-
-    override fun hashCode(): Int = createHashCode(listOf(PI, isInverted, this::class.toString()))
-
-    companion object : IrrationalNumberCompanion<Pi>() {
-        override val TYPE = "pi"
+// parameter in constructor avoids conflicts with the Pi() function
+sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
+    companion object {
+        val TYPE = "Pi"
 
         /**
          * Simplify set of pis
@@ -56,14 +20,19 @@ class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
          * @param numbers [ConstMultiSet]<Pi>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is one, and second value is the simplified set
          */
-        override fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
+        fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
             if (numbers.isEmpty()) {
                 return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
-            val diff = numbers.getCountOf(Pi()) - numbers.getCountOf(Pi(isInverted = true))
-            val pis = ConstMultiSet(abs(diff)) { Pi(isInverted = diff < 0) }
+            val diff = numbers.getCountOf(Pi()) * 2 - numbers.size // positive - (numbers.size - positive)
+            val pis: ConstMultiSet<Pi> = ConstMultiSet(abs(diff)) { PiImpl(diff < 0) }
             return Pair(ExactFraction.ONE, pis)
         }
     }
 }
+
+/**
+ * Construct a Pi
+ */
+fun Pi(): Pi = PiImpl(false)

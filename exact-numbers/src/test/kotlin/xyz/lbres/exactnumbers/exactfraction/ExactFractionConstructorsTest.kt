@@ -6,7 +6,7 @@ import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class ExactFractionAlternateConstructorsTest {
+class ExactFractionConstructorsTest {
     @Test
     fun testExactFraction() {
         runStringTests()
@@ -103,6 +103,8 @@ class ExactFractionAlternateConstructorsTest {
         assertEquals(expected, ExactFraction(value1, value2.toBigInteger()))
         // BigInteger, Long
         assertEquals(expected, ExactFraction(value1.toBigInteger(), value2.toLong()))
+        // BigInteger, BigInteger
+        assertEquals(expected, ExactFraction(value1.toBigInteger(), value2.toBigInteger()))
         // Long, BigInteger
         assertEquals(expected, ExactFraction(value1.toLong(), value2.toBigInteger()))
     }

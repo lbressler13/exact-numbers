@@ -1,4 +1,4 @@
-package xyz.lbres.exactnumbers.irrationals.common
+package xyz.lbres.exactnumbers.irrationals
 
 import xyz.lbres.exactnumbers.common.castToByte
 import xyz.lbres.exactnumbers.common.castToChar
@@ -7,7 +7,6 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.deprecatedV1
 import xyz.lbres.exactnumbers.common.divideByZero
@@ -19,10 +18,6 @@ import java.math.BigDecimal
  * Representation of an irrational number
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
-    private var isRational: Boolean? = null
-    private var value: BigDecimal? = null
-    private var rationalValue: ExactFraction? = null
-
     /**
      * Type of number, should correspond to the type name for the class
      */
@@ -44,44 +39,17 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     /**
      * If the number is a rational value
      */
-    fun isRational(): Boolean {
-        if (isRational == null) {
-            isRational = checkIsRational()
-        }
-
-        return isRational!!
-    }
+    abstract fun isRational(): Boolean
 
     /**
      * Get value of number
      */
-    fun getValue(): BigDecimal {
-        if (value == null) {
-            value = performGetValue()
-        }
-
-        return value!!
-    }
+    abstract fun getValue(): BigDecimal
 
     /**
      * Get the value of the number as a BigInteger. Returns `null` if the value of the number is not rational.
      */
-    fun getRationalValue(): ExactFraction? {
-        if (!isRational()) {
-            return null
-        }
-
-        if (rationalValue == null) {
-            rationalValue = performGetRationalValue()
-        }
-
-        return rationalValue
-    }
-
-    // implementation-specific code for isRational, getValue, and getRationalValue
-    protected abstract fun checkIsRational(): Boolean
-    protected abstract fun performGetValue(): BigDecimal
-    protected abstract fun performGetRationalValue(): ExactFraction?
+    abstract fun getRationalValue(): ExactFraction?
 
     /**
      * Get multiplicative inverse
@@ -116,14 +84,14 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()
     }
 
-    override fun toByte(): Byte = castToByte(getValue()) { createCastingException(this, "Byte") }
-    override fun toChar(): Char = castToChar(getValue()) { createCastingException(this, "Char") }
-    override fun toShort(): Short = castToShort(getValue()) { createCastingException(this, "Short") }
-    override fun toInt(): Int = castToInt(getValue()) { createCastingException(this, "Int") }
-    override fun toLong(): Long = castToLong(getValue()) { createCastingException(this, "Long") }
+    override fun toByte(): Byte = castToByte(getValue(), this, type)
+    override fun toChar(): Char = castToChar(getValue(), this, type)
+    override fun toShort(): Short = castToShort(getValue(), this, type)
+    override fun toInt(): Int = castToInt(getValue(), this, type)
+    override fun toLong(): Long = castToLong(getValue(), this, type)
 
-    override fun toFloat(): Float = castToFloat(getValue()) { createCastingException(this, "Float") }
-    override fun toDouble(): Double = castToDouble(getValue()) { createCastingException(this, "Double") }
+    override fun toFloat(): Float = castToFloat(getValue(), this, type)
+    override fun toDouble(): Double = castToDouble(getValue(), this, type)
 
-    override fun hashCode(): Int = createHashCode(listOf(getValue(), this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(getValue(), type))
 }

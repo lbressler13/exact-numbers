@@ -110,7 +110,7 @@ fun runDivTests() {
 
     log1 = Log(100, 5)
     pi = Pi()
-    expected = Term.fromValues(one, listOf(log1, Pi(true)))
+    expected = Term.fromValues(one, listOf(log1, Pi().inverse()))
     assertEquals(expected, log1 / pi)
 
     // sqrt

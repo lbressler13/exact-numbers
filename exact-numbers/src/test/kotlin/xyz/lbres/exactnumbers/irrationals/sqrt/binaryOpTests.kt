@@ -59,7 +59,7 @@ fun runTimesTests() {
     assertEquals(expected, sqrt1 * pi)
 
     sqrt1 = Sqrt(ExactFraction(92, 11))
-    pi = Pi(true)
+    pi = Pi().inverse()
     expected = Term.fromValues(one, listOf(sqrt1, pi))
     assertEquals(expected, sqrt1 * pi)
 
@@ -113,11 +113,11 @@ fun runDivTests() {
     // pi
     sqrt1 = Sqrt(110)
     var pi = Pi()
-    expected = Term.fromValues(one, listOf(sqrt1, Pi(true)))
+    expected = Term.fromValues(one, listOf(sqrt1, Pi().inverse()))
     assertEquals(expected, sqrt1 / pi)
 
     sqrt1 = Sqrt(ExactFraction(92, 11))
-    pi = Pi(true)
+    pi = Pi().inverse()
     expected = Term.fromValues(one, listOf(sqrt1, Pi()))
     assertEquals(expected, sqrt1 / pi)
 

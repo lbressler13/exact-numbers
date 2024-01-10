@@ -1,63 +1,10 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.kotlinutils.pair.TypePair
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
-// Numerator and denominator are explicitly checked to ensure correct initialization
-fun runConstructorTests() {
-    // error
-    assertDivByZero { ExactFraction(BigInteger.ONE, BigInteger.ZERO) }
-
-    // numerator of 0
-    var ef = ExactFraction(BigInteger.ZERO, BigInteger.ONE)
-    assertEquals(BigInteger.ZERO, ef.numerator)
-    assertEquals(BigInteger.ONE, ef.denominator)
-
-    // positive whole
-    ef = ExactFraction(BigInteger("4"), BigInteger.ONE)
-    assertEquals(BigInteger("4"), ef.numerator)
-    assertEquals(BigInteger.ONE, ef.denominator)
-
-    // positive fraction < 1
-    ef = ExactFraction(BigInteger("7"), BigInteger("18"))
-    assertEquals(BigInteger("7"), ef.numerator)
-    assertEquals(BigInteger("18"), ef.denominator)
-
-    // positive fraction > 1
-    ef = ExactFraction(BigInteger("4"), BigInteger("3"))
-    assertEquals(BigInteger("4"), ef.numerator)
-    assertEquals(BigInteger("3"), ef.denominator)
-
-    // negative whole
-    ef = ExactFraction(BigInteger("-4"), BigInteger.ONE)
-    assertEquals(BigInteger("-4"), ef.numerator)
-    assertEquals(BigInteger.ONE, ef.denominator)
-
-    // negative fraction > -1
-    ef = ExactFraction(-BigInteger.ONE, BigInteger("3"))
-    assertEquals(-BigInteger.ONE, ef.numerator)
-    assertEquals(BigInteger("3"), ef.denominator)
-
-    // negative fraction < -1
-    ef = ExactFraction(BigInteger("-7"), BigInteger("4"))
-    assertEquals(BigInteger("-7"), ef.numerator)
-    assertEquals(BigInteger("4"), ef.denominator)
-}
-
-fun runSimplifyConstructedTests() {
-    runCommonSimplifyTests { bi1, bi2 ->
-        val ef = ExactFraction(bi1, bi2)
-        Pair(ef.numerator, ef.denominator)
-    }
-}
-
-fun runSimplifyTests() {
-    runCommonSimplifyTests { bi1, bi2 -> simplify(Pair(bi1, bi2)) }
-}
-
-private fun runCommonSimplifyTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
+fun runCommonSimplifyTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
     runSimplifyZeroTests(createSimplifiedPair)
     runSimplifyGCDTests(createSimplifiedPair)
     runSimplifySignTests(createSimplifiedPair)

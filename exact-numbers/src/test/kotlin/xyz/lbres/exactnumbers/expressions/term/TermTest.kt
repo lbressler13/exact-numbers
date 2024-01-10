@@ -12,7 +12,7 @@ import kotlin.test.assertNotEquals
 class TermTest {
     private val logNum1 = Log(ExactFraction(15, 4))
     private val logNum2 = Log(8, 7)
-    private val logNum3 = Log(ExactFraction(19, 33), true)
+    private val logNum3 = Log(ExactFraction(19, 33)).inverse()
     private val logNum4 = Log(ExactFraction(25, 121))
     private val testNumber1 = TestNumber(ExactFraction(5, 6))
     private val testNumber2 = TestNumber(ExactFraction.SEVEN)
@@ -26,7 +26,7 @@ class TermTest {
     @Test fun testGetSimplified() = runCommonSimplifyTests(Term::getSimplified)
     @Test fun testGetValue() = runGetValueTests()
 
-    @Test fun testGetIrrationalsByType() = runGetIrrationalsByTypeTests()
+    @Test fun testGetFactorsByType() = runGetFactorsByTypeTests()
 
     @Test
     fun testEquals() {
@@ -43,7 +43,7 @@ class TermTest {
         term1 = Term.fromValues(one, listOf(Pi(), Pi()))
         assertEquals(term1, term1)
 
-        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(15), Pi(true), Pi()))
+        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(15), Pi().inverse(), Pi()))
         assertEquals(term1, term1)
 
         term1 = Term.fromValues(one, listOf(Pi(), TestNumber(ExactFraction(5))))
@@ -81,12 +81,12 @@ class TermTest {
         assertNotEquals(term2, term1)
 
         term1 = Term.fromValues(one, listOf(Pi()))
-        term2 = Term.fromValues(one, listOf(Pi(true)))
+        term2 = Term.fromValues(one, listOf(Pi().inverse()))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(one, listOf(Pi(), Pi(true)))
-        term2 = Term.fromValues(one, listOf(Pi(true)))
+        term1 = Term.fromValues(one, listOf(Pi(), Pi().inverse()))
+        term2 = Term.fromValues(one, listOf(Pi().inverse()))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
@@ -110,12 +110,12 @@ class TermTest {
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(ExactFraction(5, 7), listOf(logNum1, logNum1, Pi(), Pi(true)))
-        term2 = Term.fromValues(ExactFraction.FIVE, listOf(logNum1, logNum1, Pi(), Pi(true)))
+        term1 = Term.fromValues(ExactFraction(5, 7), listOf(logNum1, logNum1, Pi(), Pi().inverse()))
+        term2 = Term.fromValues(ExactFraction.FIVE, listOf(logNum1, logNum1, Pi(), Pi().inverse()))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
-        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi(true)))
+        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum4, Pi().inverse()))
         term2 = Term.fromValues(ExactFraction(-17, 15), listOf(logNum1, logNum2, logNum3))
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
@@ -164,8 +164,8 @@ class TermTest {
         expected = "<1x${Pi()}>"
         assertEquals(expected, term.toString())
 
-        term = Term.fromValues(one, listOf(Pi(), Pi(true), Pi()))
-        expected = "<1x${Pi()}x${Pi(true)}x${Pi()}>"
+        term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi()))
+        expected = "<1x${Pi()}x${Pi().inverse()}x${Pi()}>"
         assertEquals(expected, term.toString())
 
         // just sqrt
@@ -186,9 +186,9 @@ class TermTest {
         val sqrt2 = Sqrt(5096)
         term = Term.fromValues(
             ExactFraction(-100, 333),
-            listOf(logNum2, logNum2, logNum4, logNum1, sqrt1, sqrt2, Pi(true), Pi())
+            listOf(logNum2, logNum2, logNum4, logNum1, sqrt1, sqrt2, Pi().inverse(), Pi())
         )
-        expected = "<[-100/333]x${logNum2}x${logNum2}x${logNum4}x${logNum1}x${sqrt1}x${sqrt2}x${Pi(true)}x${Pi()}>"
+        expected = "<[-100/333]x${logNum2}x${logNum2}x${logNum4}x${logNum1}x${sqrt1}x${sqrt2}x${Pi().inverse()}x${Pi()}>"
         assertEquals(expected, term.toString())
     }
 

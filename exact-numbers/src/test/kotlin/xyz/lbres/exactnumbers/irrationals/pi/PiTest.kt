@@ -11,14 +11,8 @@ import kotlin.test.assertTrue
 class PiTest {
     @Test
     fun testConstructor() {
-        var pi = Pi()
+        val pi = Pi()
         assertFalse(pi.isInverted)
-
-        pi = Pi(isInverted = false)
-        assertFalse(pi.isInverted)
-
-        pi = Pi(isInverted = true)
-        assertTrue(pi.isInverted)
     }
 
     @Test
@@ -26,7 +20,7 @@ class PiTest {
         var pi1 = Pi()
         assertEquals(pi1, pi1)
 
-        pi1 = Pi(true)
+        pi1 = Pi().inverse()
         assertEquals(pi1, pi1)
 
         val pi2 = Pi()
@@ -42,7 +36,7 @@ class PiTest {
         assertEquals(expected, pi.getValue())
         assertEquals(expected, pi.getValue())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         expected = BigDecimal("0.31830988618379069570")
         assertEquals(expected, pi.getValue())
         assertEquals(expected, pi.getValue())
@@ -53,7 +47,7 @@ class PiTest {
         var pi = Pi()
         assertFalse(pi.isZero())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertFalse(pi.isZero())
     }
 
@@ -63,7 +57,7 @@ class PiTest {
         assertFalse(pi.isRational())
         assertFalse(pi.isRational())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertFalse(pi.isRational())
         assertFalse(pi.isRational())
     }
@@ -74,15 +68,19 @@ class PiTest {
         assertNull(pi.getRationalValue())
         assertNull(pi.getRationalValue())
 
-        pi = Pi(true)
+        pi = Pi().inverse()
         assertNull(pi.getRationalValue())
         assertNull(pi.getRationalValue())
     }
 
     @Test
     fun testInverse() {
-        assertTrue(Pi().inverse().isInverted)
-        assertFalse(Pi(true).inverse().isInverted)
+        var pi = Pi()
+        pi = pi.inverse()
+        assertTrue(pi.isInverted)
+
+        pi = pi.inverse()
+        assertFalse(pi.isInverted)
     }
 
     @Test
@@ -91,7 +89,7 @@ class PiTest {
         var expected = "[π]"
         assertEquals(expected, piNum.toString())
 
-        piNum = Pi(true)
+        piNum = Pi().inverse()
         expected = "[1/π]"
         assertEquals(expected, piNum.toString())
     }
@@ -100,11 +98,11 @@ class PiTest {
     fun testCompareTo() {
         // equal
         assertEquals(Pi(), Pi())
-        assertEquals(Pi(true), Pi(true))
+        assertEquals(Pi().inverse(), Pi().inverse())
 
         // not equal
-        assertTrue(Pi(true) < Pi())
-        assertTrue(Pi() > Pi(true))
+        assertTrue(Pi().inverse() < Pi())
+        assertTrue(Pi() > Pi().inverse())
     }
 
     @Test fun testTimes() = runTimesTests()
@@ -113,45 +111,45 @@ class PiTest {
     @Test
     fun testToByte() {
         assertEquals(3, Pi().toByte())
-        assertEquals(0, Pi(true).toByte())
+        assertEquals(0, Pi().inverse().toByte())
     }
 
     @Test
     fun testToChar() {
         assertEquals(3.toChar(), Pi().toChar())
-        assertEquals(0.toChar(), Pi(true).toChar())
+        assertEquals(0.toChar(), Pi().inverse().toChar())
     }
 
     @Test
     fun testToShort() {
         assertEquals(3, Pi().toShort())
-        assertEquals(0, Pi(true).toShort())
+        assertEquals(0, Pi().inverse().toShort())
     }
 
     @Test
     fun testToInt() {
         assertEquals(3, Pi().toInt())
-        assertEquals(0, Pi(true).toInt())
+        assertEquals(0, Pi().inverse().toInt())
     }
 
     @Test
     fun testToLong() {
         assertEquals(3, Pi().toLong())
-        assertEquals(0, Pi(true).toLong())
+        assertEquals(0, Pi().inverse().toLong())
     }
 
     @Test
     fun testToFloat() {
         // kotlin representation of pi: 3.141592653589793
         assertEquals(3.1415927f, Pi().toFloat())
-        assertEquals(0.31830987f, Pi(true).toFloat())
+        assertEquals(0.31830987f, Pi().inverse().toFloat())
     }
 
     @Test
     fun testToDouble() {
         // kotlin representation of pi: 3.141592653589793
         assertEquals(3.141592653589793, Pi().toDouble())
-        assertEquals(0.3183098861837907, Pi(true).toDouble())
+        assertEquals(0.3183098861837907, Pi().inverse().toDouble())
     }
 
     @Test fun testSimplifySet() = runSimplifySetTests()

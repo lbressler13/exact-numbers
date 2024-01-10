@@ -2,7 +2,7 @@ package xyz.lbres.exactnumbers.testutils
 
 import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 
 /**
@@ -13,10 +13,10 @@ class TestNumber(val value: ExactFraction, override val isInverted: Boolean = fa
 
     override fun isZero(): Boolean = value.isZero()
     override fun inverse(): TestNumber = TestNumber(value, !isInverted)
-    override fun checkIsRational(): Boolean = true
-    override fun performGetValue() = simpleIf(isInverted, { value.inverse().toBigDecimal() }, { value.toBigDecimal() })
+    override fun isRational(): Boolean = true
+    override fun getValue() = simpleIf(isInverted, { value.inverse().toBigDecimal() }, { value.toBigDecimal() })
 
-    override fun performGetRationalValue(): ExactFraction? {
+    override fun getRationalValue(): ExactFraction? {
         return when {
             value.isWholeNumber() && !isInverted -> value
             value.inverse().isWholeNumber() && isInverted -> value.inverse()

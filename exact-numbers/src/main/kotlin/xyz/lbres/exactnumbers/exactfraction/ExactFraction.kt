@@ -7,136 +7,85 @@ import xyz.lbres.exactnumbers.common.castToFloat
 import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createCastingException
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideByZero
-import xyz.lbres.exactnumbers.ext.eq
-import xyz.lbres.exactnumbers.ext.toExactFraction
-import xyz.lbres.kotlinutils.biginteger.ext.isNegative
-import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.MathContext
 import java.math.RoundingMode
 
 /**
  * Number implementation for exact representation of rational numbers, represented as a numerator and a denominator.
- *
- * @param numerator [BigInteger]: numerator of fraction
- * @param denominator [BigInteger]: denominator of fraction
- * @param fullySimplified [Boolean]: flag to indicate if numerator and denominator values are simplified
  */
-class ExactFraction private constructor(numerator: BigInteger, denominator: BigInteger, fullySimplified: Boolean) : Comparable<ExactFraction>, Number() {
+sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     /**
      * Numerator of number
      */
-    val numerator: BigInteger
+    abstract val numerator: BigInteger
 
     /**
      * Denominator of number
      */
-    val denominator: BigInteger
-
-    init {
-        if (denominator.isZero()) {
-            throw divideByZero
-        }
-
-        if (fullySimplified) {
-            this.numerator = numerator
-            this.denominator = denominator
-        } else {
-            val simplifiedValues = simplify(Pair(numerator, denominator))
-            this.numerator = simplifiedValues.first
-            this.denominator = simplifiedValues.second
-        }
-    }
-
-    /**
-     * Constructor using numerator and denominator. Simplifies values on initialization.
-     *
-     * @param numerator [BigInteger]: numerator of fraction
-     * @param denominator [BigInteger]: denominator of fraction
-     */
-    constructor (numerator: BigInteger, denominator: BigInteger) : this(numerator, denominator, fullySimplified = false)
+    abstract val denominator: BigInteger
 
     // UNARY OPERATORS
 
-    operator fun unaryMinus(): ExactFraction = ExactFraction(-numerator, denominator, fullySimplified = true)
-    operator fun unaryPlus(): ExactFraction = ExactFraction(numerator, denominator, fullySimplified = true)
-    operator fun not(): Boolean = isZero()
+    abstract operator fun unaryMinus(): ExactFraction
+    abstract operator fun unaryPlus(): ExactFraction
+    abstract operator fun not(): Boolean
 
-    operator fun inc(): ExactFraction = ExactFraction(numerator + denominator, denominator, fullySimplified = true)
-    operator fun dec(): ExactFraction = ExactFraction(numerator - denominator, denominator, fullySimplified = true)
+    abstract operator fun inc(): ExactFraction
+    abstract operator fun dec(): ExactFraction
 
     // BINARY OPERATORS
 
-    operator fun plus(other: ExactFraction): ExactFraction = efAdd(this, other)
-    operator fun plus(other: BigInteger): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Long): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Int): ExactFraction = plus(other.toExactFraction())
+    abstract operator fun plus(other: ExactFraction): ExactFraction
+    operator fun plus(other: BigInteger): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Long): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Int): ExactFraction = plus(ExactFraction(other))
 
-    operator fun minus(other: ExactFraction): ExactFraction = plus(-other)
+    abstract operator fun minus(other: ExactFraction): ExactFraction
     operator fun minus(other: BigInteger): ExactFraction = plus(-other)
     operator fun minus(other: Long): ExactFraction = plus(-other)
     operator fun minus(other: Int): ExactFraction = plus(-other)
 
-    operator fun times(other: ExactFraction): ExactFraction = efTimes(this, other)
-    operator fun times(other: BigInteger): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Long): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Int): ExactFraction = times(other.toExactFraction())
+    abstract operator fun times(other: ExactFraction): ExactFraction
+    operator fun times(other: BigInteger): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Long): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Int): ExactFraction = times(ExactFraction(other))
 
-    operator fun div(other: ExactFraction): ExactFraction = times(other.inverse())
-    operator fun div(other: BigInteger): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Long): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Int): ExactFraction = div(other.toExactFraction())
+    abstract operator fun div(other: ExactFraction): ExactFraction
+    operator fun div(other: BigInteger): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Long): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Int): ExactFraction = div(ExactFraction(other))
 
-    override fun equals(other: Any?): Boolean {
-        return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
-    }
+    abstract fun eq(other: BigInteger): Boolean
+    fun eq(other: Int): Boolean = eq(other.toBigInteger())
+    fun eq(other: Long): Boolean = eq(other.toBigInteger())
 
-    fun eq(other: Int): Boolean = isWholeNumber() && numerator.eq(other)
-    fun eq(other: Long): Boolean = isWholeNumber() && numerator.eq(other)
-    fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
+    abstract override fun compareTo(other: ExactFraction): Int
+    operator fun compareTo(other: Int): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: Long): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: BigInteger): Int = compareTo(ExactFraction(other))
 
-    override fun compareTo(other: ExactFraction): Int = efCompare(this, other)
-    operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
-
-    fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
-    fun pow(other: Int): ExactFraction = pow(other.toExactFraction())
-    fun pow(other: Long): ExactFraction = pow(other.toExactFraction())
-    fun pow(other: BigInteger): ExactFraction = pow(other.toExactFraction())
+    abstract fun pow(other: ExactFraction): ExactFraction
+    fun pow(other: Int): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: Long): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: BigInteger): ExactFraction = pow(ExactFraction(other))
 
     // UNARY NON-OPERATORS
 
-    fun inverse(): ExactFraction {
-        if (numerator.isZero()) {
-            throw divideByZero
-        }
-
-        val signConverter = simpleIf(numerator.isNegative(), -BigInteger.ONE, BigInteger.ONE)
-        return ExactFraction(denominator * signConverter, numerator * signConverter, fullySimplified = true)
-    }
-
-    fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator, fullySimplified = true)
-    fun isNegative(): Boolean = numerator.isNegative()
-    fun isZero(): Boolean = numerator.isZero()
-    fun isWholeNumber(): Boolean = denominator == BigInteger.ONE
+    abstract fun inverse(): ExactFraction
+    abstract fun absoluteValue(): ExactFraction
+    abstract fun isNegative(): Boolean
+    abstract fun isZero(): Boolean
+    abstract fun isWholeNumber(): Boolean
 
     /**
      * Round ExactFraction to nearest whole number.
      *
      * @param roundingMode [RoundingMode]: mode to use for rounding number. Optional, defaults to [RoundingMode.HALF_UP]
      */
-    fun roundToWhole(roundingMode: RoundingMode = RoundingMode.HALF_UP): ExactFraction {
-        val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), roundingMode)
-        val int = decimal.toBigInteger()
-
-        return ExactFraction(int)
-    }
+    abstract fun roundToWhole(roundingMode: RoundingMode = RoundingMode.HALF_UP): ExactFraction
 
     // STRING METHODS
 
@@ -165,21 +114,22 @@ class ExactFraction private constructor(numerator: BigInteger, denominator: BigI
 
     fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
-    override fun toByte(): Byte = castToByte(toBigDecimal()) { createCastingException(this, "Byte") }
-    override fun toChar(): Char = castToChar(toBigDecimal()) { createCastingException(this, "Char") }
-    override fun toShort(): Short = castToShort(toBigDecimal()) { createCastingException(this, "Short") }
-    override fun toInt(): Int = castToInt(toBigDecimal()) { createCastingException(this, "Int") }
-    override fun toLong(): Long = castToLong(toBigDecimal()) { createCastingException(this, "Long") }
-    override fun toFloat(): Float = castToFloat(toBigDecimal()) { createCastingException(this, "Float") }
-    override fun toDouble(): Double = castToDouble(toBigDecimal()) { createCastingException(this, "Double") }
+    override fun toByte(): Byte = castToByte(toBigDecimal(), this, "ExactFraction")
+    override fun toChar(): Char = castToChar(toBigDecimal(), this, "ExactFraction")
+    override fun toShort(): Short = castToShort(toBigDecimal(), this, "ExactFraction")
+    override fun toInt(): Int = castToInt(toBigDecimal(), this, "ExactFraction")
+    override fun toLong(): Long = castToLong(toBigDecimal(), this, "ExactFraction")
+    override fun toFloat(): Float = castToFloat(toBigDecimal(), this, "ExactFraction")
+    override fun toDouble(): Double = castToDouble(toBigDecimal(), this, "ExactFraction")
 
-    fun toBigInteger(): BigInteger = numerator / denominator
-    fun toBigDecimal(precision: Int = 20): BigDecimal {
-        val mc = MathContext(precision, RoundingMode.HALF_UP)
-        return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
+    abstract fun toBigInteger(): BigInteger
+    abstract fun toBigDecimal(precision: Int = 20): BigDecimal
+
+    override fun equals(other: Any?): Boolean {
+        return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
     }
 
-    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, this::class.toString()))
+    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, "ExactFraction"))
 
     companion object {
         val ZERO = ExactFraction(0)
