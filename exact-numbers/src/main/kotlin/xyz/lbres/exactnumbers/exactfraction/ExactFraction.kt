@@ -8,7 +8,6 @@ import xyz.lbres.exactnumbers.common.castToInt
 import xyz.lbres.exactnumbers.common.castToLong
 import xyz.lbres.exactnumbers.common.castToShort
 import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -40,9 +39,9 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     // BINARY OPERATORS
 
     abstract operator fun plus(other: ExactFraction): ExactFraction
-    operator fun plus(other: BigInteger): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Long): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Int): ExactFraction = plus(other.toExactFraction())
+    operator fun plus(other: BigInteger): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Long): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Int): ExactFraction = plus(ExactFraction(other))
 
     abstract operator fun minus(other: ExactFraction): ExactFraction
     operator fun minus(other: BigInteger): ExactFraction = plus(-other)
@@ -50,28 +49,28 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     operator fun minus(other: Int): ExactFraction = plus(-other)
 
     abstract operator fun times(other: ExactFraction): ExactFraction
-    operator fun times(other: BigInteger): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Long): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Int): ExactFraction = times(other.toExactFraction())
+    operator fun times(other: BigInteger): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Long): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Int): ExactFraction = times(ExactFraction(other))
 
     abstract operator fun div(other: ExactFraction): ExactFraction
-    operator fun div(other: BigInteger): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Long): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Int): ExactFraction = div(other.toExactFraction())
+    operator fun div(other: BigInteger): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Long): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Int): ExactFraction = div(ExactFraction(other))
 
     abstract fun eq(other: BigInteger): Boolean
     fun eq(other: Int): Boolean = eq(other.toBigInteger())
     fun eq(other: Long): Boolean = eq(other.toBigInteger())
 
     abstract override fun compareTo(other: ExactFraction): Int
-    operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
+    operator fun compareTo(other: Int): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: Long): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: BigInteger): Int = compareTo(ExactFraction(other))
 
     abstract fun pow(other: ExactFraction): ExactFraction
-    fun pow(other: Int): ExactFraction = pow(other.toExactFraction())
-    fun pow(other: Long): ExactFraction = pow(other.toExactFraction())
-    fun pow(other: BigInteger): ExactFraction = pow(other.toExactFraction())
+    fun pow(other: Int): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: Long): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: BigInteger): ExactFraction = pow(ExactFraction(other))
 
     // UNARY NON-OPERATORS
 

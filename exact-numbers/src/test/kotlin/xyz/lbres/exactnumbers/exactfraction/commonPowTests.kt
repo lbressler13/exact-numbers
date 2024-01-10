@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import kotlin.test.assertEquals
@@ -21,17 +20,17 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     assertEquals(expected, powFn(base, exp))
 
     base = ExactFraction.ONE
-    exp = 1000000.toExactFraction()
+    exp = ExactFraction(1000000)
     expected = ExactFraction.ONE
     assertEquals(expected, powFn(base, exp))
 
     base = ExactFraction.NEG_ONE
-    exp = 1000000.toExactFraction()
+    exp = ExactFraction(1000000)
     expected = ExactFraction.ONE
     assertEquals(expected, powFn(base, exp))
 
     base = ExactFraction.NEG_ONE
-    exp = 1000001.toExactFraction()
+    exp = ExactFraction(1000001)
     expected = ExactFraction.NEG_ONE
     assertEquals(expected, powFn(base, exp))
 
@@ -41,14 +40,14 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     expected = ExactFraction.EIGHT
     assertEquals(expected, powFn(base, exp))
 
-    base = 23.toExactFraction()
+    base = ExactFraction(23)
     exp = ExactFraction.FOUR
-    expected = 279841.toExactFraction()
+    expected = ExactFraction(279841)
     assertEquals(expected, powFn(base, exp))
 
     base = -ExactFraction.TWO
-    exp = 20.toExactFraction()
-    expected = 1048576.toExactFraction()
+    exp = ExactFraction(20)
+    expected = ExactFraction(1048576)
     assertEquals(expected, powFn(base, exp))
 
     base = ExactFraction.ONE
@@ -72,13 +71,13 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     expected = ExactFraction(1, 8)
     assertEquals(expected, powFn(base, exp))
 
-    base = 23.toExactFraction()
+    base = ExactFraction(23)
     exp = -ExactFraction.FOUR
     expected = ExactFraction(1, 279841)
     assertEquals(expected, powFn(base, exp))
 
     base = -ExactFraction.TWO
-    exp = (-20).toExactFraction()
+    exp = ExactFraction(-20)
     expected = ExactFraction(1, 1048576)
     assertEquals(expected, powFn(base, exp))
 
