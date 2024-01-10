@@ -15,7 +15,7 @@ import java.math.RoundingMode
  * @param values [TypePair]<BigInteger>: pair to simplify, where the first value represents a numerator and the second represents a denominator
  * @return [TypePair]<BigInteger>: pair where first value represents simplified numerator, and second value represents simplified denominator
  */
-internal fun simplify(values: TypePair<BigInteger>): TypePair<BigInteger> {
+internal fun simplifyFraction(values: TypePair<BigInteger>): TypePair<BigInteger> {
     var numerator = values.first
     var denominator = values.second
 

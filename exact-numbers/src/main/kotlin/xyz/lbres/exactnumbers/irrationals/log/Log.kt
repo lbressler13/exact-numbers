@@ -1,8 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
@@ -23,8 +22,8 @@ sealed class Log : IrrationalNumber<Log>() {
 
     abstract fun getSimplified(): Pair<ExactFraction, Log>
 
-    companion object : IrrationalNumberCompanion<Log>() {
-        override val TYPE = "Log"
+    companion object {
+        val TYPE = "Log"
 
         val ZERO = Log(ExactFraction.ONE, 10)
         val ONE = Log(ExactFraction.TEN, 10)
@@ -36,7 +35,7 @@ sealed class Log : IrrationalNumber<Log>() {
          * @return [Pair]<ExactFraction, ConstMultiSet<Log>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
-        override fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
+        fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
                 numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())

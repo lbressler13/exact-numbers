@@ -1,4 +1,4 @@
-package xyz.lbres.exactnumbers.irrationals.common
+package xyz.lbres.exactnumbers.irrationals
 
 import xyz.lbres.exactnumbers.common.castToByte
 import xyz.lbres.exactnumbers.common.castToChar
@@ -18,10 +18,6 @@ import java.math.BigDecimal
  * Representation of an irrational number
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
-    // private var isRational: Boolean? = null
-    // private var value: BigDecimal? = null
-    // private var rationalValue: ExactFraction? = null
-
     /**
      * Type of number, should correspond to the type name for the class
      */

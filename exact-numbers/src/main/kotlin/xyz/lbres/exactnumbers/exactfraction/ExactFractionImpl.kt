@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.exactfraction
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
-import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -22,7 +21,7 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
                 this.denominator = denominator
             }
             else -> {
-                val simplifiedValues = simplify(Pair(numerator, denominator))
+                val simplifiedValues = simplifyFraction(Pair(numerator, denominator))
                 this.numerator = simplifiedValues.first
                 this.denominator = simplifiedValues.second
             }
@@ -60,8 +59,11 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
             throw divideByZero
         }
 
-        val signConverter = simpleIf(numerator.isNegative(), -BigInteger.ONE, BigInteger.ONE)
-        return ExactFractionImpl(denominator * signConverter, numerator * signConverter, fullySimplified = true)
+        return if (numerator.isNegative()) {
+            ExactFractionImpl(-denominator, -numerator, fullySimplified = true)
+        } else {
+            ExactFractionImpl(denominator, numerator, fullySimplified = true)
+        }
     }
 
     override fun absoluteValue(): ExactFraction = ExactFractionImpl(numerator.abs(), denominator, fullySimplified = true)

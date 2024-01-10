@@ -1,8 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import kotlin.math.abs
@@ -12,8 +11,8 @@ import kotlin.math.abs
  */
 // parameter in constructor avoids conflicts with the Pi() function
 sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
-    companion object : IrrationalNumberCompanion<Pi>() {
-        override val TYPE = "Pi"
+    companion object {
+        val TYPE = "Pi"
 
         /**
          * Simplify set of pis
@@ -21,7 +20,7 @@ sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
          * @param numbers [ConstMultiSet]<Pi>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is one, and second value is the simplified set
          */
-        override fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
+        fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
             if (numbers.isEmpty()) {
                 return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }

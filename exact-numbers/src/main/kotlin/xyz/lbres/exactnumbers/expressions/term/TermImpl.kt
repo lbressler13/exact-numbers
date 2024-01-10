@@ -4,7 +4,7 @@ import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -90,7 +90,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      */
     override fun getSimplified(): Term {
         if (simplified == null) {
-            simplified = simplifyTerm(this)
+            simplified = simplifyTerm(coefficient, factorTypeMapping)
         }
 
         return simplified!!

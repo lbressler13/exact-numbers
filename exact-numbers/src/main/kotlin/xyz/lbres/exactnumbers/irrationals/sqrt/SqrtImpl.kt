@@ -7,7 +7,7 @@ import xyz.lbres.exactnumbers.ext.divideBy
 import java.math.BigDecimal
 
 // implementation of Sqrt class
-internal class SqrtImpl private constructor(override val radicand: ExactFraction, private val fullySimplified: Boolean) : Sqrt() {
+internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
     override val type = TYPE
     override val isInverted = false
 
@@ -21,15 +21,13 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
         }
     }
 
-    constructor(radicand: ExactFraction) : this(radicand, false)
-
     override fun isZero(): Boolean = radicand.isZero()
     override fun inverse(): Sqrt {
         if (isZero()) {
             throw divideByZero
         }
 
-        return SqrtImpl(radicand.inverse(), true)
+        return SqrtImpl(radicand.inverse())
     }
 
     /**
@@ -77,7 +75,6 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
     override fun getSimplified(): Pair<ExactFraction, Sqrt> {
         if (simplified == null) {
             when {
-                fullySimplified -> return Pair(ExactFraction.ONE, this)
                 radicand.isZero() -> return Pair(ExactFraction.ONE, ZERO)
                 radicand == ExactFraction.ONE -> return Pair(ExactFraction.ONE, ONE)
             }
@@ -90,7 +87,7 @@ internal class SqrtImpl private constructor(override val radicand: ExactFraction
             val newDenom = radicand.denominator / (denomWhole * denomWhole)
             val newRadicand = ExactFraction(newNum, newDenom)
 
-            simplified = Pair(whole, SqrtImpl(newRadicand, true))
+            simplified = Pair(whole, SqrtImpl(newRadicand))
         }
 
         return simplified!!

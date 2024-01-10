@@ -1,8 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumber
-import xyz.lbres.exactnumbers.irrationals.common.IrrationalNumberCompanion
+import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
@@ -18,8 +17,8 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
 
     abstract fun getSimplified(): Pair<ExactFraction, Sqrt>
 
-    companion object : IrrationalNumberCompanion<Sqrt>() {
-        override val TYPE = "Sqrt"
+    companion object {
+        val TYPE = "Sqrt"
 
         val ZERO = Sqrt(ExactFraction.ZERO)
         val ONE = Sqrt(ExactFraction.ONE)
@@ -30,7 +29,7 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
          * @param numbers [ConstMultiSet]<Sqrt>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Sqrt>>: product of rational values and a set containing a single, fully simplified irrational root
          */
-        override fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
+        fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
                 numbers.anyConsistent(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
