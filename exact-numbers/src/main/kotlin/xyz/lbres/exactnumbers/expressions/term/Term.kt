@@ -1,19 +1,19 @@
 package xyz.lbres.exactnumbers.expressions.term
 
-import xyz.lbres.exactnumbers.common.castToByte
-import xyz.lbres.exactnumbers.common.castToChar
-import xyz.lbres.exactnumbers.common.castToDouble
-import xyz.lbres.exactnumbers.common.castToFloat
-import xyz.lbres.exactnumbers.common.castToInt
-import xyz.lbres.exactnumbers.common.castToLong
-import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.deprecatedV1
-import xyz.lbres.exactnumbers.common.irrationalPackage
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.utils.castToByte
+import xyz.lbres.exactnumbers.utils.castToChar
+import xyz.lbres.exactnumbers.utils.castToDouble
+import xyz.lbres.exactnumbers.utils.castToFloat
+import xyz.lbres.exactnumbers.utils.castToInt
+import xyz.lbres.exactnumbers.utils.castToLong
+import xyz.lbres.exactnumbers.utils.castToShort
+import xyz.lbres.exactnumbers.utils.deprecatedV1
+import xyz.lbres.exactnumbers.utils.irrationalsPackage
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -65,11 +65,10 @@ sealed class Term : Number() {
     override fun toShort(): Short = castToShort(getValue(), this, "Term")
     override fun toInt(): Int = castToInt(getValue(), this, "Term")
     override fun toLong(): Long = castToLong(getValue(), this, "Term")
-
     override fun toFloat(): Float = castToFloat(getValue(), this, "Term")
     override fun toDouble(): Double = castToDouble(getValue(), this, "Term")
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "$irrationalPackage.log.Log"), DeprecationLevel.WARNING)
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "$irrationalsPackage.log.Log"), DeprecationLevel.WARNING)
     @JvmName("getLogsDeprecated")
     fun getLogs(): List<Log> = logs
 
@@ -77,7 +76,7 @@ sealed class Term : Number() {
     @JvmName("getPiCountDeprecated")
     fun getPiCount(): Int = piCount
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "$irrationalPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "$irrationalsPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
     @JvmName("getSquareRootsDeprecated")
     fun getSquareRoots(): List<Sqrt> = squareRoots
 

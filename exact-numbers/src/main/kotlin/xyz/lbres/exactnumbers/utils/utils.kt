@@ -1,4 +1,4 @@
-package xyz.lbres.exactnumbers.common
+package xyz.lbres.exactnumbers.utils
 
 import xyz.lbres.kotlinutils.general.tryOrDefault
 import java.math.BigDecimal
@@ -36,10 +36,4 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
  * @param values [List]<*>: values to use in hash code
  * @return [Int]: hash code
  */
-internal fun createHashCode(values: List<*>): Int {
-    var result = 0
-    for (value in values) {
-        result = 31 * result + value.hashCode()
-    }
-    return result
-}
+internal fun createHashCode(values: List<*>): Int = values.fold(0) { acc, value -> 31 * acc + value.hashCode() }

@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.ext
 
-import xyz.lbres.exactnumbers.common.divideByZero
+import xyz.lbres.exactnumbers.utils.divideByZero
 import java.math.BigDecimal
 import java.math.MathContext
 

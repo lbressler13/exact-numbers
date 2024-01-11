@@ -15,10 +15,15 @@ import java.math.BigInteger
 sealed class Sqrt : IrrationalNumber<Sqrt>() {
     abstract val radicand: ExactFraction
 
+    /**
+     * Simplify log into a coefficient and a root.
+     *
+     * @return [Pair]<ExactFraction, Sqrt>: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
+     */
     abstract fun getSimplified(): Pair<ExactFraction, Sqrt>
 
     companion object {
-        val TYPE = "Sqrt"
+        const val TYPE = "Sqrt"
 
         val ZERO = Sqrt(ExactFraction.ZERO)
         val ONE = Sqrt(ExactFraction.ONE)
@@ -29,7 +34,7 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
          * @param numbers [ConstMultiSet]<Sqrt>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Sqrt>>: product of rational values and a set containing a single, fully simplified irrational root
          */
-        fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
+        internal fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
                 numbers.anyConsistent(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
@@ -45,32 +50,32 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
             val root = Sqrt(ExactFraction(numeratorRoot, denominatorRoot))
             val coefficient = ExactFraction(numeratorWhole, denominatorWhole)
 
-            val rootList = simpleIf(root == ONE, emptyConstMultiSet(), constMultiSetOf(root))
-            return Pair(coefficient, rootList)
+            val roots = simpleIf(root == ONE, emptyConstMultiSet(), constMultiSetOf(root))
+            return Pair(coefficient, roots)
         }
     }
 }
 
 /**
- * Construct a Sqrt by specifying radicand
+ * Construct a Sqrt by specifying a radicand
  * @param radicand [ExactFraction]
  */
 fun Sqrt(radicand: ExactFraction): Sqrt = SqrtImpl(radicand)
 
 /**
- * Construct a Sqrt by specifying radicand
+ * Construct a Sqrt by specifying a radicand
  * @param radicand [Int]
  */
 fun Sqrt(radicand: Int): Sqrt = SqrtImpl(ExactFraction(radicand))
 
 /**
- * Construct a Sqrt by specifying radicand
+ * Construct a Sqrt by specifying a radicand
  * @param radicand [Long]
  */
 fun Sqrt(radicand: Long): Sqrt = SqrtImpl(ExactFraction(radicand))
 
 /**
- * Construct a Sqrt by specifying radicand
+ * Construct a Sqrt by specifying a radicand
  * @param radicand [BigInteger]
  */
 fun Sqrt(radicand: BigInteger): Sqrt = SqrtImpl(ExactFraction(radicand))

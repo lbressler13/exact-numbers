@@ -1,8 +1,8 @@
 package xyz.lbres.exactnumbers.irrationals.pi
 
-import xyz.lbres.exactnumbers.common.createHashCode
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
+import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import kotlin.math.PI
@@ -12,8 +12,8 @@ internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
     override val type: String = TYPE
 
     override fun getValue(): BigDecimal {
-        val base = PI.toBigDecimal()
-        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(base) }, { base })
+        val pi = PI.toBigDecimal()
+        return simpleIf(isInverted, { BigDecimal.ONE.divideBy(pi) }, { pi })
     }
 
     override fun isZero(): Boolean = false

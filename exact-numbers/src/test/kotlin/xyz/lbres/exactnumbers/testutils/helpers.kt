@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.testutils
 
-import xyz.lbres.exactnumbers.common.CastingOverflowException
+import xyz.lbres.exactnumbers.exceptions.CastingOverflowException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

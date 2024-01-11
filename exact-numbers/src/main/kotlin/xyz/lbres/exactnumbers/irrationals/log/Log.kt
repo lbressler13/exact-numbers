@@ -20,10 +20,15 @@ sealed class Log : IrrationalNumber<Log>() {
     abstract val argument: ExactFraction
     abstract val base: Int
 
+    /**
+     * Simplify log into a rational coefficient and irrational log value.
+     *
+     * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
+     */
     abstract fun getSimplified(): Pair<ExactFraction, Log>
 
     companion object {
-        val TYPE = "Log"
+        const val TYPE = "Log"
 
         val ZERO = Log(ExactFraction.ONE, 10)
         val ONE = Log(ExactFraction.TEN, 10)
@@ -35,7 +40,7 @@ sealed class Log : IrrationalNumber<Log>() {
          * @return [Pair]<ExactFraction, ConstMultiSet<Log>>: product of rational values and simplified set of logs
          */
         // TODO: improve simplification by looking at bases
-        fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
+        internal fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
             when {
                 numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
                 numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())

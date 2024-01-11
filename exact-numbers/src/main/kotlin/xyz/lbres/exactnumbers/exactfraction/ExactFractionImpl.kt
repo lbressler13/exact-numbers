@@ -1,8 +1,10 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.common.divideByZero
+import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -46,11 +48,10 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     override fun times(other: ExactFraction): ExactFraction = efTimes(this, other)
     override fun div(other: ExactFraction): ExactFraction = times(other.inverse())
 
-    override fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
-
+    override fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
     override fun compareTo(other: ExactFraction): Int = efCompare(this, other)
 
-    override fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
+    override fun eq(other: BigInteger): Boolean = isWholeNumber() && numerator == other
 
     // UNARY NON-OPERATORS
 
@@ -73,16 +74,30 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
 
     override fun roundToWhole(roundingMode: RoundingMode): ExactFraction {
         val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), roundingMode)
-        val int = decimal.toBigInteger()
 
-        return ExactFractionImpl(int, BigInteger.ONE, fullySimplified = true)
+        return ExactFractionImpl(decimal.toBigInteger(), BigInteger.ONE, fullySimplified = true)
     }
+
+    // STRING METHODS
+
+    override fun toDecimalString(digits: Int): String = createDecimalString(this, digits)
+    override fun toFractionString() = simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
+    override fun toPairString(): String = "($numerator, $denominator)"
+    override fun toEFString(): String = "EF[$numerator $denominator]"
+    override fun toString(): String = toEFString()
 
     // CASTING
 
+    override fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
     override fun toBigInteger(): BigInteger = numerator / denominator
     override fun toBigDecimal(precision: Int): BigDecimal {
         val mc = MathContext(precision, RoundingMode.HALF_UP)
         return numerator.toBigDecimal().divide(denominator.toBigDecimal(), mc)
     }
+
+    override fun equals(other: Any?): Boolean {
+        return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
+    }
+
+    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, "ExactFraction"))
 }

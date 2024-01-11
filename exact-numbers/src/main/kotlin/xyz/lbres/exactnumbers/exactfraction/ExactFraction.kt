@@ -1,14 +1,12 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.common.castToByte
-import xyz.lbres.exactnumbers.common.castToChar
-import xyz.lbres.exactnumbers.common.castToDouble
-import xyz.lbres.exactnumbers.common.castToFloat
-import xyz.lbres.exactnumbers.common.castToInt
-import xyz.lbres.exactnumbers.common.castToLong
-import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.exactnumbers.utils.castToByte
+import xyz.lbres.exactnumbers.utils.castToChar
+import xyz.lbres.exactnumbers.utils.castToDouble
+import xyz.lbres.exactnumbers.utils.castToFloat
+import xyz.lbres.exactnumbers.utils.castToInt
+import xyz.lbres.exactnumbers.utils.castToLong
+import xyz.lbres.exactnumbers.utils.castToShort
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -58,19 +56,19 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     operator fun div(other: Long): ExactFraction = div(ExactFraction(other))
     operator fun div(other: Int): ExactFraction = div(ExactFraction(other))
 
-    abstract fun eq(other: BigInteger): Boolean
-    fun eq(other: Int): Boolean = eq(other.toBigInteger())
-    fun eq(other: Long): Boolean = eq(other.toBigInteger())
+    abstract fun pow(other: ExactFraction): ExactFraction
+    fun pow(other: Int): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: Long): ExactFraction = pow(ExactFraction(other))
+    fun pow(other: BigInteger): ExactFraction = pow(ExactFraction(other))
 
     abstract override fun compareTo(other: ExactFraction): Int
     operator fun compareTo(other: Int): Int = compareTo(ExactFraction(other))
     operator fun compareTo(other: Long): Int = compareTo(ExactFraction(other))
     operator fun compareTo(other: BigInteger): Int = compareTo(ExactFraction(other))
 
-    abstract fun pow(other: ExactFraction): ExactFraction
-    fun pow(other: Int): ExactFraction = pow(ExactFraction(other))
-    fun pow(other: Long): ExactFraction = pow(ExactFraction(other))
-    fun pow(other: BigInteger): ExactFraction = pow(ExactFraction(other))
+    abstract fun eq(other: BigInteger): Boolean
+    fun eq(other: Int): Boolean = eq(other.toBigInteger())
+    fun eq(other: Long): Boolean = eq(other.toBigInteger())
 
     // UNARY NON-OPERATORS
 
@@ -96,23 +94,19 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
      * Will be ignored if this number results in a string in exponential format
      * @return [String]: representation in decimal format
      */
-    fun toDecimalString(digits: Int = 8): String = createDecimalString(this, digits)
+    abstract fun toDecimalString(digits: Int = 8): String
 
     /**
      * Create a fractional representation of the number, either as whole number or fraction
      *
      * @return [String]: representation of number in fractional format
      */
-    fun toFractionString() = simpleIf(isWholeNumber(), numerator.toString(), "$numerator/$denominator")
+    abstract fun toFractionString(): String
 
-    fun toPairString(): String = "($numerator, $denominator)"
-    fun toEFString(): String = "EF[$numerator $denominator]"
-
-    override fun toString(): String = toEFString()
+    abstract fun toPairString(): String
+    abstract fun toEFString(): String
 
     // CASTING
-
-    fun toPair(): Pair<BigInteger, BigInteger> = Pair(numerator, denominator)
 
     override fun toByte(): Byte = castToByte(toBigDecimal(), this, "ExactFraction")
     override fun toChar(): Char = castToChar(toBigDecimal(), this, "ExactFraction")
@@ -122,14 +116,9 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     override fun toFloat(): Float = castToFloat(toBigDecimal(), this, "ExactFraction")
     override fun toDouble(): Double = castToDouble(toBigDecimal(), this, "ExactFraction")
 
+    abstract fun toPair(): Pair<BigInteger, BigInteger>
     abstract fun toBigInteger(): BigInteger
     abstract fun toBigDecimal(precision: Int = 20): BigDecimal
-
-    override fun equals(other: Any?): Boolean {
-        return other is ExactFraction && numerator == other.numerator && denominator == other.denominator
-    }
-
-    override fun hashCode(): Int = createHashCode(listOf(numerator, denominator, "ExactFraction"))
 
     companion object {
         val ZERO = ExactFraction(0)

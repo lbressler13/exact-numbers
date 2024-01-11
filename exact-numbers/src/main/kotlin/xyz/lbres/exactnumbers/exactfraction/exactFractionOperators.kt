@@ -20,7 +20,7 @@ internal fun efAdd(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
 
     val newNumerator = scaled1 + scaled2
     val newDenominator = ef1.denominator * ef2.denominator
-    return ExactFraction(newNumerator, newDenominator) // fullySimplified = false
+    return ExactFraction(newNumerator, newDenominator)
 }
 
 /**
@@ -33,7 +33,7 @@ internal fun efAdd(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
 internal fun efTimes(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
     val newNumerator = ef1.numerator * ef2.numerator
     val newDenominator = ef1.denominator * ef2.denominator
-    return ExactFraction(newNumerator, newDenominator) // fullySimplified = false
+    return ExactFraction(newNumerator, newDenominator)
 }
 
 /**
@@ -81,9 +81,9 @@ internal fun efPow(base: ExactFraction, exponent: ExactFraction): ExactFraction 
     }
 
     return if (exponent.isNegative()) {
-        ExactFraction(powDenominator, powNumerator) // fullySimplified = false
+        ExactFraction(powDenominator, powNumerator)
     } else {
-        ExactFraction(powNumerator, powDenominator) // fullySimplified = false
+        ExactFraction(powNumerator, powDenominator)
     }
 }
 

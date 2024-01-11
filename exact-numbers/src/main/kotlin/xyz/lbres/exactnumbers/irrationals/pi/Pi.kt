@@ -12,7 +12,7 @@ import kotlin.math.abs
 // parameter in constructor avoids conflicts with the Pi() function
 sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
     companion object {
-        val TYPE = "Pi"
+        const val TYPE = "Pi"
 
         /**
          * Simplify set of pis
@@ -20,7 +20,7 @@ sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
          * @param numbers [ConstMultiSet]<Pi>: set to simplify
          * @return [Pair]<ExactFraction, ConstMultiSet<Pi>>: pair where first value is one, and second value is the simplified set
          */
-        fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
+        internal fun simplifySet(numbers: ConstMultiSet<Pi>): Pair<ExactFraction, ConstMultiSet<Pi>> {
             if (numbers.isEmpty()) {
                 return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
