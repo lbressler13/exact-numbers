@@ -8,15 +8,18 @@ fun runEqualsTests() {
     assertEquals(ExactFraction(-1, 3), ExactFraction(-1, 3))
     assertEquals(ExactFraction(5, 2), ExactFraction(5, 2))
     assertEquals(ExactFraction(10), ExactFraction(-30, -3))
-    assertEquals(ExactFraction(5, 17), ExactFraction(10, 34))
+    assertEquals(ExactFraction(10, 34), ExactFraction(5, 17))
 
     assertNotEquals(ExactFraction(1, 3), ExactFraction(-1, 3))
+    assertNotEquals(ExactFraction(-1, 3), ExactFraction(1, 3))
     assertNotEquals(ExactFraction(2, 3), ExactFraction(3, 2))
 }
 
 fun runEqTests() {
     runMultiTypeEqTest(ExactFraction(0), 0, true)
     runMultiTypeEqTest(ExactFraction(-3), -3, true)
+    runMultiTypeEqTest(ExactFraction(34, 17), 2, true)
+
     runMultiTypeEqTest(ExactFraction(10), -10, false)
     runMultiTypeEqTest(ExactFraction(10, 7), 1, false)
     runMultiTypeEqTest(ExactFraction(-70), 0, false)

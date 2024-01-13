@@ -28,24 +28,19 @@ fun runUnaryMinusTests() {
 
 fun runUnaryPlusTests() {
     var ef = ExactFraction(0)
-    var expected = ExactFraction(0)
-    assertEquals(expected, +ef)
+    assertEquals(ef, +ef)
 
     ef = ExactFraction(3)
-    expected = ExactFraction(3)
-    assertEquals(expected, +ef)
+    assertEquals(ef, +ef)
 
     ef = ExactFraction(-3)
-    expected = ExactFraction(-3)
-    assertEquals(expected, +ef)
+    assertEquals(ef, +ef)
 
     ef = ExactFraction(5, 2)
-    expected = ExactFraction(5, 2)
-    assertEquals(expected, +ef)
+    assertEquals(ef, +ef)
 
     ef = ExactFraction(-2, 5)
-    expected = ExactFraction(-2, 5)
-    assertEquals(expected, +ef)
+    assertEquals(ef, +ef)
 }
 
 fun runNotTests() {

@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
+import java.math.BigInteger
 import java.math.RoundingMode
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -62,10 +63,16 @@ fun runIsNegativeTests() {
     ef = ExactFraction(2, 7)
     assertFalse(ef.isNegative())
 
+    ef = ExactFraction(7, 2)
+    assertFalse(ef.isNegative())
+
     ef = ExactFraction(-1)
     assertTrue(ef.isNegative())
 
     ef = ExactFraction(-2, 7)
+    assertTrue(ef.isNegative())
+
+    ef = ExactFraction(7, -2)
     assertTrue(ef.isNegative())
 }
 
@@ -84,6 +91,9 @@ fun runIsZeroTests() {
 
     ef = ExactFraction(-2, 7)
     assertFalse(ef.isZero())
+
+    ef = ExactFraction(2, -7)
+    assertFalse(ef.isZero())
 }
 
 fun runRoundToWholeTests() {
@@ -96,8 +106,8 @@ fun runRoundToWholeTests() {
     expected = ExactFraction.ONE
     assertEquals(expected, ef.roundToWhole())
 
-    ef = ExactFraction(10000)
-    expected = ExactFraction(10000)
+    ef = ExactFraction(BigInteger("1000000000000000000000"))
+    expected = ExactFraction(BigInteger("1000000000000000000000"))
     assertEquals(expected, ef.roundToWhole())
 
     ef = ExactFraction(-123)
@@ -153,6 +163,10 @@ fun runRoundToWholeTests() {
 
     ef = ExactFraction(100000, 17)
     expected = ExactFraction(5882)
+    assertEquals(expected, ef.roundToWhole())
+
+    ef = ExactFraction(BigInteger("1000000000000000000000"), 3)
+    expected = ExactFraction(BigInteger("333333333333333333333"))
     assertEquals(expected, ef.roundToWhole())
 
     // other rounding modes

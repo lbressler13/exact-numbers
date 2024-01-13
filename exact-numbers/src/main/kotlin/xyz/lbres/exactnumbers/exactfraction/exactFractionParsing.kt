@@ -148,12 +148,18 @@ internal fun checkIsEFString(s: String): Boolean {
     return tryOrDefault(false) {
         val startEnd = trimmed.startsWith("EF[") && trimmed.endsWith("]")
         val split = trimmed.substring(3, s.lastIndex).split(" ")
+        val validNumber: (String) -> Boolean = {
+            when (it.length) {
+                0 -> false
+                1 -> it[0].isDigit()
+                else -> {
+                    (it[0] == '-' || it[0].isDigit()) && it.substring(1).all { c -> c.isDigit() }
+                }
+            }
+        }
 
         if (startEnd && split.size == 2) {
-            // try to parse numbers
-            BigInteger(split[0])
-            BigInteger(split[1])
-            true
+            validNumber(split[0]) && validNumber(split[1])
         } else {
             false
         }
