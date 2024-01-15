@@ -13,10 +13,11 @@ import java.math.BigInteger
  * Representation of a square root with a rational radicand
  */
 sealed class Sqrt : IrrationalNumber<Sqrt>() {
+
     abstract val radicand: ExactFraction
 
     /**
-     * Simplify log into a coefficient and a root.
+     * Simplify sqrt into a coefficient and a root.
      *
      * @return [Pair]<ExactFraction, Sqrt>: a pair of coefficient and sqrt such that the product has the same value as the current sqrt
      */

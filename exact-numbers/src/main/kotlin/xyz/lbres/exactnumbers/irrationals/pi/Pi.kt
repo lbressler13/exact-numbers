@@ -11,6 +11,7 @@ import kotlin.math.abs
  */
 // parameter in constructor avoids conflicts with the Pi() function
 sealed class Pi(override val isInverted: Boolean) : IrrationalNumber<Pi>() {
+
     /**
      * Create a string representation of the number without symbols
      */

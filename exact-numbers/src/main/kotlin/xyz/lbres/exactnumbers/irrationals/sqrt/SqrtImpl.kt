@@ -52,8 +52,8 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
 
     override fun getSimplified(): Pair<ExactFraction, Sqrt> {
         if (simplified == null) {
-            if (radicand.isZero() || radicand == ExactFraction.ONE) {
-                simplified = Pair(ExactFraction.ONE, this)
+            simplified = if (radicand.isZero() || radicand == ExactFraction.ONE) {
+                Pair(ExactFraction.ONE, this)
             } else {
                 val numWhole = extractWholeOf(radicand.numerator)
                 val denomWhole = extractWholeOf(radicand.denominator)
@@ -63,7 +63,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
                 val newDenom = radicand.denominator / (denomWhole * denomWhole)
                 val newRadicand = ExactFraction(newNum, newDenom)
 
-                simplified = Pair(whole, SqrtImpl(newRadicand))
+                Pair(whole, SqrtImpl(newRadicand))
             }
         }
 
@@ -85,6 +85,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
     override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
     override fun hashCode(): Int = createHashCode(listOf(radicand, type))
 
-    override fun toString(): String = "[√(${radicand.toFractionString()})]"
-    override fun toPlainString(): String = "[sqrt(${radicand.toFractionString()})]"
+    private fun createString(sqrt: String): String = "[$sqrt(${radicand.toFractionString()})]"
+    override fun toString(): String = createString("√")
+    override fun toPlainString(): String = createString("sqrt")
 }

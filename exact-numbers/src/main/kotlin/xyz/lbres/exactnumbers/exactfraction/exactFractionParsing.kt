@@ -149,19 +149,14 @@ internal fun checkIsEFString(s: String): Boolean {
         val startEnd = trimmed.startsWith("EF[") && trimmed.endsWith("]")
         val split = trimmed.substring(3, s.lastIndex).split(" ")
         val validNumber: (String) -> Boolean = {
-            when (it.length) {
-                0 -> false
-                1 -> it[0].isDigit()
-                else -> {
-                    (it[0] == '-' || it[0].isDigit()) && it.substring(1).all { c -> c.isDigit() }
-                }
+            when {
+                it.isEmpty() -> false
+                it.length == 1 -> it[0].isDigit()
+                it[0] == '-' -> it.substring(1).all(Char::isDigit)
+                else -> it.all(Char::isDigit)
             }
         }
 
-        if (startEnd && split.size == 2) {
-            validNumber(split[0]) && validNumber(split[1])
-        } else {
-            false
-        }
+        startEnd && split.size == 2 && validNumber(split[0]) && validNumber(split[1])
     }
 }
