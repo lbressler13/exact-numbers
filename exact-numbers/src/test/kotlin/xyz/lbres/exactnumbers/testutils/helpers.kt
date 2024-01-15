@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 /**
- * Assert that a divide by zero exception is thrown when code is run
+ * Assert that a divide by zero exception is thrown when a test is run
  *
  * @param test () -> Unit: test to run
  */
@@ -14,7 +14,7 @@ fun assertDivByZero(test: () -> Unit) {
 }
 
 /**
- * Assert that a test throws an Exception with the correct message
+ * Assert that a test throws an exception of the correct type, with the correct message
  *
  * @param message [String]: expected error message
  * @param test () -> Unit: test to run
@@ -44,7 +44,7 @@ fun <T> assertSucceeds(errorMessage: String, test: () -> T) {
  * Generate a function to assert that a CastingOverthrowException is thrown, with the correct message and overflow value
  *
  * @param baseType [String]: name of type being cast from
- * @return function validate error being thrown
+ * @return function to validate error being thrown
  */
 fun <T> getCastingOverflowAssertion(baseType: String): (String, T, () -> Unit) -> Unit {
     val assertionFn: (String, T, () -> Unit) -> Unit = { targetType, value, cast ->

@@ -57,8 +57,8 @@ private fun runFullListConstructorTests() {
     var logs = listOf(logWhole, logInverse)
     checkTerm(term, one, logs, logs = logs)
 
-    term = Term.fromValues(one, listOf(sqrtPartialWhole))
-    checkTerm(term, one, listOf(sqrtPartialWhole), sqrts = listOf(sqrtPartialWhole))
+    term = Term.fromValues(one, listOf(sqrtWhole))
+    checkTerm(term, one, listOf(sqrtWhole), sqrts = listOf(sqrtWhole))
 
     term = Term.fromValues(one, listOf(pi))
     checkTerm(term, one, listOf(pi), pis = listOf(pi), piCount = 1)

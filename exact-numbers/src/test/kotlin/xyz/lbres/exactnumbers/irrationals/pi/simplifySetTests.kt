@@ -10,9 +10,9 @@ private val one = ExactFraction.ONE
 
 fun runSimplifySetTests() {
     // equal
-    var pis: ConstMultiSet<Pi> = constMultiSetOf()
     var expected: Pair<ExactFraction, ConstMultiSet<Pi>> = Pair(one, emptyConstMultiSet())
 
+    var pis: ConstMultiSet<Pi> = constMultiSetOf()
     assertEquals(expected, Pi.simplifySet(pis))
 
     pis = constMultiSetOf(Pi(), Pi().inverse())
