@@ -131,19 +131,14 @@ fun runDivTests() {
 fun runCompareToTests() {
     // equal
     var sqrt1 = Sqrt.ZERO
-    assertEquals(sqrt1, sqrt1)
+    assertEquals(0, sqrt1.compareTo(sqrt1))
 
     sqrt1 = Sqrt(ExactFraction(9, 11))
-    assertEquals(sqrt1, sqrt1)
+    assertEquals(0, sqrt1.compareTo(sqrt1))
 
     // not equal
     sqrt1 = Sqrt.ZERO
     var sqrt2 = Sqrt.ONE
-    assertTrue(sqrt1 < sqrt2)
-    assertTrue(sqrt2 > sqrt1)
-
-    sqrt1 = Sqrt.ZERO
-    sqrt2 = Sqrt.ONE
     assertTrue(sqrt1 < sqrt2)
     assertTrue(sqrt2 > sqrt1)
 

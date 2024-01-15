@@ -29,7 +29,9 @@ internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
         }
     }
 
-    override fun toString(): String = simpleIf(isInverted, "[1/π]", "[π]")
+    private fun createString(base: String): String = simpleIf(isInverted, "[1/$base]", "[$base]")
+    override fun toString(): String = createString("π")
+    override fun toPlainString(): String = createString("pi")
 
     override fun equals(other: Any?): Boolean = other is Pi && isInverted == other.isInverted
     override fun hashCode(): Int = createHashCode(listOf(PI, isInverted, type))

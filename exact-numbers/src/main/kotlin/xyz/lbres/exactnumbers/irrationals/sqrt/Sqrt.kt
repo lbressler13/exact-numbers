@@ -22,6 +22,11 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
      */
     abstract fun getSimplified(): Pair<ExactFraction, Sqrt>
 
+    /**
+     * Create a string representation of the number without symbols
+     */
+    abstract fun toPlainString(): String
+
     companion object {
         const val TYPE = "Sqrt"
 
