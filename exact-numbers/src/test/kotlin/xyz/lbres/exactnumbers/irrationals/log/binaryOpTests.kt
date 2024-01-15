@@ -124,6 +124,7 @@ fun runDivTests() {
     expected = Term.fromValues(one, listOf(log1, sqrt.inverse()))
     assertEquals(expected, log1 / sqrt)
 
+    // other
     log1 = Log(15)
     val testNumber = TestNumber(ExactFraction(18))
     expected = Term.fromValues(one, listOf(log1, testNumber.inverse()))
