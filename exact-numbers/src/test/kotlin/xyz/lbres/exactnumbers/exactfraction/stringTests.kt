@@ -1,8 +1,9 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -113,49 +114,49 @@ fun runParseDecimalTests() {
 
     // errors
     s = "abc"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing abc") { parseDecimal(s) }
 
     s = "1.1.1"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 1.1.1") { parseDecimal(s) }
 
     s = "."
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing .") { parseDecimal(s) }
 
     s = "5."
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 5.") { parseDecimal(s) }
 
     s = "EF[1 1]"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing EF[1 1]") { parseDecimal(s) }
 
     s = "--1234"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing --1234") { parseDecimal(s) }
 
     s = "-12-34"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing -12-34") { parseDecimal(s) }
 
     s = "123a456"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 123a456") { parseDecimal(s) }
 
     s = "3.90e-3"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 3.90e-3") { parseDecimal(s) }
 
     s = "E10"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing E10") { parseDecimal(s) }
 
     s = "e-1"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing e-1") { parseDecimal(s) }
 
     s = "123e"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 123e") { parseDecimal(s) }
 
     s = "123e-"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 123e-") { parseDecimal(s) }
 
     s = "12E1.3"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 12E1.3") { parseDecimal(s) }
 
     s = "1 e 1"
-    assertFailsWith<NumberFormatException> { parseDecimal(s) }
+    assertFailsWithMessage<NumberFormatException>("Error parsing 1 e 1") { parseDecimal(s) }
 }
 
 fun runParseEFStringTests() {
@@ -177,22 +178,22 @@ fun runParseEFStringTests() {
 
     // errors
     s = "EF[1 0]"
-    assertFailsWith<ArithmeticException> { parseEFString(s) }
+    assertDivByZero { parseEFString(s) }
 
     s = "abc"
-    assertFailsWith<NumberFormatException> { parseEFString(s) }
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: abc") { parseEFString(s) }
 
     s = "1.1"
-    assertFailsWith<NumberFormatException> { parseEFString(s) }
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: 1.1") { parseEFString(s) }
 
     s = "4E2"
-    assertFailsWith<NumberFormatException> { parseEFString(s) }
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: 4E2") { parseEFString(s) }
 
     s = "EF[1]"
-    assertFailsWith<NumberFormatException> { parseEFString(s) }
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1]") { parseEFString(s) }
 
     s = "EF[1 1 1]"
-    assertFailsWith<NumberFormatException> { parseEFString(s) }
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1 1 1]") { parseEFString(s) }
 }
 
 fun runCheckIsEFStringTests() {

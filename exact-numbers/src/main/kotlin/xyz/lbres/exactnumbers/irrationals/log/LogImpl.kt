@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
+import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import java.math.BigDecimal
@@ -35,22 +35,12 @@ internal class LogImpl private constructor(
 
     override fun isZero(): Boolean = argument == ExactFraction.ONE
 
-    /**
-     * Determine if the value of the log is a rational number.
-     *
-     * @return [Boolean]: true if the value is rational, false otherwise
-     */
     override fun isRational(): Boolean {
         setLogs()
         // rational if both values are whole numbers
-        return numLog!!.toPlainString().indexOf('.') == -1 && denomLog!!.toPlainString().indexOf('.') == -1
+        return !numLog!!.toPlainString().contains('.') && !denomLog!!.toPlainString().contains('.')
     }
 
-    /**
-     * Get the value of the log as a rational value if rational
-     *
-     * @return [ExactFraction]?: value of the log, or null if the value is irrational
-     */
     override fun getRationalValue(): ExactFraction? {
         when {
             !isRational() -> return null
@@ -70,42 +60,27 @@ internal class LogImpl private constructor(
         return simpleIf(isInverted, { result.inverse() }, { result })
     }
 
-    /**
-     * Get value of log, using the expression log_b(x/y) = log_b(x) - log_b(y).
-     * This reduces loss of precision when casting to Double.
-     *
-     * @return [BigDecimal]
-     */
+    // uses the formula log_b(x/y) = log_b(x) - log_b(y) to reduce loss of precision when casting to Double
     override fun getValue(): BigDecimal {
         setLogs()
         val logValue = numLog!! - denomLog!!
         return simpleIf(isInverted, { BigDecimal.ONE.divideBy(logValue) }, { logValue })
     }
 
-    /**
-     * Simplify log into a coefficient and a log value.
-     * Extracts rational value as coefficient and returns log as 1, or returns coefficient as 1 with the existing log for irrational logs.
-     *
-     * @return [Pair]<ExactFraction, Log>: a pair of coefficient and log such that the product has the same value as the current log
-     */
+    // TODO improve simplification using bases
     override fun getSimplified(): Pair<ExactFraction, Log> {
         if (simplified == null) {
-            when {
-                fullySimplified -> return Pair(ExactFraction.ONE, this)
-                isZero() -> return Pair(ExactFraction.ONE, ZERO)
-                equals(ONE) -> return Pair(ExactFraction.ONE, ONE)
-                isRational() -> return Pair(getRationalValue()!!, ONE)
+            simplified = when {
+                fullySimplified || isZero() || equals(ONE) -> Pair(ExactFraction.ONE, this)
+                isRational() -> Pair(getRationalValue()!!, ONE)
+                else -> Pair(ExactFraction.ONE, LogImpl(argument, base, isInverted, fullySimplified = true))
             }
-
-            simplified = Pair(ExactFraction.ONE, LogImpl(argument, base, isInverted, fullySimplified = true))
         }
 
         return simplified!!
     }
 
-    /**
-     * Get multiplicative inverse. This does not correspond to an inverse log.
-     */
+    // multiplicative inverse, *not* inverse log
     override fun inverse(): Log {
         if (isZero()) {
             throw divideByZero

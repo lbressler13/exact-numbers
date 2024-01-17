@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.exactfraction
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.biginteger.getGCD
-import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.pair.TypePair
 import java.math.BigInteger
 import java.math.MathContext
@@ -49,28 +48,18 @@ internal fun simplifyFraction(values: TypePair<BigInteger>): TypePair<BigInteger
  * @return [String]: representation in decimal format
  */
 internal fun createDecimalString(ef: ExactFraction, digits: Int): String {
-    if (digits < 0) {
-        throw IllegalArgumentException("Number of digits must be non-negative")
+    when {
+        digits < 0 -> throw IllegalArgumentException("Number of digits must be non-negative")
+        ef.isWholeNumber() -> return ef.numerator.toString()
+        digits == 0 -> return ef.roundToWhole().numerator.toString()
     }
 
-    if (ef.isWholeNumber()) {
-        return ef.numerator.toString()
-    }
+    val divisionResult = ef.numerator.divideAndRemainder(ef.denominator)
 
-    val whole: BigInteger = ef.numerator / ef.denominator
-    val remainder: BigInteger = ef.numerator - ef.denominator * whole
-
-    val mc = MathContext(simpleIf(digits > 0, digits, 1), RoundingMode.HALF_UP)
-    val remainderDecimal = remainder.toBigDecimal()
+    val mc = MathContext(digits, RoundingMode.HALF_UP)
+    val remainderDecimal = divisionResult[1].toBigDecimal()
     val denominatorDecimal = ef.denominator.toBigDecimal()
     val decimal = remainderDecimal.divide(denominatorDecimal, mc)
 
-    if (digits == 0) {
-        val startIndex = decimal.toString().indexOf('.') + 1
-        val roundUp = decimal.toString()[startIndex].digitToInt() >= 5
-        val result = whole + simpleIf(roundUp, BigInteger.ONE, BigInteger.ZERO)
-        return result.toString()
-    }
-
-    return (whole.toBigDecimal() + decimal).toString()
+    return (divisionResult[0].toBigDecimal() + decimal).toString()
 }

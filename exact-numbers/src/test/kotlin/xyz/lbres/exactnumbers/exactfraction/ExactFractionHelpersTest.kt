@@ -11,6 +11,7 @@ class ExactFractionHelpersTest {
 
     @Test
     fun testCreateDecimalString() {
+        // whole
         var ef = ExactFraction(0)
         var expected = "0"
         assertEquals(expected, createDecimalString(ef, 8))
@@ -23,6 +24,11 @@ class ExactFractionHelpersTest {
         expected = "-3"
         assertEquals(expected, createDecimalString(ef, 3))
 
+        ef = ExactFraction(453)
+        expected = "453"
+        assertEquals(expected, createDecimalString(ef, 1))
+
+        // decimal
         ef = ExactFraction(3, 8)
         expected = "0.375"
         assertEquals(expected, createDecimalString(ef, 5))
@@ -44,8 +50,8 @@ class ExactFractionHelpersTest {
         assertEquals(expected, createDecimalString(ef, 12))
 
         ef = ExactFraction(5, 9)
-        expected = "0.55555556"
-        assertEquals(expected, createDecimalString(ef, 8))
+        expected = "0.5555555555555555555555555555555555555556"
+        assertEquals(expected, createDecimalString(ef, 40))
 
         ef = ExactFraction(-4, 19)
         expected = "-0.21052632"

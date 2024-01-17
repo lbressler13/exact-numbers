@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 val assertCastingOverflow = getCastingOverflowAssertion<Log>("Log")
 
 fun runToByteTests() {
-    runWholeNumberCastingTests(Long::toByte, Log::toByte, "Byte", shouldOverflow = true)
+    runWholeNumberCastingTests(Long::toByte, Log::toByte, "Byte", Byte.MAX_VALUE)
 }
 
 fun runToCharTests() {
@@ -35,15 +35,15 @@ fun runToCharTests() {
 }
 
 fun runToShortTests() {
-    runWholeNumberCastingTests(Long::toShort, Log::toShort, "Short")
+    runWholeNumberCastingTests(Long::toShort, Log::toShort, "Short", Short.MAX_VALUE)
 }
 
 fun runToIntTests() {
-    runWholeNumberCastingTests(Long::toInt, Log::toInt, "Int")
+    runWholeNumberCastingTests(Long::toInt, Log::toInt, "Int", Int.MAX_VALUE)
 }
 
 fun runToLongTests() {
-    runWholeNumberCastingTests({ it }, Log::toLong, "Long")
+    runWholeNumberCastingTests({ it }, Log::toLong, "Long", Long.MAX_VALUE)
 }
 
 fun runToFloatTests() {
@@ -60,9 +60,9 @@ fun runToDoubleTests() {
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
  * @param castLog (Log) -> T: cast a log value to a value of the current number type
  * @param type [String]: name of target type
- * @param shouldOverflow [Boolean]: if the cast should throw an overflow exception when casting 2^128. Defaults to `false`
+ * @param maxValue T: maximum valid value for the current number type
  */
-private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castLog: (Log) -> T, type: String, shouldOverflow: Boolean = false) {
+private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castLog: (Log) -> T, type: String, maxValue: T) {
     var log = Log.ZERO
     assertEquals(castLong(0), castLog(log))
 
@@ -86,7 +86,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castL
 
     val largeValue = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
     log = Log(largeValue, 2)
-    if (shouldOverflow) {
+    if (maxValue.toLong() <= Byte.MAX_VALUE.toLong()) {
         assertCastingOverflow(type, log) { castLog(log) }
     } else {
         assertEquals(castLong(128), castLog(log))

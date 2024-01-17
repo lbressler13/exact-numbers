@@ -16,7 +16,7 @@ class ExactFractionConstructorsTest {
 
     // thorough testing is done in parsing tests
     private fun runStringTests() {
-        // Decimal string
+        // decimal string
         var ef = ExactFraction("1.51")
         assertEquals(BigInteger("151"), ef.numerator)
         assertEquals(BigInteger("100"), ef.denominator)
@@ -26,7 +26,7 @@ class ExactFractionConstructorsTest {
         assertEquals(BigInteger("-7"), ef.numerator)
         assertEquals(BigInteger("3"), ef.denominator)
 
-        // Invalid
+        // invalid
         assertFailsWith<NumberFormatException>("Invalid EF string format") { ExactFraction("[]") }
     }
 

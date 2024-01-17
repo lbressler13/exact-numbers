@@ -14,11 +14,11 @@ import kotlin.math.abs
  * Parse a string from standard number format into a ExactFraction.
  * Standard format is a string which may start with "-", but otherwise consists of at least one digit and up to 1 "."
  *
- * @param unparsed [String]: string to parse
- * @return [ExactFraction]: parse value
+ * @param s [String]: string to parse
+ * @return [ExactFraction]: parsed value
  */
-internal fun parseDecimal(unparsed: String): ExactFraction {
-    var currentState: String = unparsed.trim()
+internal fun parseDecimal(s: String): ExactFraction {
+    var currentState: String = s.trim()
 
     validateDecimalString(currentState)
 
@@ -63,7 +63,7 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
         }
     }
 
-    // apply e-value
+    // apply exponentiation
     val eMultiplier = BigInteger.TEN.pow(abs(eValue))
     return when {
         eValue.isZero() -> ef
@@ -79,7 +79,7 @@ internal fun parseDecimal(unparsed: String): ExactFraction {
  * @param s [String]: string to validate
  */
 private fun validateDecimalString(s: String) {
-    val exception = NumberFormatException()
+    val exception = NumberFormatException("Error parsing $s")
 
     val eIndex = s.indexOf('E')
     val validCharacters = s.all { it.isDigit() || it == '-' || it == '.' || it == 'E' }
@@ -89,11 +89,11 @@ private fun validateDecimalString(s: String) {
     }
 
     val validateMinus: (String) -> Boolean = {
-        it.indexOf('-') in -1..0 && it.countElement('-') in 0..1
+        it.indexOf('-') <= 0 && it.countElement('-') <= 1
     }
 
     val validateDecimal: (String) -> Boolean = {
-        it.indexOf('.') != it.lastIndex && it.countElement('.') in 0..1
+        it.indexOf('.') != it.lastIndex && it.countElement('.') <= 1
     }
 
     if (eIndex == -1 && !validateMinus(s) || !validateDecimal(s)) {
@@ -112,16 +112,16 @@ private fun validateDecimalString(s: String) {
  * Parse a string from a EF string format into a ExactFraction.
  * EF string format is "EF[num denom]"
  *
- * @param unparsed [String]: string to parse
+ * @param s [String]: string to parse
  * @return [ExactFraction]: parsed value
  */
-internal fun parseEFString(unparsed: String): ExactFraction {
-    if (!checkIsEFString(unparsed)) {
-        throw NumberFormatException("Invalid EF string format")
+internal fun parseEFString(s: String): ExactFraction {
+    if (!checkIsEFString(s)) {
+        throw NumberFormatException("Invalid EF string format: $s")
     }
 
     try {
-        val numbers = unparsed.substring(3, unparsed.lastIndex)
+        val numbers = s.substring(3, s.lastIndex)
         val splitNumbers = numbers.split(' ')
         val numString = splitNumbers[0].trim()
         val denomString = splitNumbers[1].trim()
@@ -131,7 +131,7 @@ internal fun parseEFString(unparsed: String): ExactFraction {
     } catch (e: ArithmeticException) {
         throw e
     } catch (_: Exception) {
-        throw NumberFormatException("Invalid EF string format")
+        throw NumberFormatException("Invalid EF string format: $s")
     }
 }
 
@@ -144,14 +144,24 @@ internal fun parseEFString(unparsed: String): ExactFraction {
  */
 internal fun checkIsEFString(s: String): Boolean {
     val trimmed = s.trim()
+    val prefix = "EF["
+    val suffix = "]"
+
+    if (!trimmed.startsWith(prefix) || !trimmed.endsWith(suffix)) {
+        return false
+    }
 
     return tryOrDefault(false) {
-        val startEnd = trimmed.startsWith("EF[") && trimmed.endsWith("]")
-        val split = trimmed.substring(3, s.lastIndex).split(" ")
+        val split = trimmed.substring(prefix.length, s.length - suffix.length).split(' ')
+        val validNumber: (String) -> Boolean = {
+            when {
+                it.isEmpty() -> false
+                it.length == 1 -> it[0].isDigit()
+                it[0] == '-' -> it.substring(1).all(Char::isDigit)
+                else -> it.all(Char::isDigit)
+            }
+        }
 
-        // try to parse numbers
-        BigInteger(split[0])
-        BigInteger(split[1])
-        startEnd && split.size == 2
+        split.size == 2 && validNumber(split[0]) && validNumber(split[1])
     }
 }

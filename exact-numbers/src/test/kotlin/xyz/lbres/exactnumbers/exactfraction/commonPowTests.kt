@@ -53,7 +53,7 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     base = ExactFraction.ONE
     exp = ExactFraction("3147483647") // bigger than int max
     expected = ExactFraction.ONE
-    assertEquals(expected, powFn(base, exp)) // tests that large exponent doesn't throw
+    assertEquals(expected, powFn(base, exp))
 
     base = ExactFraction(3, 8)
     exp = ExactFraction.THREE

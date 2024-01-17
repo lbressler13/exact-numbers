@@ -70,6 +70,9 @@ fun runIsRationalTests() {
     sqrt = Sqrt(2)
     assertFalse(sqrt.isRational())
 
+    sqrt = Sqrt(8)
+    assertFalse(sqrt.isRational())
+
     sqrt = Sqrt(ExactFraction(1, 35))
     assertFalse(sqrt.isRational())
 

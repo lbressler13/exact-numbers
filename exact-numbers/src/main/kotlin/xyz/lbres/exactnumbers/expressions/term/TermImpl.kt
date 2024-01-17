@@ -1,13 +1,13 @@
 package xyz.lbres.exactnumbers.expressions.term
 
-import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
@@ -90,7 +90,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      */
     override fun getSimplified(): Term {
         if (simplified == null) {
-            simplified = simplifyTerm(coefficient, factorTypeMapping)
+            simplified = createSimplifiedTerm(coefficient, factorTypeMapping)
         }
 
         return simplified!!
@@ -106,8 +106,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         if (value == null) {
             val simplified = getSimplified()
 
-            val irrationalProduct = simplified.factors.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
-            val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * irrationalProduct
+            val factorProduct = simplified.factors.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
+            val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * factorProduct
 
             val result = numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
             value = result

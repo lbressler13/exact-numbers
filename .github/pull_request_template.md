@@ -4,9 +4,10 @@
 ## Checks
 * [ ] New and existing unit tests pass with changes
 * [ ] Unit tests have been written for all new functionality
+* [ ] If function signatures changed, the docstrings have been updated
 * [ ] ktlint has run successfully
-* [ ] I have updated the version number (if needed)
-* [ ] I have updated the signature files (if needed)
+* [ ] The version number has been updated (if needed)
+* [ ] The signature files have been updated (if needed)
 
 ## Testing
 How was this tested?

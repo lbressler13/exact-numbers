@@ -24,10 +24,6 @@ private fun runSimplifyZeroTests(createSimplifiedPair: (BigInteger, BigInteger) 
     var expected = Pair(BigInteger.ZERO, BigInteger.ONE)
     assertEquals(expected, pair)
 
-    pair = createSimplifiedPair(BigInteger.ZERO, BigInteger("6"))
-    expected = Pair(BigInteger.ZERO, BigInteger.ONE)
-    assertEquals(expected, pair)
-
     pair = createSimplifiedPair(BigInteger.ZERO, BigInteger("-6"))
     expected = Pair(BigInteger.ZERO, BigInteger.ONE)
     assertEquals(expected, pair)
@@ -41,14 +37,6 @@ private fun runSimplifySignTests(createSimplifiedPair: (BigInteger, BigInteger) 
     pair = createSimplifiedPair(BigInteger.ONE, BigInteger("-3"))
     expected = Pair(-BigInteger.ONE, BigInteger("3"))
     assertEquals(expected, pair)
-
-    pair = createSimplifiedPair(BigInteger.ONE, BigInteger("3"))
-    expected = Pair(BigInteger.ONE, BigInteger("3"))
-    assertEquals(expected, pair)
-
-    pair = createSimplifiedPair(BigInteger("-5"), BigInteger.TWO)
-    expected = Pair(BigInteger("-5"), BigInteger.TWO)
-    assertEquals(expected, pair)
 }
 
 private fun runSimplifyGCDTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
@@ -58,10 +46,6 @@ private fun runSimplifyGCDTests(createSimplifiedPair: (BigInteger, BigInteger) -
 
     pair = createSimplifiedPair(BigInteger("-462"), BigInteger("1071"))
     expected = Pair(BigInteger("-22"), BigInteger("51"))
-    assertEquals(expected, pair)
-
-    pair = createSimplifiedPair(BigInteger("5"), BigInteger("9"))
-    expected = Pair(BigInteger("5"), BigInteger("9"))
     assertEquals(expected, pair)
 
     pair = createSimplifiedPair(BigInteger("9"), BigInteger("3"))

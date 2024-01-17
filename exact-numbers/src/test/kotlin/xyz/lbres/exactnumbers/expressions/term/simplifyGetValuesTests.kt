@@ -56,7 +56,10 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
 
     term = Term.fromValues(
         ExactFraction(18, 5),
-        listOf(logNum2, logNum2, logNum1, logNum2.inverse(), Pi().inverse(), Pi().inverse(), Pi().inverse(), Pi())
+        listOf(
+            logNum2, logNum2, logNum1, logNum2.inverse(),
+            Pi().inverse(), Pi().inverse(), Pi().inverse(), Pi()
+        )
     )
     result = simplify(term)
     expectedCoeff = ExactFraction(18, 5)

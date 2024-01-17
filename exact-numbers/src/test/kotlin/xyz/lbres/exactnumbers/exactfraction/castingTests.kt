@@ -169,8 +169,8 @@ fun runToBigDecimalTests() {
  *
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
  * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
- * @param minValue T?: minimum valid value for the current number type. If the value is `null`, tests involved min value will not be run
- * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involved max value will not be run
+ * @param minValue T?: minimum valid value for the current number type. If the value is `null`, tests involving min value will not be run
+ * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involving max value will not be run
  * @param type [String]: string representation of type, which is used in overflow exceptions
  */
 private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castEF: (ExactFraction) -> T, minValue: T?, maxValue: T?, type: String) {

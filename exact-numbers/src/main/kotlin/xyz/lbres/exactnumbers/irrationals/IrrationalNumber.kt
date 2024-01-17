@@ -1,17 +1,17 @@
 package xyz.lbres.exactnumbers.irrationals
 
-import xyz.lbres.exactnumbers.common.castToByte
-import xyz.lbres.exactnumbers.common.castToChar
-import xyz.lbres.exactnumbers.common.castToDouble
-import xyz.lbres.exactnumbers.common.castToFloat
-import xyz.lbres.exactnumbers.common.castToInt
-import xyz.lbres.exactnumbers.common.castToLong
-import xyz.lbres.exactnumbers.common.castToShort
-import xyz.lbres.exactnumbers.common.createHashCode
-import xyz.lbres.exactnumbers.common.deprecatedV1
-import xyz.lbres.exactnumbers.common.divideByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.expressions.term.Term
+import xyz.lbres.exactnumbers.utils.castToByte
+import xyz.lbres.exactnumbers.utils.castToChar
+import xyz.lbres.exactnumbers.utils.castToDouble
+import xyz.lbres.exactnumbers.utils.castToFloat
+import xyz.lbres.exactnumbers.utils.castToInt
+import xyz.lbres.exactnumbers.utils.castToLong
+import xyz.lbres.exactnumbers.utils.castToShort
+import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.exactnumbers.utils.deprecatedV1
+import xyz.lbres.exactnumbers.utils.divideByZero
 import java.math.BigDecimal
 
 /**
@@ -47,7 +47,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     abstract fun getValue(): BigDecimal
 
     /**
-     * Get the value of the number as a BigInteger. Returns `null` if the value of the number is not rational.
+     * Get the value of the number as an ExactFraction. Returns `null` if the value of the number is not rational.
      */
     abstract fun getRationalValue(): ExactFraction?
 
@@ -78,7 +78,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
         return Term.fromValues(other.inverse(), listOf(this))
     }
 
-    override operator fun compareTo(other: T): Int = getValue().compareTo(other.getValue())
+    override fun compareTo(other: T): Int = getValue().compareTo(other.getValue())
 
     override fun equals(other: Any?): Boolean {
         return other is IrrationalNumber<*> && other.type == type && getValue() == other.getValue()

@@ -1,10 +1,11 @@
-package xyz.lbres.exactnumbers.common
+package xyz.lbres.exactnumbers.utils
 
+import xyz.lbres.exactnumbers.exceptions.CastingOverflowException
 import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * Cast a number to Byte, or throw the given exception if number exceeds values for Byte
+ * Cast a number to Byte, or throw an exception if number exceeds values for Byte
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -17,7 +18,7 @@ internal fun <T> castToByte(decimal: BigDecimal, value: T, type: String): Byte {
 }
 
 /**
- * Cast a number to Char, or throw the given exception if number exceeds values for Char
+ * Cast a number to Char, or throw an exception if number exceeds values for Char
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -34,7 +35,7 @@ internal fun <T> castToChar(decimal: BigDecimal, value: T, type: String): Char {
 }
 
 /**
- * Cast a number to Short, or throw the given exception if number exceeds values for Short
+ * Cast a number to Short, or throw an exception if number exceeds values for Short
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -47,7 +48,7 @@ internal fun <T> castToShort(decimal: BigDecimal, value: T, type: String): Short
 }
 
 /**
- * Cast a number to Int, or throw the given exception if number exceeds values for Int
+ * Cast a number to Int, or throw an exception if number exceeds values for Int
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -60,7 +61,7 @@ internal fun <T> castToInt(decimal: BigDecimal, value: T, type: String): Int {
 }
 
 /**
- * Cast a number to Long, or throw the given exception if number exceeds values for Long
+ * Cast a number to Long, or throw an exception if number exceeds values for Long
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -73,7 +74,7 @@ internal fun <T> castToLong(decimal: BigDecimal, value: T, type: String): Long {
 }
 
 /**
- * Cast a number to Float, or throw the given exception if number exceeds values for Float
+ * Cast a number to Float, or throw an exception if number exceeds values for Float
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -86,7 +87,7 @@ internal fun <T> castToFloat(decimal: BigDecimal, value: T, type: String): Float
 }
 
 /**
- * Cast a number to Double, or throw the given exception if number exceeds values for Double
+ * Cast a number to Double, or throw an exception if number exceeds values for Double
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value [T]: number to cast
@@ -105,7 +106,7 @@ internal fun <T> castToDouble(decimal: BigDecimal, value: T, type: String): Doub
  * @param minValue T: minimum allowed value
  * @param maxValue T: maximum allowed value
  * @param cast (BigDecimal) -> T: function to cast [value]
- * @param getOverflowException () -> [ArithmeticException]: get exception to throw if number exceeds supported values
+ * @param getOverflowException () -> [CastingOverflowException]: get exception to throw if number exceeds supported values
  * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole number or a decimal
  * @return [T]: result of cast, if succeeded
  */
@@ -114,7 +115,7 @@ private fun <T : Number> castNumber(
     minValue: T,
     maxValue: T,
     cast: (BigDecimal) -> T,
-    getOverflowException: () -> ArithmeticException,
+    getOverflowException: () -> CastingOverflowException,
     isDecimal: Boolean
 ): T {
     val minString = minValue.toString()

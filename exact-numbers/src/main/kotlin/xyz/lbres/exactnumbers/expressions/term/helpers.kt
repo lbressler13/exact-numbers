@@ -23,9 +23,9 @@ import kotlin.math.abs
  * and values are lists of numbers with that type
  * @return [Term]: new term with simplified coefficient and factors
  */
-internal fun simplifyTerm(coefficient: ExactFraction, factorGroups: Map<String, List<IrrationalNumber<*>>>): Term {
+internal fun createSimplifiedTerm(coefficient: ExactFraction, factorGroups: Map<String, List<IrrationalNumber<*>>>): Term {
     var newCoefficient = coefficient
-    val newValues: MutableList<IrrationalNumber<*>> = mutableListOf()
+    val newFactors: MutableList<IrrationalNumber<*>> = mutableListOf()
 
     factorGroups.forEach { (type, values) ->
         val valueSet = values.toConstMultiSet()
@@ -39,10 +39,10 @@ internal fun simplifyTerm(coefficient: ExactFraction, factorGroups: Map<String, 
         }
 
         newCoefficient *= simplifiedValues.first
-        newValues.addAll(simplifiedValues.second)
+        newFactors.addAll(simplifiedValues.second)
     }
 
-    return Term.fromValues(newCoefficient, newValues)
+    return Term.fromValues(newCoefficient, newFactors)
 }
 
 /**
@@ -72,7 +72,8 @@ private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>
             if (rationalValue != null) {
                 coefficient *= rationalValue
             } else {
-                simplifiedValues.add(simplifiedValue)
+                val valueToAdd = simpleIf(diff < 0, { value.inverse() }, { value })
+                simplifiedValues.add(valueToAdd)
             }
         }
     }

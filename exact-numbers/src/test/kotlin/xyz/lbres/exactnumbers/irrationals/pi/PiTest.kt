@@ -75,8 +75,7 @@ class PiTest {
 
     @Test
     fun testInverse() {
-        var pi = Pi()
-        pi = pi.inverse()
+        var pi = Pi().inverse()
         assertTrue(pi.isInverted)
 
         pi = pi.inverse()
@@ -85,20 +84,31 @@ class PiTest {
 
     @Test
     fun testToString() {
-        var piNum = Pi()
+        var pi = Pi()
         var expected = "[π]"
-        assertEquals(expected, piNum.toString())
+        assertEquals(expected, pi.toString())
 
-        piNum = Pi().inverse()
+        pi = Pi().inverse()
         expected = "[1/π]"
-        assertEquals(expected, piNum.toString())
+        assertEquals(expected, pi.toString())
+    }
+
+    @Test
+    fun testToPlainString() {
+        var pi = Pi()
+        var expected = "[pi]"
+        assertEquals(expected, pi.toPlainString())
+
+        pi = Pi().inverse()
+        expected = "[1/pi]"
+        assertEquals(expected, pi.toPlainString())
     }
 
     @Test
     fun testCompareTo() {
         // equal
-        assertEquals(Pi(), Pi())
-        assertEquals(Pi().inverse(), Pi().inverse())
+        assertEquals(0, Pi().compareTo(Pi()))
+        assertEquals(0, Pi().inverse().compareTo(Pi().inverse()))
 
         // not equal
         assertTrue(Pi().inverse() < Pi())

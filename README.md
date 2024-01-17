@@ -35,11 +35,12 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 │   │   ├── main
 │   │   │   ├── kotlin
 │   │   │   │   ├── exactnumbers       <-- source code for exact-numbers package
-│   │   │   │   │   ├── common         <-- shared classes and utils
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
+│   │   │   │   │   ├── exceptions     <-- exception classes
+│   │   │   │   │   ├── expressions    <-- code for representations of expressions
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   │   ├── expressions    <-- code for representations of expressions
+│   │   │   │   │   ├── utils          <-- shared classes and utils
 │   │   ├── test                  
 │   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations

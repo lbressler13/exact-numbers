@@ -57,16 +57,17 @@ fun runSimplifySetTests() {
     val one = ExactFraction.ONE
 
     // empty
-    var expected = Pair(one, constMultiSetOf<Sqrt>())
     var numbers: ConstMultiSet<Sqrt> = emptyConstMultiSet()
+    var expected = Pair(one, constMultiSetOf<Sqrt>())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // zero
-    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
     numbers = constMultiSetOf(Sqrt.ZERO)
+    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt.ZERO, Sqrt(2))
+    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // only whole
@@ -90,7 +91,7 @@ fun runSimplifySetTests() {
     expected = Pair(ExactFraction(30), constMultiSetOf())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
-    // mixed
+    // partial whole
     numbers = constMultiSetOf(Sqrt(2), Sqrt(6))
     expected = Pair(ExactFraction.TWO, constMultiSetOf(Sqrt(3)))
     assertEquals(expected, Sqrt.simplifySet(numbers))

@@ -96,6 +96,31 @@ class SqrtTest {
         assertEquals(expected, sqrt.toString())
     }
 
+    @Test
+    fun testToPlainString() {
+        // whole number
+        var sqrt = Sqrt(ExactFraction.ZERO)
+        var expected = "[sqrt(0)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(10)
+        expected = "[sqrt(10)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(1234567)
+        expected = "[sqrt(1234567)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        // fraction
+        sqrt = Sqrt(ExactFraction.HALF)
+        expected = "[sqrt(1/2)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(ExactFraction(12, 35))
+        expected = "[sqrt(12/35)]"
+        assertEquals(expected, sqrt.toPlainString())
+    }
+
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
     @Test fun testToShort() = runToShortTests()

@@ -9,11 +9,10 @@ import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
 private val one = ExactFraction.ONE
+private val pi = Pi()
+private val piInverse = Pi().inverse()
 
 fun runTimesTests() {
-    val pi = Pi()
-    val piInverse = Pi().inverse()
-
     // zero
     assertEquals(Term.ZERO, pi * Log.ZERO)
     assertEquals(Term.ZERO, pi * Sqrt.ZERO)
@@ -33,7 +32,7 @@ fun runTimesTests() {
     expected = Term.fromValues(ef, listOf(pi))
     assertEquals(expected, pi * ef)
 
-    ef = ExactFraction(1000)
+    ef = ExactFraction(-1000)
     expected = Term.fromValues(ef, listOf(piInverse))
     assertEquals(expected, piInverse * ef)
 
@@ -62,9 +61,6 @@ fun runTimesTests() {
 }
 
 fun runDivTests() {
-    val pi = Pi()
-    val piInverse = Pi().inverse()
-
     // zero
     assertDivByZero { pi / Log.ZERO }
     assertDivByZero { pi / Sqrt.ZERO }
@@ -85,8 +81,8 @@ fun runDivTests() {
     expected = Term.fromValues(ExactFraction.TWO, listOf(pi))
     assertEquals(expected, pi / ExactFraction.HALF)
 
-    expected = Term.fromValues(ExactFraction(1, 1000), listOf(piInverse))
-    assertEquals(expected, piInverse / ExactFraction(1000))
+    expected = Term.fromValues(ExactFraction(-1, 1000), listOf(piInverse))
+    assertEquals(expected, piInverse / ExactFraction(-1000))
 
     // log
     var log = Log(ExactFraction(33, 14), 5).inverse()

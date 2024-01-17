@@ -1,4 +1,4 @@
-package xyz.lbres.exactnumbers.common
+package xyz.lbres.exactnumbers.exceptions
 
 /**
  * ArithmeticException for overflows when casting numbers
