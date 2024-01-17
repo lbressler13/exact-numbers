@@ -23,7 +23,7 @@ import kotlin.math.abs
  * and values are lists of numbers with that type
  * @return [Term]: new term with simplified coefficient and factors
  */
-internal fun simplifyTerm(coefficient: ExactFraction, factorGroups: Map<String, List<IrrationalNumber<*>>>): Term {
+internal fun createSimplifiedTerm(coefficient: ExactFraction, factorGroups: Map<String, List<IrrationalNumber<*>>>): Term {
     var newCoefficient = coefficient
     val newFactors: MutableList<IrrationalNumber<*>> = mutableListOf()
 

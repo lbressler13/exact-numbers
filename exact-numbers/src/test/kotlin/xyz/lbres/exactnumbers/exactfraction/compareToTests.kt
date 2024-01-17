@@ -18,11 +18,13 @@ fun runCompareToTests() {
     first = ExactFraction(3)
     second = ExactFraction(0)
     assertTrue(first > second)
+    assertTrue(second < first)
 
     // negative less than zero
     first = ExactFraction(-3)
     second = ExactFraction(0)
     assertTrue(first < second)
+    assertTrue(second > first)
 
     // negative less than positive
     first = ExactFraction(-1)
@@ -64,26 +66,21 @@ fun runCompareToTests() {
  * @param expected [Int]: expected result
  */
 private fun runMultiTypeCompareTest(ef: ExactFraction, other: Int, expected: Int) {
+    // test infix operator
     when (expected) {
         -1 -> {
             assertTrue {
-                ef < other &&
-                    ef < other.toLong() &&
-                    ef < other.toBigInteger()
+                ef < other && ef < other.toLong() && ef < other.toBigInteger()
             }
         }
         1 -> {
             assertTrue {
-                ef > other &&
-                    ef > other.toLong() &&
-                    ef > other.toBigInteger()
+                ef > other && ef > other.toLong() && ef > other.toBigInteger()
             }
         }
         0 -> {
             assertTrue {
-                ef.compareTo(other) == 0 &&
-                    ef.compareTo(other.toLong()) == 0 &&
-                    ef.compareTo(other.toBigInteger()) == 0
+                ef.compareTo(other) == 0 && ef.compareTo(other.toLong()) == 0 && ef.compareTo(other.toBigInteger()) == 0
             }
         }
     }

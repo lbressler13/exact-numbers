@@ -90,7 +90,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      */
     override fun getSimplified(): Term {
         if (simplified == null) {
-            simplified = simplifyTerm(coefficient, factorTypeMapping)
+            simplified = createSimplifiedTerm(coefficient, factorTypeMapping)
         }
 
         return simplified!!

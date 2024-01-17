@@ -85,7 +85,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
     override fun equals(other: Any?): Boolean = other is Sqrt && radicand == other.radicand
     override fun hashCode(): Int = createHashCode(listOf(radicand, type))
 
-    private fun createString(sqrt: String): String = "[$sqrt(${radicand.toFractionString()})]"
+    private fun createString(sqrtStr: String): String = "[$sqrtStr(${radicand.toFractionString()})]"
     override fun toString(): String = createString("√")
     override fun toPlainString(): String = createString("sqrt")
 }

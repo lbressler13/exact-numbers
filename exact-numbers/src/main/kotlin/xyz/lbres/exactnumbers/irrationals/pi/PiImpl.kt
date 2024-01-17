@@ -29,7 +29,7 @@ internal class PiImpl(isInverted: Boolean) : Pi(isInverted) {
         }
     }
 
-    private fun createString(base: String): String = simpleIf(isInverted, "[1/$base]", "[$base]")
+    private fun createString(piStr: String): String = simpleIf(isInverted, "[1/$piStr]", "[$piStr]")
     override fun toString(): String = createString("π")
     override fun toPlainString(): String = createString("pi")
 
