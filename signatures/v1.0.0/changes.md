@@ -37,26 +37,26 @@ class ExactFraction
 **Note**: xyz.lbres.expressions.term → xyz.lbres.exactnumbers.expressions.term
 
 **Term**
-```diff
-- class Term
-+ class Term: Number()
+```kotlin
+ADD class Term
+DEL class Term: Number()
 
-+ val factors: List<IrrationalNumber<*>>
-+ val logs: List<Log>
-+ val squareRoots: List<Sqrt>
-+ val pis: List<Pi>
-+ val piCount: Int
+ADD val factors: List<IrrationalNumber<*>>
+ADD val logs: List<Log>
+ADD val squareRoots: List<Sqrt>
+ADD val pis: List<Pi>
+ADD val piCount: Int
 
-+ fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
+ADD fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
 
-- fun getLogs(): List<Log>
-+ @Deprecated fun getLogs(): List<Log>
+DEL fun getLogs(): List<Log>
+ADD @Deprecated fun getLogs(): List<Log>
 
-- fun getPiCount(): Int
-+ @Deprecated fun getPiCount(): Int
+DEL fun getPiCount(): Int
+ADD @Deprecated fun getPiCount(): Int
 
-- fun getSquareRoots(): List<Sqrt>
-+ @Deprecated fun getSquareRoots(): List<Sqrt>
+DEL fun getSquareRoots(): List<Sqrt>
+ADD @Deprecated fun getSquareRoots(): List<Sqrt>
 ```
 
 **Term.Companion**
