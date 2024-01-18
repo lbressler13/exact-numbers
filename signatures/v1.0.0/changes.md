@@ -134,5 +134,5 @@ object Term.Companion
 
 ```kotlin
 - class Term
-+ typealias Term = xyz.lbres.exactnumbers.expressions.term.Term
++ @Deprecated typealias Term = xyz.lbres.exactnumbers.expressions.term.Term
 ```
