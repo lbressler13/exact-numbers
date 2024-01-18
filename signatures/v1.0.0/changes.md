@@ -1,7 +1,7 @@
 ### xyz.lbres.exactnumbers.exactfraction
 
 **ExactFraction**
-```kotlin
+```diff
 class ExactFraction
 
 - var numerator: BigInteger
@@ -19,14 +19,14 @@ class ExactFraction
 
 **Other**
 
-```kotlin
+```diff
 - fun checkIsEFString(s: String): Boolean
 ```
 
 ### xyz.lbres.exactnumbers.exceptions
 
 **CastingOverflowException**
-```kotlin
+```diff
 + class CastingOverflowException: ArithmeticException
 ```
 
@@ -35,7 +35,7 @@ class ExactFraction
 **Note**: xyz.lbres.expressions.term → xyz.lbres.exactnumbers.expressions.term
 
 **Term**
-```kotlin
+```diff
 - class Term
 + class Term: Number()
 
@@ -58,7 +58,7 @@ class ExactFraction
 ```
 
 **Term.Companion**
-```kotlin
+```diff
 object Term.Companion
 
 + fun fromValues(coefficient: ExactFraction, factors: List<IrrationalNumber<*>>): Term
@@ -67,14 +67,14 @@ object Term.Companion
 ### xyz.lbres.exactnumbers.irrationals
 
 **IrrationalNumber**
-```kotlin
+```diff
 + abstract class IrrationalNumber<T : IrrationalNumber<T>>: Comparable<T>, Number()
 ```
 
 ### xyz.lbres.exactnumbers.irrationals.log
 
 **Log**
-```kotlin
+```diff
 - class Log: Comparable<Log>, Irrational
 + class Log: IrrationalNumber<Log>
 
@@ -97,7 +97,7 @@ object Term.Companion
 ### xyz.lbres.exactnumbers.irrationals.pi
 
 **Pi**
-```kotlin
+```diff
 - class Pi: Irrational
 + class Pi: IrrationalNumber<Pi>()
 
@@ -115,7 +115,7 @@ object Term.Companion
 ### xyz.lbres.exactnumbers.irrationals.pi
 
 **Sqrt**
-```kotlin
+```diff
 - class Sqrt: Comparable<Sqrt>, Irrational
 + class Sqrt: IrrationalNumber<Sqrt>
 
@@ -132,7 +132,7 @@ object Term.Companion
 
 **Note**: xyz.lbres.expressions.term → xyz.lbres.exactnumbers.expressions.term
 
-```kotlin
+```diff
 - class Term
 + @Deprecated typealias Term = xyz.lbres.exactnumbers.expressions.term.Term
 ```
