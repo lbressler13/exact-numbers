@@ -76,7 +76,7 @@ object Term.Companion
 ### xyz.lbres.exactnumbers.irrationals.log
 
 **Log**
-```diff
+```kotlin
 - class Log: Comparable<Log>, Irrational
 + class Log: IrrationalNumber<Log>
 
