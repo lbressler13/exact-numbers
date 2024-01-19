@@ -7,7 +7,6 @@ import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
@@ -53,9 +52,8 @@ internal fun createSimplifiedTerm(coefficient: ExactFraction, factorGroups: Map<
  * with rational values, and the second is a set of the irrational values
  */
 private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>): Pair<ExactFraction, ConstMultiSet<IrrationalNumber<*>>> {
-    when {
-        values.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-        values.anyConsistent { it.isZero() } -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+    if (values.isEmpty()) {
+        return Pair(ExactFraction.ONE, emptyConstMultiSet())
     }
 
     val distinct = values.mapToSetConsistent { simpleIf(it.isInverted, { it.inverse() }, { it }) }.distinctValues
@@ -64,6 +62,10 @@ private fun simplifyGenericIrrational(values: ConstMultiSet<IrrationalNumber<*>>
     // avoids creating a standard MultiSet for efficiency
     val simplifiedValues: ConstMutableMultiSet<IrrationalNumber<*>> = constMutableMultiSetOf()
     for (value in distinct) {
+        if (value.isZero()) {
+            return Pair(ExactFraction.ONE, emptyConstMultiSet())
+        }
+
         val diff = values.getCountOf(value) - values.getCountOf(value.inverse())
         val simplifiedValue = simpleIf(diff < 0, { value.inverse() }, { value })
 

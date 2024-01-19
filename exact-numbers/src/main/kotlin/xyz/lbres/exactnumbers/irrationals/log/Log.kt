@@ -55,11 +55,14 @@ sealed class Log : IrrationalNumber<Log>() {
             // avoids creating a standard MultiSet for efficiency
             val simplifiedValues: ConstMutableMultiSet<Log> = constMutableMultiSetOf()
             for (log in distinct) {
+                if (log.isZero()) {
+                    return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+                }
+
                 if (log != ONE) {
                     val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
-                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) {
-                        simpleIf(diff < 0, { log.inverse() }, { log })
-                    }
+                    val valueToAdd = simpleIf(diff < 0, { log.inverse() }, { log })
+                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) { valueToAdd }
                     simplifiedValues.addAll(simplified)
                 }
             }

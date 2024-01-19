@@ -108,7 +108,6 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
 
     // CASTING
 
-    // unit tests fail if these are in ExactFractionImpl
     override fun toByte(): Byte = castToByte(toBigDecimal(), this, "ExactFraction")
     override fun toChar(): Char = castToChar(toBigDecimal(), this, "ExactFraction")
     override fun toShort(): Short = castToShort(toBigDecimal(), this, "ExactFraction")
