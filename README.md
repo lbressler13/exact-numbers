@@ -84,6 +84,7 @@ See [here](https://docs.github.com/en/packages/working-with-a-github-packages-re
 ## Testing
 
 Unit tests are written using the [Kotlin test](https://kotlinlang.org/api/latest/kotlin.test/) framework.
+Mocking is done using the [MockK library](https://mockk.io/).
 Tests must be written for all logic in the package.
 
 Tests can be run using an IDE, or with the following command:

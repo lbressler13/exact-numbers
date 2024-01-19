@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class ExactFractionHelpersTest {
     @Test
-    fun testSimplifyFraction() = runCommonSimplifyTests { bi1, bi2 -> simplifyFraction(Pair(bi1, bi2)) }
+    fun testSimplifyFraction() = runCommonSimplifyTests(::simplifyFraction)
 
     @Test
     fun testCreateDecimalString() {

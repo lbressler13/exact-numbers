@@ -1,8 +1,8 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 /**
- * [ArithmeticException] specifically for ExactFraction casting overflow.
- * Has specific field for value of string that caused overflow
+ * [ArithmeticException] for ExactFraction overflow.
+ * Has field for value of string that caused overflow.
  */
 class ExactFractionOverflowException() : ArithmeticException() {
     override var message: String? = null

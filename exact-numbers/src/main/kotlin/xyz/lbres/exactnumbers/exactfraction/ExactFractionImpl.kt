@@ -23,7 +23,7 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
                 this.denominator = denominator
             }
             else -> {
-                val simplifiedValues = simplifyFraction(Pair(numerator, denominator))
+                val simplifiedValues = simplifyFraction(numerator, denominator)
                 this.numerator = simplifiedValues.first
                 this.denominator = simplifiedValues.second
             }
@@ -56,14 +56,10 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     // UNARY NON-OPERATORS
 
     override fun inverse(): ExactFraction {
-        if (numerator.isZero()) {
-            throw divideByZero
-        }
-
-        return if (numerator.isNegative()) {
-            ExactFractionImpl(-denominator, -numerator, fullySimplified = true)
-        } else {
-            ExactFractionImpl(denominator, numerator, fullySimplified = true)
+        return when {
+            numerator.isZero() -> throw divideByZero
+            numerator.isNegative() -> ExactFractionImpl(-denominator, -numerator, fullySimplified = true)
+            else -> ExactFractionImpl(denominator, numerator, fullySimplified = true)
         }
     }
 
@@ -73,7 +69,10 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
     override fun isWholeNumber(): Boolean = denominator == BigInteger.ONE
 
     override fun roundToWhole(roundingMode: RoundingMode): ExactFraction {
-        val decimal = numerator.toBigDecimal().divide(denominator.toBigDecimal(), roundingMode)
+        val mc = MathContext(0, roundingMode)
+        val decimal = numerator.toBigDecimal()
+            .divide(denominator.toBigDecimal(), roundingMode)
+            .round(mc)
 
         return ExactFractionImpl(decimal.toBigInteger(), BigInteger.ONE, fullySimplified = true)
     }

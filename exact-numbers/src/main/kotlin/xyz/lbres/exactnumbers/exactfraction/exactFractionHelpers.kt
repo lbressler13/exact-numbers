@@ -9,34 +9,35 @@ import java.math.MathContext
 import java.math.RoundingMode
 
 /**
- * Simplify a pair of numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
+ * Simplify a numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
  *
- * @param values [TypePair]<BigInteger>: pair to simplify, where the first value represents a numerator and the second represents a denominator
+ * @param numerator [BigInteger]: numerator of fraction to simplify
+ * @param denominator [BigInteger]: denominator of fraction to simplify
  * @return [TypePair]<BigInteger>: pair where first value represents simplified numerator, and second value represents simplified denominator
  */
-internal fun simplifyFraction(values: TypePair<BigInteger>): TypePair<BigInteger> {
-    var numerator = values.first
-    var denominator = values.second
+internal fun simplifyFraction(numerator: BigInteger, denominator: BigInteger): TypePair<BigInteger> {
+    var newNumerator = numerator
+    var newDenominator = denominator
 
     // set denominator to 1 when numerator is 0
-    if (numerator.isZero()) {
-        denominator = BigInteger.ONE
+    if (newNumerator.isZero()) {
+        newDenominator = BigInteger.ONE
     }
 
     // move negatives to numerator
-    if (denominator.isNegative()) {
-        numerator = -numerator
-        denominator = -denominator
+    if (newDenominator.isNegative()) {
+        newNumerator = -numerator
+        newDenominator = -denominator
     }
 
     // simplify using greatest common divisor
-    if (numerator != BigInteger.ZERO) {
+    if (newNumerator != BigInteger.ZERO) {
         val gcd = getGCD(numerator, denominator)
-        numerator /= gcd
-        denominator /= gcd
+        newNumerator /= gcd
+        newDenominator /= gcd
     }
 
-    return Pair(numerator, denominator)
+    return Pair(newNumerator, newDenominator)
 }
 
 /**

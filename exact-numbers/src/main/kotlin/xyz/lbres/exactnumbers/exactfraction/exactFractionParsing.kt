@@ -1,6 +1,5 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.general.tryOrDefault
 import xyz.lbres.kotlinutils.int.ext.isNegative
@@ -50,17 +49,13 @@ internal fun parseDecimal(s: String): ExactFraction {
         val whole = BigInteger(wholeString)
         val decimal = BigInteger(decimalString)
 
-        if (decimal.isZero()) {
-            ef = ExactFraction(whole * timesNeg) // also covers the case where number is 0
-        } else {
-            val zeros = "0".repeat(decimalString.length)
-            val denomString = "1$zeros"
+        val zeros = "0".repeat(decimalString.length)
+        val denomString = "1$zeros"
 
-            val denominator = BigInteger(denomString)
-            val numerator = whole * denominator + decimal
+        val denominator = BigInteger(denomString)
+        val numerator = whole * denominator + decimal
 
-            ef = ExactFraction(numerator * timesNeg, denominator)
-        }
+        ef = ExactFraction(numerator * timesNeg, denominator)
     }
 
     // apply exponentiation
