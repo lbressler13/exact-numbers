@@ -2,12 +2,10 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.general.tryOrDefault
-import xyz.lbres.kotlinutils.int.ext.isNegative
-import xyz.lbres.kotlinutils.int.ext.isZero
 import xyz.lbres.kotlinutils.string.ext.countElement
 import xyz.lbres.kotlinutils.string.ext.substringTo
+import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.math.abs
 
 /**
  * Parse a string from standard number format into a ExactFraction.
@@ -23,48 +21,24 @@ internal fun parseDecimal(s: String): ExactFraction {
 
     // remove negative sign
     val isNegative = currentState.startsWith("-")
-    val timesNeg = simpleIf(isNegative, -BigInteger.ONE, BigInteger.ONE)
     if (isNegative) {
         currentState = currentState.substring(1)
     }
 
-    // remove e-value
-    val eIndex = currentState.indexOf('E')
-    var eValue = 0
-    if (eIndex != -1) {
-        eValue = currentState.substring(eIndex + 1).toInt()
-        currentState = currentState.substringTo(eIndex)
-    }
+    val divResult = BigDecimal(currentState).divideAndRemainder(BigDecimal.ONE)
+    val whole = divResult[0].toBigInteger()
 
-    val decimalIndex: Int = currentState.indexOf('.')
-    val ef: ExactFraction
+    val rawDecimalString = divResult[1].stripTrailingZeros().toPlainString()
+    val decimalIndex = rawDecimalString.indexOf('.')
+    val decimalString = rawDecimalString.substring(decimalIndex + 1) // starts from 0 if decimalIndex == -1
 
-    // generate fraction
-    if (decimalIndex == -1) {
-        val numerator = BigInteger(currentState)
-        ef = ExactFraction(numerator * timesNeg)
-    } else {
-        val wholeString = simpleIf(decimalIndex == 0, "0", currentState.substringTo(decimalIndex))
-        val decimalString = currentState.substring(decimalIndex + 1)
-        val whole = BigInteger(wholeString)
-        val decimal = BigInteger(decimalString)
+    val zeros = "0".repeat(decimalString.length)
+    val denomString = "1$zeros"
 
-        val zeros = "0".repeat(decimalString.length)
-        val denomString = "1$zeros"
+    val denominator = BigInteger(denomString)
+    val numerator = whole * denominator + BigInteger(decimalString)
 
-        val denominator = BigInteger(denomString)
-        val numerator = whole * denominator + decimal
-
-        ef = ExactFraction(numerator * timesNeg, denominator)
-    }
-
-    // apply exponentiation
-    val eMultiplier = BigInteger.TEN.pow(abs(eValue))
-    return when {
-        eValue.isZero() -> ef
-        eValue.isNegative() -> ExactFraction(ef.numerator, eMultiplier * ef.denominator)
-        else -> ExactFraction(eMultiplier * ef.numerator, ef.denominator)
-    }
+    return simpleIf(isNegative, { ExactFraction(-numerator, denominator) }, { ExactFraction(numerator, denominator) })
 }
 
 /**

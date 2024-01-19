@@ -196,36 +196,36 @@ fun runParseEFStringTests() {
     assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1 1 1]") { parseEFString(s) }
 }
 
-fun runCheckIsEFStringTests() {
+fun runCommonCheckEFStringTests(checkString: (String) -> Boolean) {
     var s = "EF[10 1]"
-    assertTrue(checkIsEFString(s))
+    assertTrue(checkString(s))
 
     s = "EF[-5 2]"
-    assertTrue(checkIsEFString(s))
+    assertTrue(checkString(s))
 
     s = "EF[0 ]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF[0]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF[0 0 0]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF[0.1 2]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF[]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF["
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "EF]"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 
     s = "hello world"
-    assertFalse(checkIsEFString(s))
+    assertFalse(checkString(s))
 }
 
 // toString
