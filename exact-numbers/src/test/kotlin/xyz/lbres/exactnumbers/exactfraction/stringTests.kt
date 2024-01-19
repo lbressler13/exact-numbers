@@ -100,6 +100,10 @@ fun runParseDecimalTests() {
     expected = ExactFraction(39, 10000)
     assertEquals(expected, parseDecimal(s))
 
+    s = "3.90e-3" // 0.00390
+    expected = ExactFraction(39, 10000)
+    assertEquals(expected, parseDecimal(s))
+
     s = "-5E-10" // -0.0000000005
     expected = ExactFraction(-5, 10000000000)
     assertEquals(expected, parseDecimal(s))
@@ -136,9 +140,6 @@ fun runParseDecimalTests() {
 
     s = "123a456"
     assertFailsWithMessage<NumberFormatException>("Error parsing 123a456") { parseDecimal(s) }
-
-    s = "3.90e-3"
-    assertFailsWithMessage<NumberFormatException>("Error parsing 3.90e-3") { parseDecimal(s) }
 
     s = "E10"
     assertFailsWithMessage<NumberFormatException>("Error parsing E10") { parseDecimal(s) }

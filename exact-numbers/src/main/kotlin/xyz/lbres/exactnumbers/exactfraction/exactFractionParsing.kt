@@ -2,10 +2,11 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.general.tryOrDefault
-import xyz.lbres.kotlinutils.string.ext.countElement
-import xyz.lbres.kotlinutils.string.ext.substringTo
 import java.math.BigDecimal
 import java.math.BigInteger
+
+private const val efPrefix = "EF["
+private const val efSuffix = "]"
 
 /**
  * Parse a string from standard number format into a ExactFraction.
@@ -50,30 +51,14 @@ internal fun parseDecimal(s: String): ExactFraction {
 private fun validateDecimalString(s: String) {
     val exception = NumberFormatException("Error parsing $s")
 
-    val eIndex = s.indexOf('E')
-    val validCharacters = s.all { it.isDigit() || it == '-' || it == '.' || it == 'E' }
-    val validE = eIndex != 0 && eIndex != s.lastIndex && s.countElement('E') in 0..1
-    if (!validCharacters || !validE) {
+    try {
+        BigDecimal(s)
+    } catch (_: Exception) {
         throw exception
     }
 
-    val validateMinus: (String) -> Boolean = {
-        it.indexOf('-') <= 0 && it.countElement('-') <= 1
-    }
-
-    val validateDecimal: (String) -> Boolean = {
-        it.indexOf('.') != it.lastIndex && it.countElement('.') <= 1
-    }
-
-    if (eIndex == -1 && !validateMinus(s) || !validateDecimal(s)) {
+    if (s.last() == '.') {
         throw exception
-    } else if (eIndex != -1) {
-        val preE = s.substringTo(eIndex)
-        val postE = s.substring(eIndex + 1)
-
-        if (!validateMinus(preE) || !validateDecimal(preE) || !validateMinus(postE) || postE.contains('.')) {
-            throw exception
-        }
     }
 }
 
@@ -90,10 +75,9 @@ internal fun parseEFString(s: String): ExactFraction {
     }
 
     try {
-        val numbers = s.substring(3, s.lastIndex)
-        val splitNumbers = numbers.split(' ')
-        val numString = splitNumbers[0].trim()
-        val denomString = splitNumbers[1].trim()
+        val numbers = s.trim().substring(efPrefix.length, s.length - efSuffix.length).split(' ')
+        val numString = numbers[0].trim()
+        val denomString = numbers[1].trim()
         val numerator = BigInteger(numString)
         val denominator = BigInteger(denomString)
         return ExactFraction(numerator, denominator)
@@ -113,24 +97,21 @@ internal fun parseEFString(s: String): ExactFraction {
  */
 internal fun checkIsEFString(s: String): Boolean {
     val trimmed = s.trim()
-    val prefix = "EF["
-    val suffix = "]"
 
-    if (!trimmed.startsWith(prefix) || !trimmed.endsWith(suffix)) {
+    if (!trimmed.startsWith(efPrefix) || !trimmed.endsWith(efSuffix)) {
         return false
     }
 
     return tryOrDefault(false) {
-        val split = trimmed.substring(prefix.length, s.length - suffix.length).split(' ')
+        val numbers = trimmed.substring(efPrefix.length, s.length - efSuffix.length).split(' ')
         val validNumber: (String) -> Boolean = {
             when {
                 it.isEmpty() -> false
                 it.length == 1 -> it[0].isDigit()
-                it[0] == '-' -> it.substring(1).all(Char::isDigit)
-                else -> it.all(Char::isDigit)
+                else -> (it[0] == '-' || it[0].isDigit()) && it.substring(1).all(Char::isDigit)
             }
         }
 
-        split.size == 2 && validNumber(split[0]) && validNumber(split[1])
+        numbers.size == 2 && validNumber(numbers[0]) && validNumber(numbers[1])
     }
 }
