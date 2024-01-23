@@ -26,13 +26,13 @@ internal fun simplifyFraction(numerator: BigInteger, denominator: BigInteger): T
 
     // move negatives to numerator
     if (newDenominator.isNegative()) {
-        newNumerator = -numerator
-        newDenominator = -denominator
+        newNumerator = -newNumerator
+        newDenominator = -newDenominator
     }
 
     // simplify using greatest common divisor
     if (newNumerator != BigInteger.ZERO) {
-        val gcd = getGCD(numerator, denominator)
+        val gcd = getGCD(newNumerator, newDenominator)
         newNumerator /= gcd
         newDenominator /= gcd
     }

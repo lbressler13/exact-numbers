@@ -17,7 +17,6 @@ private val testNumber1 = TestNumber(ExactFraction(3, 4))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
 
-@Suppress("Deprecated")
 fun runGetFactorsByTypeTests() {
     val types = listOf(Log.TYPE, Pi.TYPE, Sqrt.TYPE, TestNumber.TYPE)
 
