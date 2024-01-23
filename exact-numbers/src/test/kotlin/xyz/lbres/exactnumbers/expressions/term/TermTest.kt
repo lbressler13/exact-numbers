@@ -49,9 +49,24 @@ class TermTest {
         term1 = Term.fromValues(one, listOf(Pi(), TestNumber(ExactFraction(5))))
         assertEquals(term1, term1)
 
+        term1 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(5), Sqrt(7), Pi().inverse(), Pi()))
+        var term2 = Term.fromValues(ExactFraction.EIGHT, listOf(logNum4, logNum3, logNum1, Sqrt(35)))
+        assertEquals(term1, term2)
+        assertEquals(term2, term1)
+
+        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(Log.ZERO, Sqrt.ONE))
+        term2 = Term.ZERO
+        assertEquals(term1, term2)
+        assertEquals(term2, term1)
+
+        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(testNumber1, Sqrt(ExactFraction(7, 9)), Pi(), logNum1, logNum1.inverse()))
+        term2 = Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), Pi()))
+        assertEquals(term1, term2)
+        assertEquals(term2, term1)
+
         // not equal
         term1 = Term.ONE
-        var term2 = -Term.ONE
+        term2 = -Term.ONE
         assertNotEquals(term1, term2)
         assertNotEquals(term2, term1)
 
