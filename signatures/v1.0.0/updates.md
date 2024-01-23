@@ -29,7 +29,7 @@ DEL fun checkIsEFString(s: String): Boolean
 
 **CastingOverflowException**
 ```kotlin
-ADD class CastingOverflowException: ArithmeticException
+ADD class CastingOverflowException: ArithmeticException()
 ```
 
 ### xyz.lbres.exactnumbers.expressions.term
@@ -43,9 +43,9 @@ DEL class Term: Number()
 
 ADD val factors: List<IrrationalNumber<*>>
 ADD val logs: List<Log>
-ADD val squareRoots: List<Sqrt>
 ADD val pis: List<Pi>
 ADD val piCount: Int
+ADD val squareRoots: List<Sqrt>
 
 ADD fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
 
@@ -80,20 +80,14 @@ ADD abstract class IrrationalNumber<T : IrrationalNumber<T>>: Comparable<T>, Num
 DEL class Log: Comparable<Log>, Irrational
 ADD class Log: IrrationalNumber<Log>
 
-ADD Log(argument: BigInteger, isDivided: Boolean)
-ADD Log(argument: BigInteger, base: Int, isDivided: Boolean)
-ADD Log(argument: ExactFraction, isDivided: Boolean)
-ADD Log(argument: ExactFraction, base: Int, isDivided: Boolean)
-ADD Log(argument: Int, isDivided: Boolean)
-ADD Log(argument: Int, base: Int, isDivided: Boolean)
-ADD Log(argument: Long, isDivided: Boolean)
-ADD Log(argument: Long, base: Int, isDivided: Boolean)
-
-DEL val isDivided: Boolean
-ADD @Deprecated val isDivided: Boolean
-
-DEL fun swapDivided(): Log
-ADD @Deprecated fun swapDivided(): Log
+DEL Log(argument: BigInteger, isDivided: Boolean)
+DEL Log(argument: BigInteger, base: Int, isDivided: Boolean)
+DEL Log(argument: ExactFraction, isDivided: Boolean)
+DEL Log(argument: ExactFraction, base: Int, isDivided: Boolean)
+DEL Log(argument: Int, isDivided: Boolean)
+DEL Log(argument: Int, base: Int, isDivided: Boolean)
+DEL Log(argument: Long, isDivided: Boolean)
+DEL Log(argument: Long, base: Int, isDivided: Boolean)
 ```
 
 ### xyz.lbres.exactnumbers.irrationals.pi
@@ -106,12 +100,6 @@ ADD class Pi: IrrationalNumber<Pi>()
 DEL Pi(isDivided: Boolean): Pi
 
 ADD fun toPlainString(): String
-
-DEL val isDivided: Boolean
-ADD @Deprecated val isDivided: Boolean
-
-DEL fun swapDivided(): Pi
-ADD @Deprecated fun swapDivided(): Pi
 ```
 
 ### xyz.lbres.exactnumbers.irrationals.pi
@@ -122,12 +110,6 @@ DEL class Sqrt: Comparable<Sqrt>, Irrational
 ADD class Sqrt: IrrationalNumber<Sqrt>
 
 ADD fun toPlainString(): String
-
-DEL val isDivided: Boolean
-ADD @Deprecated val isDivided: Boolean
-
-DEL fun swapDivided(): Sqrt
-ADD @Deprecated fun swapDivided(): Sqrt
 ```
 
 ### xyz.lbres.expression.term

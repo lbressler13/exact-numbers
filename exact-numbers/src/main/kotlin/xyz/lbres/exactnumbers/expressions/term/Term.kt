@@ -26,9 +26,9 @@ sealed class Term : Number() {
     abstract val coefficient: ExactFraction
     abstract val factors: List<IrrationalNumber<*>>
     abstract val logs: List<Log>
-    abstract val squareRoots: List<Sqrt>
     abstract val pis: List<Pi>
     abstract val piCount: Int
+    abstract val squareRoots: List<Sqrt>
 
     abstract operator fun unaryMinus(): Term
     abstract operator fun unaryPlus(): Term
