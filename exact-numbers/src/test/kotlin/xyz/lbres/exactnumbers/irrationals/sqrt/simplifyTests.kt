@@ -31,8 +31,8 @@ fun runGetSimplifiedTests() {
     expected = Pair(ExactFraction.FIVE, Sqrt(ExactFraction.TWO))
     assertEquals(expected, sqrt.getSimplified())
 
-    sqrt = Sqrt(3000)
-    expected = Pair(ExactFraction.TEN, Sqrt(ExactFraction(30)))
+    sqrt = Sqrt(ExactFraction(1, 3000))
+    expected = Pair(ExactFraction(1, 10), Sqrt(ExactFraction(1, 30)))
     assertEquals(expected, sqrt.getSimplified())
 
     sqrt = Sqrt(ExactFraction(50, 27))
@@ -92,7 +92,7 @@ fun runSimplifySetTests() {
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // partial whole
-    numbers = constMultiSetOf(Sqrt(2), Sqrt(6))
+    numbers = constMultiSetOf(Sqrt(2), Sqrt(6), Sqrt(1))
     expected = Pair(ExactFraction.TWO, constMultiSetOf(Sqrt(3)))
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
@@ -119,6 +119,7 @@ fun runSimplifySetTests() {
         Sqrt(ExactFraction(15, 2)),
         Sqrt(ExactFraction(2, 27)),
         Sqrt(ExactFraction(1, 17)),
+        Sqrt.ONE,
         Sqrt(4)
     )
     expected = Pair(

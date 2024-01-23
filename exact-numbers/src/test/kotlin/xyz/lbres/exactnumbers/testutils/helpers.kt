@@ -18,7 +18,7 @@ fun assertDivByZero(test: () -> Unit) {
  *
  * @param message [String]: expected error message
  * @param test () -> Unit: test to run
- * @return [Exception] the exception that was thrown
+ * @return T: the exception that was thrown
  */
 inline fun <reified T : Exception> assertFailsWithMessage(message: String, test: () -> Unit): T {
     val error = assertFailsWith<T> { test() }
@@ -27,7 +27,7 @@ inline fun <reified T : Exception> assertFailsWithMessage(message: String, test:
 }
 
 /**
- * Validate that a test succeeds, and throw error if it fails
+ * Validate that an operation succeeds, and throw an AssertionError if it fails
  *
  * @param errorMessage [String]: error message to throw if test fails
  * @param test () -> Unit: test to run

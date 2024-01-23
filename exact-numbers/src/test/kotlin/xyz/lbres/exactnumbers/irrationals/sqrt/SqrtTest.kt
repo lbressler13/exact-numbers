@@ -91,8 +91,8 @@ class SqrtTest {
         expected = "[√(1/2)]"
         assertEquals(expected, sqrt.toString())
 
-        sqrt = Sqrt(ExactFraction(12, 35))
-        expected = "[√(12/35)]"
+        sqrt = Sqrt(ExactFraction(35, 12))
+        expected = "[√(35/12)]"
         assertEquals(expected, sqrt.toString())
     }
 
@@ -116,8 +116,8 @@ class SqrtTest {
         expected = "[sqrt(1/2)]"
         assertEquals(expected, sqrt.toPlainString())
 
-        sqrt = Sqrt(ExactFraction(12, 35))
-        expected = "[sqrt(12/35)]"
+        sqrt = Sqrt(ExactFraction(35, 12))
+        expected = "[sqrt(35/12)]"
         assertEquals(expected, sqrt.toPlainString())
     }
 
