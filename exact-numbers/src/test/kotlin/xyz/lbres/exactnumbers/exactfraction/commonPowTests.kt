@@ -14,6 +14,16 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     var expected = ExactFraction.ONE
     assertEquals(expected, powFn(base, exp))
 
+    base = ExactFraction.ZERO
+    exp = ExactFraction.ZERO
+    expected = ExactFraction.ZERO
+    assertEquals(expected, powFn(base, exp))
+
+    base = ExactFraction.ZERO
+    exp = ExactFraction.NINE
+    expected = ExactFraction.ZERO
+    assertEquals(expected, powFn(base, exp))
+
     base = ExactFraction.NINE
     exp = ExactFraction.ONE
     expected = ExactFraction.NINE

@@ -27,7 +27,7 @@ class LogConstructorsTest {
         error = "Log base must be greater than 1"
         assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, -1) }
         assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, 0) }
-        assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction.TEN, 1) }
+        assertFailsWithMessage<ArithmeticException>(error) { Log(ExactFraction(4, 9), 1) }
         assertFailsWithMessage<ArithmeticException>(error) { Log(10, -1) }
         assertFailsWithMessage<ArithmeticException>(error) { Log(10L, 0) }
         assertFailsWithMessage<ArithmeticException>(error) { Log(BigInteger.TEN, 1) }
@@ -53,12 +53,12 @@ class LogConstructorsTest {
             assertFalse(it.isInverted)
         }
 
-        var logNum = Log(ExactFraction(107, 3))
+        var log = Log(ExactFraction(107, 3))
         expectedArgument = ExactFraction(107, 3)
         expectedBase = 10
-        assertEquals(expectedArgument, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isInverted)
+        assertEquals(expectedArgument, log.argument)
+        assertEquals(expectedBase, log.base)
+        assertFalse(log.isInverted)
 
         // number + base
         expectedArgument = ExactFraction.TWO
@@ -70,11 +70,11 @@ class LogConstructorsTest {
             assertFalse(it.isInverted)
         }
 
-        logNum = Log(ExactFraction(107, 3), 5)
+        log = Log(ExactFraction(107, 3), 5)
         expectedArgument = ExactFraction(107, 3)
         expectedBase = 5
-        assertEquals(expectedArgument, logNum.argument)
-        assertEquals(expectedBase, logNum.base)
-        assertFalse(logNum.isInverted)
+        assertEquals(expectedArgument, log.argument)
+        assertEquals(expectedBase, log.base)
+        assertFalse(log.isInverted)
     }
 }

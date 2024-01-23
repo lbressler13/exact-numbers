@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class ExactFractionHelpersTest {
     @Test
-    fun testSimplifyFraction() = runCommonSimplifyTests { bi1, bi2 -> simplifyFraction(Pair(bi1, bi2)) }
+    fun testSimplifyFraction() = runCommonSimplifyTests(::simplifyFraction)
 
     @Test
     fun testCreateDecimalString() {
@@ -65,8 +65,7 @@ class ExactFractionHelpersTest {
         expected = "-0.21053"
         assertEquals(expected, createDecimalString(ef, 5))
 
-        val largeValue = "100000000000000000000"
-        val bi = BigInteger(largeValue)
+        val bi = BigInteger("100000000000000000000")
         ef = ExactFraction(bi, 3)
         expected = "33333333333333333333.333333"
         assertEquals(expected, createDecimalString(ef, 6))

@@ -21,6 +21,7 @@ fun runEqTests() {
     runMultiTypeEqTest(ExactFraction(34, 17), 2, true)
 
     runMultiTypeEqTest(ExactFraction(10), -10, false)
+    runMultiTypeEqTest(ExactFraction(1, 10), 10, false)
     runMultiTypeEqTest(ExactFraction(10, 7), 1, false)
     runMultiTypeEqTest(ExactFraction(-70), 0, false)
 }

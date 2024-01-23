@@ -164,6 +164,9 @@ fun runEqualsTests() {
     sqrt1 = Sqrt(ExactFraction(9, 400))
     assertEquals(sqrt1, sqrt1)
 
+    sqrt1 = Sqrt(ExactFraction(400, 9))
+    assertEquals(sqrt1, sqrt1)
+
     // not equal
     sqrt1 = Sqrt.ZERO
     var sqrt2 = Sqrt.ONE

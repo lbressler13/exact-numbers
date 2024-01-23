@@ -4,6 +4,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.TestNumber
 import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import kotlin.test.assertEquals
@@ -30,8 +31,8 @@ fun runToCharTests() {
     expected = 116.toChar()
     assertEquals(expected, term.toChar())
 
-    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(7, 17), factors)
+    factors = listOf(Sqrt(17), Pi(), Pi(), TestNumber(ExactFraction(3)), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(7, 51), factors)
     expected = 48.toChar()
     assertEquals(expected, term.toChar())
 
@@ -104,8 +105,8 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
     expected = castLong(116)
     assertEquals(expected, castTerm(term))
 
-    factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
-    term = Term.fromValues(ExactFraction(7, 17), factors)
+    factors = listOf(Sqrt(17), Pi(), Pi(), TestNumber(ExactFraction(3)), Log(1245, 12))
+    term = Term.fromValues(ExactFraction(7, 51), factors)
     expected = castLong(48)
     assertEquals(expected, castTerm(term))
 
@@ -160,7 +161,7 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     expected = castDouble(-8.377580409572781)
     assertEquals(expected, castTerm(term))
 
-    term = Term.fromValues(ExactFraction.HALF, listOf(Log(4, 2).inverse(), Log(123456789), Pi().inverse()))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(TestNumber(ExactFraction(1, 16)), Log(4, 2).inverse(), Log(123456789), Pi().inverse()))
     expected = castDouble(0.6439023028592971)
     assertEquals(expected, castTerm(term))
 

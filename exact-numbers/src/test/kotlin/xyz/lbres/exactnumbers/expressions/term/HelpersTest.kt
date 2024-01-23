@@ -4,7 +4,7 @@ import org.junit.Test
 
 class HelpersTest {
     @Test
-    fun testCreateSimplifiedTerm() = runCommonSimplifyTests {
-        createSimplifiedTerm(it.coefficient, it.factors.groupBy { factor -> factor.type })
+    fun testCreateSimplifiedTerm() = runCommonSimplifyTests { term ->
+        createSimplifiedTerm(term.coefficient, term.factors.groupBy { it.type })
     }
 }

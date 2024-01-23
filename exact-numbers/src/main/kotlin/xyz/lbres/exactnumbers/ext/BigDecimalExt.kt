@@ -10,7 +10,7 @@ import java.math.MathContext
  * @param other [BigDecimal]: number to divide by
  * @return [BigDecimal]: result of division
  */
-fun BigDecimal.divideBy(other: BigDecimal): BigDecimal {
+internal fun BigDecimal.divideBy(other: BigDecimal): BigDecimal {
     if (other == BigDecimal.ZERO) {
         throw divideByZero
     }

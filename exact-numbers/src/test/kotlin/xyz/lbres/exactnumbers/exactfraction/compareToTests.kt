@@ -36,52 +36,49 @@ fun runCompareToTests() {
     first = ExactFraction(-3, 4)
     second = ExactFraction(-2)
     assertTrue(first > second)
+    assertTrue(second < first)
 
     first = ExactFraction(-3, 4)
     second = ExactFraction(-4, 3)
     assertTrue(first > second)
+    assertTrue(second < first)
 
     // positive order
     first = ExactFraction(3)
     second = ExactFraction(2)
     assertTrue(first > second)
+    assertTrue(second < first)
 
     first = ExactFraction(3, 4)
     second = ExactFraction(4, 3)
     assertTrue(first < second)
+    assertTrue(second > first)
 
     // other number types
-    runMultiTypeCompareTest(ExactFraction.ZERO, 0, 0) // eq
-    runMultiTypeCompareTest(ExactFraction(100, 3), 100, -1) // lt
-    runMultiTypeCompareTest(ExactFraction(3, 2), 0, 1) // gt
-    runMultiTypeCompareTest(ExactFraction(3), 2, 1) // gt
-    runMultiTypeCompareTest(ExactFraction(-3, 4), -2, 1) // lt
+    runMultiTypeEqTest(ExactFraction.NEG_ONE, -1)
+    runMultiTypeLtTest(ExactFraction(100, 3), 100)
+    runMultiTypeGtTest(ExactFraction(3, 2), 0)
+    runMultiTypeGtTest(ExactFraction(3), 2)
+    runMultiTypeLtTest(ExactFraction(-9, 4), -2)
 }
 
-/**
- * Run test with Int, Long, and BigInteger values
- *
- * @param ef [ExactFraction]: first value in comparison
- * @param other [Int]: value to cast to Int, Long, and BigInteger
- * @param expected [Int]: expected result
- */
-private fun runMultiTypeCompareTest(ef: ExactFraction, other: Int, expected: Int) {
-    // test infix operator
-    when (expected) {
-        -1 -> {
-            assertTrue {
-                ef < other && ef < other.toLong() && ef < other.toBigInteger()
-            }
-        }
-        1 -> {
-            assertTrue {
-                ef > other && ef > other.toLong() && ef > other.toBigInteger()
-            }
-        }
-        0 -> {
-            assertTrue {
-                ef.compareTo(other) == 0 && ef.compareTo(other.toLong()) == 0 && ef.compareTo(other.toBigInteger()) == 0
-            }
-        }
-    }
+// run compare test where ef == other
+private fun runMultiTypeEqTest(ef: ExactFraction, other: Int) {
+    assertEquals(0, ef.compareTo(other))
+    assertEquals(0, ef.compareTo(other.toLong()))
+    assertEquals(0, ef.compareTo(other.toBigInteger()))
+}
+
+// run compare test where ef > other
+private fun runMultiTypeGtTest(ef: ExactFraction, other: Int) {
+    assertTrue(ef > other)
+    assertTrue(ef > other.toLong())
+    assertTrue(ef > other.toBigInteger())
+}
+
+// run compare test where ef < other
+private fun runMultiTypeLtTest(ef: ExactFraction, other: Int) {
+    assertTrue(ef < other)
+    assertTrue(ef < other.toLong())
+    assertTrue(ef < other.toBigInteger())
 }

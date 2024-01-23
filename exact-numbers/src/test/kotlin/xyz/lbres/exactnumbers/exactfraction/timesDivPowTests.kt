@@ -95,7 +95,7 @@ fun runPowTests() {
 }
 
 /**
- * Run test with Int, Long, and BigInteger values
+ * Run times test with Int, Long, and BigInteger values
  *
  * @param ef [ExactFraction]: first value in multiplication
  * @param other [Int]: value to cast to Int, Long, and BigInteger
@@ -108,7 +108,7 @@ private fun runMultiTypeTimesTest(ef: ExactFraction, other: Int, expected: Exact
 }
 
 /**
- * Run test with Int, Long, and BigInteger values
+ * Run div test with Int, Long, and BigInteger values
  *
  * @param ef [ExactFraction]: first value in division
  * @param other [Int]: value to cast to Int, Long, and BigInteger
@@ -121,7 +121,7 @@ private fun runMultiTypeDivTest(ef: ExactFraction, other: Int, expected: ExactFr
 }
 
 /**
- * Run test with Int, Long, and BigInteger values
+ * Run pow test with Int, Long, and BigInteger values
  *
  * @param ef [ExactFraction]: base number
  * @param other [Int]: value to cast to Int, Long, and BigInteger

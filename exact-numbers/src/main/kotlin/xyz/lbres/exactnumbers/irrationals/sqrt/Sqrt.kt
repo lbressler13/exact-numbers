@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
@@ -41,13 +40,16 @@ sealed class Sqrt : IrrationalNumber<Sqrt>() {
          * @return [Pair]<ExactFraction, ConstMultiSet<Sqrt>>: product of rational values and a set containing a single, fully simplified irrational root
          */
         internal fun simplifySet(numbers: ConstMultiSet<Sqrt>): Pair<ExactFraction, ConstMultiSet<Sqrt>> {
-            when {
-                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-                numbers.anyConsistent(Sqrt::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+            if (numbers.isEmpty()) {
+                return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
-            // combine all roots into single root, and return that value
+            // combine all roots into single root
             val totalProduct = numbers.fold(ExactFraction.ONE) { acc, sqrt -> acc * sqrt.radicand }
+            if (totalProduct == ExactFraction.ZERO) {
+                return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+            }
+
             val numeratorWhole = extractWholeOf(totalProduct.numerator)
             val denominatorWhole = extractWholeOf(totalProduct.denominator)
             val numeratorRoot = totalProduct.numerator / (numeratorWhole * numeratorWhole)
