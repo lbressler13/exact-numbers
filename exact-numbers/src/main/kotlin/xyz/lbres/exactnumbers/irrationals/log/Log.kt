@@ -4,7 +4,6 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
@@ -41,9 +40,8 @@ sealed class Log : IrrationalNumber<Log>() {
          */
         // TODO: improve simplification by looking at bases
         internal fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
-            when {
-                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-                numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+            if (numbers.isEmpty()) {
+                return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
             val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }
@@ -55,11 +53,14 @@ sealed class Log : IrrationalNumber<Log>() {
             // avoids creating a standard MultiSet for efficiency
             val simplifiedValues: ConstMutableMultiSet<Log> = constMutableMultiSetOf()
             for (log in distinct) {
+                if (log.isZero()) {
+                    return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+                }
+
                 if (log != ONE) {
                     val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
-                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) {
-                        simpleIf(diff < 0, { log.inverse() }, { log })
-                    }
+                    val valueToAdd = simpleIf(diff < 0, { log.inverse() }, { log })
+                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) { valueToAdd }
                     simplifiedValues.addAll(simplified)
                 }
             }

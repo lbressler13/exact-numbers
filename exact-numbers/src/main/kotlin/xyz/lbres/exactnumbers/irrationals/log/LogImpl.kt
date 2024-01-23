@@ -97,8 +97,8 @@ internal class LogImpl private constructor(
     }
 
     override fun toString(): String {
-        val numString = argument.toFractionString()
-        return simpleIf(isInverted, "[1/log_$base($numString)]", "[log_$base($numString)]")
+        val argString = argument.toFractionString()
+        return simpleIf(isInverted, "[1/log_$base($argString)]", "[log_$base($argString)]")
     }
 
     override fun hashCode(): Int = createHashCode(listOf(argument, base, isInverted, type))

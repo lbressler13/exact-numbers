@@ -221,7 +221,7 @@ fun runExtractWholeOfTests() {
         )
     )
 
-    // incorrect value
+    // incorrect memoization
     num = BigInteger("100")
     expected = BigInteger("95")
     runSingleExtractWholeOfTest(num, expected, mapOf(BigInteger("100") to BigInteger("95")), emptyList())

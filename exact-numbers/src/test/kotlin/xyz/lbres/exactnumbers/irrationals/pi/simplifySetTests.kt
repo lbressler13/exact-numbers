@@ -12,7 +12,7 @@ fun runSimplifySetTests() {
     // equal
     var expected: Pair<ExactFraction, ConstMultiSet<Pi>> = Pair(one, emptyConstMultiSet())
 
-    var pis: ConstMultiSet<Pi> = constMultiSetOf()
+    var pis: ConstMultiSet<Pi> = emptyConstMultiSet()
     assertEquals(expected, Pi.simplifySet(pis))
 
     pis = constMultiSetOf(Pi(), Pi().inverse())

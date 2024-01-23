@@ -10,6 +10,7 @@ import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
@@ -36,16 +37,16 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     private var string: String? = null
 
     init {
-        if (coefficient.isZero() || factors.any { it.isZero() }) {
+        if (coefficient.isZero() || factors.anyConsistent { it.isZero() }) {
             this.coefficient = ExactFraction.ZERO
             this.factors = emptyList()
-            factorSet = emptyConstMultiSet()
-            factorTypeMapping = emptyMap()
+            this.factorSet = emptyConstMultiSet()
+            this.factorTypeMapping = emptyMap()
 
-            logs = emptyList()
-            squareRoots = emptyList()
-            pis = emptyList()
-            piCount = 0
+            this.logs = emptyList()
+            this.squareRoots = emptyList()
+            this.pis = emptyList()
+            this.piCount = 0
         } else {
             this.coefficient = coefficient
             this.factors = factors.toList()
@@ -53,12 +54,12 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
             this.factorTypeMapping = factorSet.groupBy { it.type }
 
             @Suppress("UNCHECKED_CAST")
-            logs = factorTypeMapping.getOrDefault(Log.TYPE, emptyList()) as List<Log>
+            this.logs = factorTypeMapping.getOrDefault(Log.TYPE, emptyList()) as List<Log>
             @Suppress("UNCHECKED_CAST")
-            squareRoots = factorTypeMapping.getOrDefault(Sqrt.TYPE, emptyList()) as List<Sqrt>
+            this.squareRoots = factorTypeMapping.getOrDefault(Sqrt.TYPE, emptyList()) as List<Sqrt>
             @Suppress("UNCHECKED_CAST")
-            pis = factorTypeMapping.getOrDefault(Pi.TYPE, emptyList()) as List<Pi>
-            piCount = factorSet.getCountOf(Pi()) - factorSet.getCountOf(Pi().inverse())
+            this.pis = factorTypeMapping.getOrDefault(Pi.TYPE, emptyList()) as List<Pi>
+            this.piCount = factorSet.getCountOf(Pi()) - factorSet.getCountOf(Pi().inverse())
         }
     }
 
@@ -77,8 +78,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         }
 
         other as TermImpl
-        val newIrrationals = factorSet + other.factorSet.mapToSetConsistent { it.inverse() }
-        return TermImpl(coefficient / other.coefficient, newIrrationals.toConstMultiSet())
+        val newFactors = factorSet + other.factorSet.mapToSetConsistent { it.inverse() }
+        return TermImpl(coefficient / other.coefficient, newFactors.toConstMultiSet())
     }
 
     override fun isZero(): Boolean = coefficient.isZero()
@@ -117,7 +118,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     }
 
     /**
-     * Get list of irrational numbers with a given type
+     * Get list of factors with a given type
      *
      * @param irrationalType [String]: type to retrieve numbers for
      * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have the provided type
@@ -130,8 +131,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         if (string == null) {
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
-            val numString = factorSet.joinToString("x")
-            val result = simpleIf(numString.isEmpty(), "<$coeffString>", "<${coeffString}x$numString>")
+            val factorString = factorSet.joinToString("x")
+            val result = simpleIf(factorString.isEmpty(), "<$coeffString>", "<${coeffString}x$factorString>")
 
             string = result
         }

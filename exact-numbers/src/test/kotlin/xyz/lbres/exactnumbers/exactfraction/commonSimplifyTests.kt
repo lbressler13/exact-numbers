@@ -30,8 +30,8 @@ private fun runSimplifyZeroTests(createSimplifiedPair: (BigInteger, BigInteger) 
 }
 
 private fun runSimplifySignTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
-    var pair = createSimplifiedPair(BigInteger("-3"), BigInteger("-4"))
-    var expected = Pair(BigInteger("3"), BigInteger("4"))
+    var pair = createSimplifiedPair(BigInteger("-14"), BigInteger("-3"))
+    var expected = Pair(BigInteger("14"), BigInteger("3"))
     assertEquals(expected, pair)
 
     pair = createSimplifiedPair(BigInteger.ONE, BigInteger("-3"))
@@ -62,5 +62,11 @@ private fun runSimplifyGCDTests(createSimplifiedPair: (BigInteger, BigInteger) -
 
     pair = createSimplifiedPair(-BigInteger.TWO, BigInteger.TWO)
     expected = Pair(-BigInteger.ONE, BigInteger.ONE)
+    assertEquals(expected, pair)
+
+    val largeValue1 = BigInteger("-800000000000000000000000000000000000")
+    val largeValue2 = BigInteger("2000000000000000000000000000000000000")
+    pair = createSimplifiedPair(largeValue1, largeValue2)
+    expected = Pair(BigInteger("-2"), BigInteger("5"))
     assertEquals(expected, pair)
 }

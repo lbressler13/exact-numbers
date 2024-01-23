@@ -15,10 +15,7 @@ internal fun efAdd(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
         return ExactFraction(newNumerator, ef1.denominator)
     }
 
-    val scaled1 = ef1.numerator * ef2.denominator
-    val scaled2 = ef2.numerator * ef1.denominator
-
-    val newNumerator = scaled1 + scaled2
+    val newNumerator = ef1.numerator * ef2.denominator + ef2.numerator * ef1.denominator
     val newDenominator = ef1.denominator * ef2.denominator
     return ExactFraction(newNumerator, newDenominator)
 }

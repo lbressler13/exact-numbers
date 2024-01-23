@@ -5,10 +5,10 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * Cast a number to Byte, or throw an exception if number exceeds values for Byte
+ * Cast a number to Byte, or throw an exception if it exceeds values for Byte
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Byte] value as a byte
  */
@@ -18,10 +18,10 @@ internal fun <T> castToByte(decimal: BigDecimal, value: T, type: String): Byte {
 }
 
 /**
- * Cast a number to Char, or throw an exception if number exceeds values for Char
+ * Cast a number to Char, or throw an exception if it exceeds values for Char
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Char] value as a char
  */
@@ -35,10 +35,10 @@ internal fun <T> castToChar(decimal: BigDecimal, value: T, type: String): Char {
 }
 
 /**
- * Cast a number to Short, or throw an exception if number exceeds values for Short
+ * Cast a number to Short, or throw an exception if it exceeds values for Short
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Short] value as a short
  */
@@ -48,10 +48,10 @@ internal fun <T> castToShort(decimal: BigDecimal, value: T, type: String): Short
 }
 
 /**
- * Cast a number to Int, or throw an exception if number exceeds values for Int
+ * Cast a number to Int, or throw an exception if it exceeds values for Int
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Int] value as an int
  */
@@ -61,10 +61,10 @@ internal fun <T> castToInt(decimal: BigDecimal, value: T, type: String): Int {
 }
 
 /**
- * Cast a number to Long, or throw an exception if number exceeds values for Long
+ * Cast a number to Long, or throw an exception if it exceeds values for Long
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Long] value as a long
  */
@@ -74,10 +74,10 @@ internal fun <T> castToLong(decimal: BigDecimal, value: T, type: String): Long {
 }
 
 /**
- * Cast a number to Float, or throw an exception if number exceeds values for Float
+ * Cast a number to Float, or throw an exception if it exceeds values for Float
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Float] value as a float
  */
@@ -87,10 +87,10 @@ internal fun <T> castToFloat(decimal: BigDecimal, value: T, type: String): Float
 }
 
 /**
- * Cast a number to Double, or throw an exception if number exceeds values for Double
+ * Cast a number to Double, or throw an exception if it exceeds values for Double
  *
  * @param decimal [BigDecimal]: number to cast as decimal
- * @param value [T]: number to cast
+ * @param value T: number to cast
  * @param type [String]: base type
  * @return [Double] value as a double
  */
@@ -108,7 +108,7 @@ internal fun <T> castToDouble(decimal: BigDecimal, value: T, type: String): Doub
  * @param cast (BigDecimal) -> T: function to cast [value]
  * @param getOverflowException () -> [CastingOverflowException]: get exception to throw if number exceeds supported values
  * @param isDecimal [Boolean]: flag to indicate if [value] is being cast to a whole number or a decimal
- * @return [T]: result of cast, if succeeded
+ * @return T: result of cast, if succeeded
  */
 private fun <T : Number> castNumber(
     value: BigDecimal,
