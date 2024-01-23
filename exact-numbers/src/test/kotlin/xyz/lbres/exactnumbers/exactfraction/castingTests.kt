@@ -33,6 +33,16 @@ fun runToPairTests() {
     ef = ExactFraction(173, 9)
     expected = Pair(BigInteger("173"), BigInteger("9"))
     assertEquals(expected, ef.toPair())
+
+    val largeValue1 = "-800000000000000000000000000000000000"
+    val largeValue2 = "2000000000000000000000000000000000000"
+    ef = ExactFraction(BigInteger(largeValue1), BigInteger(largeValue2))
+    expected = Pair(BigInteger("-2"), BigInteger("5"))
+    assertEquals(expected, ef.toPair())
+
+    ef = ExactFraction(BigInteger(largeValue2), BigInteger("9"))
+    expected = Pair(BigInteger(largeValue2), BigInteger("9"))
+    assertEquals(expected, ef.toPair())
 }
 
 fun runToByteTests() {

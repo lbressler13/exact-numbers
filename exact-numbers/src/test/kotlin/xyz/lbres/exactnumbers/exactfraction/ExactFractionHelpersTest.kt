@@ -65,8 +65,7 @@ class ExactFractionHelpersTest {
         expected = "-0.21053"
         assertEquals(expected, createDecimalString(ef, 5))
 
-        val largeValue = "100000000000000000000"
-        val bi = BigInteger(largeValue)
+        val bi = BigInteger("100000000000000000000")
         ef = ExactFraction(bi, 3)
         expected = "33333333333333333333.333333"
         assertEquals(expected, createDecimalString(ef, 6))

@@ -2,9 +2,9 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import org.junit.Test
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class ExactFractionConstructorsTest {
     @Test
@@ -27,13 +27,18 @@ class ExactFractionConstructorsTest {
         assertEquals(BigInteger("3"), ef.denominator)
 
         // invalid
-        assertFailsWith<NumberFormatException>("Invalid EF string format") { ExactFraction("[]") }
+        assertFailsWithMessage<NumberFormatException>("Error parsing []") { ExactFraction("[]") }
     }
 
     private fun runSingleValTests() {
         runMultiTypeSingleValTest(0, ExactFraction(BigInteger.ZERO, BigInteger.ONE))
         runMultiTypeSingleValTest(3, ExactFraction(BigInteger("3"), BigInteger.ONE))
         runMultiTypeSingleValTest(-3, ExactFraction(BigInteger("-3"), BigInteger.ONE))
+
+        val largeValue = BigInteger("10000000000000000345678")
+        val ef = ExactFraction(largeValue)
+        assertEquals(largeValue, ef.numerator)
+        assertEquals(BigInteger.ONE, ef.denominator)
     }
 
     private fun runPairValTests() {
@@ -67,6 +72,12 @@ class ExactFractionConstructorsTest {
 
         // negative fraction < -1
         runMultiTypePairValTest(-7, 4, ExactFraction(BigInteger("-7"), BigInteger("4")))
+
+        val largeValue1 = BigInteger("1000000000000000000345678")
+        val largeValue2 = BigInteger("88888888888888888888889")
+        val ef = ExactFraction(largeValue1, largeValue2)
+        assertEquals(largeValue1, ef.numerator)
+        assertEquals(largeValue2, ef.denominator)
     }
 
     /**
@@ -85,7 +96,7 @@ class ExactFractionConstructorsTest {
      * Run two-val test with all combinations of Int, Long, and BigInteger values
      *
      * @param value1 [Int]: first value to cast to Int, Long, and BigInteger
-     * @param value2 [Int]: first value to cast to Int, Long, and BigInteger
+     * @param value2 [Int]: second value to cast to Int, Long, and BigInteger
      * @param expected [ExactFraction]: expected result
      */
     private fun runMultiTypePairValTest(value1: Int, value2: Int, expected: ExactFraction) {
