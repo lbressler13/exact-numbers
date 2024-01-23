@@ -19,8 +19,16 @@ ADD fun pow(other: Int): ExactFraction
 ADD fun roundToWhole(roundingMode: RoundingMode): ExactFraction
 ```
 
-**Other**
+**ExactFractionOverflowException**
+```kotlin
+DEL var message: String?
+ADD val message: String?
 
+DEL var overflowValue: String?
+ADD val overflowValue: String?
+```
+
+**Other**
 ```kotlin
 DEL fun checkIsEFString(s: String): Boolean
 ```
