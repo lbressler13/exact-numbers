@@ -38,7 +38,7 @@ class ExactFractionTest {
     @Test fun testIsWholeNumber() = runIsWholeNumberTests()
 
     // parsing + toString
-    @Test fun testIsEFString() = runCommonCheckEFStringTests { ExactFraction.isEFString(it) }
+    @Test fun testIsEFString() = runCommonCheckEFStringTests(ExactFraction.Companion::isEFString)
     @Test fun testToDecimalString() = runToDecimalStringTests()
     @Test fun testToFractionString() = runToFractionStringTests()
     @Test fun testToPairString() = runToPairStringTests()

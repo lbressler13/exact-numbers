@@ -2,7 +2,7 @@ package xyz.lbres.exactnumbers.exactfraction
 
 /**
  * [ArithmeticException] for ExactFraction overflow.
- * Has field for value of string that caused overflow.
+ * Has field for string of value that caused overflow.
  */
 class ExactFractionOverflowException() : ArithmeticException() {
     override var message: String? = null

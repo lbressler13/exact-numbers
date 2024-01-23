@@ -57,8 +57,8 @@ internal class ExactFractionImpl private constructor(numerator: BigInteger, deno
 
     override fun inverse(): ExactFraction {
         return when {
-            numerator.isZero() -> throw divideByZero
-            numerator.isNegative() -> ExactFractionImpl(-denominator, -numerator, fullySimplified = true)
+            isZero() -> throw divideByZero
+            isNegative() -> ExactFractionImpl(-denominator, -numerator, fullySimplified = true)
             else -> ExactFractionImpl(denominator, numerator, fullySimplified = true)
         }
     }

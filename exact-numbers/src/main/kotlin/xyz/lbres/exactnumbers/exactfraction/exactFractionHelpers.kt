@@ -9,7 +9,7 @@ import java.math.MathContext
 import java.math.RoundingMode
 
 /**
- * Simplify a numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
+ * Simplify numerator and denominator values to smallest values with same ratio, and move all negatives into numerator
  *
  * @param numerator [BigInteger]: numerator of fraction to simplify
  * @param denominator [BigInteger]: denominator of fraction to simplify

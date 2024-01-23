@@ -4,7 +4,6 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMutableMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMutableMultiSetOf
@@ -41,9 +40,8 @@ sealed class Log : IrrationalNumber<Log>() {
          */
         // TODO: improve simplification by looking at bases
         internal fun simplifySet(numbers: ConstMultiSet<Log>): Pair<ExactFraction, ConstMultiSet<Log>> {
-            when {
-                numbers.isEmpty() -> return Pair(ExactFraction.ONE, emptyConstMultiSet())
-                numbers.anyConsistent(Log::isZero) -> return Pair(ExactFraction.ZERO, emptyConstMultiSet())
+            if (numbers.isEmpty()) {
+                return Pair(ExactFraction.ONE, emptyConstMultiSet())
             }
 
             val simplifiedNumbers = numbers.mapToSetConsistent { it.getSimplified() }

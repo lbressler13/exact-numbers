@@ -33,8 +33,8 @@ internal fun parseDecimal(s: String): ExactFraction {
     val decimalIndex = rawDecimalString.indexOf('.')
     val decimalString = rawDecimalString.substring(decimalIndex + 1) // starts from 0 if decimalIndex == -1
 
-    val zeros = "0".repeat(decimalString.length)
-    val denomString = "1$zeros"
+    val denomZeroes = "0".repeat(decimalString.length)
+    val denomString = "1$denomZeroes"
 
     val denominator = BigInteger(denomString)
     val numerator = whole * denominator + BigInteger(decimalString)
