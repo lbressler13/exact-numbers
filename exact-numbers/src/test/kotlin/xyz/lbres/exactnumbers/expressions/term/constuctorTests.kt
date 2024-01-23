@@ -25,11 +25,11 @@ private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
 
 fun runConstructorTests() {
-    runFullListConstructorTests()
+    runFactorsConstructorTests()
     runComponentConstructorTests()
 }
 
-private fun runFullListConstructorTests() {
+private fun runFactorsConstructorTests() {
     // zero
     var term = Term.fromValues(ExactFraction.ZERO, emptyList())
     checkTerm(term, ExactFraction.ZERO)
@@ -86,8 +86,8 @@ private fun runFullListConstructorTests() {
     term = Term.fromValues(ExactFraction(-1, 5), sqrts + pis)
     checkTerm(term, ExactFraction(-1, 5), sqrts + pis, emptyList(), sqrts, pis, 1)
 
-    term = Term.fromValues(one, sqrts + pis + logs + listOf(testNumber1, testNumber2))
-    checkTerm(term, one, sqrts + pis + logs + listOf(testNumber1, testNumber2), logs, sqrts, pis, 1)
+    term = Term.fromValues(one, pis + logs + listOf(testNumber1, testNumber2))
+    checkTerm(term, one, pis + logs + listOf(testNumber1, testNumber2), logs, sqrts = emptyList(), pis, 1)
 }
 
 private fun runComponentConstructorTests() {
