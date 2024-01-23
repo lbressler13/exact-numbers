@@ -78,7 +78,7 @@ ADD abstract class IrrationalNumber<T : IrrationalNumber<T>>: Comparable<T>, Num
 **Log**
 ```kotlin
 DEL class Log: Comparable<Log>, Irrational
-ADD class Log: IrrationalNumber<Log>
+ADD class Log: IrrationalNumber<Log>()
 
 DEL Log(argument: BigInteger, isDivided: Boolean)
 DEL Log(argument: BigInteger, base: Int, isDivided: Boolean)
@@ -107,7 +107,7 @@ ADD fun toPlainString(): String
 **Sqrt**
 ```kotlin
 DEL class Sqrt: Comparable<Sqrt>, Irrational
-ADD class Sqrt: IrrationalNumber<Sqrt>
+ADD class Sqrt: IrrationalNumber<Sqrt>()
 
 ADD fun toPlainString(): String
 ```
