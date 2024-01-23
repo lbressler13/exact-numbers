@@ -11,63 +11,63 @@ private val one = ExactFraction.ONE
 
 fun runGetSimplifiedTests() {
     // zero
-    var logNum = Log.ZERO
+    var log = Log.ZERO
     var expected = Pair(one, Log.ZERO)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
     // one
-    logNum = logOne
+    log = logOne
     expected = Pair(one, logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
     // rational
-    logNum = Log(1000)
+    log = Log(1000)
     expected = Pair(ExactFraction.THREE, logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(1, 1000))
+    log = Log(ExactFraction(1, 1000))
     expected = Pair(-ExactFraction.THREE, logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(32), 2)
+    log = Log(ExactFraction(32), 2)
     expected = Pair(ExactFraction.FIVE, logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(32), 2).inverse()
+    log = Log(ExactFraction(32), 2).inverse()
     expected = Pair(ExactFraction(1, 5), logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(1, 81), 3)
+    log = Log(ExactFraction(1, 81), 3)
     expected = Pair(-ExactFraction.FOUR, logOne)
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
     // irrational
-    logNum = Log(30)
+    log = Log(30)
     expected = Pair(one, Log(30))
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(100, 9))
+    log = Log(ExactFraction(100, 9))
     expected = Pair(one, Log(ExactFraction(100, 9)))
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(100, 2)
+    log = Log(100, 2)
     expected = Pair(one, Log(100, 2))
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 
-    logNum = Log(ExactFraction(2, 15), 7)
+    log = Log(ExactFraction(2, 15), 7)
     expected = Pair(one, Log(ExactFraction(2, 15), 7))
-    assertEquals(expected, logNum.getSimplified())
+    assertEquals(expected, log.getSimplified())
 }
 
 fun runSimplifySetTests() {
     // empty
     var expected: Pair<ExactFraction, ConstMultiSet<Log>> = Pair(one, emptyConstMultiSet())
 
-    var logs: ConstMultiSet<Log> = constMultiSetOf()
+    var logs: ConstMultiSet<Log> = emptyConstMultiSet()
     assertEquals(expected, Log.simplifySet(logs))
 
     // zero
-    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
+    expected = Pair(ExactFraction.ZERO, emptyConstMultiSet())
 
     logs = constMultiSetOf(Log.ZERO)
     assertEquals(expected, Log.simplifySet(logs))
@@ -80,11 +80,11 @@ fun runSimplifySetTests() {
 
     // ones
     logs = constMultiSetOf(logOne)
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(logOne, logOne, logOne)
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(logOne, Log(8), Log(4, 3).inverse())
@@ -97,7 +97,7 @@ fun runSimplifySetTests() {
 
     // inverses
     logs = constMultiSetOf(Log(8), Log(8, 10).inverse())
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(
@@ -137,11 +137,11 @@ fun runSimplifySetTests() {
 
     // rationals
     logs = constMultiSetOf(Log(1000))
-    expected = Pair(ExactFraction.THREE, constMultiSetOf())
+    expected = Pair(ExactFraction.THREE, emptyConstMultiSet())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(Log(9, 3), Log(ExactFraction.HALF, 2))
-    expected = Pair(-ExactFraction.TWO, constMultiSetOf())
+    expected = Pair(-ExactFraction.TWO, emptyConstMultiSet())
     assertEquals(expected, Log.simplifySet(logs))
 
     logs = constMultiSetOf(

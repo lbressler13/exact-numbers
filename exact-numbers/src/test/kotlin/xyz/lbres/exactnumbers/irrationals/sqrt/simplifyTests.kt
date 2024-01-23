@@ -63,20 +63,20 @@ fun runSimplifySetTests() {
 
     // zero
     numbers = constMultiSetOf(Sqrt.ZERO)
-    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
+    expected = Pair(ExactFraction.ZERO, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt.ZERO, Sqrt(2))
-    expected = Pair(ExactFraction.ZERO, constMultiSetOf())
+    expected = Pair(ExactFraction.ZERO, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // only whole
     numbers = constMultiSetOf(Sqrt.ONE)
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt(9))
-    expected = Pair(ExactFraction.THREE, constMultiSetOf())
+    expected = Pair(ExactFraction.THREE, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(
@@ -84,11 +84,11 @@ fun runSimplifySetTests() {
         Sqrt(ExactFraction(1, 64)),
         Sqrt(49)
     )
-    expected = Pair(ExactFraction(35, 32), constMultiSetOf())
+    expected = Pair(ExactFraction(35, 32), emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt(15), Sqrt(6), Sqrt(10))
-    expected = Pair(ExactFraction(30), constMultiSetOf())
+    expected = Pair(ExactFraction(30), emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // partial whole
@@ -149,18 +149,18 @@ fun runSimplifySetTests() {
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt(13), Sqrt(ExactFraction(1, 13)))
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     // ones
     val rootOne = Sqrt.ONE
 
     numbers = constMultiSetOf(rootOne)
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(rootOne, rootOne, rootOne)
-    expected = Pair(one, constMultiSetOf())
+    expected = Pair(one, emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 
     numbers = constMultiSetOf(Sqrt(ExactFraction(2, 15)), rootOne, Sqrt(16))
@@ -175,6 +175,6 @@ fun runSimplifySetTests() {
         Sqrt(ExactFraction(1, 64)),
         Sqrt(49)
     )
-    expected = Pair(ExactFraction(35, 32), constMultiSetOf())
+    expected = Pair(ExactFraction(35, 32), emptyConstMultiSet())
     assertEquals(expected, Sqrt.simplifySet(numbers))
 }

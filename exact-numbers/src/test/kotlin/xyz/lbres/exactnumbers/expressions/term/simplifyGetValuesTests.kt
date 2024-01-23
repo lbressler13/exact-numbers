@@ -9,8 +9,8 @@ import xyz.lbres.exactnumbers.testutils.TestNumber
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
-private val logNum1 = Log(ExactFraction(15, 4))
-private val logNum2 = Log(8, 7)
+private val log1 = Log(ExactFraction(15, 4))
+private val log2 = Log(8, 7)
 private val sqrt = Sqrt(ExactFraction(20, 33))
 private val testNumber1 = TestNumber(ExactFraction(3, 4))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
@@ -25,17 +25,17 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     var expectedCoeff = ExactFraction.EIGHT
     checkTerm(result, expectedCoeff)
 
-    term = Term.fromValues(ExactFraction(-3, 2), listOf(logNum1, pi, piInverse, pi))
+    term = Term.fromValues(ExactFraction(-3, 2), listOf(log1, pi, piInverse, pi))
     result = simplify(term)
     expectedCoeff = ExactFraction(-3, 2)
-    var expectedFactors: List<IrrationalNumber<*>> = listOf(logNum1, pi)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(logNum1), pis = listOf(pi), piCount = 1)
+    var expectedFactors: List<IrrationalNumber<*>> = listOf(log1, pi)
+    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1), pis = listOf(pi), piCount = 1)
 
-    term = Term.fromValues(ExactFraction.HALF, listOf(Log.ONE, logNum1, testNumber2, testNumber2))
+    term = Term.fromValues(ExactFraction.HALF, listOf(Log.ONE, log1, testNumber2, testNumber2))
     result = simplify(term)
     expectedCoeff = ExactFraction(49, 2)
-    expectedFactors = listOf(logNum1)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(logNum1))
+    expectedFactors = listOf(log1)
+    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1))
 
     term = Term.fromValues(-ExactFraction.HALF, listOf(Log.ONE, piInverse))
     result = simplify(term)
@@ -58,11 +58,11 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
 
     term = Term.fromValues(
         ExactFraction(18, 5),
-        listOf(logNum2, logNum2, logNum1, logNum2.inverse(), piInverse, piInverse, piInverse, pi)
+        listOf(log2, log2, log1, log2.inverse(), piInverse, piInverse, piInverse, pi)
     )
     result = simplify(term)
     expectedCoeff = ExactFraction(18, 5)
-    var logs = listOf(logNum2, logNum1)
+    var logs = listOf(log2, log1)
     var pis = listOf(piInverse, piInverse)
     checkTerm(result, expectedCoeff, logs + pis, logs = logs, pis = pis, piCount = -2)
 
@@ -117,11 +117,11 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     expectedCoeff = ExactFraction.EIGHT
     checkTerm(result, expectedCoeff)
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(log1))
     result = simplify(term)
     expectedCoeff = ExactFraction.EIGHT
-    expectedFactors = listOf(logNum1)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(logNum1))
+    expectedFactors = listOf(log1)
+    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1))
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(1, 46))))
     result = simplify(term)
@@ -136,11 +136,11 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     expectedFactors = listOf(piInverse, testNumber1)
     checkTerm(result, expectedCoeff, expectedFactors, pis = listOf(piInverse), piCount = -1)
 
-    term = Term.fromValues(ExactFraction.SEVEN, listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), pi, pi))
+    term = Term.fromValues(ExactFraction.SEVEN, listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi))
     result = simplify(term)
     expectedCoeff = ExactFraction.SEVEN
-    expectedFactors = listOf(logNum1, logNum1, logNum2.inverse(), Sqrt(5), pi, pi)
-    logs = listOf(logNum1, logNum1, logNum2.inverse())
+    expectedFactors = listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi)
+    logs = listOf(log1, log1, log2.inverse())
     pis = listOf(pi, pi)
     checkTerm(result, expectedCoeff, expectedFactors, logs, listOf(Sqrt(5)), pis, 2)
 }
@@ -160,7 +160,7 @@ fun runGetValueTests() {
     assertEquals(expected, term.getValue())
 
     // just logs
-    term = Term.fromValues(one, listOf(logNum1, logNum1.inverse()))
+    term = Term.fromValues(one, listOf(log1, log1.inverse()))
     expected = BigDecimal.ONE
     assertEquals(expected, term.getValue())
 
@@ -168,7 +168,7 @@ fun runGetValueTests() {
     expected = BigDecimal("3.52283531366053")
     assertEquals(expected, term.getValue())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum2))
+    term = Term.fromValues(one, listOf(log1, log2))
     expected = BigDecimal("0.61342218956802803344500481172832")
     assertEquals(expected, term.getValue())
 

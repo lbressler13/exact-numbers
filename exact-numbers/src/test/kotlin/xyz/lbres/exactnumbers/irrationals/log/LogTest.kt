@@ -12,95 +12,95 @@ class LogTest {
     @Test
     fun testEquals() {
         // equals
-        var logNum1 = Log.ZERO
-        assertEquals(logNum1, logNum1)
+        var log1 = Log.ZERO
+        assertEquals(log1, log1)
 
-        logNum1 = Log(10)
-        assertEquals(logNum1, logNum1)
+        log1 = Log(10)
+        assertEquals(log1, log1)
 
-        logNum1 = Log(30001)
-        assertEquals(logNum1, logNum1)
+        log1 = Log(30001)
+        assertEquals(log1, log1)
 
-        logNum1 = Log(ExactFraction(107, 12), 3)
-        assertEquals(logNum1, logNum1)
+        log1 = Log(ExactFraction(107, 12), 3)
+        assertEquals(log1, log1)
 
-        logNum1 = Log(ExactFraction(12, 107), 10).inverse()
-        assertEquals(logNum1, logNum1)
+        log1 = Log(ExactFraction(12, 107), 10).inverse()
+        assertEquals(log1, log1)
 
         // not equals
-        logNum1 = Log.ZERO
-        var logNum2 = Log(2)
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log.ZERO
+        var log2 = Log(2)
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
 
-        logNum1 = Log(8)
-        logNum2 = Log(8, 2)
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log(8)
+        log2 = Log(8, 2)
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
 
-        logNum1 = Log(15)
-        logNum2 = Log(1000)
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log(15)
+        log2 = Log(1000)
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
 
-        logNum1 = Log(ExactFraction.HALF)
-        logNum2 = Log(ExactFraction(5, 7))
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log(ExactFraction.HALF)
+        log2 = Log(ExactFraction(5, 7))
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
 
-        logNum1 = Log(ExactFraction(7, 8), 3)
-        logNum2 = Log(ExactFraction(8, 7), 3)
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log(ExactFraction(7, 8), 3)
+        log2 = Log(ExactFraction(8, 7), 3)
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
 
-        logNum1 = Log(8, 10).inverse()
-        logNum2 = Log(8, 10)
-        assertNotEquals(logNum1, logNum2)
-        assertNotEquals(logNum2, logNum1)
+        log1 = Log(8, 10).inverse()
+        log2 = Log(8, 10)
+        assertNotEquals(log1, log2)
+        assertNotEquals(log2, log1)
     }
 
     @Test
     fun testCompareTo() {
         // equal
-        var logNum1 = Log.ZERO
-        assertEquals(0, logNum1.compareTo(logNum1))
+        var log1 = Log.ZERO
+        assertEquals(0, log1.compareTo(log1))
 
-        logNum1 = Log(8, 3)
-        assertEquals(0, logNum1.compareTo(logNum1))
+        log1 = Log(8, 3)
+        assertEquals(0, log1.compareTo(log1))
 
-        logNum1 = Log(ExactFraction(4, 5), 3).inverse()
-        assertEquals(0, logNum1.compareTo(logNum1))
+        log1 = Log(ExactFraction(4, 5), 3).inverse()
+        assertEquals(0, log1.compareTo(log1))
 
-        logNum1 = Log(2, 2)
-        var logNum2 = Log(8, 8)
-        assertEquals(0, logNum1.compareTo(logNum2))
-        assertEquals(0, logNum2.compareTo(logNum1))
+        log1 = Log(2, 2)
+        var log2 = Log(8, 8)
+        assertEquals(0, log1.compareTo(log2))
+        assertEquals(0, log2.compareTo(log1))
 
         // not equal
-        logNum1 = Log.ZERO
-        logNum2 = Log.ONE
-        assertTrue(logNum1 < logNum2)
-        assertTrue(logNum2 > logNum1)
+        log1 = Log.ZERO
+        log2 = Log.ONE
+        assertTrue(log1 < log2)
+        assertTrue(log2 > log1)
 
-        logNum1 = Log(8)
-        logNum2 = Log(8, 2)
-        assertTrue(logNum1 < logNum2)
-        assertTrue(logNum2 > logNum1)
+        log1 = Log(8)
+        log2 = Log(8, 2)
+        assertTrue(log1 < log2)
+        assertTrue(log2 > log1)
 
-        logNum1 = Log(ExactFraction(3, 4), 5)
-        logNum2 = Log(ExactFraction(4, 3), 5)
-        assertTrue(logNum1 < logNum2)
-        assertTrue(logNum2 > logNum1)
+        log1 = Log(ExactFraction(3, 4), 5)
+        log2 = Log(ExactFraction(4, 3), 5)
+        assertTrue(log1 < log2)
+        assertTrue(log2 > log1)
 
-        logNum1 = Log(ExactFraction(3, 4), 10).inverse()
-        logNum2 = Log(ExactFraction(1, 4))
-        assertTrue(logNum1 < logNum2)
-        assertTrue(logNum2 > logNum1)
+        log1 = Log(ExactFraction(3, 4), 10).inverse()
+        log2 = Log(ExactFraction(1, 4))
+        assertTrue(log1 < log2)
+        assertTrue(log2 > log1)
 
-        logNum1 = Log(2, 8)
-        logNum2 = Log(32, 8).inverse()
-        assertTrue(logNum1 < logNum2)
-        assertTrue(logNum2 > logNum1)
+        log1 = Log(2, 8)
+        log2 = Log(32, 8).inverse()
+        assertTrue(log1 < log2)
+        assertTrue(log2 > log1)
     }
 
     @Test fun testTimes() = runTimesTests()
@@ -112,81 +112,81 @@ class LogTest {
         assertDivByZero { Log.ZERO.inverse() }
 
         // other
-        var logNum = Log.ONE
+        var log = Log.ONE
         var expected = Log.ONE
-        assertEquals(expected, logNum.inverse())
+        assertEquals(expected, log.inverse())
 
-        logNum = Log(ExactFraction(3, 8), 2)
+        log = Log(ExactFraction(3, 8), 2)
         expected = Log(ExactFraction(3, 8), 2).inverse()
-        assertEquals(expected, logNum.inverse())
+        assertEquals(expected, log.inverse())
 
-        logNum = Log(4, 3).inverse()
+        log = Log(4, 3).inverse()
         expected = Log(4, 3)
-        assertEquals(expected, logNum.inverse())
+        assertEquals(expected, log.inverse())
     }
 
     @Test
     fun testIsZero() {
-        var logNum = Log.ZERO
-        assertTrue(logNum.isZero())
+        var log = Log.ZERO
+        assertTrue(log.isZero())
 
-        logNum = Log.ONE
-        assertFalse(logNum.isZero())
+        log = Log.ONE
+        assertFalse(log.isZero())
 
-        logNum = Log(2, 7)
-        assertFalse(logNum.isZero())
+        log = Log(2, 7)
+        assertFalse(log.isZero())
 
-        logNum = Log(10)
-        assertFalse(logNum.isZero())
+        log = Log(10)
+        assertFalse(log.isZero())
 
-        logNum = Log(18)
-        assertFalse(logNum.isZero())
+        log = Log(18)
+        assertFalse(log.isZero())
 
-        logNum = Log(ExactFraction(18, 7))
-        assertFalse(logNum.isZero())
+        log = Log(ExactFraction(18, 7))
+        assertFalse(log.isZero())
 
-        logNum = Log(ExactFraction(7, 18))
-        assertFalse(logNum.isZero())
+        log = Log(ExactFraction(7, 18))
+        assertFalse(log.isZero())
     }
 
     @Test
     fun testIsRational() {
         // rational
-        var logNum = Log.ZERO
-        assertTrue(logNum.isRational())
+        var log = Log.ZERO
+        assertTrue(log.isRational())
 
-        logNum = Log.ONE
-        assertTrue(logNum.isRational())
+        log = Log.ONE
+        assertTrue(log.isRational())
 
-        logNum = Log(2048, 2)
-        assertTrue(logNum.isRational())
-        assertTrue(logNum.isRational())
+        log = Log(2048, 2)
+        assertTrue(log.isRational())
+        assertTrue(log.isRational())
 
-        logNum = Log(2048, 2).inverse()
-        assertTrue(logNum.isRational())
-        assertTrue(logNum.isRational())
+        log = Log(2048, 2).inverse()
+        assertTrue(log.isRational())
+        assertTrue(log.isRational())
 
-        logNum = Log(ExactFraction(1, 27), 3)
-        assertTrue(logNum.isRational())
-        assertTrue(logNum.isRational())
+        log = Log(ExactFraction(1, 27), 3)
+        assertTrue(log.isRational())
+        assertTrue(log.isRational())
 
-        logNum = Log(ExactFraction(1, 1000)).inverse()
-        assertTrue(logNum.isRational())
+        log = Log(ExactFraction(1, 1000)).inverse()
+        assertTrue(log.isRational())
 
         // irrational
-        logNum = Log(20)
-        assertFalse(logNum.isRational())
+        log = Log(20)
+        assertFalse(log.isRational())
 
-        logNum = Log(ExactFraction(1, 10), 5)
-        assertFalse(logNum.isRational())
-        assertFalse(logNum.isRational())
+        log = Log(ExactFraction(1, 10), 5)
+        assertFalse(log.isRational())
+        assertFalse(log.isRational())
 
-        logNum = Log(1000, 100).inverse()
-        assertFalse(logNum.isRational())
-        assertFalse(logNum.isRational())
+        log = Log(1000, 100).inverse()
+        assertFalse(log.isRational())
+        assertFalse(log.isRational())
 
-        logNum = Log(ExactFraction(8, 1000), 2)
-        assertFalse(logNum.isRational())
+        log = Log(ExactFraction(8, 1000), 2)
+        assertFalse(log.isRational())
     }
 
     @Test fun testGetRationalValue() = runGetRationalValueTests()
@@ -205,32 +205,32 @@ class LogTest {
 
     @Test
     fun testToString() {
-        var logNum = Log.ZERO
+        var log = Log.ZERO
         var expected = "[log_10(1)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(10, 108)
+        log = Log(10, 108)
         expected = "[log_108(10)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(15)
+        log = Log(15)
         expected = "[log_10(15)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(30001, 3)
+        log = Log(30001, 3)
         expected = "[log_3(30001)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(ExactFraction(103, 272), 14)
+        log = Log(ExactFraction(103, 272), 14)
         expected = "[log_14(103/272)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(ExactFraction(15, 8), 10).inverse()
+        log = Log(ExactFraction(15, 8), 10).inverse()
         expected = "[1/log_10(15/8)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
 
-        logNum = Log(4, 3).inverse()
+        log = Log(4, 3).inverse()
         expected = "[1/log_3(4)]"
-        assertEquals(expected, logNum.toString())
+        assertEquals(expected, log.toString())
     }
 }

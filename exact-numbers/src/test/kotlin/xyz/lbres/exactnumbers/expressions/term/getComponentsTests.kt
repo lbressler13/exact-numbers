@@ -9,10 +9,10 @@ import xyz.lbres.exactnumbers.testutils.TestNumber
 import xyz.lbres.kotlinutils.list.StringList
 import kotlin.test.assertEquals
 
-private val logNum1 = Log(ExactFraction(15, 4))
-private val logNum2 = Log(8, 7)
-private val logNum3 = Log(ExactFraction(19, 33)).inverse()
-private val logNum4 = Log(ExactFraction(25, 121))
+private val log1 = Log(ExactFraction(15, 4))
+private val log2 = Log(8, 7)
+private val log3 = Log(ExactFraction(19, 33)).inverse()
+private val log4 = Log(ExactFraction(25, 121))
 private val testNumber1 = TestNumber(ExactFraction(3, 4))
 private val testNumber2 = TestNumber(ExactFraction.SEVEN)
 private val one = ExactFraction.ONE
@@ -25,7 +25,7 @@ fun runGetFactorsByTypeTests() {
     var term = Term.fromValues(ExactFraction.ZERO, emptyList())
     runSingleIrrationalsByTypeTest(term, types, emptyMap())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum2, testNumber1, Pi(), TestNumber(ExactFraction.ZERO)))
+    term = Term.fromValues(one, listOf(log1, log2, testNumber1, Pi(), TestNumber(ExactFraction.ZERO)))
     runSingleIrrationalsByTypeTest(term, types, emptyMap())
 
     // non-zero
@@ -41,21 +41,21 @@ fun runGetFactorsByTypeTests() {
         )
     )
 
-    term = Term.fromValues(one, listOf(testNumber1, logNum2, testNumber2.inverse(), Pi().inverse()))
+    term = Term.fromValues(one, listOf(testNumber1, log2, testNumber2.inverse(), Pi().inverse()))
     runSingleIrrationalsByTypeTest(
         term, types + listOf("Random"),
         mapOf(
             TestNumber.TYPE to listOf(testNumber1, testNumber2.inverse()),
-            Log.TYPE to listOf(logNum2),
+            Log.TYPE to listOf(log2),
             Pi.TYPE to listOf(Pi().inverse())
         )
     )
 
-    term = Term.fromValues(one, listOf(logNum4, logNum4, logNum2), listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))), -2)
+    term = Term.fromValues(one, listOf(log4, log4, log2), listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))), -2)
     runSingleIrrationalsByTypeTest(
         term, types,
         mapOf(
-            Log.TYPE to listOf(logNum4, logNum4, logNum2),
+            Log.TYPE to listOf(log4, log4, log2),
             Sqrt.TYPE to listOf(Sqrt.ONE, Sqrt(ExactFraction(17, 7))),
             Pi.TYPE to listOf(Pi().inverse(), Pi().inverse())
         )
@@ -77,29 +77,29 @@ fun runGetLogsTests() {
     assertEquals(expected, term.getLogs())
 
     // just logs
-    term = Term.fromValues(one, listOf(logNum1))
-    expected = listOf(logNum1)
+    term = Term.fromValues(one, listOf(log1))
+    expected = listOf(log1)
     assertEquals(expected, term.getLogs())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum1))
-    expected = listOf(logNum1, logNum1)
+    term = Term.fromValues(one, listOf(log1, log1))
+    expected = listOf(log1, log1)
     assertEquals(expected, term.getLogs())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum1.inverse()))
-    expected = listOf(logNum1, logNum1.inverse())
+    term = Term.fromValues(one, listOf(log1, log1.inverse()))
+    expected = listOf(log1, log1.inverse())
     assertEquals(expected, term.getLogs())
 
-    term = Term.fromValues(one, listOf(logNum3, logNum4, logNum1))
-    expected = listOf(logNum3, logNum4, logNum1)
+    term = Term.fromValues(one, listOf(log3, log4, log1))
+    expected = listOf(log3, log4, log1)
     assertEquals(expected, term.getLogs())
 
     // mix
-    term = Term.fromValues(one, listOf(logNum3, Sqrt(2), Pi()))
-    expected = listOf(logNum3)
+    term = Term.fromValues(one, listOf(log3, Sqrt(2), Pi()))
+    expected = listOf(log3)
     assertEquals(expected, term.getLogs())
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum2, logNum2, logNum3, logNum4, Sqrt(15), Pi(), Pi().inverse()))
-    expected = listOf(logNum2, logNum2, logNum3, logNum4)
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(log2, log2, log3, log4, Sqrt(15), Pi(), Pi().inverse()))
+    expected = listOf(log2, log2, log3, log4)
     assertEquals(expected, term.getLogs())
 }
 
@@ -120,10 +120,10 @@ fun runGetPiCountTests() {
     term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi(), Pi().inverse(), Pi(), Pi().inverse()))
     assertEquals(expected, term.getPiCount())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum2, Sqrt(ExactFraction(64, 9))))
+    term = Term.fromValues(one, listOf(log1, log2, Sqrt(ExactFraction(64, 9))))
     assertEquals(expected, term.getPiCount())
 
-    term = Term.fromValues(one, listOf(logNum3, logNum4, logNum2, Pi().inverse(), Pi(), Pi().inverse(), Pi()))
+    term = Term.fromValues(one, listOf(log3, log4, log2, Pi().inverse(), Pi(), Pi().inverse(), Pi()))
     assertEquals(expected, term.getPiCount())
 
     // just pi
@@ -144,11 +144,11 @@ fun runGetPiCountTests() {
     assertEquals(expected, term.getPiCount())
 
     // mix
-    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi().inverse()))
+    term = Term.fromValues(one, listOf(log2, Sqrt(2), Pi().inverse()))
     expected = -1
     assertEquals(expected, term.getPiCount())
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum3, logNum2, Sqrt(36), Pi(), Pi(), Pi().inverse(), Pi()))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(log3, log2, Sqrt(36), Pi(), Pi(), Pi().inverse(), Pi()))
     expected = 2
     assertEquals(expected, term.getPiCount())
 }
@@ -164,7 +164,7 @@ fun runGetSquareRootsTests() {
     term = Term.fromValues(ExactFraction.TEN, emptyList())
     assertEquals(expected, term.getSquareRoots())
 
-    term = Term.fromValues(one, listOf(logNum1, logNum2, Pi(), Pi().inverse()))
+    term = Term.fromValues(one, listOf(log1, log2, Pi(), Pi().inverse()))
     assertEquals(expected, term.getSquareRoots())
 
     // just sqrt
@@ -185,11 +185,11 @@ fun runGetSquareRootsTests() {
     assertEquals(expected, term.getSquareRoots())
 
     // mix
-    term = Term.fromValues(one, listOf(logNum2, Sqrt(2), Pi().inverse()))
+    term = Term.fromValues(one, listOf(log2, Sqrt(2), Pi().inverse()))
     expected = listOf(Sqrt(2))
     assertEquals(expected, term.getSquareRoots())
 
-    term = Term.fromValues(ExactFraction.EIGHT, listOf(logNum1, logNum2, Sqrt.ONE, Sqrt(97), Sqrt(ExactFraction(9, 25)), Pi()))
+    term = Term.fromValues(ExactFraction.EIGHT, listOf(log1, log2, Sqrt.ONE, Sqrt(97), Sqrt(ExactFraction(9, 25)), Pi()))
     expected = listOf(Sqrt.ONE, Sqrt(97), Sqrt(ExactFraction(9, 25)))
     assertEquals(expected, term.getSquareRoots())
 }
