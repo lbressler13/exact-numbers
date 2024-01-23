@@ -4,15 +4,18 @@ package xyz.lbres.exactnumbers.exactfraction
  * [ArithmeticException] for ExactFraction overflow.
  * Has field for string representation of value that caused overflow
  */
-class ExactFractionOverflowException() : ArithmeticException() {
-    override var message: String? = null
-    var overflowValue: String? = null
+class ExactFractionOverflowException private constructor(message: String?, overflowValue: String?, noArgs: Boolean) : ArithmeticException() {
+    override val message: String?
+    val overflowValue: String?
 
-    constructor (message: String) : this() {
+    init {
         this.message = message
-    }
-
-    constructor (message: String, overflowValue: String) : this(message) {
         this.overflowValue = overflowValue
     }
+
+    constructor() : this(null, null, true)
+
+    constructor(message: String) : this(message, null, false)
+
+    constructor(message: String, overflowValue: String) : this(message, overflowValue, false)
 }
