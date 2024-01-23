@@ -3,7 +3,13 @@ package xyz.lbres.exactnumbers.exceptions
 /**
  * ArithmeticException for overflows when casting numbers
  */
-class CastingOverflowException private constructor(baseType: String, targetType: String, valueString: String, overflowValue: Any?, noArgs: Boolean) : ArithmeticException() {
+class CastingOverflowException private constructor(
+    baseType: String,
+    targetType: String,
+    valueString: String,
+    overflowValue: Any?,
+    noArgs: Boolean
+) : ArithmeticException() {
     override val message: String?
     val overflowValue: Any?
 
