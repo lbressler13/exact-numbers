@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.testutils
 
 import xyz.lbres.exactnumbers.exceptions.CastingOverflowException
+import xyz.lbres.kotlinutils.general.succeeds
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -33,9 +34,7 @@ inline fun <reified T : Exception> assertFailsWithMessage(message: String, test:
  * @param test () -> Unit: test to run
  */
 fun <T> assertSucceeds(errorMessage: String, test: () -> T) {
-    try {
-        test()
-    } catch (_: Exception) {
+    if (!succeeds { test() }) {
         throw AssertionError(errorMessage)
     }
 }

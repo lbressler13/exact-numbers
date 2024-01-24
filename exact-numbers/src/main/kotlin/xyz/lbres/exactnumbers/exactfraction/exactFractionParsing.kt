@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.general.succeeds
 import xyz.lbres.kotlinutils.general.tryOrDefault
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -18,7 +19,10 @@ private const val efSuffix = "]"
 internal fun parseDecimal(s: String): ExactFraction {
     var currentState: String = s.trim()
 
-    validateDecimalString(currentState)
+    // validate string
+    if (!succeeds { BigDecimal(currentState) } || currentState.last() == '.') {
+        throw NumberFormatException("Error parsing $currentState")
+    }
 
     // remove negative sign
     val isNegative = currentState.startsWith("-")
@@ -40,26 +44,6 @@ internal fun parseDecimal(s: String): ExactFraction {
     val numerator = whole * denominator + BigInteger(decimalString)
 
     return simpleIf(isNegative, { ExactFraction(-numerator, denominator) }, { ExactFraction(numerator, denominator) })
-}
-
-/**
- * Validate that a decimal string is in a parseable format, and throw [NumberFormatException] if it is not.
- * Assumes string is trimmed and lowercase.
- *
- * @param s [String]: string to validate
- */
-private fun validateDecimalString(s: String) {
-    val exception = NumberFormatException("Error parsing $s")
-
-    try {
-        BigDecimal(s)
-    } catch (_: Exception) {
-        throw exception
-    }
-
-    if (s.last() == '.') {
-        throw exception
-    }
 }
 
 /**
