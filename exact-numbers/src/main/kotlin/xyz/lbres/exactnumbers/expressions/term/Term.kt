@@ -67,22 +67,17 @@ sealed class Term : Number() {
 
     @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Log.TYPE)", "$irrationalsPackage.log.Log"), DeprecationLevel.WARNING)
     @Suppress("UNCHECKED_CAST")
-    fun getLogs(): List<Log> {
-        return getFactorsByType(Log.TYPE) as List<Log>
-    }
+    fun getLogs(): List<Log> = getFactorsByType(Log.TYPE) as List<Log>
 
     @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Pi.TYPE)"), DeprecationLevel.WARNING)
-    @Suppress("UNCHECKED_CAST")
     fun getPiCount(): Int {
-        val pis = getFactorsByType(Pi.TYPE) as List<Pi>
+        val pis = getFactorsByType(Pi.TYPE)
         return pis.countElement(Pi()) * 2 - pis.size // positive - (numbers.size - positive)
     }
 
     @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Sqrt.TYPE)", "$irrationalsPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
     @Suppress("UNCHECKED_CAST")
-    fun getSquareRoots(): List<Sqrt> {
-        return getFactorsByType(Sqrt.TYPE) as List<Sqrt>
-    }
+    fun getSquareRoots(): List<Sqrt> = getFactorsByType(Sqrt.TYPE) as List<Sqrt>
 
     companion object {
         val ZERO = fromValues(ExactFraction.ZERO, emptyList())
