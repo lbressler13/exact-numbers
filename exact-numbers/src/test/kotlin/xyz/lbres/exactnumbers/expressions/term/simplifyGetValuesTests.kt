@@ -1,7 +1,6 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -22,66 +21,56 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     // simplified
     var term = Term.fromValues(ExactFraction.EIGHT, listOf(pi, piInverse))
     var result = simplify(term)
-    var expectedCoeff = ExactFraction.EIGHT
-    checkTerm(result, expectedCoeff)
+    checkTerm(result, ExactFraction.EIGHT)
 
     term = Term.fromValues(ExactFraction(-3, 2), listOf(log1, pi, piInverse, pi))
     result = simplify(term)
-    expectedCoeff = ExactFraction(-3, 2)
-    var expectedFactors: List<IrrationalNumber<*>> = listOf(log1, pi)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1), pis = listOf(pi), piCount = 1)
+    var expectedFactors = listOf(log1, pi)
+    checkTerm(result, ExactFraction(-3, 2), expectedFactors)
 
     term = Term.fromValues(ExactFraction.HALF, listOf(Log.ONE, log1, testNumber2, testNumber2))
     result = simplify(term)
-    expectedCoeff = ExactFraction(49, 2)
     expectedFactors = listOf(log1)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1))
+    checkTerm(result, ExactFraction(49, 2), expectedFactors)
 
     term = Term.fromValues(-ExactFraction.HALF, listOf(Log.ONE, piInverse))
     result = simplify(term)
-    expectedCoeff = -ExactFraction.HALF
     expectedFactors = listOf(piInverse)
-    checkTerm(result, expectedCoeff, expectedFactors, pis = listOf(piInverse), piCount = -1)
+    checkTerm(result, -ExactFraction.HALF, expectedFactors)
 
     term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt, testNumber1, testNumber1, testNumber1.inverse(), testNumber1.inverse(), testNumber1.inverse()))
     result = simplify(term)
-    expectedCoeff = ExactFraction(20)
     expectedFactors = listOf(Sqrt(ExactFraction(5, 33)), testNumber1.inverse())
     var sqrts = listOf(Sqrt(ExactFraction(5, 33)))
-    checkTerm(result, expectedCoeff, expectedFactors, sqrts = sqrts)
+    checkTerm(result, ExactFraction(20), expectedFactors)
 
     term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
     result = simplify(term)
-    expectedCoeff = ExactFraction(80, 7)
     expectedFactors = listOf(Sqrt(ExactFraction(39)))
-    checkTerm(result, expectedCoeff, expectedFactors, sqrts = listOf(Sqrt(ExactFraction(39))))
+    checkTerm(result, ExactFraction(80, 7), expectedFactors)
 
     term = Term.fromValues(
         ExactFraction(18, 5),
         listOf(log2, log2, log1, log2.inverse(), piInverse, piInverse, piInverse, pi)
     )
     result = simplify(term)
-    expectedCoeff = ExactFraction(18, 5)
     var logs = listOf(log2, log1)
     var pis = listOf(piInverse, piInverse)
-    checkTerm(result, expectedCoeff, logs + pis, logs = logs, pis = pis, piCount = -2)
+    checkTerm(result, ExactFraction(18, 5), logs + pis)
 
     term = Term.fromValues(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), testNumber1, Sqrt(ExactFraction(1, 4))))
     result = simplify(term)
-    expectedCoeff = ExactFraction(12)
-    checkTerm(result, expectedCoeff, listOf(testNumber1))
+    checkTerm(result, ExactFraction(12), listOf(testNumber1))
 
     term = Term.fromValues(-ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(27, 98)), piInverse))
     result = simplify(term)
-    expectedCoeff = ExactFraction(-24, 7)
     expectedFactors = listOf(Sqrt(ExactFraction(3, 2)), piInverse)
     sqrts = listOf(Sqrt(ExactFraction(3, 2)))
-    checkTerm(result, expectedCoeff, expectedFactors, sqrts = sqrts, pis = listOf(piInverse), piCount = -1)
+    checkTerm(result, ExactFraction(-24, 7), expectedFactors)
 
     term = Term.fromValues(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3).inverse()))
     result = simplify(term)
-    expectedCoeff = ExactFraction(-20, 3)
-    checkTerm(result, expectedCoeff)
+    checkTerm(result, ExactFraction(-20, 3))
 
     term = Term.fromValues(
         ExactFraction(3, 5),
@@ -97,52 +86,40 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
         )
     )
     result = simplify(term)
-    expectedCoeff = ExactFraction(-6)
     expectedFactors = listOf(Log(4), Log(1000, 12), Sqrt(ExactFraction(78, 7)), pi)
-    logs = listOf(Log(4), Log(1000, 12))
-    sqrts = listOf(Sqrt(ExactFraction(78, 7)))
-    checkTerm(result, expectedCoeff, expectedFactors, logs, sqrts, listOf(pi), 1)
+    checkTerm(result, ExactFraction(-6), expectedFactors)
 
     term = Term.fromValues(
         ExactFraction(4, 7),
         listOf(testNumber2, pi, piInverse, Log.ONE, Sqrt(ExactFraction(9, 49)), Log(1000), Log(ExactFraction(1, 32), 2))
     )
     result = simplify(term)
-    expectedCoeff = ExactFraction(-180, 7)
-    checkTerm(result, expectedCoeff)
+    checkTerm(result, ExactFraction(-180, 7))
 
     // no changes
     term = Term.fromValues(ExactFraction.EIGHT, emptyList())
     result = simplify(term)
-    expectedCoeff = ExactFraction.EIGHT
-    checkTerm(result, expectedCoeff)
+    checkTerm(result, ExactFraction.EIGHT)
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(log1))
     result = simplify(term)
-    expectedCoeff = ExactFraction.EIGHT
     expectedFactors = listOf(log1)
-    checkTerm(result, expectedCoeff, expectedFactors, logs = listOf(log1))
+    checkTerm(result, ExactFraction.EIGHT, expectedFactors)
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(1, 46))))
     result = simplify(term)
-    expectedCoeff = ExactFraction.EIGHT
     expectedFactors = listOf(Sqrt(ExactFraction(1, 46)))
-    sqrts = listOf(Sqrt(ExactFraction(1, 46)))
-    checkTerm(result, expectedCoeff, expectedFactors, sqrts = sqrts)
+    checkTerm(result, ExactFraction.EIGHT, expectedFactors)
 
     term = Term.fromValues(ExactFraction(-5, 6), listOf(piInverse, testNumber1))
     result = simplify(term)
-    expectedCoeff = ExactFraction(-5, 6)
     expectedFactors = listOf(piInverse, testNumber1)
-    checkTerm(result, expectedCoeff, expectedFactors, pis = listOf(piInverse), piCount = -1)
+    checkTerm(result, ExactFraction(-5, 6), expectedFactors)
 
     term = Term.fromValues(ExactFraction.SEVEN, listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi))
     result = simplify(term)
-    expectedCoeff = ExactFraction.SEVEN
     expectedFactors = listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi)
-    logs = listOf(log1, log1, log2.inverse())
-    pis = listOf(pi, pi)
-    checkTerm(result, expectedCoeff, expectedFactors, logs, listOf(Sqrt(5)), pis, 2)
+    checkTerm(result, ExactFraction.SEVEN, expectedFactors)
 }
 
 fun runGetValueTests() {

@@ -3,9 +3,6 @@ package xyz.lbres.exactnumbers.expressions.term
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
-import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
@@ -26,11 +23,6 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     private val factorSet: ConstMultiSet<IrrationalNumber<*>>
     override val factors: List<IrrationalNumber<*>>
 
-    override val logs: List<Log>
-    override val squareRoots: List<Sqrt>
-    override val pis: List<Pi>
-    override val piCount: Int
-
     // previously computed values for method returns
     private var simplified: Term? = null
     private var value: BigDecimal? = null
@@ -42,24 +34,11 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
             this.factors = emptyList()
             this.factorSet = emptyConstMultiSet()
             this.factorTypeMapping = emptyMap()
-
-            this.logs = emptyList()
-            this.squareRoots = emptyList()
-            this.pis = emptyList()
-            this.piCount = 0
         } else {
             this.coefficient = coefficient
             this.factors = factors.toList()
             this.factorSet = factors
             this.factorTypeMapping = factorSet.groupBy { it.type }
-
-            @Suppress("UNCHECKED_CAST")
-            this.logs = factorTypeMapping.getOrDefault(Log.TYPE, emptyList()) as List<Log>
-            @Suppress("UNCHECKED_CAST")
-            this.squareRoots = factorTypeMapping.getOrDefault(Sqrt.TYPE, emptyList()) as List<Sqrt>
-            @Suppress("UNCHECKED_CAST")
-            this.pis = factorTypeMapping.getOrDefault(Pi.TYPE, emptyList()) as List<Pi>
-            this.piCount = factorSet.getCountOf(Pi()) - factorSet.getCountOf(Pi().inverse())
         }
     }
 

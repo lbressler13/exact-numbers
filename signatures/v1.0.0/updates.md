@@ -50,10 +50,6 @@ ADD class Term
 DEL class Term: Number()
 
 ADD val factors: List<IrrationalNumber<*>>
-ADD val logs: List<Log>
-ADD val pis: List<Pi>
-ADD val piCount: Int
-ADD val squareRoots: List<Sqrt>
 
 ADD fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
 
