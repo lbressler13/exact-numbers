@@ -16,6 +16,7 @@ import xyz.lbres.exactnumbers.utils.deprecatedV1
 import xyz.lbres.exactnumbers.utils.irrationalsPackage
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.iterable.ext.countElement
 import java.math.BigDecimal
 import kotlin.math.abs
 
@@ -25,10 +26,6 @@ import kotlin.math.abs
 sealed class Term : Number() {
     abstract val coefficient: ExactFraction
     abstract val factors: List<IrrationalNumber<*>>
-    abstract val logs: List<Log>
-    abstract val pis: List<Pi>
-    abstract val piCount: Int
-    abstract val squareRoots: List<Sqrt>
 
     abstract operator fun unaryMinus(): Term
     abstract operator fun unaryPlus(): Term
@@ -68,17 +65,24 @@ sealed class Term : Number() {
     override fun toFloat(): Float = castToFloat(getValue(), this, "Term")
     override fun toDouble(): Double = castToDouble(getValue(), this, "Term")
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Log.TYPE)", "$irrationalsPackage.log.Log"), DeprecationLevel.WARNING)
-    @JvmName("getLogsDeprecated")
-    fun getLogs(): List<Log> = logs
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Log.TYPE)", "$irrationalsPackage.log.Log"), DeprecationLevel.WARNING)
+    @Suppress("UNCHECKED_CAST")
+    fun getLogs(): List<Log> {
+        return getFactorsByType(Log.TYPE) as List<Log>
+    }
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("piCount"), DeprecationLevel.WARNING)
-    @JvmName("getPiCountDeprecated")
-    fun getPiCount(): Int = piCount
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Pi.TYPE)"), DeprecationLevel.WARNING)
+    @Suppress("UNCHECKED_CAST")
+    fun getPiCount(): Int {
+        val pis = getFactorsByType(Pi.TYPE) as List<Pi>
+        return pis.countElement(Pi()) * 2 - pis.size // positive - (numbers.size - positive)
+    }
 
-    @Deprecated("Method $deprecatedV1", ReplaceWith("getIrrationalsByType(Sqrt.TYPE)", "$irrationalsPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
-    @JvmName("getSquareRootsDeprecated")
-    fun getSquareRoots(): List<Sqrt> = squareRoots
+    @Deprecated("Method $deprecatedV1", ReplaceWith("getFactorsByType(Sqrt.TYPE)", "$irrationalsPackage.sqrt.Sqrt"), DeprecationLevel.WARNING)
+    @Suppress("UNCHECKED_CAST")
+    fun getSquareRoots(): List<Sqrt> {
+        return getFactorsByType(Sqrt.TYPE) as List<Sqrt>
+    }
 
     companion object {
         val ZERO = fromValues(ExactFraction.ZERO, emptyList())
