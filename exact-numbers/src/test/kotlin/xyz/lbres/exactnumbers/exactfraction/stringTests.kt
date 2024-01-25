@@ -193,6 +193,12 @@ fun runParseEFStringTests() {
     s = "EF[1]"
     assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1]") { parseEFString(s) }
 
+    s = "EF[123]"
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[123]") { parseEFString(s) }
+
+    s = "EF[1-1]"
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1-1]") { parseEFString(s) }
+
     s = "EF[1 1 1]"
     assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1 1 1]") { parseEFString(s) }
 }
