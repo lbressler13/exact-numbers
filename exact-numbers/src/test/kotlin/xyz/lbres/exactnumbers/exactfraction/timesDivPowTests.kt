@@ -1,10 +1,8 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.ext.toExactFraction
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 fun runTimesTests() {
     runCommonTimesTests(ExactFraction::times)
