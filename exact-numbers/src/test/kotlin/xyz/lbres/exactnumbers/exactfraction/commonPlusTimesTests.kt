@@ -51,9 +51,9 @@ fun runCommonPlusTests(add: (ExactFraction, ExactFraction) -> ExactFraction) {
     second = ExactFraction(-4, 3)
     assertEquals(ExactFraction(11, 3), add(first, second))
 
-    // first = ExactFraction(1, 7)
-    // second = ExactFraction(1, 4)
-    // assertEquals(ExactFraction(11, 28), add(first, second))
+    first = ExactFraction(1, 7)
+    second = ExactFraction(1, 4)
+    assertEquals(ExactFraction(11, 28), add(first, second))
 
     first = ExactFraction(5, 2)
     second = ExactFraction(7, 3)
@@ -102,9 +102,9 @@ fun runCommonTimesTests(multiply: (ExactFraction, ExactFraction) -> ExactFractio
     second = ExactFraction(3, 13)
     assertEquals(ExactFraction(21, 143), multiply(first, second))
 
-    // first = ExactFraction(1, 7)
-    // second = ExactFraction(1, 4)
-    // assertEquals(ExactFraction(1, 28), multiply(first, second))
+    first = ExactFraction(1, 7)
+    second = ExactFraction(1, 4)
+    assertEquals(ExactFraction(1, 28), multiply(first, second))
 
     first = ExactFraction(-1, 3)
     second = ExactFraction(-4, 12)

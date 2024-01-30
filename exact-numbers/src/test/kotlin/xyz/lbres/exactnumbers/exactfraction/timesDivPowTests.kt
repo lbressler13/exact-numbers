@@ -4,6 +4,17 @@ import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
+fun runTimesTests() {
+    runCommonTimesTests(ExactFraction::times)
+
+    // other number types
+    runMultiTypeTimesTest(ExactFraction(0), 3, ExactFraction(0))
+    runMultiTypeTimesTest(ExactFraction(3), 0, ExactFraction(0))
+    runMultiTypeTimesTest(ExactFraction(-5), 4, ExactFraction(-20))
+    runMultiTypeTimesTest(ExactFraction(5, 3), 4, ExactFraction(20, 3))
+    runMultiTypeTimesTest(ExactFraction(-5, 4), 4, ExactFraction(-5))
+}
+
 fun runDivTests() {
     // 0
     var first = ExactFraction(0)
@@ -74,8 +85,25 @@ fun runDivTests() {
     assertDivByZero { ExactFraction.ONE / BigInteger.ZERO }
 }
 
+fun runPowTests() {
+    runCommonPowTests(ExactFraction::pow)
+}
+
 /**
- * Run test with Int, Long, and BigInteger values
+ * Run times test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: first value in multiplication
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [ExactFraction]: expected result
+ */
+private fun runMultiTypeTimesTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
+    assertEquals(expected, ef * other)
+    assertEquals(expected, ef * other.toLong())
+    assertEquals(expected, ef * other.toBigInteger())
+}
+
+/**
+ * Run div test with Int, Long, and BigInteger values
  *
  * @param ef [ExactFraction]: first value in division
  * @param other [Int]: value to cast to Int, Long, and BigInteger

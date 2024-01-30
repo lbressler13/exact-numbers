@@ -39,3 +39,17 @@ inline fun <reified T : Exception> assertFailsWithMessage(message: String, test:
     assertEquals(message, error.message)
     return error
 }
+
+/**
+ * Validate that an operation succeeds, and throw an AssertionError if it fails
+ *
+ * @param errorMessage [String]: error message to throw if test fails
+ * @param test () -> Unit: test to run
+ */
+fun <T> assertSucceeds(errorMessage: String, test: () -> T) {
+    try {
+        test()
+    } catch (_: Exception) {
+        throw AssertionError(errorMessage)
+    }
+}
