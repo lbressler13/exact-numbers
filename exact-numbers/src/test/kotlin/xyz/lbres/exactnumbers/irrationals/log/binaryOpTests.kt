@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
-import assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.expressions.term.Term
 import kotlin.test.assertEquals
 

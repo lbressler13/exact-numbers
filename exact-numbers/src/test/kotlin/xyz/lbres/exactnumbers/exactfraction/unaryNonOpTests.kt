@@ -1,6 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import assertDivByZero
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -61,10 +61,16 @@ fun runIsNegativeTests() {
     ef = ExactFraction(2, 7)
     assertFalse(ef.isNegative())
 
+    ef = ExactFraction(7, 2)
+    assertFalse(ef.isNegative())
+
     ef = ExactFraction(-1)
     assertTrue(ef.isNegative())
 
     ef = ExactFraction(-2, 7)
+    assertTrue(ef.isNegative())
+
+    ef = ExactFraction(7, -2)
     assertTrue(ef.isNegative())
 }
 
@@ -82,5 +88,8 @@ fun runIsZeroTests() {
     assertFalse(ef.isZero())
 
     ef = ExactFraction(-2, 7)
+    assertFalse(ef.isZero())
+
+    ef = ExactFraction(2, -7)
     assertFalse(ef.isZero())
 }
