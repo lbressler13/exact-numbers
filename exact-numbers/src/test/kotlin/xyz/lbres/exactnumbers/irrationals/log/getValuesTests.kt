@@ -60,7 +60,7 @@ fun runGetValueTests() {
     expected = BigDecimal("5.9186395764396105")
     assertEquals(expected, log.getValue())
 
-    // divided
+    // inverse
     log = Log(10, 10).inverse()
     expected = BigDecimal.ONE
     assertEquals(expected, log.getValue())
