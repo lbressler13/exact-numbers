@@ -1,10 +1,10 @@
 package xyz.lbres.expressions.term
 
-import assertDivByZero
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 
 private val logNum1 = Log(ExactFraction(15, 4))

@@ -1,3 +1,5 @@
+package xyz.lbres.exactnumbers.testutils
+
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException
 import kotlin.test.assertEquals
@@ -23,4 +25,17 @@ fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> 
     val errorMessage = "Overflow when casting to $type"
     val error = assertFailsWith<ExactFractionOverflowException>(errorMessage) { cast() }
     assertEquals(value.toFractionString(), error.overflowValue)
+}
+
+/**
+ * Assert that a test throws an exception of the correct type, with the correct message
+ *
+ * @param message [String]: expected error message
+ * @param test () -> Unit: test to run
+ * @return T: the exception that was thrown
+ */
+inline fun <reified T : Exception> assertFailsWithMessage(message: String, test: () -> Unit): T {
+    val error = assertFailsWith<T> { test() }
+    assertEquals(message, error.message)
+    return error
 }

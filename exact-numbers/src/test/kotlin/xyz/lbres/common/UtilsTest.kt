@@ -1,6 +1,6 @@
 package xyz.lbres.common
 
-import assertDivByZero
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger

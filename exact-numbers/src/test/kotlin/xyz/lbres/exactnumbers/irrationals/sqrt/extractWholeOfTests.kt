@@ -1,13 +1,12 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import io.mockk.every
-import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.verify
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 private val one = BigInteger.ONE
 private val two = BigInteger.TWO
@@ -17,10 +16,10 @@ private val seven = BigInteger("7")
 private val ten = BigInteger("10")
 
 fun runExtractWholeOfTests() {
-    mockkObject(Memoize)
-
     // exception
-    assertFailsWith<ArithmeticException>("Cannot calculate root of negative number") { extractWholeOf(BigInteger("-25")) }
+    assertFailsWithMessage<ArithmeticException>("Cannot calculate root of a negative number") {
+        extractWholeOf(BigInteger("-25"))
+    }
 
     // rational
     var num = BigInteger.ZERO
@@ -208,6 +207,24 @@ fun runExtractWholeOfTests() {
             Pair(BigInteger("200"), ten)
         )
     )
+
+    // irrelevant memoization
+    num = BigInteger("200")
+    expected = ten
+    runSingleExtractWholeOfTest(
+        num, expected, mapOf(BigInteger("49") to BigInteger("7"), BigInteger("1225") to BigInteger("35")),
+        listOf(
+            Pair(two, one),
+            Pair(five, one),
+            Pair(BigInteger("50"), five),
+            Pair(BigInteger("200"), ten)
+        )
+    )
+
+    // incorrect memoization
+    num = BigInteger("100")
+    expected = BigInteger("95")
+    runSingleExtractWholeOfTest(num, expected, mapOf(BigInteger("100") to BigInteger("95")), emptyList())
 }
 
 /**
