@@ -1,10 +1,9 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.kotlinutils.pair.TypePair
 import java.math.BigInteger
 import kotlin.test.assertEquals
 
-fun runCommonSimplifyTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
+fun runCommonSimplifyTests(createSimplifiedPair: (BigInteger, BigInteger) -> Pair<BigInteger, BigInteger>) {
     runSimplifyZeroTests(createSimplifiedPair)
     runSimplifyGCDTests(createSimplifiedPair)
     runSimplifySignTests(createSimplifiedPair)
@@ -19,7 +18,7 @@ fun runCommonSimplifyTests(createSimplifiedPair: (BigInteger, BigInteger) -> Typ
     assertEquals(expected, pair)
 }
 
-private fun runSimplifyZeroTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
+private fun runSimplifyZeroTests(createSimplifiedPair: (BigInteger, BigInteger) -> Pair<BigInteger, BigInteger>) {
     var pair = createSimplifiedPair(BigInteger.ZERO, BigInteger.TWO)
     var expected = Pair(BigInteger.ZERO, BigInteger.ONE)
     assertEquals(expected, pair)
@@ -29,7 +28,7 @@ private fun runSimplifyZeroTests(createSimplifiedPair: (BigInteger, BigInteger) 
     assertEquals(expected, pair)
 }
 
-private fun runSimplifySignTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
+private fun runSimplifySignTests(createSimplifiedPair: (BigInteger, BigInteger) -> Pair<BigInteger, BigInteger>) {
     var pair = createSimplifiedPair(BigInteger("-14"), BigInteger("-3"))
     var expected = Pair(BigInteger("14"), BigInteger("3"))
     assertEquals(expected, pair)
@@ -39,7 +38,7 @@ private fun runSimplifySignTests(createSimplifiedPair: (BigInteger, BigInteger) 
     assertEquals(expected, pair)
 }
 
-private fun runSimplifyGCDTests(createSimplifiedPair: (BigInteger, BigInteger) -> TypePair<BigInteger>) {
+private fun runSimplifyGCDTests(createSimplifiedPair: (BigInteger, BigInteger) -> Pair<BigInteger, BigInteger>) {
     var pair = createSimplifiedPair(BigInteger("48"), BigInteger("10"))
     var expected = Pair(BigInteger("24"), BigInteger("5"))
     assertEquals(expected, pair)

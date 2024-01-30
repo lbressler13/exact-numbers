@@ -43,6 +43,7 @@ class ExactFractionConstructorsTest {
 
     private fun runPairValTests() {
         // denominator of 0
+        assertDivByZero { ExactFraction(BigInteger.ONE, BigInteger.ZERO) }
         assertDivByZero { ExactFraction(1, 0) }
         assertDivByZero { ExactFraction(1L, 0L) }
         assertDivByZero { ExactFraction(BigInteger.ONE, 0) }

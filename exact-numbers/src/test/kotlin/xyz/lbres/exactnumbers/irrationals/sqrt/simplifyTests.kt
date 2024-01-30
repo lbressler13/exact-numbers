@@ -6,9 +6,9 @@ import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
 import kotlin.test.assertEquals
 
-fun runGetSimplifiedTests() {
-    val one = ExactFraction.ONE
+private val one = ExactFraction.ONE
 
+fun runGetSimplifiedTests() {
     // rational
     var sqrt = Sqrt.ZERO
     var expected = Pair(one, Sqrt.ZERO)
