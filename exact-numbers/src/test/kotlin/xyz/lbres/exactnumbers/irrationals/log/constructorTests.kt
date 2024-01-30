@@ -29,7 +29,6 @@ fun runConstructorTests() {
     assertFailsWithMessage<ArithmeticException>(error) { Log(10L, 0) }
     assertFailsWithMessage<ArithmeticException>(error) { Log(BigInteger.TEN, 1) }
 
-    // ExactFraction
     // zero
     var expectedArgument = ExactFraction.ONE
     var expectedBase = 10
@@ -40,7 +39,7 @@ fun runConstructorTests() {
         assertFalse(it.isDivided)
     }
 
-    // just number
+    // just argument
     expectedArgument = ExactFraction.TWO
     expectedBase = 10
     logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
@@ -57,7 +56,7 @@ fun runConstructorTests() {
     assertEquals(expectedBase, log.base)
     assertFalse(log.isDivided)
 
-    // number + base
+    // argument + base
     expectedArgument = ExactFraction.TWO
     expectedBase = 2
     logs = listOf(Log(ExactFraction.TWO, 2), Log(2, 2), Log(2L, 2), Log(BigInteger.TWO, 2))

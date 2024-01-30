@@ -43,6 +43,10 @@ private fun runSimplifyZeroTests() {
     ef = ExactFraction(0, -6)
     assertTrue(ef.numerator.eq(0))
     assertTrue(ef.denominator.eq(1))
+
+    ef = ExactFraction(-0, 6)
+    assertTrue(ef.numerator.eq(0))
+    assertTrue(ef.denominator.eq(1))
 }
 
 private fun runSimplifySignTests() {

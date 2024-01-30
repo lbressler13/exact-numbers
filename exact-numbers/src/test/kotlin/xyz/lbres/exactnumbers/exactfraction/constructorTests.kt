@@ -43,13 +43,14 @@ private fun runSingleValTests() {
 
 private fun runPairValTests() {
     // denominator of 0
+    assertDivByZero { ExactFraction(BigInteger.ONE, BigInteger.ZERO) }
     assertDivByZero { ExactFraction(1, 0) }
-    assertDivByZero { ExactFraction(1L, 0L) }
+    assertDivByZero { ExactFraction(18L, 0L) }
     assertDivByZero { ExactFraction(BigInteger.ONE, 0) }
-    assertDivByZero { ExactFraction(1, BigInteger.ZERO) }
+    assertDivByZero { ExactFraction(40, BigInteger.ZERO) }
     assertDivByZero { ExactFraction(1, 0L) }
     assertDivByZero { ExactFraction(1L, 0) }
-    assertDivByZero { ExactFraction(BigInteger.ONE, 0L) }
+    assertDivByZero { ExactFraction(BigInteger("-14523"), 0L) }
     assertDivByZero { ExactFraction(1L, BigInteger.ZERO) }
 
     // numerator of 0
