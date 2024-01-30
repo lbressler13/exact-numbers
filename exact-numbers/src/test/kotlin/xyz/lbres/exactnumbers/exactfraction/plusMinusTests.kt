@@ -2,6 +2,16 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import kotlin.test.assertEquals
 
+fun runPlusTests() {
+    runCommonPlusTests(ExactFraction::plus)
+
+    // other number types
+    runMultiTypePlusTest(ExactFraction(0), 3, ExactFraction(3))
+    runMultiTypePlusTest(ExactFraction(4, 7), 12, ExactFraction(88, 7))
+    runMultiTypePlusTest(ExactFraction(-20, 7), 3, ExactFraction(1, 7))
+    runMultiTypePlusTest(ExactFraction(-12, 5), 1, ExactFraction(-7, 5))
+}
+
 fun runMinusTests() {
     // zero
     var first = ExactFraction(0)
@@ -11,18 +21,12 @@ fun runMinusTests() {
     first = ExactFraction(4)
     second = ExactFraction(0)
     assertEquals(ExactFraction(4), first - second)
+    assertEquals(ExactFraction(-4), second - first)
 
     first = ExactFraction(-4)
     second = ExactFraction(0)
     assertEquals(ExactFraction(-4), first - second)
-
-    first = ExactFraction(0)
-    second = ExactFraction(4)
-    assertEquals(ExactFraction(-4), first - second)
-
-    first = ExactFraction(0)
-    second = ExactFraction(-4)
-    assertEquals(ExactFraction(4), first - second)
+    assertEquals(ExactFraction(4), second - first)
 
     // whole numbers
     first = ExactFraction(4)
@@ -80,6 +84,19 @@ fun runMinusTests() {
     runMultiTypeMinusTest(ExactFraction(-6), 20, ExactFraction(-26))
     runMultiTypeMinusTest(ExactFraction(3), 5, ExactFraction(-2L))
     runMultiTypeMinusTest(ExactFraction(3, 7), 4, ExactFraction(-25, 7))
+}
+
+/**
+ * Run test with Int, Long, and BigInteger values
+ *
+ * @param ef [ExactFraction]: first value in addition
+ * @param other [Int]: value to cast to Int, Long, and BigInteger
+ * @param expected [ExactFraction]: expected result
+ */
+private fun runMultiTypePlusTest(ef: ExactFraction, other: Int, expected: ExactFraction) {
+    assertEquals(expected, ef + other)
+    assertEquals(expected, ef + other.toLong())
+    assertEquals(expected, ef + other.toBigInteger())
 }
 
 /**

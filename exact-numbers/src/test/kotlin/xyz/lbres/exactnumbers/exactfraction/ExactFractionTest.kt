@@ -7,8 +7,13 @@ class ExactFractionTest {
     @Test fun testConstructor() = runConstructorTests()
 
     // simplify
-    // includes all private methods used in simplification
-    @Test fun testSimplify() = runSimplifyTests()
+    @Test
+    fun testSimplify() {
+        runCommonSimplifyTests { bi1, bi2 ->
+            val ef = ExactFraction(bi1, bi2)
+            Pair(ef.numerator, ef.denominator)
+        }
+    }
 
     // unary operators
     @Test fun testUnaryMinus() = runUnaryMinusTests()
