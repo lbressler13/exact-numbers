@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 
 fun runInverseTests() {
     var ef = ExactFraction(1, 2)

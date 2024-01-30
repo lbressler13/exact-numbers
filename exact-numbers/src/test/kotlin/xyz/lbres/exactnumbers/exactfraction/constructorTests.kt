@@ -1,12 +1,12 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 
 // Numerator and denominator are explicitly checked to ensure correct initialization
-// Simplication is tested separately
+// Simplification is tested separately
 
 fun runConstructorTests() {
     testSingleValConstructor()
