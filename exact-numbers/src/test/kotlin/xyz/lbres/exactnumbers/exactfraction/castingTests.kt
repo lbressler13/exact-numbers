@@ -9,65 +9,45 @@ import kotlin.test.assertEquals
 
 fun runToPairTests() {
     var ef = ExactFraction(0)
-    var expected = Pair(0.toBigInteger(), 1.toBigInteger())
+    var expected = Pair(BigInteger("0"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(1)
-    expected = Pair(1.toBigInteger(), 1.toBigInteger())
+    expected = Pair(BigInteger("1"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(2, 7)
-    expected = Pair(2.toBigInteger(), 7.toBigInteger())
+    expected = Pair(BigInteger("2"), BigInteger("7"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(-1)
-    expected = Pair((-1).toBigInteger(), 1.toBigInteger())
+    expected = Pair(BigInteger("-1"), BigInteger("1"))
     assertEquals(expected, ef.toPair())
 
     ef = ExactFraction(-2, 7)
-    expected = Pair((-2).toBigInteger(), 7.toBigInteger())
+    expected = Pair(BigInteger("-2"), BigInteger("7"))
+    assertEquals(expected, ef.toPair())
+
+    ef = ExactFraction(173, 9)
+    expected = Pair(BigInteger("173"), BigInteger("9"))
+    assertEquals(expected, ef.toPair())
+
+    val largeValue1 = "-800000000000000000000000000000000000"
+    val largeValue2 = "2000000000000000000000000000000000000"
+    ef = ExactFraction(BigInteger(largeValue1), BigInteger(largeValue2))
+    expected = Pair(BigInteger("-2"), BigInteger("5"))
+    assertEquals(expected, ef.toPair())
+
+    ef = ExactFraction(BigInteger(largeValue2), BigInteger("9"))
+    expected = Pair(BigInteger(largeValue2), BigInteger("9"))
     assertEquals(expected, ef.toPair())
 }
 
 fun runToByteTests() {
-    var ef = ExactFraction(0)
-    var expected: Byte = 0
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(5)
-    expected = 5
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(-5)
-    expected = -5
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(2, 5)
-    expected = 0
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(-18, 5)
-    expected = -3
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(Byte.MIN_VALUE.toInt())
-    expected = Byte.MIN_VALUE
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(Byte.MAX_VALUE.toInt())
-    expected = Byte.MAX_VALUE
-    assertEquals(expected, ef.toByte())
-
-    ef = ExactFraction(Byte.MAX_VALUE.toInt())
-    ef++
-    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
-
-    ef = ExactFraction(Byte.MIN_VALUE.toInt())
-    ef--
-    assertExactFractionOverflow("Byte", ef) { ef.toByte() }
+    runWholeNumberCastingTests(Long::toByte, ExactFraction::toByte, Byte.MIN_VALUE, Byte.MAX_VALUE, "Byte")
 }
 
-// test account for fact that Char can't be negative
+// test accounts for fact that Char can't be negative
 fun runToCharTests() {
     var ef = ExactFraction(0)
     var expected = 0.toChar()
@@ -95,243 +75,63 @@ fun runToCharTests() {
     expected = Char.MIN_VALUE
     assertEquals(expected, ef.toChar())
 
-    ef = ExactFraction(Char.MAX_VALUE.code)
-    ef++
+    ef = ExactFraction(Char.MAX_VALUE.code + 1)
     assertExactFractionOverflow("Char", ef) { ef.toChar() }
 
-    ef = ExactFraction(Char.MIN_VALUE.code)
-    ef--
+    ef = ExactFraction(Char.MIN_VALUE.code - 1)
     assertExactFractionOverflow("Char", ef) { ef.toChar() }
 }
 
 fun runToShortTests() {
-    var ef = ExactFraction(0)
-    var expected: Short = 0
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(5)
-    expected = 5
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(-5)
-    expected = -5
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(2, 5)
-    expected = 0
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(-18, 5)
-    expected = -3
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(Short.MIN_VALUE.toInt())
-    expected = Short.MIN_VALUE
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(Short.MAX_VALUE.toInt())
-    expected = Short.MAX_VALUE
-    assertEquals(expected, ef.toShort())
-
-    ef = ExactFraction(Short.MAX_VALUE.toInt())
-    ef++
-    assertExactFractionOverflow("Short", ef) { ef.toShort() }
-
-    ef = ExactFraction(Short.MIN_VALUE.toInt())
-    ef--
-    assertExactFractionOverflow("Short", ef) { ef.toShort() }
+    runWholeNumberCastingTests(Long::toShort, ExactFraction::toShort, Short.MIN_VALUE, Short.MAX_VALUE, "Short")
 }
 
 fun runToIntTests() {
-    var ef = ExactFraction(0)
-    var expected = 0
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(5)
-    expected = 5
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(-5)
-    expected = -5
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(2, 5)
-    expected = 0
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(-18, 5)
-    expected = -3
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(Int.MIN_VALUE)
-    expected = Int.MIN_VALUE
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(Int.MAX_VALUE)
-    expected = Int.MAX_VALUE
-    assertEquals(expected, ef.toInt())
-
-    ef = ExactFraction(Int.MAX_VALUE)
-    ef++
-    assertExactFractionOverflow("Int", ef) { ef.toInt() }
-
-    ef = ExactFraction(Int.MIN_VALUE)
-    ef--
-    assertExactFractionOverflow("Int", ef) { ef.toInt() }
+    runWholeNumberCastingTests(Long::toInt, ExactFraction::toInt, Int.MIN_VALUE, Int.MAX_VALUE, "Int")
 }
 
 fun runToLongTests() {
-    var ef = ExactFraction(0)
-    var expected = 0L
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(5)
-    expected = 5
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(-5)
-    expected = -5
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(2, 5)
-    expected = 0
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(-18, 5)
-    expected = -3
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(Long.MIN_VALUE)
-    expected = Long.MIN_VALUE
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(Long.MAX_VALUE)
-    expected = Long.MAX_VALUE
-    assertEquals(expected, ef.toLong())
-
-    ef = ExactFraction(Long.MAX_VALUE)
-    ef++
-    assertExactFractionOverflow("Long", ef) { ef.toLong() }
-
-    ef = ExactFraction(Long.MIN_VALUE)
-    ef--
-    assertExactFractionOverflow("Long", ef) { ef.toLong() }
+    runWholeNumberCastingTests({ it }, ExactFraction::toLong, Long.MIN_VALUE, Long.MAX_VALUE, "Long")
 }
 
 fun runToDoubleTests() {
-    var ef = ExactFraction(0)
-    var expected = 0.0
+    runDecimalNumberCastingTests({ it }, ExactFraction::toDouble, Double.MAX_VALUE, "Double")
+
+    var ef = ExactFraction(1, 3)
+    var expected = 0.3333333333333333 // maximum precision of double
     assertEquals(expected, ef.toDouble())
 
-    ef = ExactFraction(5)
-    expected = 5.0
-    assertEquals(expected, ef.toDouble())
-
-    ef = ExactFraction(-5)
-    expected = -5.0
-    assertEquals(expected, ef.toDouble())
-
-    ef = ExactFraction(1, 2)
-    expected = 0.5
-    assertEquals(expected, ef.toDouble())
-
-    ef = ExactFraction(-3, 8)
-    expected = -0.375
-    assertEquals(expected, ef.toDouble())
-
-    ef = ExactFraction(1, 3)
-    expected = 0.3333333333333333 // maximum precision of double
-    assertEquals(expected, ef.toDouble())
-
-    ef = ExactFraction(2, 3)
-    expected = 0.6666666666666666 // maximum precision of double
+    ef = ExactFraction(413, 9)
+    expected = 45.888888888888886 // maximum precision of double
     assertEquals(expected, ef.toDouble())
 
     ef = ExactFraction(-4, 19)
-    expected = -0.21052631578947368 // maximum precision of double
+    expected = -0.21052631578947367 // maximum precision of double
     assertEquals(expected, ef.toDouble())
-
-    val largeValue = Double.MAX_VALUE.toBigDecimal().toBigInteger()
-    val smallValue = (-Double.MAX_VALUE).toBigDecimal().toBigInteger()
-
-    ef = ExactFraction(largeValue)
-    ef *= 2
-    assertExactFractionOverflow("Double", ef) { ef.toDouble() }
-
-    ef = ExactFraction(smallValue)
-    ef *= 2
-    assertExactFractionOverflow("Double", ef) { ef.toDouble() }
 }
 
 fun runToFloatTests() {
-    var ef = ExactFraction(0)
-    var expected = 0f
+    runDecimalNumberCastingTests(Double::toFloat, ExactFraction::toFloat, Float.MAX_VALUE, "Float")
+
+    var ef = ExactFraction(1, 3)
+    var expected = 0.33333334f // maximum precision of float
     assertEquals(expected, ef.toFloat())
 
-    ef = ExactFraction(5)
-    expected = 5f
-    assertEquals(expected, ef.toFloat())
-
-    ef = ExactFraction(-5)
-    expected = -5f
-    assertEquals(expected, ef.toFloat())
-
-    ef = ExactFraction(1, 2)
-    expected = 0.5f
-    assertEquals(expected, ef.toFloat())
-
-    ef = ExactFraction(-3, 8)
-    expected = -0.375f
-    assertEquals(expected, ef.toFloat())
-
-    ef = ExactFraction(1, 3)
-    expected = 0.33333333f // maximum precision of float
-    assertEquals(expected, ef.toFloat())
-
-    ef = ExactFraction(2, 3)
-    expected = 0.6666667f // maximum precision of float
+    ef = ExactFraction(413, 9)
+    expected = 45.88889f // maximum precision of float
     assertEquals(expected, ef.toFloat())
 
     ef = ExactFraction(-4, 19)
     expected = -0.21052632f // maximum precision of float
     assertEquals(expected, ef.toFloat())
-
-    val veryBig = Float.MAX_VALUE.toBigDecimal().toBigInteger()
-    val verySmall = (-Float.MAX_VALUE).toBigDecimal().toBigInteger()
-
-    ef = ExactFraction(veryBig)
-    ef *= 2
-    assertExactFractionOverflow("Float", ef) { ef.toFloat() }
-
-    ef = ExactFraction(verySmall)
-    ef *= 2
-    assertExactFractionOverflow("Float", ef) { ef.toFloat() }
 }
 
 fun runToBigIntegerTests() {
-    var ef = ExactFraction(0)
-    var expected = BigInteger.ZERO
-    assertEquals(expected, ef.toBigInteger())
+    runWholeNumberCastingTests(Long::toBigInteger, ExactFraction::toBigInteger, null, null, "")
 
-    ef = ExactFraction(2)
-    expected = 2.toBigInteger()
-    assertEquals(expected, ef.toBigInteger())
-
-    ef = ExactFraction(-4)
-    expected = (-4).toBigInteger()
-    assertEquals(expected, ef.toBigInteger())
-
-    ef = ExactFraction(3, 7)
-    expected = BigInteger.ZERO
-    assertEquals(expected, ef.toBigInteger())
-
-    ef = ExactFraction(-12, 5)
-    expected = (-2).toBigInteger()
-    assertEquals(expected, ef.toBigInteger())
-
-    val big = "10000000000000000000000000000"
-    ef = ExactFraction(big)
-    expected = BigInteger(big)
+    val longValue = "10000000000000000000000000000"
+    val ef = ExactFraction(longValue)
+    val expected = BigInteger(longValue)
     assertEquals(expected, ef.toBigInteger())
 }
 
@@ -370,4 +170,92 @@ fun runToBigDecimalTests() {
     ef = ExactFraction(5, 3)
     bd = BigDecimal("1.66666666666666666667", mc)
     assertEquals(bd, ef.toBigDecimal())
+}
+
+/**
+ * Run tests for a single type of whole number
+ *
+ * @param castLong (Long) -> T: cast a long value to a value of the current number type
+ * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
+ * @param minValue T?: minimum valid value for the current number type. If the value is `null`, tests involving min value will not be run
+ * @param maxValue T?: maximum valid value for the current number type. If the value is `null`, tests involving max value will not be run
+ * @param type [String]: string representation of type, which is used in overflow exceptions
+ */
+private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castEF: (ExactFraction) -> T, minValue: T?, maxValue: T?, type: String) {
+    var ef = ExactFraction(0)
+    var expected = castLong(0)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(5)
+    expected = castLong(5)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(-5)
+    expected = castLong(-5)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(2, 5)
+    expected = castLong(0)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(-18, 5)
+    expected = castLong(-3)
+    assertEquals(expected, castEF(ef))
+
+    if (minValue != null) {
+        ef = ExactFraction(minValue.toLong())
+        assertEquals(minValue, castEF(ef))
+
+        ef--
+        assertExactFractionOverflow(type, ef) { castEF(ef) }
+    }
+
+    if (maxValue != null) {
+        ef = ExactFraction(maxValue.toLong())
+        assertEquals(maxValue, castEF(ef))
+
+        ef++
+        assertExactFractionOverflow(type, ef) { castEF(ef) }
+    }
+}
+
+/**
+ * Run tests for a single type of decimal number
+ *
+ * @param castDouble (Double) -> T: cast a double value to a value of the current number type
+ * @param castEF (ExactFraction) -> T: cast an ExactFraction value to a value of the current number type
+ * @param maxValue T: maximum valid value for the current number type
+ * @param type [String]: string representation of type, which is used in overflow exceptions
+ */
+private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T, castEF: (ExactFraction) -> T, maxValue: T, type: String) {
+    var ef = ExactFraction(0)
+    var expected = castDouble(0.0)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(5)
+    expected = castDouble(5.0)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(-5)
+    expected = castDouble(-5.0)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(1, 2)
+    expected = castDouble(0.5)
+    assertEquals(expected, castEF(ef))
+
+    ef = ExactFraction(-3, 8)
+    expected = castDouble(-0.375)
+    assertEquals(expected, castEF(ef))
+
+    val largeValue = maxValue.toDouble().toBigDecimal().toBigInteger()
+    val smallValue = (-maxValue.toDouble()).toBigDecimal().toBigInteger()
+
+    ef = ExactFraction(largeValue)
+    ef *= 2
+    assertExactFractionOverflow(type, ef) { castEF(ef) }
+
+    ef = ExactFraction(smallValue)
+    ef *= 2
+    assertExactFractionOverflow(type, ef) { castEF(ef) }
 }
