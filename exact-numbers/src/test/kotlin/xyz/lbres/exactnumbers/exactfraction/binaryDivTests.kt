@@ -1,8 +1,8 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 
 fun runDivTests() {
     // 0

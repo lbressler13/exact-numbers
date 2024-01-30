@@ -1,11 +1,11 @@
 package xyz.lbres.common
 
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
+import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
-import xyz.lbres.kotlinutils.biginteger.ext.isZero
 
 class UtilsTest {
     @Test

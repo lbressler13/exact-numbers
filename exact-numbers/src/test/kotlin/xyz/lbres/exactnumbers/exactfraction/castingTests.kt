@@ -1,11 +1,11 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.exactnumbers.testutils.assertExactFractionOverflow
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
-import xyz.lbres.exactnumbers.testutils.assertExactFractionOverflow
 
 fun runToPairTests() {
     var ef = ExactFraction(0)

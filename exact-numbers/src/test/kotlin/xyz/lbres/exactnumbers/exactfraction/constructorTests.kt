@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigInteger
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 
 // Numerator and denominator are explicitly checked to ensure correct initialization
 // Simplification is tested separately
