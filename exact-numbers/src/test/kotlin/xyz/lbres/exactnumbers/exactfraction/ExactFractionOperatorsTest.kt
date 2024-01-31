@@ -6,6 +6,5 @@ class ExactFractionOperatorsTest {
     @Test fun testEfAdd() = runCommonPlusTests(::efAdd)
     @Test fun testEfTimes() = runCommonTimesTests(::efTimes)
     @Test fun testEfPow() = runCommonPowTests(::efPow)
-    // TODO
-    // @Test fun testEfCompare() = runCommonCompareTests(::efCompare)
+    @Test fun testEfCompare() = runCommonCompareTests(::efCompare)
 }
