@@ -16,7 +16,6 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
 
     base = ExactFraction.ZERO
     exp = ExactFraction.ZERO
-    // expected = ExactFraction.ZERO // TODO
     expected = ExactFraction.ONE
     assertEquals(expected, powFn(base, exp))
 
@@ -108,7 +107,7 @@ fun runCommonPowTests(powFn: (ExactFraction, ExactFraction) -> ExactFraction) {
     assertEquals(expected, powFn(base, exp))
 
     // large exponent
-    // runLargeExponentTests(powFn) // TODO
+    runLargeExponentTests(powFn)
 
     // fractional exponent
     val expectedError = "Exponents must be whole numbers"

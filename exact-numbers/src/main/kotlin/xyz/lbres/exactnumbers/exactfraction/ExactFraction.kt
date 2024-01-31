@@ -2,11 +2,8 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
-import xyz.lbres.exactnumbers.ext.toExactFraction
-import xyz.lbres.kotlinutils.biginteger.ext.ifZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
-import xyz.lbres.kotlinutils.biginteger.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -43,9 +40,13 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ArithmeticException if denominator is 0
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this() {
-        this.numerator = numerator
-        this.denominator = denominator.ifZero { throw divideByZero }
-        simplify()
+        if (denominator.isZero()) {
+            throw divideByZero
+        }
+
+        val simplified = simplifyFraction(numerator, denominator)
+        this.numerator = simplified.first
+        this.denominator = simplified.second
     }
 
     /**
@@ -91,44 +92,25 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
 
     // BINARY OPERATORS
 
-    operator fun plus(other: ExactFraction): ExactFraction {
-        if (denominator == other.denominator) {
-            val newNumerator = numerator + other.numerator
-            return ExactFraction(newNumerator, denominator)
-        }
-
-        val scaled1 = numerator * other.denominator
-        val scaled2 = other.numerator * denominator
-
-        val newNumerator = scaled1 + scaled2
-        val newDenominator = denominator * other.denominator
-        return ExactFraction(newNumerator, newDenominator)
-    }
-
-    operator fun plus(other: BigInteger): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Long): ExactFraction = plus(other.toExactFraction())
-    operator fun plus(other: Int): ExactFraction = plus(other.toExactFraction())
+    operator fun plus(other: ExactFraction): ExactFraction = efAdd(this, other)
+    operator fun plus(other: BigInteger): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Long): ExactFraction = plus(ExactFraction(other))
+    operator fun plus(other: Int): ExactFraction = plus(ExactFraction(other))
 
     operator fun minus(other: ExactFraction): ExactFraction = plus(-other)
-    operator fun minus(other: BigInteger): ExactFraction = plus(-other)
-    operator fun minus(other: Long): ExactFraction = plus(-other)
-    operator fun minus(other: Int): ExactFraction = plus(-other)
+    operator fun minus(other: BigInteger): ExactFraction = minus(ExactFraction(other))
+    operator fun minus(other: Long): ExactFraction = minus(ExactFraction(other))
+    operator fun minus(other: Int): ExactFraction = minus(ExactFraction(other))
 
-    operator fun times(other: ExactFraction): ExactFraction {
-        val newNumerator = numerator * other.numerator
-        val newDenominator = denominator * other.denominator
-        return ExactFraction(newNumerator, newDenominator)
-    }
-
-    operator fun times(other: BigInteger): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Long): ExactFraction = times(other.toExactFraction())
-    operator fun times(other: Int): ExactFraction = times(other.toExactFraction())
+    operator fun times(other: ExactFraction): ExactFraction = efTimes(this, other)
+    operator fun times(other: BigInteger): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Long): ExactFraction = times(ExactFraction(other))
+    operator fun times(other: Int): ExactFraction = times(ExactFraction(other))
 
     operator fun div(other: ExactFraction): ExactFraction = times(other.inverse())
-
-    operator fun div(other: BigInteger): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Long): ExactFraction = div(other.toExactFraction())
-    operator fun div(other: Int): ExactFraction = div(other.toExactFraction())
+    operator fun div(other: BigInteger): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Long): ExactFraction = div(ExactFraction(other))
+    operator fun div(other: Int): ExactFraction = div(ExactFraction(other))
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is ExactFraction) {
@@ -140,53 +122,17 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
         return scaled1 == scaled2
     }
 
-    fun eq(other: Int): Boolean = numerator.eq(other) && denominator.eq(1)
-    fun eq(other: Long): Boolean = numerator.eq(other) && denominator.eq(1)
+    fun eq(other: Int): Boolean = eq(other.toBigInteger())
+    fun eq(other: Long): Boolean = eq(other.toBigInteger())
     fun eq(other: BigInteger): Boolean = numerator == other && denominator.eq(1)
 
-    override fun compareTo(other: ExactFraction): Int {
-        val difference = minus(other)
-        return when {
-            difference.isNegative() -> -1
-            difference.isZero() -> 0
-            else -> 1
-        }
-    }
+    override fun compareTo(other: ExactFraction): Int = efCompare(this, other)
 
-    operator fun compareTo(other: Int): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: Long): Int = compareTo(other.toExactFraction())
-    operator fun compareTo(other: BigInteger): Int = compareTo(other.toExactFraction())
+    operator fun compareTo(other: Int): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: Long): Int = compareTo(ExactFraction(other))
+    operator fun compareTo(other: BigInteger): Int = compareTo(ExactFraction(other))
 
-    fun pow(other: ExactFraction): ExactFraction {
-        if (other.isZero()) {
-            return ONE
-        }
-
-        if (other.denominator != BigInteger.ONE) {
-            throw ArithmeticException("Exponents must be whole numbers")
-        }
-
-        var numeratorMult = BigInteger.ONE
-        var denominatorMult = BigInteger.ONE
-        var remaining = other.absoluteValue().numerator.abs()
-        val intMax = Int.MAX_VALUE
-
-        while (remaining > BigInteger.ZERO) {
-            if (remaining > intMax.toBigInteger()) {
-                numeratorMult *= numerator.pow(intMax)
-                denominatorMult *= denominator.pow(intMax)
-                remaining -= intMax.toBigInteger()
-            } else {
-                val exp = remaining.toInt()
-                numeratorMult = numerator.pow(exp)
-                denominatorMult = denominator.pow(exp)
-                remaining = BigInteger.ZERO
-            }
-        }
-
-        val result = ExactFraction(numeratorMult, denominatorMult)
-        return if (other < 0) result.inverse() else result
-    }
+    fun pow(other: ExactFraction): ExactFraction = efPow(this, other)
 
     // UNARY NON-OPERATORS
 
@@ -201,53 +147,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator)
     fun isNegative(): Boolean = numerator.isNegative()
     fun isZero(): Boolean = numerator.isZero()
-
-    // SIMPLIFICATION
-
-    private fun simplify() {
-        simplifyZero()
-        simplifyGCD()
-        simplifySign()
-    }
-
-    /**
-     * Set denominator to 1 when numerator is 0
-     */
-    private fun simplifyZero() {
-        if (numerator.eq(0)) {
-            denominator = BigInteger.ONE
-        }
-    }
-
-    /**
-     * Move negatives to numerator
-     */
-    private fun simplifySign() {
-        val numNegative = numerator.isNegative()
-        val denomNegative = denominator.isNegative()
-
-        when {
-            numNegative && denomNegative -> {
-                numerator = numerator.abs()
-                denominator = denominator.abs()
-            }
-            !numNegative && denomNegative -> {
-                numerator = -numerator
-                denominator = denominator.abs()
-            }
-        }
-    }
-
-    /**
-     * Simplify using greatest common divisor
-     */
-    private fun simplifyGCD() {
-        if (!numerator.isZero()) {
-            val gcd = getGCD(numerator, denominator)
-            numerator /= gcd
-            denominator /= gcd
-        }
-    }
 
     // STRING METHODS
 
