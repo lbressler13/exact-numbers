@@ -42,9 +42,9 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     operator fun plus(other: Int): ExactFraction = plus(ExactFraction(other))
 
     abstract operator fun minus(other: ExactFraction): ExactFraction
-    operator fun minus(other: BigInteger): ExactFraction = plus(-other)
-    operator fun minus(other: Long): ExactFraction = plus(-other)
-    operator fun minus(other: Int): ExactFraction = plus(-other)
+    operator fun minus(other: BigInteger): ExactFraction = minus(ExactFraction(other))
+    operator fun minus(other: Long): ExactFraction = minus(ExactFraction(other))
+    operator fun minus(other: Int): ExactFraction = minus(ExactFraction(other))
 
     abstract operator fun times(other: ExactFraction): ExactFraction
     operator fun times(other: BigInteger): ExactFraction = times(ExactFraction(other))

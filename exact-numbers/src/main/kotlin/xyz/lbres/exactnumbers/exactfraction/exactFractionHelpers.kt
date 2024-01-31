@@ -16,28 +16,22 @@ import java.math.RoundingMode
  * @return [TypePair]<BigInteger>: pair where first value represents simplified numerator, and second value represents simplified denominator
  */
 internal fun simplifyFraction(numerator: BigInteger, denominator: BigInteger): TypePair<BigInteger> {
-    var newNumerator = numerator
-    var newDenominator = denominator
-
     // set denominator to 1 when numerator is 0
-    if (newNumerator.isZero()) {
-        newDenominator = BigInteger.ONE
-    }
-
-    // move negatives to numerator
-    if (newDenominator.isNegative()) {
-        newNumerator = -newNumerator
-        newDenominator = -newDenominator
+    if (numerator.isZero()) {
+        return Pair(BigInteger.ZERO, BigInteger.ONE)
     }
 
     // simplify using greatest common divisor
-    if (newNumerator != BigInteger.ZERO) {
-        val gcd = getGCD(newNumerator, newDenominator)
-        newNumerator /= gcd
-        newDenominator /= gcd
-    }
+    val gcd = getGCD(numerator, denominator)
+    val simplifiedNumerator = numerator / gcd
+    val simplifiedDenominator = denominator / gcd
 
-    return Pair(newNumerator, newDenominator)
+    // move negatives to numerator
+    return if (denominator.isNegative()) {
+        Pair(-simplifiedNumerator, -simplifiedDenominator)
+    } else {
+        Pair(simplifiedNumerator, simplifiedDenominator)
+    }
 }
 
 /**

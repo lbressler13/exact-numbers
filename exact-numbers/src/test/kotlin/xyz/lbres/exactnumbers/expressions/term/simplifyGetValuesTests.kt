@@ -41,7 +41,6 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt, testNumber1, testNumber1, testNumber1.inverse(), testNumber1.inverse(), testNumber1.inverse()))
     result = simplify(term)
     expectedFactors = listOf(Sqrt(ExactFraction(5, 33)), testNumber1.inverse())
-    var sqrts = listOf(Sqrt(ExactFraction(5, 33)))
     checkTerm(result, ExactFraction(20), expectedFactors)
 
     term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
@@ -54,8 +53,8 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
         listOf(log2, log2, log1, log2.inverse(), piInverse, piInverse, piInverse, pi)
     )
     result = simplify(term)
-    var logs = listOf(log2, log1)
-    var pis = listOf(piInverse, piInverse)
+    val logs = listOf(log2, log1)
+    val pis = listOf(piInverse, piInverse)
     checkTerm(result, ExactFraction(18, 5), logs + pis)
 
     term = Term.fromValues(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), testNumber1, Sqrt(ExactFraction(1, 4))))
@@ -65,7 +64,6 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     term = Term.fromValues(-ExactFraction.EIGHT, listOf(Sqrt(ExactFraction(27, 98)), piInverse))
     result = simplify(term)
     expectedFactors = listOf(Sqrt(ExactFraction(3, 2)), piInverse)
-    sqrts = listOf(Sqrt(ExactFraction(3, 2)))
     checkTerm(result, ExactFraction(-24, 7), expectedFactors)
 
     term = Term.fromValues(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3).inverse()))
