@@ -46,8 +46,8 @@ internal fun efPow(base: ExactFraction, exponent: ExactFraction): ExactFraction 
     }
 
     when {
-        base.isZero() -> return ExactFraction.ZERO
         base == ExactFraction.ONE || exponent.isZero() -> return ExactFraction.ONE
+        base.isZero() -> return ExactFraction.ZERO
         exponent == ExactFraction.ONE -> return base
     }
 
