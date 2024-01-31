@@ -2,10 +2,8 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.common.divideByZero
 import xyz.lbres.exactnumbers.ext.eq
-import xyz.lbres.kotlinutils.biginteger.ext.ifZero
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
-import xyz.lbres.kotlinutils.biginteger.getGCD
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -42,9 +40,13 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
      * @throws ArithmeticException if denominator is 0
      */
     constructor (numerator: BigInteger, denominator: BigInteger) : this() {
-        this.numerator = numerator
-        this.denominator = denominator.ifZero { throw divideByZero }
-        simplify()
+        if (denominator.isZero()) {
+            throw divideByZero
+        }
+
+        val simplified = simplifyFraction(numerator, denominator)
+        this.numerator = simplified.first
+        this.denominator = simplified.second
     }
 
     /**
@@ -145,53 +147,6 @@ class ExactFraction private constructor() : Comparable<ExactFraction>, Number() 
     fun absoluteValue(): ExactFraction = ExactFraction(numerator.abs(), denominator)
     fun isNegative(): Boolean = numerator.isNegative()
     fun isZero(): Boolean = numerator.isZero()
-
-    // SIMPLIFICATION
-
-    private fun simplify() {
-        simplifyZero()
-        simplifyGCD()
-        simplifySign()
-    }
-
-    /**
-     * Set denominator to 1 when numerator is 0
-     */
-    private fun simplifyZero() {
-        if (numerator.eq(0)) {
-            denominator = BigInteger.ONE
-        }
-    }
-
-    /**
-     * Move negatives to numerator
-     */
-    private fun simplifySign() {
-        val numNegative = numerator.isNegative()
-        val denomNegative = denominator.isNegative()
-
-        when {
-            numNegative && denomNegative -> {
-                numerator = numerator.abs()
-                denominator = denominator.abs()
-            }
-            !numNegative && denomNegative -> {
-                numerator = -numerator
-                denominator = denominator.abs()
-            }
-        }
-    }
-
-    /**
-     * Simplify using greatest common divisor
-     */
-    private fun simplifyGCD() {
-        if (!numerator.isZero()) {
-            val gcd = getGCD(numerator, denominator)
-            numerator /= gcd
-            denominator /= gcd
-        }
-    }
 
     // STRING METHODS
 
