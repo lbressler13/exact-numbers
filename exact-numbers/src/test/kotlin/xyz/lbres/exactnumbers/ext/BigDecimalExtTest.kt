@@ -4,6 +4,8 @@ import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class BigDecimalExtTest {
     @Test
@@ -38,5 +40,40 @@ class BigDecimalExtTest {
         bd2 = BigDecimal("14")
         expected = BigDecimal("7.3571428571428571429") // rounds up
         assertEquals(expected, bd1.divideBy(bd2))
+    }
+
+    @Test
+    fun testIsWholeNumber() {
+        // whole number
+        var bd = BigDecimal.ZERO
+        assertTrue(bd.isWholeNumber())
+
+        bd = BigDecimal("100")
+        assertTrue(bd.isWholeNumber())
+
+        bd = BigDecimal("-100")
+        assertTrue(bd.isWholeNumber())
+
+        bd = BigDecimal("-1234560000000000000999")
+        assertTrue(bd.isWholeNumber())
+
+        bd = BigDecimal("123456000000000.0000")
+        assertTrue(bd.isWholeNumber())
+
+        bd = BigDecimal("7.00000000000000000000000000000")
+        assertTrue(bd.isWholeNumber())
+
+        // decimal
+        bd = BigDecimal("0.00000000000000000001")
+        assertFalse(bd.isWholeNumber())
+
+        bd = BigDecimal("-1.01")
+        assertFalse(bd.isWholeNumber())
+
+        bd = BigDecimal("123456000000000000099.9")
+        assertFalse(bd.isWholeNumber())
+
+        bd = BigDecimal("99999999999999999999999.9")
+        assertFalse(bd.isWholeNumber())
     }
 }

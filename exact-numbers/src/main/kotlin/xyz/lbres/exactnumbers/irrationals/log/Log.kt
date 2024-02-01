@@ -60,8 +60,7 @@ sealed class Log : IrrationalNumber<Log>() {
                 if (log != ONE) {
                     val diff = logValues.getCountOf(log) - logValues.getCountOf(log.inverse())
                     val valueToAdd = simpleIf(diff < 0, { log.inverse() }, { log })
-                    val simplified: ConstMultiSet<Log> = ConstMultiSet(abs(diff)) { valueToAdd }
-                    simplifiedValues.addAll(simplified)
+                    repeat(abs(diff)) { simplifiedValues.add(valueToAdd) }
                 }
             }
 

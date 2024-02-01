@@ -47,7 +47,7 @@ internal fun createSimplifiedTerm(coefficient: ExactFraction, factorGroups: Map<
 /**
  * Simplify a set of irrational numbers by extracting the rational values
  *
- * @param values [ConstMultiSet]<IrrationalNumber<*>>: list of values
+ * @param values [ConstMultiSet]<IrrationalNumber<*>>: list of values, which are assumed to all have the same type
  * @return [Pair]<ExactFraction, ConstMultiSet<IrrationalNumber<*>>: pair of values where first value is the product of the numbers
  * with rational values, and the second is a set of the irrational values
  */

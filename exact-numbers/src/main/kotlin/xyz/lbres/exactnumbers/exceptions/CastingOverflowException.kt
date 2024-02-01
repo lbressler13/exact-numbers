@@ -8,13 +8,13 @@ class CastingOverflowException private constructor(
     targetType: String,
     valueString: String,
     overflowValue: Any?,
-    noArgs: Boolean
+    noArgsConstructor: Boolean
 ) : ArithmeticException() {
     override val message: String?
     val overflowValue: Any?
 
     init {
-        if (noArgs) {
+        if (noArgsConstructor) {
             this.message = null
             this.overflowValue = null
         } else {
@@ -23,7 +23,7 @@ class CastingOverflowException private constructor(
         }
     }
 
-    constructor() : this("", "", "", null, true)
+    constructor() : this("", "", "", null, noArgsConstructor = true)
 
     /**
      * @param baseType [String]: name of type being cast from
@@ -32,5 +32,5 @@ class CastingOverflowException private constructor(
      * @param overflowValue [Any]?: number that caused overflow. Optional, defaults to `null`
      */
     constructor (baseType: String, targetType: String, valueString: String, overflowValue: Any? = null) :
-        this(baseType, targetType, valueString, overflowValue, false)
+        this(baseType, targetType, valueString, overflowValue, noArgsConstructor = false)
 }

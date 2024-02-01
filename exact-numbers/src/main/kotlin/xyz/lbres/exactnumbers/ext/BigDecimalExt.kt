@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.ext
 
 import xyz.lbres.exactnumbers.utils.divideByZero
+import xyz.lbres.kotlinutils.general.succeeds
 import java.math.BigDecimal
 import java.math.MathContext
 
@@ -22,3 +23,10 @@ internal fun BigDecimal.divideBy(other: BigDecimal): BigDecimal {
         divide(other, mc)
     }
 }
+
+/**
+ * Determine if number is a whole number
+ *
+ * @return `true` if number is a whole number, `false` otherwise
+ */
+internal fun BigDecimal.isWholeNumber(): Boolean = succeeds { toBigIntegerExact() }

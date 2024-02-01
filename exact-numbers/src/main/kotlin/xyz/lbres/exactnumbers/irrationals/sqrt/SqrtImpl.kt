@@ -2,6 +2,7 @@ package xyz.lbres.exactnumbers.irrationals.sqrt
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
+import xyz.lbres.exactnumbers.ext.isWholeNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
 import java.math.BigDecimal
@@ -11,8 +12,8 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
     override val type = TYPE
     override val isInverted = false
 
-    private var numRoot: BigDecimal? = null
-    private var denomRoot: BigDecimal? = null
+    private var numeratorRoot: BigDecimal? = null
+    private var denominatorRoot: BigDecimal? = null
     private var simplified: Pair<ExactFraction, Sqrt>? = null
 
     init {
@@ -32,7 +33,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
 
     override fun isRational(): Boolean {
         setRoots()
-        return !numRoot!!.toPlainString().contains('.') && !denomRoot!!.toPlainString().contains('.')
+        return numeratorRoot!!.isWholeNumber() && denominatorRoot!!.isWholeNumber()
     }
 
     override fun getRationalValue(): ExactFraction? {
@@ -41,27 +42,27 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
         }
 
         setRoots()
-        return ExactFraction(numRoot!!.toBigInteger(), denomRoot!!.toBigInteger())
+        return ExactFraction(numeratorRoot!!.toBigInteger(), denominatorRoot!!.toBigInteger())
     }
 
-    // uses the formula sqrt(x/y) = sqrt(x)/sqrt(y) to reduce loss of precision when casting to Double
+    // uses the formula sqrt(x/y) = sqrt(x)/sqrt(y) to increase precision
     override fun getValue(): BigDecimal {
         setRoots()
-        return numRoot!!.divideBy(denomRoot!!)
+        return numeratorRoot!!.divideBy(denominatorRoot!!)
     }
 
     override fun getSimplified(): Pair<ExactFraction, Sqrt> {
-        if (simplified == null) {
-            simplified = if (radicand.isZero() || radicand == ExactFraction.ONE) {
-                Pair(ExactFraction.ONE, this)
-            } else {
-                val numWhole = extractWholeOf(radicand.numerator)
-                val denomWhole = extractWholeOf(radicand.denominator)
-                val whole = ExactFraction(numWhole, denomWhole)
+        simplified = when {
+            simplified != null -> simplified
+            radicand.isZero() || radicand == ExactFraction.ONE -> Pair(ExactFraction.ONE, this)
+            else -> {
+                val numeratorWhole = extractWholeOf(radicand.numerator)
+                val denominatorWhole = extractWholeOf(radicand.denominator)
+                val whole = ExactFraction(numeratorWhole, denominatorWhole)
 
-                val newNum = radicand.numerator / (numWhole * numWhole)
-                val newDenom = radicand.denominator / (denomWhole * denomWhole)
-                val newRadicand = ExactFraction(newNum, newDenom)
+                val newNumerator = radicand.numerator / (numeratorWhole * numeratorWhole)
+                val newDenominator = radicand.denominator / (denominatorWhole * denominatorWhole)
+                val newRadicand = ExactFraction(newNumerator, newDenominator)
 
                 Pair(whole, SqrtImpl(newRadicand))
             }
@@ -76,9 +77,9 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
      * Populate numRoot and denomRoot, if not already set
      */
     private fun setRoots() {
-        if (numRoot == null || denomRoot == null) {
-            numRoot = getRootOf(radicand.numerator)
-            denomRoot = getRootOf(radicand.denominator)
+        if (numeratorRoot == null || denominatorRoot == null) {
+            numeratorRoot = getRootOf(radicand.numerator)
+            denominatorRoot = getRootOf(radicand.denominator)
         }
     }
 

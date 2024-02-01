@@ -2,6 +2,7 @@ package xyz.lbres.exactnumbers.irrationals.log
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.ext.divideBy
+import xyz.lbres.exactnumbers.ext.isWholeNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
@@ -18,8 +19,8 @@ internal class LogImpl private constructor(
 ) : Log() {
     override val type = TYPE
 
-    private var numLog: BigDecimal? = null
-    private var denomLog: BigDecimal? = null
+    private var numeratorLog: BigDecimal? = null
+    private var denominatorLog: BigDecimal? = null
     private var simplified: Pair<ExactFraction, Log>? = null
 
     init {
@@ -38,7 +39,7 @@ internal class LogImpl private constructor(
     override fun isRational(): Boolean {
         setLogs()
         // rational if both values are whole numbers
-        return !numLog!!.toPlainString().contains('.') && !denomLog!!.toPlainString().contains('.')
+        return numeratorLog!!.isWholeNumber() && denominatorLog!!.isWholeNumber()
     }
 
     override fun getRationalValue(): ExactFraction? {
@@ -48,8 +49,8 @@ internal class LogImpl private constructor(
         }
 
         setLogs()
-        val numInt = numLog!!.toBigInteger()
-        val denomInt = denomLog!!.toBigInteger()
+        val numInt = numeratorLog!!.toBigInteger()
+        val denomInt = denominatorLog!!.toBigInteger()
 
         val result = when {
             numInt.isZero() -> -ExactFraction(denomInt) // numerator of argument is 1
@@ -60,10 +61,10 @@ internal class LogImpl private constructor(
         return simpleIf(isInverted, { result.inverse() }, { result })
     }
 
-    // uses the formula log_b(x/y) = log_b(x) - log_b(y) to reduce loss of precision when casting to Double
+    // uses the formula log_b(x/y) = log_b(x) - log_b(y) to increase precision
     override fun getValue(): BigDecimal {
         setLogs()
-        val logValue = numLog!! - denomLog!!
+        val logValue = numeratorLog!! - denominatorLog!!
         return simpleIf(isInverted, { BigDecimal.ONE.divideBy(logValue) }, { logValue })
     }
 
@@ -90,9 +91,9 @@ internal class LogImpl private constructor(
     }
 
     private fun setLogs() {
-        if (numLog == null || denomLog == null) {
-            numLog = getLogOf(argument.numerator, base)
-            denomLog = getLogOf(argument.denominator, base)
+        if (numeratorLog == null || denominatorLog == null) {
+            numeratorLog = getLogOf(argument.numerator, base)
+            denominatorLog = getLogOf(argument.denominator, base)
         }
     }
 

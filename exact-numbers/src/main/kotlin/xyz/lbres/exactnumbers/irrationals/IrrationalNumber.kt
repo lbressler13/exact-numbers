@@ -19,7 +19,7 @@ import java.math.BigDecimal
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
     /**
-     * Type of number, should correspond to the type name for the class
+     * Type label for number
      */
     abstract val type: String
 
@@ -89,7 +89,6 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     override fun toShort(): Short = castToShort(getValue(), this, type)
     override fun toInt(): Int = castToInt(getValue(), this, type)
     override fun toLong(): Long = castToLong(getValue(), this, type)
-
     override fun toFloat(): Float = castToFloat(getValue(), this, type)
     override fun toDouble(): Double = castToDouble(getValue(), this, type)
 

@@ -38,8 +38,7 @@ internal fun simplifyFraction(numerator: BigInteger, denominator: BigInteger): T
  * Create a string representation of an [ExactFraction] in standard decimal format
  *
  * @param ef [ExactFraction]: number to convert to string
- * @param digits [Int]: digits of precision in string. Must be non-negative.
- * Will be ignored if this number results in a string in exponential format.
+ * @param digits [Int]: maximum number of digits after decimal point. Must be non-negative
  * @return [String]: representation in decimal format
  */
 internal fun createDecimalString(ef: ExactFraction, digits: Int): String {
