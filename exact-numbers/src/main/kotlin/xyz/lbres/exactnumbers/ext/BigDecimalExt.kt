@@ -25,7 +25,7 @@ internal fun BigDecimal.divideBy(other: BigDecimal): BigDecimal {
 }
 
 /**
- * Determine if number is a whole number
+ * Determine if decimal is a whole number
  *
  * @return `true` if number is a whole number, `false` otherwise
  */

@@ -19,7 +19,7 @@ import java.math.BigDecimal
  */
 abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number() {
     /**
-     * Type label for number
+     * Type of number
      */
     abstract val type: String
 

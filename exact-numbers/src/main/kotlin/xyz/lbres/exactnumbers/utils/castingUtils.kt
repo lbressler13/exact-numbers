@@ -100,7 +100,7 @@ internal fun <T> castToDouble(decimal: BigDecimal, value: T, baseType: String): 
 }
 
 /**
- * Cast a number to another number baseType, or throw the given exception if the number exceeds the given min and max values
+ * Cast a number to another number type, or throw the given exception if the number exceeds the given min and max values
  *
  * @param value [BigDecimal]: number to cast
  * @param minValue T: minimum allowed value

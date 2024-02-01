@@ -236,64 +236,64 @@ fun runCommonCheckEFStringTests(checkString: (String) -> Boolean) {
 }
 
 // toString
-fun runCommonDecimalStringTests(createString: (ExactFraction, Int?) -> String) {
+fun runToDecimalStringTests() {
     var ef = ExactFraction(0)
     var expected = "0"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(4)
     expected = "4"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(-3)
     expected = "-3"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(3, 8)
     expected = "0.375"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(5, 2)
     expected = "2.5"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(-1, 9)
     expected = "-0.11111111"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(5, 9)
     expected = "0.55555556"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(-4, 19)
     expected = "-0.21052632"
-    assertEquals(expected, createString(ef, null))
+    assertEquals(expected, ef.toDecimalString())
 
     ef = ExactFraction(3, 8)
     expected = "0.38"
-    assertEquals(expected, createString(ef, 2))
+    assertEquals(expected, ef.toDecimalString(2))
 
     ef = ExactFraction(-1, 9)
     expected = "-0.111111111111"
-    assertEquals(expected, createString(ef, 12))
+    assertEquals(expected, ef.toDecimalString(12))
 
     ef = ExactFraction(-4, 19)
     expected = "-0.21053"
-    assertEquals(expected, createString(ef, 5))
+    assertEquals(expected, ef.toDecimalString(5))
 
     ef = ExactFraction("45454.888888888888888")
     expected = "45454.88889"
-    assertEquals(expected, createString(ef, 5))
+    assertEquals(expected, ef.toDecimalString(5))
 
     val largeValue = "100000000000000000000"
     val bi = BigInteger(largeValue)
     ef = ExactFraction(bi, 3)
     expected = "33333333333333333333.333333"
-    assertEquals(expected, createString(ef, 6))
+    assertEquals(expected, ef.toDecimalString(6))
 
     // exception
     val errorMessage = "Number of digits must be non-negative"
-    assertFailsWithMessage<IllegalArgumentException>(errorMessage) { createString(ExactFraction(3), -3) }
+    assertFailsWithMessage<IllegalArgumentException>(errorMessage) { createDecimalString(ExactFraction(3), -3) }
 }
 
 fun runToFractionStringTests() {
