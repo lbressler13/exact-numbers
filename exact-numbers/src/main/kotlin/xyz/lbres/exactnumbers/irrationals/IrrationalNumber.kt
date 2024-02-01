@@ -28,7 +28,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
      */
     abstract val isInverted: Boolean
     @Deprecated("Property $deprecatedV1", ReplaceWith("isInverted"), DeprecationLevel.WARNING)
-    val isDivided: Boolean
+    val isDivided: Boolean // maintained from Irrational interface
         get() = isInverted
 
     /**
@@ -57,7 +57,7 @@ abstract class IrrationalNumber<T : IrrationalNumber<T>> : Comparable<T>, Number
     abstract fun inverse(): T
 
     @Deprecated("Method $deprecatedV1", ReplaceWith("inverse"), DeprecationLevel.WARNING)
-    fun swapDivided(): T = inverse()
+    fun swapDivided(): T = inverse() // maintained from Irrational interface
 
     operator fun times(other: IrrationalNumber<*>): Term = Term.fromValues(ExactFraction.ONE, listOf(this, other))
     operator fun times(other: ExactFraction): Term = Term.fromValues(other, listOf(this))

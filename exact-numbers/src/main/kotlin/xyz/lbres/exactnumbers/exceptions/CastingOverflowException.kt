@@ -7,19 +7,16 @@ class CastingOverflowException private constructor(
     baseType: String,
     targetType: String,
     valueString: String,
-    overflowValue: Any?,
+    val overflowValue: Any?,
     noArgsConstructor: Boolean
 ) : ArithmeticException() {
     override val message: String?
-    val overflowValue: Any?
 
     init {
-        if (noArgsConstructor) {
-            this.message = null
-            this.overflowValue = null
+        this.message = if (noArgsConstructor) {
+            null
         } else {
-            this.message = "Overflow casting value $valueString of type $baseType to $targetType"
-            this.overflowValue = overflowValue
+            "Overflow casting value $valueString of type $baseType to $targetType"
         }
     }
 
