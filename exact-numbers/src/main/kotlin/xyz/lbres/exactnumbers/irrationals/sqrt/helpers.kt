@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.irrationals.sqrt
 
-import xyz.lbres.common.getIntFromDecimal
 import xyz.lbres.exactnumbers.irrationals.common.Memoize
+import xyz.lbres.exactnumbers.utils.getIntFromDecimal
 import xyz.lbres.kotlinutils.biginteger.ext.isNegative
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
@@ -16,7 +16,6 @@ import java.math.RoundingMode
  *
  * @param num [BigInteger]: value to extract from, required to be non-negative
  * @return [BigInteger]: the whole number that was extracted
- * @throws [ArithmeticException] if [num] is negative
  */
 internal fun extractWholeOf(num: BigInteger): BigInteger {
     if (num.isNegative()) {

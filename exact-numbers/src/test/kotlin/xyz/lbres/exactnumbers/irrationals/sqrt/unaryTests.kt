@@ -8,26 +8,26 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-fun runSwapDividedTests() {
+fun runInverseTests() {
     // error
-    assertDivByZero { Sqrt.ZERO.swapDivided() }
+    assertDivByZero { Sqrt.ZERO.inverse() }
 
     // no error
     var sqrt = Sqrt(8)
     var expected = Sqrt(ExactFraction(1, 8))
-    assertEquals(expected, sqrt.swapDivided())
+    assertEquals(expected, sqrt.inverse())
 
     sqrt = Sqrt(ExactFraction.HALF)
     expected = Sqrt(2)
-    assertEquals(expected, sqrt.swapDivided())
+    assertEquals(expected, sqrt.inverse())
 
     sqrt = Sqrt(ExactFraction(100, 49))
     expected = Sqrt(ExactFraction(49, 100))
-    assertEquals(expected, sqrt.swapDivided())
+    assertEquals(expected, sqrt.inverse())
 
     sqrt = Sqrt(ExactFraction(1, 8))
     expected = Sqrt(8)
-    assertEquals(expected, sqrt.swapDivided())
+    assertEquals(expected, sqrt.inverse())
 }
 
 fun runIsZeroTests() {

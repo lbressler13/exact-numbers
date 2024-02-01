@@ -9,8 +9,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class LogTest {
-    @Test fun testConstructor() = runConstructorTests()
-
     @Test
     fun testEquals() {
         // equals
@@ -26,7 +24,7 @@ class LogTest {
         log1 = Log(ExactFraction(107, 12), 3)
         assertEquals(log1, log1)
 
-        log1 = Log(ExactFraction(12, 107), 10).swapDivided()
+        log1 = Log(ExactFraction(12, 107), 10).inverse()
         assertEquals(log1, log1)
 
         // not equals
@@ -55,7 +53,7 @@ class LogTest {
         assertNotEquals(log1, log2)
         assertNotEquals(log2, log1)
 
-        log1 = Log(8, 10).swapDivided()
+        log1 = Log(8, 10).inverse()
         log2 = Log(8, 10)
         assertNotEquals(log1, log2)
         assertNotEquals(log2, log1)
@@ -70,7 +68,7 @@ class LogTest {
         log1 = Log(8, 3)
         assertEquals(0, log1.compareTo(log1))
 
-        log1 = Log(ExactFraction(4, 5), 3).swapDivided()
+        log1 = Log(ExactFraction(4, 5), 3).inverse()
         assertEquals(0, log1.compareTo(log1))
 
         log1 = Log(2, 2)
@@ -94,13 +92,13 @@ class LogTest {
         assertTrue(log1 < log2)
         assertTrue(log2 > log1)
 
-        log1 = Log(ExactFraction(3, 4), 10).swapDivided()
+        log1 = Log(ExactFraction(3, 4), 10).inverse()
         log2 = Log(ExactFraction(1, 4))
         assertTrue(log1 < log2)
         assertTrue(log2 > log1)
 
         log1 = Log(2, 8)
-        log2 = Log(32, 8).swapDivided()
+        log2 = Log(32, 8).inverse()
         assertTrue(log1 < log2)
         assertTrue(log2 > log1)
     }
@@ -109,22 +107,22 @@ class LogTest {
     @Test fun testDiv() = runDivTests()
 
     @Test
-    fun testSwapDivided() {
+    fun testInverse() {
         // error
-        assertDivByZero { Log.ZERO.swapDivided() }
+        assertDivByZero { Log.ZERO.inverse() }
 
         // other
         var log = Log.ONE
         var expected = Log.ONE
-        assertEquals(expected, log.swapDivided())
+        assertEquals(expected, log.inverse())
 
         log = Log(ExactFraction(3, 8), 2)
-        expected = Log(ExactFraction(3, 8), 2).swapDivided()
-        assertEquals(expected, log.swapDivided())
+        expected = Log(ExactFraction(3, 8), 2).inverse()
+        assertEquals(expected, log.inverse())
 
-        log = Log(4, 3).swapDivided()
+        log = Log(4, 3).inverse()
         expected = Log(4, 3)
-        assertEquals(expected, log.swapDivided())
+        assertEquals(expected, log.inverse())
     }
 
     @Test
@@ -164,7 +162,7 @@ class LogTest {
         assertTrue(log.isRational())
         assertTrue(log.isRational())
 
-        log = Log(2048, 2).swapDivided()
+        log = Log(2048, 2).inverse()
         assertTrue(log.isRational())
         assertTrue(log.isRational())
 
@@ -172,7 +170,7 @@ class LogTest {
         assertTrue(log.isRational())
         assertTrue(log.isRational())
 
-        log = Log(ExactFraction(1, 1000)).swapDivided()
+        log = Log(ExactFraction(1, 1000)).inverse()
         assertTrue(log.isRational())
 
         // irrational
@@ -183,7 +181,7 @@ class LogTest {
         assertFalse(log.isRational())
         assertFalse(log.isRational())
 
-        log = Log(1000, 100).swapDivided()
+        log = Log(1000, 100).inverse()
         assertFalse(log.isRational())
         assertFalse(log.isRational())
 
@@ -195,7 +193,15 @@ class LogTest {
     @Test fun testGetValue() = runGetValueTests()
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
-    @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
+
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 
     @Test
     fun testToString() {
@@ -219,11 +225,11 @@ class LogTest {
         expected = "[log_14(103/272)]"
         assertEquals(expected, log.toString())
 
-        log = Log(ExactFraction(15, 8), 10).swapDivided()
+        log = Log(ExactFraction(15, 8), 10).inverse()
         expected = "[1/log_10(15/8)]"
         assertEquals(expected, log.toString())
 
-        log = Log(4, 3).swapDivided()
+        log = Log(4, 3).inverse()
         expected = "[1/log_3(4)]"
         assertEquals(expected, log.toString())
     }

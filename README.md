@@ -17,6 +17,8 @@ Therefore, operations with ExactFractions can be performed without losing precis
 Though the exact value of an irrational number can't be stored, the value is represented as a collection of rational numbers related to the irrational.
 This allows numbers to be multiplied, divided, and simplified before computing the final value, which allows for greater precision when getting the value.
 
+Irrational numbers extend the IrrationalNumber class.
+
 ## Expression Types
 
 ### Term
@@ -32,12 +34,13 @@ Terms can be multiplied and divided, and the list of numbers is simplified as mu
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
-│   │   │   │   ├── common             <-- code that is shared between packages
 │   │   │   │   ├── exactnumbers       <-- source code for exact-numbers package
 │   │   │   │   │   ├── exactfraction  <-- code for ExactFraction class
+│   │   │   │   │   ├── exceptions     <-- exception classes
+│   │   │   │   │   ├── expressions    <-- code for representations of expressions
 │   │   │   │   │   ├── ext            <-- extension functions for existing classes 
 │   │   │   │   │   ├── irrationals    <-- code for representations of various types of irrational numbers
-│   │   │   │   ├── expressions        <-- source code for expressions package
+│   │   │   │   │   ├── utils          <-- shared classes and utils
 │   │   ├── test                  
 │   │   │   ├── kotlin            <-- unit tests for all packages
 │   ├── build.gradle.kts          <-- build configurations
@@ -59,7 +62,7 @@ The name will be in the format "exact-numbers-version", where the version is spe
 This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub Packages registry.
 In order to build the project, you will need a GitHub access token with at least the `read:packages` scope.
 
-You can add the following properties to a gradle.properties file in order to build:
+You can add the following properties to a local gradle properties file in order to build:
 ```properties
 gpr.user=GITHUB_USERNAME
 gpr.key=GITHUB_PAT
@@ -70,6 +73,7 @@ To build in the command line, you can set:
 USERNAME=GITHUB_USERNAME
 TOKEN=GITHUB_PAT
 ```
+
 However, this configuration may not allow you to build through an IDE.
 If you have values set in both gradle.properties and in the environment, the values in gradle.properties will be used.
 

@@ -1,6 +1,8 @@
 package xyz.lbres.exactnumbers.irrationals.log
 
+import xyz.lbres.exactnumbers.testutils.assertFailsWithMessage
 import java.math.BigDecimal
+import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -25,6 +27,15 @@ class HelpersTest {
         runSingleGetLogOfTest(1, 7, "0")
         runSingleGetLogOfTest(216, 6, "3")
         runSingleGetLogOfTest(15151515, 24, "5.202432673429519")
+
+        // error
+        val bi = BigInteger.TWO.pow(Short.MAX_VALUE.toInt())
+        var errorMessage = "Error calculating log: overflow on log_2($bi)"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(bi, 2) }
+
+        errorMessage = "Error calculating log"
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(-BigInteger.TEN, 10) }
+        assertFailsWithMessage<ArithmeticException>(errorMessage) { getLogOf(BigInteger.TEN, 1) }
     }
 
     private fun runSingleGetLogOfTest(arg: Int, base: Int, expected: String) {

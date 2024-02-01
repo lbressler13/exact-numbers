@@ -1,9 +1,8 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-// TODO
-// import xyz.lbres.kotlinutils.general.simpleIf
-// import xyz.lbres.kotlinutils.general.succeeds
-// import xyz.lbres.kotlinutils.general.tryOrDefault
+import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.general.succeeds
+import xyz.lbres.kotlinutils.string.ext.isInt
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -21,17 +20,7 @@ internal fun parseDecimal(s: String): ExactFraction {
     var currentState: String = s.trim()
 
     // validate string
-    // TODO
-    // if (!succeeds { BigDecimal(currentState) } || currentState.last() == '.') {
-    // throw NumberFormatException("Error parsing $currentState")
-    // }
-    try {
-        BigDecimal(currentState)
-    } catch (_: Exception) {
-        throw NumberFormatException("Error parsing $currentState")
-    }
-
-    if (currentState.last() == '.') {
+    if (!succeeds { BigDecimal(currentState) } || currentState.last() == '.') {
         throw NumberFormatException("Error parsing $currentState")
     }
 
@@ -54,13 +43,7 @@ internal fun parseDecimal(s: String): ExactFraction {
     val denominator = BigInteger(denomString)
     val numerator = whole * denominator + BigInteger(decimalString)
 
-    // TODO
-    // return simpleIf(isNegative, { ExactFraction(-numerator, denominator) }, { ExactFraction(numerator, denominator) })
-    return if (isNegative) {
-        ExactFraction(-numerator, denominator)
-    } else {
-        ExactFraction(numerator, denominator)
-    }
+    return simpleIf(isNegative, { ExactFraction(-numerator, denominator) }, { ExactFraction(numerator, denominator) })
 }
 
 /**
@@ -72,9 +55,7 @@ internal fun parseDecimal(s: String): ExactFraction {
  */
 internal fun parseEFString(s: String): ExactFraction {
     if (!checkIsEFString(s)) {
-        // TODO
-        // throw NumberFormatException("Invalid EF string format: $s")
-        throw NumberFormatException("Invalid EF string format")
+        throw NumberFormatException("Invalid EF string format: $s")
     }
 
     try {
@@ -87,9 +68,7 @@ internal fun parseEFString(s: String): ExactFraction {
     } catch (e: ArithmeticException) {
         throw e
     } catch (_: Exception) {
-        // TODO
-        // throw NumberFormatException("Invalid EF string format: $s")
-        throw NumberFormatException("Invalid EF string format")
+        throw NumberFormatException("Invalid EF string format: $s")
     }
 }
 
@@ -107,20 +86,6 @@ internal fun checkIsEFString(s: String): Boolean {
         return false
     }
 
-    // TODO
-    // return tryOrDefault(false) {
-    return try {
-        val numbers = trimmed.substring(efPrefix.length, s.length - efSuffix.length).split(' ')
-        val validNumber: (String) -> Boolean = {
-            when {
-                it.isEmpty() -> false
-                it.length == 1 -> it[0].isDigit()
-                else -> (it[0] == '-' || it[0].isDigit()) && it.substring(1).all(Char::isDigit)
-            }
-        }
-
-        numbers.size == 2 && validNumber(numbers[0]) && validNumber(numbers[1])
-    } catch (_: Exception) {
-        false
-    }
+    val numbers = trimmed.substring(efPrefix.length, s.length - efSuffix.length).split(' ')
+    return numbers.size == 2 && numbers[0].isInt() && numbers[1].isInt()
 }

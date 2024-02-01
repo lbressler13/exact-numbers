@@ -1,11 +1,13 @@
 package xyz.lbres.exactnumbers.exactfraction
 
-import xyz.lbres.exactnumbers.testutils.assertExactFractionOverflow
+import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 import kotlin.test.assertEquals
+
+private val assertCastingOverflow = getCastingOverflowAssertion<ExactFraction>("ExactFraction")
 
 fun runToPairTests() {
     var ef = ExactFraction(0)
@@ -58,14 +60,14 @@ fun runToCharTests() {
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-5)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(2, 5)
     expected = 0.toChar()
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(-18, 5)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MAX_VALUE.code)
     expected = Char.MAX_VALUE
@@ -76,10 +78,10 @@ fun runToCharTests() {
     assertEquals(expected, ef.toChar())
 
     ef = ExactFraction(Char.MAX_VALUE.code + 1)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 
     ef = ExactFraction(Char.MIN_VALUE.code - 1)
-    assertExactFractionOverflow("Char", ef) { ef.toChar() }
+    assertCastingOverflow("Char", ef) { ef.toChar() }
 }
 
 fun runToShortTests() {
@@ -207,7 +209,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         assertEquals(minValue, castEF(ef))
 
         ef--
-        assertExactFractionOverflow(type, ef) { castEF(ef) }
+        assertCastingOverflow(type, ef) { castEF(ef) }
     }
 
     if (maxValue != null) {
@@ -215,7 +217,7 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
         assertEquals(maxValue, castEF(ef))
 
         ef++
-        assertExactFractionOverflow(type, ef) { castEF(ef) }
+        assertCastingOverflow(type, ef) { castEF(ef) }
     }
 }
 
@@ -253,9 +255,9 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
 
     ef = ExactFraction(largeValue)
     ef *= 2
-    assertExactFractionOverflow(type, ef) { castEF(ef) }
+    assertCastingOverflow(type, ef) { castEF(ef) }
 
     ef = ExactFraction(smallValue)
     ef *= 2
-    assertExactFractionOverflow(type, ef) { castEF(ef) }
+    assertCastingOverflow(type, ef) { castEF(ef) }
 }

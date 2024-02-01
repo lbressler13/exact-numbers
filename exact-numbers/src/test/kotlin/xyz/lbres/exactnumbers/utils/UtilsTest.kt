@@ -1,6 +1,5 @@
-package xyz.lbres.common
+package xyz.lbres.exactnumbers.utils
 
-import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -8,40 +7,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class UtilsTest {
-    @Test
-    fun testDivideBigDecimals() {
-        // errors
-        assertDivByZero { divideBigDecimals(BigDecimal.ZERO, BigDecimal.ZERO) }
-        assertDivByZero { divideBigDecimals(BigDecimal("1.234"), BigDecimal.ZERO) }
-
-        // no rounding
-        var bd1 = BigDecimal.ZERO
-        var bd2 = BigDecimal.ONE
-        var expected = BigDecimal.ZERO
-        assertEquals(expected, divideBigDecimals(bd1, bd2))
-
-        bd1 = BigDecimal("2003")
-        bd2 = BigDecimal("8")
-        expected = BigDecimal("250.375")
-        assertEquals(expected, divideBigDecimals(bd1, bd2))
-
-        bd1 = BigDecimal("0.2222222222222222222222222222222")
-        bd2 = BigDecimal("2")
-        expected = BigDecimal("0.1111111111111111111111111111111")
-        assertEquals(expected, divideBigDecimals(bd1, bd2))
-
-        // rounding
-        bd1 = BigDecimal.ONE
-        bd2 = BigDecimal("3")
-        expected = BigDecimal("0.33333333333333333333")
-        assertEquals(expected, divideBigDecimals(bd1, bd2))
-
-        bd1 = BigDecimal("103")
-        bd2 = BigDecimal("14")
-        expected = BigDecimal("7.3571428571428571429")
-        assertEquals(expected, divideBigDecimals(bd1, bd2))
-    }
-
     @Test
     fun testGetIntFromDecimal() {
         var values = mapOf(

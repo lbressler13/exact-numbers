@@ -41,9 +41,7 @@ internal fun efTimes(ef1: ExactFraction, ef2: ExactFraction): ExactFraction {
  * @return [ExactFraction]
  */
 internal fun efPow(base: ExactFraction, exponent: ExactFraction): ExactFraction {
-    // TODO
-    // if (!exponent.isWholeNumber()) {
-    if (exponent.denominator != BigInteger.ONE) {
+    if (!exponent.isWholeNumber()) {
         throw ArithmeticException("Exponents must be whole numbers")
     }
 

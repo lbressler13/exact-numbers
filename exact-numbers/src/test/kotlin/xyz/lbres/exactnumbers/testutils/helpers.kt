@@ -1,30 +1,17 @@
 package xyz.lbres.exactnumbers.testutils
 
-import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.exactfraction.ExactFractionOverflowException
+import xyz.lbres.exactnumbers.exceptions.CastingOverflowException
+import xyz.lbres.kotlinutils.general.succeeds
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 /**
- * Assert that a divide by zero exception is thrown when code is run
+ * Assert that a divide by zero exception is thrown when a test is run
  *
- * @param test [() -> Unit]: the code to run
+ * @param test () -> Unit: test to run
  */
 fun assertDivByZero(test: () -> Unit) {
-    assertFailsWith<ArithmeticException>("divide by zero") { test() }
-}
-
-/**
- * Assert that a correct ExactFractionOverflowException is thrown when an ExactFraction is cast
- *
- * @param type [String]: the type of the value being cast to
- * @param value [ExactFraction]: the value to cast
- * @param cast () -> Unit: the call to cast the value
- */
-fun assertExactFractionOverflow(type: String, value: ExactFraction, cast: () -> Unit) {
-    val errorMessage = "Overflow when casting to $type"
-    val error = assertFailsWith<ExactFractionOverflowException>(errorMessage) { cast() }
-    assertEquals(value.toFractionString(), error.overflowValue)
+    assertFailsWithMessage<ArithmeticException>("divide by zero") { test() }
 }
 
 /**
@@ -47,9 +34,22 @@ inline fun <reified T : Exception> assertFailsWithMessage(message: String, test:
  * @param test () -> Unit: test to run
  */
 fun <T> assertSucceeds(errorMessage: String, test: () -> T) {
-    try {
-        test()
-    } catch (_: Exception) {
+    if (!succeeds { test() }) {
         throw AssertionError(errorMessage)
     }
+}
+
+/**
+ * Generate a function to assert that a CastingOverthrowException is thrown, with the correct message and overflow value
+ *
+ * @param baseType [String]: name of type being cast from
+ * @return function to validate error being thrown
+ */
+fun <T> getCastingOverflowAssertion(baseType: String): (String, T, () -> Unit) -> Unit {
+    val assertionFn: (String, T, () -> Unit) -> Unit = { targetType, value, cast ->
+        val errorMessage = "Overflow casting value $value of type $baseType to $targetType"
+        val error = assertFailsWithMessage<CastingOverflowException>(errorMessage) { cast() }
+        assertEquals(value, error.overflowValue)
+    }
+    return assertionFn
 }

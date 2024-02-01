@@ -57,7 +57,7 @@ class SqrtTest {
     }
 
     @Test fun testIsZero() = runIsZeroTests()
-    @Test fun testSwapDivided() = runSwapDividedTests()
+    @Test fun testInverse() = runInverseTests()
     @Test fun testIsRational() = runIsRationalTests()
 
     @Test fun testGetRationalValue() = runGetRationalValueTests()
@@ -69,7 +69,7 @@ class SqrtTest {
     @Test fun testEquals() = runEqualsTests()
 
     @Test fun testGetSimplified() = runGetSimplifiedTests()
-    @Test fun testSimplifyList() = runSimplifyListTests()
+    @Test fun testSimplifySet() = runSimplifySetTests()
 
     @Test
     fun testToString() {
@@ -95,4 +95,37 @@ class SqrtTest {
         expected = "[√(35/12)]"
         assertEquals(expected, sqrt.toString())
     }
+
+    @Test
+    fun testToPlainString() {
+        // whole number
+        var sqrt = Sqrt(ExactFraction.ZERO)
+        var expected = "[sqrt(0)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(10)
+        expected = "[sqrt(10)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(1234567)
+        expected = "[sqrt(1234567)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        // fraction
+        sqrt = Sqrt(ExactFraction.HALF)
+        expected = "[sqrt(1/2)]"
+        assertEquals(expected, sqrt.toPlainString())
+
+        sqrt = Sqrt(ExactFraction(35, 12))
+        expected = "[sqrt(35/12)]"
+        assertEquals(expected, sqrt.toPlainString())
+    }
+
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
+    @Test fun testToDouble() = runToDoubleTests()
+    @Test fun testToFloat() = runToFloatTests()
 }

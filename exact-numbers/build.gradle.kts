@@ -2,11 +2,11 @@ plugins {
     `java-library`
     `maven-publish`
     kotlin("jvm") version "1.5.10"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0" // ktlint
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0" // ktlint
 }
 
 group = "xyz.lbres"
-version = "0.1.1"
+version = "1.0.0"
 
 val githubUsername: String? = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
 val githubPassword: String? = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    val kotlinUtilsVersion = "0.2.0"
+    val kotlinUtilsVersion = "1.3.1"
     val mockkVersion = "1.12.4"
 
     implementation(kotlin("stdlib"))
