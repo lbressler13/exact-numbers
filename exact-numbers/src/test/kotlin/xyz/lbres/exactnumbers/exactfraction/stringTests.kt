@@ -105,7 +105,7 @@ fun runParseDecimalTests() {
     assertEquals(expected, parseDecimal(s))
 
     s = "-5E-10" // -0.0000000005
-    expected = ExactFraction(-5, 10000000000)
+    expected = ExactFraction(-1, 2000000000)
     assertEquals(expected, parseDecimal(s))
 
     s = "-5E10" // -50000000000
@@ -192,6 +192,12 @@ fun runParseEFStringTests() {
 
     s = "EF[1]"
     assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1]") { parseEFString(s) }
+
+    s = "EF[123]"
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[123]") { parseEFString(s) }
+
+    s = "EF[1-1]"
+    assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1-1]") { parseEFString(s) }
 
     s = "EF[1 1 1]"
     assertFailsWithMessage<NumberFormatException>("Invalid EF string format: EF[1 1 1]") { parseEFString(s) }
@@ -284,6 +290,10 @@ fun runToDecimalStringTests() {
     ef = ExactFraction(bi, 3)
     expected = "33333333333333333333.333333"
     assertEquals(expected, ef.toDecimalString(6))
+
+    // exception
+    val errorMessage = "Number of digits must be non-negative"
+    assertFailsWithMessage<IllegalArgumentException>(errorMessage) { createDecimalString(ExactFraction(3), -3) }
 }
 
 fun runToFractionStringTests() {

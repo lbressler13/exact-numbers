@@ -10,7 +10,7 @@ import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
-import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
+import xyz.lbres.kotlinutils.set.multiset.mapToSet
 import java.math.BigDecimal
 
 // implementation of Term class
@@ -47,8 +47,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
 
     override fun times(other: Term): Term {
         other as TermImpl
-        val newIrrationals = factorSet + other.factorSet
-        return TermImpl(coefficient * other.coefficient, newIrrationals.toConstMultiSet())
+        val newFactors = factorSet + other.factorSet
+        return TermImpl(coefficient * other.coefficient, newFactors.toConstMultiSet())
     }
 
     override fun div(other: Term): Term {
@@ -57,7 +57,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         }
 
         other as TermImpl
-        val newFactors = factorSet + other.factorSet.mapToSetConsistent { it.inverse() }
+        val newFactors = factorSet + other.factorSet.mapToSet { it.inverse() }
         return TermImpl(coefficient / other.coefficient, newFactors.toConstMultiSet())
     }
 
@@ -111,9 +111,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val factorString = factorSet.joinToString("x")
-            val result = simpleIf(factorString.isEmpty(), "<$coeffString>", "<${coeffString}x$factorString>")
 
-            string = result
+            string = simpleIf(factorString.isEmpty(), "<$coeffString>", "<${coeffString}x$factorString>")
         }
 
         return string!!

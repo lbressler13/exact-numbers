@@ -79,9 +79,9 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     abstract fun isWholeNumber(): Boolean
 
     /**
-     * Round ExactFraction to nearest whole number.
+     * Round to nearest whole number
      *
-     * @param roundingMode [RoundingMode]: mode to use for rounding number. Optional, defaults to [RoundingMode.HALF_UP]
+     * @param roundingMode [RoundingMode]: mode to use for rounding number. Defaults to [RoundingMode.HALF_UP]
      */
     abstract fun roundToWhole(roundingMode: RoundingMode = RoundingMode.HALF_UP): ExactFraction
 
@@ -90,8 +90,7 @@ sealed class ExactFraction : Comparable<ExactFraction>, Number() {
     /**
      * Create a string representation in standard decimal format
      *
-     * @param digits [Int]: digits of precision in string. Defaults to 8.
-     * Will be ignored if this number results in a string in exponential format
+     * @param digits [Int]: maximum number of digits after decimal point. Defaults to 8
      * @return [String]: representation in decimal format
      */
     abstract fun toDecimalString(digits: Int = 8): String

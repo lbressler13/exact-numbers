@@ -98,7 +98,7 @@ fun runToFloatTests() {
     assertEquals(max, sqrt.toFloat().toBigDecimal())
 
     // overflow
-    sqrt = Sqrt((max * max * max).toBigInteger())
+    sqrt = Sqrt((max * max).toBigInteger() * BigInteger.TEN)
     assertCastingOverflow("Float", sqrt) { sqrt.toFloat() }
 }
 

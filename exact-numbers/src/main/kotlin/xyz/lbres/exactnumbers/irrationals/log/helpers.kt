@@ -10,7 +10,7 @@ import kotlin.math.log
  *
  * @param argument [BigInteger]: argument to use in calculation
  * @param base [Int]: base to use in calculation
- * @return [BigDecimal]: the log of the number, using the current base
+ * @return [BigDecimal]: the log of the argument, using the specified base
  */
 internal fun getLogOf(argument: BigInteger, base: Int): BigDecimal {
     val logNum = log(argument.toDouble(), base.toDouble())

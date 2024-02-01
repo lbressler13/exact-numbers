@@ -62,7 +62,7 @@ The name will be in the format "exact-numbers-version", where the version is spe
 This app has a dependency on the [kotlin-utils](https://github.com/lbressler13/kotlin-utils) package, which is published to the GitHub Packages registry.
 In order to build the project, you will need a GitHub access token with at least the `read:packages` scope.
 
-You can add the following properties to a gradle.properties file in order to build:
+You can add the following properties to a local gradle properties file in order to build:
 ```properties
 gpr.user=GITHUB_USERNAME
 gpr.key=GITHUB_PAT

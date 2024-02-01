@@ -9,22 +9,17 @@ import xyz.lbres.exactnumbers.testutils.TestNumber
 import xyz.lbres.kotlinutils.list.StringList
 import kotlin.test.assertEquals
 
-private val log1 = Log(ExactFraction(15, 4))
-private val log2 = Log(8, 7)
-private val log3 = Log(ExactFraction(19, 33)).inverse()
-private val log4 = Log(ExactFraction(25, 121))
-private val testNumber1 = TestNumber(ExactFraction(3, 4))
-private val testNumber2 = TestNumber(ExactFraction.SEVEN)
-private val one = ExactFraction.ONE
-
 fun runGetFactorsByTypeTests() {
-    val types = listOf(Log.TYPE, Pi.TYPE, Sqrt.TYPE, TestNumber.TYPE)
+    val types = listOf(Log.TYPE, Pi.TYPE, Sqrt.TYPE, "Test")
 
     // zero
     var term = Term.fromValues(ExactFraction.ZERO, emptyList())
     runSingleIrrationalsByTypeTest(term, types, emptyMap())
 
     term = Term.fromValues(one, listOf(log1, log2, testNumber1, Pi(), TestNumber(ExactFraction.ZERO)))
+    runSingleIrrationalsByTypeTest(term, types, emptyMap())
+
+    term = Term.fromValues(one, listOf(log1, Sqrt.ZERO, testNumber1, Pi()))
     runSingleIrrationalsByTypeTest(term, types, emptyMap())
 
     // non-zero
@@ -44,7 +39,7 @@ fun runGetFactorsByTypeTests() {
     runSingleIrrationalsByTypeTest(
         term, types + listOf("Random"),
         mapOf(
-            TestNumber.TYPE to listOf(testNumber1, testNumber2.inverse()),
+            "Test" to listOf(testNumber1, testNumber2.inverse()),
             Log.TYPE to listOf(log2),
             Pi.TYPE to listOf(Pi().inverse())
         )
@@ -105,51 +100,43 @@ fun runGetLogsTests() {
 @Suppress("Deprecation")
 fun runGetPiCountTests() {
     // zero
-    var expected = 0
-
     var term = Term.fromValues(one, emptyList())
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     term = Term.fromValues(ExactFraction.TEN, emptyList())
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     term = Term.fromValues(one, listOf(Pi(), Pi().inverse()))
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi(), Pi().inverse(), Pi(), Pi().inverse()))
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     term = Term.fromValues(one, listOf(log1, log2, Sqrt(ExactFraction(64, 9))))
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     term = Term.fromValues(one, listOf(log3, log4, log2, Pi().inverse(), Pi(), Pi().inverse(), Pi()))
-    assertEquals(expected, term.getPiCount())
+    assertEquals(0, term.getPiCount())
 
     // just pi
     term = Term.fromValues(one, listOf(Pi()))
-    expected = 1
-    assertEquals(expected, term.getPiCount())
+    assertEquals(1, term.getPiCount())
 
     term = Term.fromValues(one, listOf(Pi().inverse()))
-    expected = -1
-    assertEquals(expected, term.getPiCount())
+    assertEquals(-1, term.getPiCount())
 
     term = Term.fromValues(one, listOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
-    expected = -3
-    assertEquals(expected, term.getPiCount())
+    assertEquals(-3, term.getPiCount())
 
     term = Term.fromValues(one, listOf(Pi(), Pi().inverse(), Pi(), Pi(), Pi().inverse()))
-    expected = 1
-    assertEquals(expected, term.getPiCount())
+    assertEquals(1, term.getPiCount())
 
     // mix
     term = Term.fromValues(one, listOf(log2, Sqrt(2), Pi().inverse()))
-    expected = -1
-    assertEquals(expected, term.getPiCount())
+    assertEquals(-1, term.getPiCount())
 
     term = Term.fromValues(ExactFraction.EIGHT, listOf(log3, log2, Sqrt(36), Pi(), Pi(), Pi().inverse(), Pi()))
-    expected = 2
-    assertEquals(expected, term.getPiCount())
+    assertEquals(2, term.getPiCount())
 }
 
 @Suppress("Deprecation")

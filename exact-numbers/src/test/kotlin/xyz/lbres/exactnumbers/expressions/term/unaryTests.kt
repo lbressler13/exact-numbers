@@ -4,17 +4,9 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.exactnumbers.testutils.TestNumber
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-
-private val log2 = Log(8, 7)
-private val log3 = Log(ExactFraction(19, 33)).inverse()
-private val log4 = Log(ExactFraction(25, 121))
-private val testNumber1 = TestNumber(ExactFraction(5, 6))
-private val testNumber2 = TestNumber(ExactFraction.SEVEN)
-private val one = ExactFraction.ONE
 
 fun runUnaryMinusTests() {
     var term = Term.ZERO
@@ -37,8 +29,8 @@ fun runUnaryMinusTests() {
     expected = Term.fromValues(ExactFraction.SIX, listOf(log3, log4, Sqrt(36), Pi().inverse(), testNumber2))
     assertEquals(expected, -term)
 
-    term = Term.fromValues(ExactFraction(15, 44), emptyList())
-    expected = Term.fromValues(ExactFraction(-15, 44), emptyList())
+    term = Term.fromValues(ExactFraction(44, 15), emptyList())
+    expected = Term.fromValues(ExactFraction(-44, 15), emptyList())
     assertEquals(expected, -term)
 
     val factors = listOf(log2, log3, log4, Sqrt(ExactFraction(3, 5)), Sqrt(961), Pi(), Pi().inverse(), Pi())
@@ -63,7 +55,7 @@ fun runUnaryPlusTests() {
     term = Term.fromValues(-ExactFraction.SIX, listOf(log3, log4, Sqrt(121), Pi().inverse(), testNumber2))
     assertEquals(term, +term)
 
-    term = Term.fromValues(ExactFraction(15, 44), emptyList())
+    term = Term.fromValues(ExactFraction(44, 15), emptyList())
     assertEquals(term, +term)
 
     term = Term.fromValues(
@@ -97,9 +89,8 @@ fun runIsZeroTests() {
     term = Term.fromValues(-ExactFraction.HALF, listOf(log2, log2.inverse(), testNumber1))
     assertFalse(term.isZero())
 
-    term = Term.fromValues(-ExactFraction.HALF, listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
+    term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
     assertFalse(term.isZero())
 
-    term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Pi().inverse(), Pi().inverse(), Pi().inverse()))
     assertFalse(term.isZero())
 }

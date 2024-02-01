@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.utils
 
 /**
- * Error to be thrown when dividing by zero
+ * Error to throw when dividing by zero
  */
 internal val divideByZero = ArithmeticException("divide by zero")
 

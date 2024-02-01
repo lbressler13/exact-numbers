@@ -6,10 +6,10 @@ import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.kotlinutils.general.simpleIf
 
 /**
- * Irrational implementation to use in tests
+ * IrrationalNumber implementation to use in tests
  */
 class TestNumber(val value: ExactFraction, override val isInverted: Boolean = false) : IrrationalNumber<TestNumber>() {
-    override val type: String = TYPE
+    override val type: String = "Test"
 
     override fun isZero(): Boolean = value.isZero()
     override fun inverse(): TestNumber = TestNumber(value, !isInverted)
@@ -27,8 +27,4 @@ class TestNumber(val value: ExactFraction, override val isInverted: Boolean = fa
     override fun equals(other: Any?) = other is TestNumber && value == other.value && isInverted == other.isInverted
     override fun hashCode(): Int = createHashCode(listOf(value, isInverted, type))
     override fun toString(): String = "[${value.toFractionString()}, $isInverted]"
-
-    companion object {
-        const val TYPE = "Test"
-    }
 }
