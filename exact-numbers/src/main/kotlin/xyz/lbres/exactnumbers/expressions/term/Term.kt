@@ -101,7 +101,7 @@ sealed class Term : Number() {
          * @param coefficient [ExactFraction]
          * @param logs [List]<Log>: list of log numbers
          * @param roots [List]<Sqrt>: list of square root numbers
-         * @param piCount [Int]: how many occurrence of pi to include in the list of numbers.
+         * @param piCount [Int]: how many occurrences of pi to include in the list of numbers.
          * A negative number corresponds to Pi values where inverted is `true`
          * @return [Term] with the given values
          */

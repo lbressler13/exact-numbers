@@ -52,20 +52,18 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
     }
 
     override fun getSimplified(): Pair<ExactFraction, Sqrt> {
-        simplified = when {
-            simplified != null -> simplified
-            radicand.isZero() || radicand == ExactFraction.ONE -> Pair(ExactFraction.ONE, this)
-            else -> {
-                val numeratorWhole = extractWholeOf(radicand.numerator)
-                val denominatorWhole = extractWholeOf(radicand.denominator)
-                val whole = ExactFraction(numeratorWhole, denominatorWhole)
+        if (simplified == null && (radicand.isZero() || radicand == ExactFraction.ONE)) {
+            simplified = Pair(ExactFraction.ONE, this)
+        } else if (simplified == null) {
+            val numeratorWhole = extractWholeOf(radicand.numerator)
+            val denominatorWhole = extractWholeOf(radicand.denominator)
+            val whole = ExactFraction(numeratorWhole, denominatorWhole)
 
-                val newNumerator = radicand.numerator / (numeratorWhole * numeratorWhole)
-                val newDenominator = radicand.denominator / (denominatorWhole * denominatorWhole)
-                val newRadicand = ExactFraction(newNumerator, newDenominator)
+            val newNumerator = radicand.numerator / (numeratorWhole * numeratorWhole)
+            val newDenominator = radicand.denominator / (denominatorWhole * denominatorWhole)
+            val newRadicand = ExactFraction(newNumerator, newDenominator)
 
-                Pair(whole, SqrtImpl(newRadicand))
-            }
+            simplified = Pair(whole, SqrtImpl(newRadicand))
         }
 
         return simplified!!
