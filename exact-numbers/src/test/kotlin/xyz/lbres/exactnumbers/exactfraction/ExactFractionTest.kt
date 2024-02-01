@@ -1,5 +1,6 @@
 package xyz.lbres.exactnumbers.exactfraction
 
+import xyz.lbres.kotlinutils.general.simpleIf
 import kotlin.test.Test
 
 class ExactFractionTest {
@@ -39,10 +40,13 @@ class ExactFractionTest {
 
     // parsing + toString
     @Test fun testIsEFString() = runCommonCheckEFStringTests(ExactFraction.Companion::isEFString)
-    @Test fun testToDecimalString() = runToDecimalStringTests()
     @Test fun testToFractionString() = runToFractionStringTests()
     @Test fun testToPairString() = runToPairStringTests()
     @Test fun testToEFString() = runToEFStringTests()
+
+    @Test fun testToDecimalString() = runCommonDecimalStringTests { ef, digits ->
+        simpleIf(digits == null, { ef.toDecimalString() }, { ef.toDecimalString(digits!!) })
+    }
 
     // casting
     @Test fun testToPair() = runToPairTests()

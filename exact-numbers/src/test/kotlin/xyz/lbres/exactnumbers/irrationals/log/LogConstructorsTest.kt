@@ -43,7 +43,7 @@ class LogConstructorsTest {
             assertFalse(it.isInverted)
         }
 
-        // just number
+        // just argument
         expectedArgument = ExactFraction.TWO
         expectedBase = 10
         logs = listOf(Log(ExactFraction.TWO), Log(2), Log(2L), Log(BigInteger.TWO))
@@ -60,7 +60,7 @@ class LogConstructorsTest {
         assertEquals(expectedBase, log.base)
         assertFalse(log.isInverted)
 
-        // number + base
+        // argument + base
         expectedArgument = ExactFraction.TWO
         expectedBase = 2
         logs = listOf(Log(ExactFraction.TWO, 2), Log(2, 2), Log(2L, 2), Log(BigInteger.TWO, 2))

@@ -2,23 +2,12 @@ package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
-import xyz.lbres.exactnumbers.testutils.TestNumber
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 
-private val log1 = Log(ExactFraction(15, 4))
-private val log2 = Log(8, 7)
-private val sqrt = Sqrt(ExactFraction(20, 33))
-private val testNumber1 = TestNumber(ExactFraction(3, 4))
-private val testNumber2 = TestNumber(ExactFraction.SEVEN)
-private val pi = Pi()
-private val piInverse = Pi().inverse()
-private val one = ExactFraction.ONE
-
 fun runCommonSimplifyTests(simplify: (Term) -> Term) {
-    // simplified
+    // unsimplified
     var term = Term.fromValues(ExactFraction.EIGHT, listOf(pi, piInverse))
     var result = simplify(term)
     checkTerm(result, ExactFraction.EIGHT)
@@ -38,7 +27,7 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     expectedFactors = listOf(piInverse)
     checkTerm(result, -ExactFraction.HALF, expectedFactors)
 
-    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, sqrt, testNumber1, testNumber1, testNumber1.inverse(), testNumber1.inverse(), testNumber1.inverse()))
+    term = Term.fromValues(ExactFraction.TEN, listOf(Sqrt.ONE, Sqrt(ExactFraction(20, 33)), testNumber1, testNumber1, testNumber1.inverse(), testNumber1.inverse(), testNumber1.inverse()))
     result = simplify(term)
     expectedFactors = listOf(Sqrt(ExactFraction(5, 33)), testNumber1.inverse())
     checkTerm(result, ExactFraction(20), expectedFactors)
@@ -53,9 +42,8 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
         listOf(log2, log2, log1, log2.inverse(), piInverse, piInverse, piInverse, pi)
     )
     result = simplify(term)
-    val logs = listOf(log2, log1)
-    val pis = listOf(piInverse, piInverse)
-    checkTerm(result, ExactFraction(18, 5), logs + pis)
+    expectedFactors = listOf(log2, log1, piInverse, piInverse)
+    checkTerm(result, ExactFraction(18, 5), expectedFactors)
 
     term = Term.fromValues(ExactFraction.FOUR, listOf(Log(100), Sqrt(9), testNumber1, Sqrt(ExactFraction(1, 4))))
     result = simplify(term)
@@ -65,10 +53,6 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     result = simplify(term)
     expectedFactors = listOf(Sqrt(ExactFraction(3, 2)), piInverse)
     checkTerm(result, ExactFraction(-24, 7), expectedFactors)
-
-    term = Term.fromValues(ExactFraction(20), listOf(Log(ExactFraction(1, 27), 3).inverse()))
-    result = simplify(term)
-    checkTerm(result, ExactFraction(-20, 3))
 
     term = Term.fromValues(
         ExactFraction(3, 5),
@@ -94,7 +78,7 @@ fun runCommonSimplifyTests(simplify: (Term) -> Term) {
     result = simplify(term)
     checkTerm(result, ExactFraction(-180, 7))
 
-    // no changes
+    // already simplified
     term = Term.fromValues(ExactFraction.EIGHT, emptyList())
     result = simplify(term)
     checkTerm(result, ExactFraction.EIGHT)

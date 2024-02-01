@@ -9,7 +9,7 @@ import java.math.BigInteger
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Byte] value as a byte
  */
 internal fun <T> castToByte(decimal: BigDecimal, value: T, baseType: String): Byte {
@@ -22,7 +22,7 @@ internal fun <T> castToByte(decimal: BigDecimal, value: T, baseType: String): By
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Char] value as a char
  */
 internal fun <T> castToChar(decimal: BigDecimal, value: T, baseType: String): Char {
@@ -39,7 +39,7 @@ internal fun <T> castToChar(decimal: BigDecimal, value: T, baseType: String): Ch
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Short] value as a short
  */
 internal fun <T> castToShort(decimal: BigDecimal, value: T, baseType: String): Short {
@@ -52,7 +52,7 @@ internal fun <T> castToShort(decimal: BigDecimal, value: T, baseType: String): S
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Int] value as an int
  */
 internal fun <T> castToInt(decimal: BigDecimal, value: T, baseType: String): Int {
@@ -65,7 +65,7 @@ internal fun <T> castToInt(decimal: BigDecimal, value: T, baseType: String): Int
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Long] value as a long
  */
 internal fun <T> castToLong(decimal: BigDecimal, value: T, baseType: String): Long {
@@ -78,7 +78,7 @@ internal fun <T> castToLong(decimal: BigDecimal, value: T, baseType: String): Lo
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Float] value as a float
  */
 internal fun <T> castToFloat(decimal: BigDecimal, value: T, baseType: String): Float {
@@ -91,7 +91,7 @@ internal fun <T> castToFloat(decimal: BigDecimal, value: T, baseType: String): F
  *
  * @param decimal [BigDecimal]: number to cast as decimal
  * @param value T: number to cast
- * @param baseType [String]: type of [T]
+ * @param baseType [String]: type of value
  * @return [Double] value as a double
  */
 internal fun <T> castToDouble(decimal: BigDecimal, value: T, baseType: String): Double {

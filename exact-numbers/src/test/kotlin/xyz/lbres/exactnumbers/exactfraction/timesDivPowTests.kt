@@ -89,6 +89,7 @@ fun runPowTests() {
     runCommonPowTests(ExactFraction::pow)
 
     // other number types
+    runMultiTypePowTest(ExactFraction(0), 0, ExactFraction(1))
     runMultiTypePowTest(ExactFraction(0), 100, ExactFraction(0))
     runMultiTypePowTest(ExactFraction(12, 49), 0, ExactFraction(1))
     runMultiTypePowTest(ExactFraction(3, 8), -3, ExactFraction(512, 27))

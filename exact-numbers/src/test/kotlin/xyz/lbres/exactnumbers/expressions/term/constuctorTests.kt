@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.expressions.term
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.TestNumber
 
@@ -16,14 +15,6 @@ private val sqrtWhole = Sqrt(289)
 private val sqrtPartialWhole = Sqrt(8)
 private val sqrtWholeEF = Sqrt(ExactFraction(9, 25))
 private val sqrtDecimal = Sqrt(11)
-
-private val pi = Pi()
-private val piInverse = Pi().inverse()
-
-private val testNumber1 = TestNumber(ExactFraction(5, 6))
-private val testNumber2 = TestNumber(ExactFraction.SEVEN)
-
-private val one = ExactFraction.ONE
 
 fun runConstructorTests() {
     runFactorsConstructorTests()
@@ -54,8 +45,8 @@ private fun runFactorsConstructorTests() {
     term = Term.fromValues(ExactFraction(-17, 100043), emptyList())
     checkTerm(term, ExactFraction(-17, 100043))
 
-    term = Term.fromValues(one, listOf(logWhole, logInverse))
     var factors: List<IrrationalNumber<*>> = listOf(logWhole, logInverse)
+    term = Term.fromValues(one, factors)
     checkTerm(term, one, factors)
 
     term = Term.fromValues(one, listOf(sqrtWhole))
@@ -64,16 +55,16 @@ private fun runFactorsConstructorTests() {
     term = Term.fromValues(one, listOf(pi))
     checkTerm(term, one, listOf(pi))
 
-    term = Term.fromValues(one, listOf(pi, piInverse))
     factors = listOf(pi, piInverse)
+    term = Term.fromValues(one, factors)
     checkTerm(term, one, factors)
 
     // multi type
     term = Term.fromValues(ExactFraction(-17, 100043), listOf(logWhole))
     checkTerm(term, ExactFraction(-17, 100043), listOf(logWhole))
 
-    term = Term.fromValues(ExactFraction.NEG_ONE, listOf(piInverse, logWhole))
     factors = listOf(piInverse, logWhole)
+    term = Term.fromValues(ExactFraction.NEG_ONE, factors)
     checkTerm(term, ExactFraction.NEG_ONE, factors)
 
     factors = listOf(logChangeBase, logInverse, logDecimal, sqrtDecimal, Sqrt.ONE)
@@ -139,6 +130,6 @@ private fun runComponentConstructorTests() {
     term = Term.fromValues(ExactFraction(-1, 5), emptyList(), sqrts, 2)
     checkTerm(term, ExactFraction(-1, 5), sqrts + pis)
 
-    term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, 2)
-    checkTerm(term, ExactFraction(-1, 5), logs + sqrts + pis)
+    term = Term.fromValues(ExactFraction(-1, 5), logs, sqrts, -1)
+    checkTerm(term, ExactFraction(-1, 5), logs + sqrts + listOf(piInverse))
 }

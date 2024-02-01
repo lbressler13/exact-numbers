@@ -9,8 +9,6 @@ import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import kotlin.test.assertEquals
 
-private val one = ExactFraction.ONE
-
 private val assertCastingOverflow = getCastingOverflowAssertion<Term>("Term")
 
 fun runToByteTests() {
@@ -112,11 +110,11 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castT
 
     factors = listOf(Sqrt(17), Pi(), Pi(), Log(1245, 12))
     term = Term.fromValues(ExactFraction(-123, 7), factors)
-    if (minValue.toLong() <= -2050) {
+    if (type == "Byte") {
+        assertCastingOverflow(type, term) { castTerm(term) }
+    } else {
         expected = castLong(-2050)
         assertEquals(expected, castTerm(term))
-    } else {
-        assertCastingOverflow(type, term) { castTerm(term) }
     }
 
     term = Term.fromValues(ExactFraction(minValue.toLong()), listOf(Log(11).inverse()))

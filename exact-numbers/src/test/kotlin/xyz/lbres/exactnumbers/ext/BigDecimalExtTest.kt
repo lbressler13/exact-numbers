@@ -36,7 +36,7 @@ class BigDecimalExtTest {
 
         bd1 = BigDecimal("103")
         bd2 = BigDecimal("14")
-        expected = BigDecimal("7.3571428571428571429")
+        expected = BigDecimal("7.3571428571428571429") // rounds up
         assertEquals(expected, bd1.divideBy(bd2))
     }
 }

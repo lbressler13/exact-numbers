@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 val assertCastingOverflow = getCastingOverflowAssertion<Log>("Log")
 
 fun runToByteTests() {
-    runWholeNumberCastingTests(Long::toByte, Log::toByte, "Byte", Byte.MAX_VALUE)
+    runWholeNumberCastingTests(Long::toByte, Log::toByte, "Byte")
 }
 
 fun runToCharTests() {
@@ -35,15 +35,15 @@ fun runToCharTests() {
 }
 
 fun runToShortTests() {
-    runWholeNumberCastingTests(Long::toShort, Log::toShort, "Short", Short.MAX_VALUE)
+    runWholeNumberCastingTests(Long::toShort, Log::toShort, "Short")
 }
 
 fun runToIntTests() {
-    runWholeNumberCastingTests(Long::toInt, Log::toInt, "Int", Int.MAX_VALUE)
+    runWholeNumberCastingTests(Long::toInt, Log::toInt, "Int")
 }
 
 fun runToLongTests() {
-    runWholeNumberCastingTests({ it }, Log::toLong, "Long", Long.MAX_VALUE)
+    runWholeNumberCastingTests({ it }, Log::toLong, "Long")
 }
 
 fun runToFloatTests() {
@@ -60,9 +60,8 @@ fun runToDoubleTests() {
  * @param castLong (Long) -> T: cast a long value to a value of the current number type
  * @param castLog (Log) -> T: cast a log value to a value of the current number type
  * @param type [String]: name of target type
- * @param maxValue T: maximum valid value for the current number type
  */
-private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castLog: (Log) -> T, type: String, maxValue: T) {
+private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castLog: (Log) -> T, type: String) {
     var log = Log.ZERO
     assertEquals(castLong(0), castLog(log))
 
@@ -86,11 +85,14 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castL
 
     val largeValue = BigInteger.TWO.pow(Byte.MAX_VALUE + 1)
     log = Log(largeValue, 2)
-    if (maxValue.toLong() <= Byte.MAX_VALUE.toLong()) {
+    if (type == "Byte") {
         assertCastingOverflow(type, log) { castLog(log) }
     } else {
         assertEquals(castLong(128), castLog(log))
     }
+
+    log = Log(largeValue + BigInteger("4"), 19)
+    assertEquals(castLong(30), castLog(log))
 }
 
 /**
