@@ -35,6 +35,7 @@ sealed class Term : Number() {
     abstract operator fun div(other: Term): Term
 
     abstract fun isZero(): Boolean
+    abstract fun inverse(): Term
 
     /**
      * Simplify coefficient and factors

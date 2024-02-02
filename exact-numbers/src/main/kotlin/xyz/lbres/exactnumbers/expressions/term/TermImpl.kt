@@ -63,6 +63,15 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
 
     override fun isZero(): Boolean = coefficient.isZero()
 
+    override fun inverse(): Term {
+        if (isZero()) {
+            throw divideByZero
+        }
+
+        val newFactors = factorSet.mapToSet { it.inverse() }
+        return TermImpl(coefficient.inverse(), newFactors.toConstMultiSet())
+    }
+
     /**
      * Simplify coefficient and factors
      *
