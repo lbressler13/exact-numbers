@@ -1,5 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.expression
 
+import xyz.lbres.exactnumbers.expressions.term.Term
+
 abstract class Expression : Number() {
     abstract operator fun unaryMinus(): Expression
     abstract operator fun unaryPlus(): Expression
@@ -17,4 +19,9 @@ abstract class Expression : Number() {
     override fun toLong(): Long = 0 // TODO
     override fun toFloat(): Float = 0f // TODO
     override fun toDouble(): Double = 0.0 // TODO
+
+    companion object {
+        val ZERO: Expression = SimpleExpression(Term.ZERO)
+        val ONE: Expression = SimpleExpression(Term.ONE)
+    }
 }
