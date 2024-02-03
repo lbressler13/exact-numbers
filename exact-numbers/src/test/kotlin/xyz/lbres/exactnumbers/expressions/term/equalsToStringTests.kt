@@ -113,6 +113,10 @@ fun runToStringTests() {
     assertEquals(expected, term.toString())
 
     // just coefficient
+    term = Term.ONE
+    expected = "<1>"
+    assertEquals(expected, term.toString())
+
     term = Term.fromValues(ExactFraction(-25), emptyList())
     expected = "<-25>"
     assertEquals(expected, term.toString())
@@ -123,32 +127,36 @@ fun runToStringTests() {
 
     // just logs
     term = Term.fromValues(one, listOf(Log.ONE))
-    expected = "<1x${Log.ONE}>"
+    expected = "<${Log.ONE}>"
     assertEquals(expected, term.toString())
 
     term = Term.fromValues(one, listOf(log2, log4, log1))
-    expected = "<1x${log2}x${log4}x$log1>"
+    expected = "<${log2}x${log4}x$log1>"
     assertEquals(expected, term.toString())
 
     // just pi
     term = Term.fromValues(one, listOf(pi))
-    expected = "<1x$pi>"
+    expected = "<$pi>"
     assertEquals(expected, term.toString())
 
     term = Term.fromValues(one, listOf(pi, piInverse, pi))
-    expected = "<1x${pi}x${piInverse}x$pi>"
+    expected = "<${pi}x${piInverse}x$pi>"
     assertEquals(expected, term.toString())
 
     // just sqrt
     term = Term.fromValues(one, listOf(Sqrt.ONE))
-    expected = "<1x${Sqrt.ONE}>"
+    expected = "<${Sqrt.ONE}>"
     assertEquals(expected, term.toString())
 
     term = Term.fromValues(one, listOf(Sqrt(32), Sqrt(127), Sqrt(ExactFraction(2, 9))))
-    expected = "<1x${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}>"
+    expected = "<${Sqrt(32)}x${Sqrt(127)}x${Sqrt(ExactFraction(2, 9))}>"
     assertEquals(expected, term.toString())
 
     // mix
+    term = Term.fromValues(-one, listOf(Sqrt.ONE))
+    expected = "<-1x${Sqrt.ONE}>"
+    assertEquals(expected, term.toString())
+
     term = Term.fromValues(ExactFraction.EIGHT, listOf(log3, Sqrt(12), testNumber2, pi))
     expected = "<8x${log3}x${Sqrt(12)}x${testNumber2}x$pi>"
     assertEquals(expected, term.toString())

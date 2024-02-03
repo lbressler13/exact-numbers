@@ -1,6 +1,8 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.Expression
+import xyz.lbres.exactnumbers.expressions.expression.SimpleExpression
 import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
@@ -63,6 +65,15 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
 
     override fun isZero(): Boolean = coefficient.isZero()
 
+    override fun inverse(): Term {
+        if (isZero()) {
+            throw divideByZero
+        }
+
+        val newFactors = factorSet.mapToSet { it.inverse() }
+        return TermImpl(coefficient.inverse(), newFactors.toConstMultiSet())
+    }
+
     /**
      * Simplify coefficient and factors
      *
@@ -106,13 +117,19 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         return factorTypeMapping.getOrDefault(irrationalType, emptyList())
     }
 
+    override fun toExpression(): Expression = SimpleExpression(this)
+
     override fun toString(): String {
         if (string == null) {
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val factorString = factorSet.joinToString("x")
 
-            string = simpleIf(factorString.isEmpty(), "<$coeffString>", "<${coeffString}x$factorString>")
+            string = when {
+                factorString.isEmpty() -> "<$coeffString>"
+                coeffString == "1" -> "<$factorString>"
+                else -> "<${coeffString}x$factorString>"
+            }
         }
 
         return string!!

@@ -4,6 +4,7 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -93,4 +94,46 @@ fun runIsZeroTests() {
     assertFalse(term.isZero())
 
     assertFalse(term.isZero())
+}
+
+fun runInverseTests() {
+    assertDivByZero { Term.ZERO.inverse() }
+
+    var term1 = Term.ONE
+    var term2 = Term.ONE
+    assertEquals(term1, term2.inverse())
+
+    term1 = Term.fromValues(ExactFraction(17, 12), emptyList())
+    term2 = Term.fromValues(ExactFraction(12, 17), emptyList())
+    assertEquals(term1, term2.inverse())
+    assertEquals(term2, term1.inverse())
+
+    term1 = Term.fromValues(one, listOf(log3))
+    term2 = Term.fromValues(one, listOf(log3.inverse()))
+    assertEquals(term1, term2.inverse())
+    assertEquals(term2, term1.inverse())
+
+    term1 = Term.fromValues(one, listOf(pi, piInverse, sqrt2))
+    term2 = Term.fromValues(one, listOf(pi, piInverse, sqrt2.inverse()))
+    assertEquals(term1, term2.inverse())
+    assertEquals(term2, term1.inverse())
+
+    term1 = Term.fromValues(ExactFraction(-1, 9), listOf(testNumber2, testNumber2, pi, log4, pi, sqrt1))
+    term2 = Term.fromValues(
+        -ExactFraction.NINE,
+        listOf(testNumber2.inverse(), testNumber2.inverse(), piInverse, piInverse, log4.inverse(), sqrt1.inverse())
+    )
+    assertEquals(term1, term2.inverse())
+    assertEquals(term2, term1.inverse())
+
+    term1 = Term.fromValues(
+        ExactFraction(100, 99999999999),
+        listOf(Log(4), pi, pi, Log(14, 3))
+    )
+    term2 = Term.fromValues(
+        ExactFraction(99999999999, 100),
+        listOf(Log(4).inverse(), piInverse, piInverse, Log(14, 3).inverse())
+    )
+    assertEquals(term1, term2.inverse())
+    assertEquals(term2, term1.inverse())
 }

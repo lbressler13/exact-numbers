@@ -15,6 +15,7 @@ class TermTest {
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testIsZero() = runIsZeroTests()
+    @Test fun testInverse() = runInverseTests()
 
     @Test fun testGetFactorsByType() = runGetFactorsByTypeTests()
     @Test fun testGetLogs() = runGetLogsTests()
@@ -22,6 +23,8 @@ class TermTest {
     @Test fun testGetSquareRoots() = runGetSquareRootsTests()
 
     @Test fun testToString() = runToStringTests()
+
+    @Test fun testToExpression() = runToExpressionTests()
 
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
