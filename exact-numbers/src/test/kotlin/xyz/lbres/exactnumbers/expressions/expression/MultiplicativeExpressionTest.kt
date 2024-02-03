@@ -1,21 +1,22 @@
 package xyz.lbres.exactnumbers.expressions.expression
 
+import xyz.lbres.exactnumbers.expressions.expression.multiplicative.* // ktlint-disable no-wildcard-imports no-unused-imports
 import kotlin.test.Test
 
 class MultiplicativeExpressionTest {
-    @Test fun testEquals() {} // TODO
-    @Test fun testToString() {} // TODO
+    @Test fun testEquals() = runEqualsTests() // TODO
+    @Test fun testToString() = runToStringTests() // TODO
 
-    @Test fun testUnaryMinus() {} // TODO
-    @Test fun testUnaryPlus() {} // TODO
-    @Test fun testInverse() {} // TODO
-    @Test fun testGetValue() {} // TODO
+    @Test fun testUnaryMinus() = runUnaryMinusTests() // TODO
+    @Test fun testUnaryPlus() = runUnaryPlusTests() // TODO
+    @Test fun testInverse() = runInverseTests() // TODO
+    @Test fun testGetValue() = runGetValueTests() // TODO
 
-    @Test fun testToByte() {} // TODO
-    @Test fun testToChar() {} // TODO
-    @Test fun testToShort() {} // TODO
-    @Test fun testToInt() {} // TODO
-    @Test fun testToLong() {} // TODO
-    @Test fun testToFloat() {} // TODO
-    @Test fun testToDouble() {} // TODO
+    @Test fun testToByte() = runToByteTests() // TODO
+    @Test fun testToChar() = runToCharTests() // TODO
+    @Test fun testToShort() = runToShortTests() // TODO
+    @Test fun testToInt() = runToIntTests() // TODO
+    @Test fun testToLong() = runToLongTests() // TODO
+    @Test fun testToFloat() = runToFloatTests() // TODO
+    @Test fun testToDouble() = runToDoubleTests() // TODO
 }
