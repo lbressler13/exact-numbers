@@ -19,13 +19,15 @@ internal class SimpleExpression(private val term: Term) : Expression() {
     override fun inverse(): Expression = SimpleExpression(term.inverse())
 
     override fun equals(other: Any?): Boolean = other is SimpleExpression && term == other.term
-    override fun hashCode(): Int = createHashCode(listOf(term, "SimpleExpression"))
+    override fun hashCode(): Int = createHashCode(listOf(term, "Expression"))
 
-    override fun toByte(): Byte = castToByte(term.getValue(), term, "SimpleExpression")
-    override fun toChar(): Char = castToChar(term.getValue(), term, "SimpleExpression")
-    override fun toShort(): Short = castToShort(term.getValue(), term, "SimpleExpression")
-    override fun toInt(): Int = castToInt(term.getValue(), term, "SimpleExpression")
-    override fun toLong(): Long = castToLong(term.getValue(), term, "SimpleExpression")
-    override fun toFloat(): Float = castToFloat(term.getValue(), term, "SimpleExpression")
-    override fun toDouble(): Double = castToDouble(term.getValue(), term, "SimpleExpression")
+    override fun toByte(): Byte = castToByte(term.getValue(), this, "Expression")
+    override fun toChar(): Char = castToChar(term.getValue(), this, "Expression")
+    override fun toShort(): Short = castToShort(term.getValue(), this, "Expression")
+    override fun toInt(): Int = castToInt(term.getValue(), this, "Expression")
+    override fun toLong(): Long = castToLong(term.getValue(), this, "Expression")
+    override fun toFloat(): Float = castToFloat(term.getValue(), this, "Expression")
+    override fun toDouble(): Double = castToDouble(term.getValue(), this, "Expression")
+
+    override fun toString(): String = "($term)"
 }

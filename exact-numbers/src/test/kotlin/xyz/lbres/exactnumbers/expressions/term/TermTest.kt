@@ -24,6 +24,8 @@ class TermTest {
 
     @Test fun testToString() = runToStringTests()
 
+    @Test fun testToExpression() = runToExpressionTests()
+
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
     @Test fun testToShort() = runToShortTests()

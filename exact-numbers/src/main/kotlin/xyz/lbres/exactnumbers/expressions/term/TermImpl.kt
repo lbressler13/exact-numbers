@@ -1,6 +1,8 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.expression.Expression
+import xyz.lbres.exactnumbers.expressions.expression.SimpleExpression
 import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
@@ -114,6 +116,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     override fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>> {
         return factorTypeMapping.getOrDefault(irrationalType, emptyList())
     }
+
+    override fun toExpression(): Expression = SimpleExpression(this)
 
     override fun toString(): String {
         if (string == null) {

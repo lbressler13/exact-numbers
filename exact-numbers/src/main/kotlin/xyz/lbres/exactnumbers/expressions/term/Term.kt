@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.expression.Expression
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
@@ -58,6 +59,8 @@ sealed class Term : Number() {
      * @return [List]<IrrationalNumber<*>>: list of irrational numbers, which all have the provided type
      */
     abstract fun getFactorsByType(irrationalType: String): List<IrrationalNumber<*>>
+
+    abstract fun toExpression(): Expression
 
     override fun toByte(): Byte = castToByte(getValue(), this, "Term")
     override fun toChar(): Char = castToChar(getValue(), this, "Term")

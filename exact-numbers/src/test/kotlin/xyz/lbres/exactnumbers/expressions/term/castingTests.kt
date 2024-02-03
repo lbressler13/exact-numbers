@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.expression.SimpleExpression
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -70,6 +71,26 @@ fun runToFloatTests() {
 
 fun runToDoubleTests() {
     runDecimalNumberCastingTests({ it }, Term::toDouble, Double.MAX_VALUE, "Double")
+}
+
+fun runToExpressionTests() {
+    var term = Term.ZERO
+    assertEquals(SimpleExpression(term), term.toExpression())
+
+    term = Term.fromValues(ExactFraction(9, 13), emptyList())
+    assertEquals(SimpleExpression(term), term.toExpression())
+
+    term = Term.fromValues(one, listOf(pi, piInverse, pi, testNumber1, log2, log4))
+    assertEquals(SimpleExpression(term), term.toExpression())
+
+    term = Term.fromValues(one, listOf(pi, piInverse, pi))
+    assertEquals(SimpleExpression(term), term.toExpression())
+
+    term = Term.fromValues(ExactFraction(-4, 7), listOf(Log.ZERO, Sqrt.ONE))
+    assertEquals(SimpleExpression(term), term.toExpression())
+
+    term = Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse()))
+    assertEquals(SimpleExpression(term), term.toExpression())
 }
 
 /**

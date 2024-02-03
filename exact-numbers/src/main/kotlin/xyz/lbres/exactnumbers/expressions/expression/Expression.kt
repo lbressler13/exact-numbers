@@ -5,7 +5,7 @@ import xyz.lbres.exactnumbers.expressions.term.Term
 /**
  * Representation of an expression, consisting of at least one term
  */
-abstract class Expression : Number() {
+sealed class Expression : Number() {
     abstract operator fun unaryMinus(): Expression
     abstract operator fun unaryPlus(): Expression
     abstract fun inverse(): Expression

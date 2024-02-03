@@ -64,15 +64,55 @@ class SimpleExpressionTest {
         assertNotEquals(SimpleExpression(term2), SimpleExpression(term1))
     }
 
+    @Test
+    fun testToString() {
+        var term = Term.ZERO
+        var expected = "<0>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(ExactFraction(-25), emptyList())
+        expected = "<-25>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(ExactFraction(44, 7), emptyList())
+        expected = "<[44/7]>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(one, listOf(log2, log4, log1))
+        expected = "<1x${log2}x${log4}x$log1>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(one, listOf(pi, piInverse, pi))
+        expected = "<1x${pi}x${piInverse}x$pi>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(one, listOf(Sqrt.ONE))
+        expected = "<1x${Sqrt.ONE}>"
+        assertEquals(expected, term.toString())
+
+        term = Term.fromValues(ExactFraction.EIGHT, listOf(log3, Sqrt(12), testNumber2, pi))
+        expected = "<8x${log3}x${Sqrt(12)}x${testNumber2}x$pi>"
+        assertEquals(expected, term.toString())
+
+        val sqrt1 = Sqrt(ExactFraction(1000, 109))
+        val sqrt2 = Sqrt(5096)
+        term = Term.fromValues(
+            ExactFraction(-100, 333),
+            listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
+        )
+        expected = "<[-100/333]x${log2}x${log2}x${log4}x${testNumber1}x${log1}x${sqrt1}x${sqrt2}x${piInverse}x$pi>"
+        assertEquals(expected, term.toString())
+    }
+
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testInverse() = runInverseTests()
 
-    @Test fun testToByte() = runToByteTests() // TODO
-    @Test fun testToChar() = runToCharTests() // TODO
-    @Test fun testToShort() = runToShortTests() // TODO
-    @Test fun testToInt() = runToIntTests() // TODO
-    @Test fun testToLong() = runToLongTests() // TODO
-    @Test fun testToFloat() = runToFloatTests() // TODO
-    @Test fun testToDouble() = runToDoubleTests() // TODO
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 }
