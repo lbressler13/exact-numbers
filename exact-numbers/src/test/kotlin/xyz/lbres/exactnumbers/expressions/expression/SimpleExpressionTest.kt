@@ -113,6 +113,7 @@ class SimpleExpressionTest {
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testInverse() = runInverseTests()
+    @Test fun testGetValue() = runGetValueTests() // TODO
 
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
