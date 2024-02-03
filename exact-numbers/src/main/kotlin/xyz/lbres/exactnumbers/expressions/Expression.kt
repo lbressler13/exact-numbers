@@ -1,5 +1,6 @@
-package xyz.lbres.exactnumbers.expressions.expression
+package xyz.lbres.exactnumbers.expressions
 
+import xyz.lbres.exactnumbers.expressions.expression.SimpleExpression
 import xyz.lbres.exactnumbers.expressions.term.Term
 
 /**

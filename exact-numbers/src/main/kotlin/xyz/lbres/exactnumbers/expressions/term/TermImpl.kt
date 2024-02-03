@@ -1,7 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.term
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
-import xyz.lbres.exactnumbers.expressions.expression.Expression
+import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.SimpleExpression
 import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
@@ -128,7 +128,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
             string = when {
                 factorString.isEmpty() -> "<$coeffString>"
                 coeffString == "1" -> "<$factorString>"
-                else -> "<${coeffString}x${factorString}>"
+                else -> "<${coeffString}x$factorString>"
             }
         }
 

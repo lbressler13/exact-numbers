@@ -100,10 +100,12 @@ class SimpleExpressionTest {
 
         val sqrt1 = Sqrt(ExactFraction(1000, 109))
         val sqrt2 = Sqrt(5096)
-        expr = SimpleExpression(Term.fromValues(
-            ExactFraction(-100, 333),
-            listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
-        ))
+        expr = SimpleExpression(
+            Term.fromValues(
+                ExactFraction(-100, 333),
+                listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
+            )
+        )
         expected = "(<[-100/333]x${log2}x${log2}x${log4}x${testNumber1}x${log1}x${sqrt1}x${sqrt2}x${piInverse}x$pi>)"
         assertEquals(expected, expr.toString())
     }

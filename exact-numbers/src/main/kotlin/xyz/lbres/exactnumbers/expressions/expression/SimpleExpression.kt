@@ -1,5 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.expression
 
+import xyz.lbres.exactnumbers.expressions.Expression
+import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.utils.castToByte
 import xyz.lbres.exactnumbers.utils.castToChar
@@ -13,7 +15,7 @@ import xyz.lbres.exactnumbers.utils.createHashCode
 /**
  * Expression consisting of a single term
  */
-internal class SimpleExpression(private val term: Term) : Expression() {
+internal class SimpleExpression(private val term: Term) : ExpressionImpl() {
     override fun unaryMinus(): Expression = SimpleExpression(-term)
     override fun unaryPlus(): Expression = this
     override fun inverse(): Expression = SimpleExpression(term.inverse())
