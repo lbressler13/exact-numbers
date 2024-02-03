@@ -125,7 +125,11 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val factorString = factorSet.joinToString("x")
 
-            string = simpleIf(factorString.isEmpty(), "<$coeffString>", "<${coeffString}x$factorString>")
+            string = when {
+                factorString.isEmpty() -> "<$coeffString>"
+                coeffString == "1" -> "<$factorString>"
+                else -> "<${coeffString}x${factorString}>"
+            }
         }
 
         return string!!

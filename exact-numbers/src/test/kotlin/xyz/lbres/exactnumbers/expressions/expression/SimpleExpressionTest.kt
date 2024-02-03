@@ -13,95 +13,99 @@ class SimpleExpressionTest {
     @Test
     fun testEquals() {
         // equal
-        var term1 = Term.ONE
-        assertEquals(SimpleExpression(term1), SimpleExpression(term1))
+        var expr1 = SimpleExpression(Term.ONE)
+        assertEquals(expr1, expr1)
 
-        term1 = Term.fromValues(ExactFraction(9, 13), emptyList())
-        assertEquals(SimpleExpression(term1), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction(9, 13), emptyList()))
+        assertEquals(expr1, expr1)
 
-        term1 = Term.fromValues(one, listOf(pi, piInverse, pi, testNumber1, log2, log4))
-        assertEquals(SimpleExpression(term1), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(one, listOf(pi, piInverse, pi, testNumber1, log2, log4)))
+        assertEquals(expr1, expr1)
 
-        term1 = Term.fromValues(one, listOf(pi, piInverse, pi))
-        var term2 = Term.fromValues(one, listOf(pi))
-        assertEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(one, listOf(pi, piInverse, pi)))
+        var expr2 = SimpleExpression(Term.fromValues(one, listOf(pi)))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
 
-        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(Log.ZERO, Sqrt.ONE))
-        term2 = Term.ZERO
-        assertEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction(-4, 7), listOf(Log.ZERO, Sqrt.ONE)))
+        expr2 = SimpleExpression(Term.ZERO)
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
 
-        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse()))
-        term2 = Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), pi))
-        assertEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse())))
+        expr2 = SimpleExpression(Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), pi)))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
 
-        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse()))
-        term2 = Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), Sqrt.ONE, piInverse, pi, pi))
-        assertEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse())))
+        expr2 = SimpleExpression(Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), Sqrt.ONE, piInverse, pi, pi)))
+        assertEquals(expr1, expr2)
+        assertEquals(expr2, expr1)
 
         // not equal
-        term1 = Term.ONE
-        term2 = -Term.ONE
-        assertNotEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertNotEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.ONE)
+        expr2 = SimpleExpression(-Term.ONE)
+        assertNotEquals(expr1, expr2)
+        assertNotEquals(expr2, expr1)
 
-        term1 = Term.fromValues(ExactFraction.TWO, emptyList())
-        term2 = Term.fromValues(ExactFraction.HALF, emptyList())
-        assertNotEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertNotEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction.TWO, emptyList()))
+        expr2 = SimpleExpression(Term.fromValues(ExactFraction.HALF, emptyList()))
+        assertNotEquals(expr1, expr2)
+        assertNotEquals(expr2, expr1)
 
-        term1 = Term.fromValues(one, listOf(pi))
-        term2 = Term.fromValues(one, listOf(piInverse))
-        assertNotEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertNotEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(one, listOf(pi)))
+        expr2 = SimpleExpression(Term.fromValues(one, listOf(piInverse)))
+        assertNotEquals(expr1, expr2)
+        assertNotEquals(expr2, expr1)
 
-        term1 = Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse()))
-        term2 = Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), Sqrt.ONE, piInverse, pi))
-        assertNotEquals(SimpleExpression(term1), SimpleExpression(term2))
-        assertNotEquals(SimpleExpression(term2), SimpleExpression(term1))
+        expr1 = SimpleExpression(Term.fromValues(ExactFraction(-4, 7), listOf(testNumber2, Sqrt(ExactFraction(7, 9)), pi, log1, log1.inverse())))
+        expr2 = SimpleExpression(Term.fromValues(ExactFraction(-4, 3), listOf(Sqrt(7), Sqrt.ONE, piInverse, pi)))
+        assertNotEquals(expr1, expr2)
+        assertNotEquals(expr2, expr1)
     }
 
     @Test
     fun testToString() {
-        var term = Term.ZERO
-        var expected = "<0>"
-        assertEquals(expected, term.toString())
+        var expr = SimpleExpression(Term.ZERO)
+        var expected = "(<0>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(ExactFraction(-25), emptyList())
-        expected = "<-25>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.ONE)
+        expected = "(<1>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(ExactFraction(44, 7), emptyList())
-        expected = "<[44/7]>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.fromValues(ExactFraction(-25), emptyList()))
+        expected = "(<-25>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(one, listOf(log2, log4, log1))
-        expected = "<1x${log2}x${log4}x$log1>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.fromValues(ExactFraction(44, 7), emptyList()))
+        expected = "(<[44/7]>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(one, listOf(pi, piInverse, pi))
-        expected = "<1x${pi}x${piInverse}x$pi>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.fromValues(one, listOf(log2, log4, log1)))
+        expected = "(<${log2}x${log4}x$log1>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(one, listOf(Sqrt.ONE))
-        expected = "<1x${Sqrt.ONE}>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.fromValues(one, listOf(pi, piInverse, pi)))
+        expected = "(<${pi}x${piInverse}x$pi>)"
+        assertEquals(expected, expr.toString())
 
-        term = Term.fromValues(ExactFraction.EIGHT, listOf(log3, Sqrt(12), testNumber2, pi))
-        expected = "<8x${log3}x${Sqrt(12)}x${testNumber2}x$pi>"
-        assertEquals(expected, term.toString())
+        expr = SimpleExpression(Term.fromValues(-one, listOf(Sqrt.ONE)))
+        expected = "(<-1x${Sqrt.ONE}>)"
+        assertEquals(expected, expr.toString())
+
+        expr = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(log3, Sqrt(12), testNumber2, pi)))
+        expected = "(<8x${log3}x${Sqrt(12)}x${testNumber2}x$pi>)"
+        assertEquals(expected, expr.toString())
 
         val sqrt1 = Sqrt(ExactFraction(1000, 109))
         val sqrt2 = Sqrt(5096)
-        term = Term.fromValues(
+        expr = SimpleExpression(Term.fromValues(
             ExactFraction(-100, 333),
             listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
-        )
-        expected = "<[-100/333]x${log2}x${log2}x${log4}x${testNumber1}x${log1}x${sqrt1}x${sqrt2}x${piInverse}x$pi>"
-        assertEquals(expected, term.toString())
+        ))
+        expected = "(<[-100/333]x${log2}x${log2}x${log4}x${testNumber1}x${log1}x${sqrt1}x${sqrt2}x${piInverse}x$pi>)"
+        assertEquals(expected, expr.toString())
     }
 
     @Test fun testUnaryMinus() = runUnaryMinusTests()
