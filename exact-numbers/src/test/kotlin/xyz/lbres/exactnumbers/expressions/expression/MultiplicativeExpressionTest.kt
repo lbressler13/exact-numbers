@@ -5,7 +5,7 @@ import kotlin.test.Test
 
 class MultiplicativeExpressionTest {
     @Test fun testEquals() = runEqualsTests() // TODO
-    @Test fun testToString() = runToStringTests() // TODO
+    @Test fun testToString() = runToStringTests()
 
     @Test fun testUnaryMinus() = runUnaryMinusTests() // TODO
     @Test fun testUnaryPlus() = runUnaryPlusTests() // TODO

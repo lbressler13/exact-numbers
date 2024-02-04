@@ -9,7 +9,16 @@ import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
 import java.math.BigDecimal
 
+/**
+ * Expression which is the product of several other expressions
+ */
 internal class MultiplicativeExpression(private val expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
+    init {
+        if (expressions.isEmpty()) {
+            throw Exception("Invalid expression initialization")
+        }
+    }
+
     override fun unaryMinus(): Expression {
         val newExpressions = (expressions + constMultiSetOf(-ONE)).toConstMultiSet()
         return MultiplicativeExpression(newExpressions)
