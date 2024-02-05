@@ -3,7 +3,6 @@ package xyz.lbres.exactnumbers.expressions.expression.multiplicative
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
-import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import kotlin.test.assertEquals
 
 private val simpleExpr1 = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(pi)))
@@ -14,21 +13,16 @@ fun runEqualsTests() {
 }
 
 fun runToStringTests() {
-    var expr = MultiplicativeExpression(constMultiSetOf(simpleExpr1))
-    var expected = "($simpleExpr1)"
+    var expr = MultiplicativeExpression(simpleExpr1, simpleExpr1)
+    var expected = "(${simpleExpr1}x$simpleExpr1)"
     assertEquals(expected, expr.toString())
 
-    expr = MultiplicativeExpression(constMultiSetOf(simpleExpr1, simpleExpr1, simpleExpr3))
-    expected = "(${simpleExpr1}x${simpleExpr1}x${simpleExpr3})"
+    expr = MultiplicativeExpression(simpleExpr1.inverse(), simpleExpr3)
+    expected = "(${simpleExpr1.inverse()}x$simpleExpr3)"
     assertEquals(expected, expr.toString())
 
-    var multExpr = MultiplicativeExpression(constMultiSetOf(simpleExpr2))
-    expr = MultiplicativeExpression(constMultiSetOf(multExpr))
-    expected = "(($simpleExpr2))"
-    assertEquals(expected, expr.toString())
-
-    multExpr = MultiplicativeExpression(constMultiSetOf(simpleExpr2, simpleExpr1))
-    expr = MultiplicativeExpression(constMultiSetOf(multExpr, simpleExpr3))
-    expected = "((${simpleExpr2}x${simpleExpr1})x${simpleExpr3})"
+    val partialExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)
+    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expected = "((${simpleExpr3}x$simpleExpr1)x$simpleExpr2)"
     assertEquals(expected, expr.toString())
 }

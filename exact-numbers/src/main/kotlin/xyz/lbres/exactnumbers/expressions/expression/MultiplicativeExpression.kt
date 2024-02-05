@@ -12,12 +12,14 @@ import java.math.BigDecimal
 /**
  * Expression which is the product of several other expressions
  */
-internal class MultiplicativeExpression(private val expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
+internal class MultiplicativeExpression private constructor(private val expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
     init {
         if (expressions.isEmpty()) {
             throw Exception("Invalid expression initialization")
         }
     }
+
+    constructor(expr1: Expression, expr2: Expression) : this(constMultiSetOf(expr1, expr2))
 
     override fun unaryMinus(): Expression {
         val newExpressions = (expressions + constMultiSetOf(-ONE)).toConstMultiSet()
