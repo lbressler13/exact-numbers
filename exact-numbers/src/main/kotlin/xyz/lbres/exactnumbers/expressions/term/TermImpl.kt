@@ -118,16 +118,6 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
         return string!!
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is Term) {
-            return false
-        }
-
-        val simplified = getSimplified() as TermImpl
-        val otherSimplified = other.getSimplified() as TermImpl
-
-        return simplified.coefficient == otherSimplified.coefficient && simplified.factorSet == otherSimplified.factorSet
-    }
-
+    override fun equals(other: Any?): Boolean = other is Term && getValue() == other.getValue()
     override fun hashCode(): Int = createHashCode(listOf(coefficient, factorSet, "Term"))
 }
