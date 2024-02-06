@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "xyz.lbres"
-version = "1.0.0"
+version = "1.0.1"
 
 val githubUsername: String? = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
 val githubPassword: String? = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
