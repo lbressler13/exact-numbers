@@ -36,7 +36,10 @@ internal class MultiplicativeExpression private constructor(private val expressi
         return expressions.fold(BigDecimal.ONE) { acc, expr -> acc * expr.getValue() }
     }
 
-    override fun equals(other: Any?): Boolean = other is Expression && getValue() == other.getValue()
+    override fun equals(other: Any?): Boolean {
+        // TODO account for small diff
+        return other is Expression && getValue() == other.getValue()
+    }
     override fun hashCode(): Int = createHashCode(listOf(expressions, "MultiplicativeExpression"))
 
     override fun toString(): String = "(${expressions.joinToString("x")})"

@@ -4,7 +4,7 @@ import xyz.lbres.exactnumbers.expressions.expression.multiplicative.* // ktlint-
 import kotlin.test.Test
 
 class MultiplicativeExpressionTest {
-    @Test fun testEquals() = runEqualsTests() // TODO
+    @Test fun testEquals() = runEqualsTests()
     @Test fun testToString() = runToStringTests()
 
     @Test fun testUnaryMinus() = runUnaryMinusTests() // TODO
