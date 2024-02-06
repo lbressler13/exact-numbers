@@ -9,6 +9,7 @@ import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
+import xyz.lbres.kotlinutils.generic.ext.ifNull
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
@@ -80,11 +81,10 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      * @return [Term] simplified version of this term
      */
     override fun getSimplified(): Term {
-        if (simplified == null) {
+        return simplified.ifNull {
             simplified = createSimplifiedTerm(coefficient, factorTypeMapping)
+            simplified!!
         }
-
-        return simplified!!
     }
 
     /**
@@ -94,7 +94,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      * @return [BigDecimal]
      */
     override fun getValue(): BigDecimal {
-        if (value == null) {
+        return value.ifNull {
             val simplified = getSimplified()
 
             val factorProduct = simplified.factors.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
@@ -102,9 +102,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
 
             val result = numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
             value = result
+            value!!
         }
-
-        return value!!
     }
 
     /**
@@ -120,7 +119,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     override fun toExpression(): Expression = SimpleExpression(this)
 
     override fun toString(): String {
-        if (string == null) {
+        return string.ifNull {
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val factorString = factorSet.joinToString("x")
@@ -130,9 +129,8 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
                 coeffString == "1" -> "<$factorString>"
                 else -> "<${coeffString}x$factorString>"
             }
+            string!!
         }
-
-        return string!!
     }
 
     override fun equals(other: Any?): Boolean = other is Term && getValue() == other.getValue()
