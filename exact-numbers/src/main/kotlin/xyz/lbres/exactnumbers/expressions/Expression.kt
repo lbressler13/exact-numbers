@@ -18,7 +18,7 @@ sealed class Expression : Number() {
     // open operator fun times(other: Expression): Expression = MultiplicativeExpression(constMultiSetOf(this, other))
     // open operator fun div(other: Expression): Expression = MultiplicativeExpression(constMultiSetOf(this, other.inverse()))
 
-    // abstract fun toTerm(): Term
+    abstract fun toTerm(): Term
 
     companion object {
         val ZERO: Expression = SimpleExpression(Term.ZERO)

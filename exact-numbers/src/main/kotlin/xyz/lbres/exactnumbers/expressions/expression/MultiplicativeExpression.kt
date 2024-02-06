@@ -2,6 +2,7 @@ package xyz.lbres.exactnumbers.expressions.expression
 
 import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.ExpressionImpl
+import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
@@ -13,6 +14,8 @@ import java.math.BigDecimal
  * Expression which is the product of several other expressions
  */
 internal class MultiplicativeExpression private constructor(private val expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
+    private var term: Term? = null
+
     init {
         if (expressions.isEmpty()) {
             throw Exception("Invalid expression initialization")
@@ -36,10 +39,13 @@ internal class MultiplicativeExpression private constructor(private val expressi
         return expressions.fold(BigDecimal.ONE) { acc, expr -> acc * expr.getValue() }
     }
 
-    override fun equals(other: Any?): Boolean {
-        // TODO account for small diff
-        return other is Expression && getValue() == other.getValue()
+    override fun toTerm(): Term {
+        if (term == null) {
+            term = expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()
+        }
+        return term!!
     }
+
     override fun hashCode(): Int = createHashCode(listOf(expressions, "MultiplicativeExpression"))
 
     override fun toString(): String = "(${expressions.joinToString("x")})"

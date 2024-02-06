@@ -33,11 +33,10 @@ fun runEqualsTests() {
     assertEquals(expr1, expr2)
     assertEquals(expr2, expr1)
 
-    // TODO account for small diff
-    // expr1 = MultiplicativeExpression(simpleExpr3, simpleExpr3.inverse())
-    // expr2 = MultiplicativeExpression(Expression.ONE, Expression.ONE)
-    // assertEquals(expr1, expr2)
-    // assertEquals(expr2, expr1)
+    expr1 = MultiplicativeExpression(simpleExpr3, simpleExpr3.inverse())
+    expr2 = MultiplicativeExpression(Expression.ONE, Expression.ONE)
+    assertEquals(expr1, expr2)
+    assertEquals(expr2, expr1)
 
     expr1 = MultiplicativeExpression(Expression.ONE, MultiplicativeExpression(simpleExpr1, simpleExpr2))
     expr2 = MultiplicativeExpression(simpleExpr1, simpleExpr2)

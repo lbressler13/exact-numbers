@@ -15,6 +15,7 @@ internal class SimpleExpression(private val term: Term) : ExpressionImpl() {
     override fun inverse(): Expression = SimpleExpression(term.inverse())
 
     override fun getValue(): BigDecimal = term.getValue()
+    override fun toTerm(): Term = term
 
     override fun equals(other: Any?): Boolean = other is Expression && getValue() == other.getValue()
     override fun hashCode(): Int = createHashCode(listOf(term, "Expression"))
