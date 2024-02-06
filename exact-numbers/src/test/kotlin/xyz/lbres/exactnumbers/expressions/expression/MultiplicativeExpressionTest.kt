@@ -7,8 +7,8 @@ class MultiplicativeExpressionTest {
     @Test fun testEquals() = runEqualsTests()
     @Test fun testToString() = runToStringTests()
 
-    @Test fun testUnaryMinus() = runUnaryMinusTests() // TODO
-    @Test fun testUnaryPlus() = runUnaryPlusTests() // TODO
+    @Test fun testUnaryMinus() = runUnaryMinusTests()
+    @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testInverse() = runInverseTests() // TODO
     @Test fun testGetValue() = runGetValueTests() // TODO
 

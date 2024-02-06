@@ -10,11 +10,6 @@ import kotlin.test.assertEquals
 
 private val assertCastingOverflow = getCastingOverflowAssertion<MultiplicativeExpression>("Expression")
 
-private val simpleExpr1 = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(pi)))
-private val simpleExpr2 = SimpleExpression(Term.fromValues(ExactFraction(8, 17), listOf(log4, sqrt2, piInverse, pi)))
-private val simpleExpr3 = SimpleExpression(Term.fromValues(one, listOf(sqrt1)))
-private val partialExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)
-
 fun runToTermTests() {
     var expr = MultiplicativeExpression(Expression.ONE, Expression.ZERO)
     assertEquals(Term.ZERO, expr.toTerm())
