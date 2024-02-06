@@ -36,10 +36,6 @@ internal class MultiplicativeExpression private constructor(private val expressi
         return MultiplicativeExpression(newExpressions)
     }
 
-    override fun getValue(): BigDecimal {
-        return expressions.fold(BigDecimal.ONE) { acc, expr -> acc * expr.getValue() }
-    }
-
     override fun toTerm(): Term {
         return term.ifNull {
             term = expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()

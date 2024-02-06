@@ -4,7 +4,9 @@ import xyz.lbres.exactnumbers.exactfraction.ExactFraction
 import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
+import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
+import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import kotlin.test.assertEquals
 
@@ -41,6 +43,31 @@ fun runToByteTests() {
 }
 
 fun runToCharTests() {
+    var expr = MultiplicativeExpression(Expression.ZERO, Expression.ZERO)
+    var expected = 0.toChar()
+    assertEquals(expected, expr.toChar())
+
+    expr = MultiplicativeExpression(simpleExpr1, simpleExpr1.inverse())
+    expected = 1.toChar()
+    assertEquals(expected, expr.toChar())
+
+    expr = MultiplicativeExpression(simpleExpr1, MultiplicativeExpression(simpleExpr2, simpleExpr2.inverse()))
+    expected = 25.toChar()
+    assertEquals(expected, expr.toChar())
+
+    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expected = 0.toChar()
+    assertEquals(expected, expr.toChar())
+
+    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    assertCastingOverflow("Char", expr) { expr.toChar() }
+
+    val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(Char.MAX_VALUE.code), emptyList()))
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
+    assertSucceeds("Cast expected to succeed") { expr.toChar() }
+
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11)))))
+    assertCastingOverflow("Char", expr) { expr.toChar() }
 }
 
 fun runToShortTests() {
@@ -73,6 +100,39 @@ fun runToDoubleTests() {
  * @param type [String]: string representation of type, which is used in overflow exceptions
  */
 private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castExpr: (MultiplicativeExpression) -> T, minValue: T, maxValue: T, type: String) {
+    var expr = MultiplicativeExpression(Expression.ZERO, Expression.ZERO)
+    var expected = castLong(0)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(simpleExpr1, simpleExpr1.inverse())
+    expected = castLong(1)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(simpleExpr1, MultiplicativeExpression(simpleExpr2, simpleExpr2.inverse()))
+    expected = castLong(25)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expected = castLong(-58)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expected = castLong(0)
+    assertEquals(expected, castExpr(expr))
+
+    val minExpr = SimpleExpression(Term.fromValues(ExactFraction(minValue.toLong()), emptyList()))
+    expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
+    assertSucceeds("Cast expected to succeed") { castExpr(expr) }
+
+    expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11)))))
+    assertCastingOverflow(type, expr) { castExpr(expr) }
+
+    val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(maxValue.toLong()), emptyList()))
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
+    assertSucceeds("Cast expected to succeed") { castExpr(expr) }
+
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11)))))
+    assertCastingOverflow(type, expr) { castExpr(expr) }
 }
 
 /**
@@ -84,4 +144,45 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
  * @param type [String]: string representation of type, which is used in overflow exceptions
  */
 private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T, castExpr: (MultiplicativeExpression) -> T, maxValue: T, type: String) {
+    var expr = MultiplicativeExpression(Expression.ZERO, Expression.ZERO)
+    var expected = castDouble(0.0)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(simpleExpr1, simpleExpr1.inverse())
+    expected = castDouble(1.0)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(simpleExpr1, MultiplicativeExpression(simpleExpr2, simpleExpr2.inverse()))
+    expected = castDouble(25.13274122871834)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(simpleExpr2.inverse(), MultiplicativeExpression(simpleExpr2, simpleExpr1))
+    expected = castDouble(25.13274122871834)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expected = castDouble(-58.61224322251436)
+    assertEquals(expected, castExpr(expr))
+
+    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expected = castDouble(0.01706128182474811)
+    assertEquals(expected, castExpr(expr))
+
+    val largeValue = maxValue.toDouble().toBigDecimal().toBigInteger()
+    val smallValue = (-maxValue.toDouble()).toBigDecimal().toBigInteger()
+
+    val minExpr = SimpleExpression(Term.fromValues(ExactFraction(smallValue.toLong()), emptyList()))
+    expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
+    assertSucceeds("Cast expected to succeed") { castExpr(expr) }
+
+    expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(ExactFraction.TEN, listOf(Log(11)))))
+    println(listOf(smallValue, expr.getValue()))
+    assertCastingOverflow(type, expr) { castExpr(expr) }
+
+    val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(largeValue.toLong()), emptyList()))
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
+    assertSucceeds("Cast expected to succeed") { castExpr(expr) }
+
+    expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(ExactFraction.TEN, listOf(Log(11)))))
+    assertCastingOverflow(type, expr) { castExpr(expr) }
 }

@@ -9,15 +9,15 @@ class MultiplicativeExpressionTest {
 
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
-    @Test fun testInverse() = runInverseTests() // TODO
+    @Test fun testInverse() = runInverseTests()
     @Test fun testGetValue() = runGetValueTests() // TODO
 
     @Test fun testToTerm() = runToTermTests()
-    @Test fun testToByte() = runToByteTests() // TODO
-    @Test fun testToChar() = runToCharTests() // TODO
-    @Test fun testToShort() = runToShortTests() // TODO
-    @Test fun testToInt() = runToIntTests() // TODO
-    @Test fun testToLong() = runToLongTests() // TODO
+    @Test fun testToByte() = runToByteTests()
+    @Test fun testToChar() = runToCharTests()
+    @Test fun testToShort() = runToShortTests()
+    @Test fun testToInt() = runToIntTests()
+    @Test fun testToLong() = runToLongTests()
     @Test fun testToFloat() = runToFloatTests() // TODO
     @Test fun testToDouble() = runToDoubleTests() // TODO
 }

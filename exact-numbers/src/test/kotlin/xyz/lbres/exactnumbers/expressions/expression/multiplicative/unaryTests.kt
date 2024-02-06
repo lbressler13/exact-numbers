@@ -5,6 +5,7 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
+import java.math.BigDecimal
 import kotlin.test.assertEquals
 
 fun runUnaryMinusTests() {
@@ -68,4 +69,29 @@ fun runInverseTests() {
 }
 
 fun runGetValueTests() {
+    var expr = MultiplicativeExpression(Expression.ZERO, Expression.ZERO)
+    var expected = BigDecimal.ZERO
+    assertEquals(expected, expr.getValue())
+
+    expr = MultiplicativeExpression(simpleExpr1, simpleExpr1.inverse())
+    expected = BigDecimal.ONE
+    assertEquals(expected, expr.getValue())
+
+    expr = MultiplicativeExpression(simpleExpr1, MultiplicativeExpression(simpleExpr2, simpleExpr2.inverse()))
+    expected = BigDecimal("25.132741228718344")
+    assertEquals(expected, expr.getValue())
+
+    expr = MultiplicativeExpression(simpleExpr2.inverse(), MultiplicativeExpression(simpleExpr2, simpleExpr1))
+    expected = BigDecimal("25.132741228718344")
+    assertEquals(expected, expr.getValue())
+
+    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expected = BigDecimal("-58.612243222514357190681244841421306472893141640125321701455605589642097222080498297758968827615621990661861234584318882871011979592239226579660319550743893287383592140753516728261073125496301380737193")
+    // expected = BigDecimal("-58.612243222514357191")
+    assertEquals(expected, expr.getValue())
+
+    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expected = BigDecimal("0.017061281824748113494259559081001638329504400758354834298439155187267937410335702902091897196026099193024016721514628127266793917205357756156035937533761734752584007213581282245117667974675303725547485")
+    // expected = BigDecimal("0.017061281824748112795308108019747092438130381820126559258080078125")
+    assertEquals(expected, expr.getValue())
 }
