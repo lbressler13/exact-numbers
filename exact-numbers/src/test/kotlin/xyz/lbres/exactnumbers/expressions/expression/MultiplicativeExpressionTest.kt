@@ -12,6 +12,7 @@ class MultiplicativeExpressionTest {
     @Test fun testInverse() = runInverseTests() // TODO
     @Test fun testGetValue() = runGetValueTests() // TODO
 
+    @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests() // TODO
     @Test fun testToChar() = runToCharTests() // TODO
     @Test fun testToShort() = runToShortTests() // TODO

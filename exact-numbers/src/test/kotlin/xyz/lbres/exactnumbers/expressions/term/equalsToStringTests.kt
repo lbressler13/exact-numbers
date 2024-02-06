@@ -44,6 +44,11 @@ fun runEqualsTests() {
     assertEquals(term1, term2)
     assertEquals(term2, term1)
 
+    term1 = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
+    term2 = Term.fromValues(ExactFraction(-3, 17), listOf(log4, Sqrt(ExactFraction(1, 11)), piInverse, piInverse))
+    assertEquals(term1, term2)
+    assertEquals(term2, term1)
+
     // not equal
     term1 = Term.ONE
     term2 = -Term.ONE

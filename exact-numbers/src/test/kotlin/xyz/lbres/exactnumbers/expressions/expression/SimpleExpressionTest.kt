@@ -12,6 +12,7 @@ class SimpleExpressionTest {
     @Test fun testInverse() = runInverseTests()
     @Test fun testGetValue() = runGetValueTests()
 
+    @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
     @Test fun testToShort() = runToShortTests()
