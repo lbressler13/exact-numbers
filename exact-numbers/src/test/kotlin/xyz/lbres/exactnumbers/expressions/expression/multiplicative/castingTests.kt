@@ -18,6 +18,7 @@ fun runToTermTests() {
 
     expr = MultiplicativeExpression(partialExpr, partialExpr.inverse())
     assertEquals(Term.ONE, expr.toTerm())
+    assertEquals(Term.ONE, expr.toTerm())
 
     expr = MultiplicativeExpression(simpleExpr1, Expression.ONE)
     var expected = Term.fromValues(ExactFraction.EIGHT, listOf(pi))
@@ -25,6 +26,7 @@ fun runToTermTests() {
 
     expr = MultiplicativeExpression(simpleExpr1, partialExpr.inverse())
     expected = Term.fromValues(one, listOf(sqrt1.inverse()))
+    assertEquals(expected, expr.toTerm())
     assertEquals(expected, expr.toTerm())
 
     expr = MultiplicativeExpression(simpleExpr2, simpleExpr1)
@@ -35,6 +37,7 @@ fun runToTermTests() {
     val expr2 = MultiplicativeExpression(simpleExpr1.inverse(), MultiplicativeExpression(simpleExpr3, simpleExpr3))
     expr = MultiplicativeExpression(expr1, expr2)
     expected = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
+    assertEquals(expected, expr.toTerm())
     assertEquals(expected, expr.toTerm())
 }
 

@@ -36,6 +36,11 @@ fun runEqualsTests() {
     assertEquals(expr1, expr2)
     assertEquals(expr2, expr1)
 
+    expr1 = MultiplicativeExpression(Expression.ZERO, partialExpr)
+    expr2 = MultiplicativeExpression(simpleExpr2, MultiplicativeExpression(simpleExpr3, Expression.ZERO))
+    assertEquals(expr1, expr2)
+    assertEquals(expr2, expr1)
+
     // not equal
     expr1 = MultiplicativeExpression(simpleExpr1, simpleExpr1)
     expr2 = MultiplicativeExpression(simpleExpr1, -simpleExpr1)
