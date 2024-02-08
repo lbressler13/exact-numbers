@@ -153,11 +153,11 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     assertEquals(expected, castExpr(expr))
 
     expr = MultiplicativeExpression(simpleExpr1, MultiplicativeExpression(simpleExpr2, simpleExpr2.inverse()))
-    expected = castDouble(25.13274122871834)
+    expected = castDouble(25.132741228718345)
     assertEquals(expected, castExpr(expr))
 
     expr = MultiplicativeExpression(simpleExpr2.inverse(), MultiplicativeExpression(simpleExpr2, simpleExpr1))
-    expected = castDouble(25.13274122871834)
+    expected = castDouble(25.132741228718345)
     assertEquals(expected, castExpr(expr))
 
     expr = MultiplicativeExpression(partialExpr, simpleExpr2)
@@ -171,15 +171,14 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     val largeValue = maxValue.toDouble().toBigDecimal().toBigInteger()
     val smallValue = (-maxValue.toDouble()).toBigDecimal().toBigInteger()
 
-    val minExpr = SimpleExpression(Term.fromValues(ExactFraction(smallValue.toLong()), emptyList()))
+    val minExpr = SimpleExpression(Term.fromValues(ExactFraction(smallValue), emptyList()))
     expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
     assertSucceeds("Cast expected to succeed") { castExpr(expr) }
 
     expr = MultiplicativeExpression(minExpr, SimpleExpression(Term.fromValues(ExactFraction.TEN, listOf(Log(11)))))
-    println(listOf(smallValue, expr.getValue()))
     assertCastingOverflow(type, expr) { castExpr(expr) }
 
-    val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(largeValue.toLong()), emptyList()))
+    val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(largeValue), emptyList()))
     expr = MultiplicativeExpression(maxExpr, SimpleExpression(Term.fromValues(one, listOf(Log(11).inverse()))))
     assertSucceeds("Cast expected to succeed") { castExpr(expr) }
 

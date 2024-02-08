@@ -10,7 +10,7 @@ class MultiplicativeExpressionTest {
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testInverse() = runInverseTests()
-    @Test fun testGetValue() = runGetValueTests() // TODO
+    @Test fun testGetValue() = runGetValueTests()
 
     @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests()
@@ -18,6 +18,6 @@ class MultiplicativeExpressionTest {
     @Test fun testToShort() = runToShortTests()
     @Test fun testToInt() = runToIntTests()
     @Test fun testToLong() = runToLongTests()
-    @Test fun testToFloat() = runToFloatTests() // TODO
-    @Test fun testToDouble() = runToDoubleTests() // TODO
+    @Test fun testToFloat() = runToFloatTests()
+    @Test fun testToDouble() = runToDoubleTests()
 }

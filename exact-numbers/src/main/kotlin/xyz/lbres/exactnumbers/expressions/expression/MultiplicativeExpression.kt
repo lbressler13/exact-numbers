@@ -9,7 +9,6 @@ import xyz.lbres.kotlinutils.generic.ext.ifNull
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
-import java.math.BigDecimal
 
 /**
  * Expression which is the product of several other expressions

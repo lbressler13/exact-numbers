@@ -4,7 +4,6 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.utils.createHashCode
-import java.math.BigDecimal
 
 /**
  * Expression consisting of a single term
