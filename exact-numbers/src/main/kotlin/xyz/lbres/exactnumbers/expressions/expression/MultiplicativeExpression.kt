@@ -4,8 +4,8 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.exactnumbers.utils.getOrSet
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
-import xyz.lbres.kotlinutils.generic.ext.ifNull
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
@@ -37,9 +37,8 @@ internal class MultiplicativeExpression private constructor(private val expressi
     }
 
     override fun toTerm(): Term {
-        return term.ifNull {
-            term = expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()
-            term!!
+        return getOrSet({ term }, { term = it }) {
+            expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()
         }
     }
 

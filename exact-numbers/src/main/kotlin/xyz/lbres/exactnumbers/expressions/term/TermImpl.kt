@@ -7,9 +7,9 @@ import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.irrationals.IrrationalNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
+import xyz.lbres.exactnumbers.utils.getOrSet
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.generic.ext.ifNull
 import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.emptyConstMultiSet
@@ -81,10 +81,7 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      * @return [Term] simplified version of this term
      */
     override fun getSimplified(): Term {
-        return simplified.ifNull {
-            simplified = createSimplifiedTerm(coefficient, factorTypeMapping)
-            simplified!!
-        }
+        return getOrSet({ simplified }, { simplified = it }) { createSimplifiedTerm(coefficient, factorTypeMapping) }
     }
 
     /**
@@ -94,15 +91,13 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
      * @return [BigDecimal]
      */
     override fun getValue(): BigDecimal {
-        return value.ifNull {
+        return getOrSet({ value }, { value = it }) {
             val simplified = getSimplified()
 
             val factorProduct = simplified.factors.fold(BigDecimal.ONE) { acc, number -> acc * number.getValue() }
             val numeratorProduct = simplified.coefficient.numerator.toBigDecimal() * factorProduct
 
-            val result = numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
-            value = result
-            value!!
+            numeratorProduct.divideBy(simplified.coefficient.denominator.toBigDecimal())
         }
     }
 
@@ -119,17 +114,16 @@ internal class TermImpl(coefficient: ExactFraction, factors: ConstMultiSet<Irrat
     override fun toExpression(): Expression = SimpleExpression(this)
 
     override fun toString(): String {
-        return string.ifNull {
+        return getOrSet({ string }, { string = it }) {
             val fractionString = coefficient.toFractionString()
             val coeffString = simpleIf(fractionString.contains("/"), "[$fractionString]", fractionString)
             val factorString = factorSet.joinToString("x")
 
-            string = when {
+            when {
                 factorString.isEmpty() -> "<$coeffString>"
                 coeffString == "1" -> "<$factorString>"
                 else -> "<${coeffString}x$factorString>"
             }
-            string!!
         }
     }
 

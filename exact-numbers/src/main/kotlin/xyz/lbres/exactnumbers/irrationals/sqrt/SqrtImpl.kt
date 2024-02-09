@@ -5,7 +5,7 @@ import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.ext.isWholeNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
-import xyz.lbres.kotlinutils.generic.ext.ifNull
+import xyz.lbres.exactnumbers.utils.getOrSet
 import java.math.BigDecimal
 
 // implementation of Sqrt class
@@ -57,7 +57,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
             return Pair(ExactFraction.ONE, this)
         }
 
-        return simplified.ifNull {
+        return getOrSet({ simplified }, { simplified = it }) {
             val numeratorWhole = extractWholeOf(radicand.numerator)
             val denominatorWhole = extractWholeOf(radicand.denominator)
             val whole = ExactFraction(numeratorWhole, denominatorWhole)
@@ -66,8 +66,7 @@ internal class SqrtImpl(override val radicand: ExactFraction) : Sqrt() {
             val newDenominator = radicand.denominator / (denominatorWhole * denominatorWhole)
             val newRadicand = ExactFraction(newNumerator, newDenominator)
 
-            simplified = Pair(whole, SqrtImpl(newRadicand))
-            simplified!!
+            Pair(whole, SqrtImpl(newRadicand))
         }
     }
 

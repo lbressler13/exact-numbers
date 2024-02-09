@@ -5,9 +5,9 @@ import xyz.lbres.exactnumbers.ext.divideBy
 import xyz.lbres.exactnumbers.ext.isWholeNumber
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.divideByZero
+import xyz.lbres.exactnumbers.utils.getOrSet
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
 import xyz.lbres.kotlinutils.general.simpleIf
-import xyz.lbres.kotlinutils.generic.ext.ifNull
 import java.math.BigDecimal
 
 @Suppress("EqualsOrHashCode")
@@ -71,13 +71,12 @@ internal class LogImpl private constructor(
 
     // TODO improve simplification using bases
     override fun getSimplified(): Pair<ExactFraction, Log> {
-        return simplified.ifNull {
-            simplified = when {
+        return getOrSet({ simplified }, { simplified = it }) {
+            when {
                 fullySimplified || isZero() || equals(ONE) -> Pair(ExactFraction.ONE, this)
                 isRational() -> Pair(getRationalValue()!!, ONE)
                 else -> Pair(ExactFraction.ONE, LogImpl(argument, base, isInverted, fullySimplified = true))
             }
-            simplified!!
         }
     }
 

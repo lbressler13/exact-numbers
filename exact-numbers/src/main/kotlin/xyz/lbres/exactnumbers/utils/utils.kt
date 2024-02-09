@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.utils
 
 import xyz.lbres.kotlinutils.general.tryOrDefault
+import xyz.lbres.kotlinutils.generic.ext.ifNull
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -27,6 +28,21 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
             downPasses -> downInt
             else -> null
         }
+    }
+}
+
+/**
+ * Update a variable if `null`, and return current value
+ *
+ * @param getValue () -> T?: function to get value of variable
+ * @param setValue (T) -> Unit: function to update value of variable
+ * @param generateValue () -> T: function to generate a new value if [getValue] returns `null`
+ * @return T: the result of [getValue] or [generateValue]
+ */
+internal fun <T> getOrSet(getValue: () -> T?, setValue: (T) -> Unit, generateValue: () -> T): T {
+    return getValue().ifNull {
+        setValue(generateValue())
+        getValue()!!
     }
 }
 

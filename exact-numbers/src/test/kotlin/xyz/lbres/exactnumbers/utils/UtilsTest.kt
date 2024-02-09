@@ -1,6 +1,12 @@
 package xyz.lbres.exactnumbers.utils
 
+import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.term.Term
+import xyz.lbres.exactnumbers.irrationals.log.Log
+import xyz.lbres.exactnumbers.irrationals.pi.Pi
+import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.kotlinutils.biginteger.ext.isZero
+import xyz.lbres.kotlinutils.iterable.ext.countElement
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
@@ -48,6 +54,73 @@ class UtilsTest {
             BigInteger("10001") to setOf(BigDecimal("10000.999999"))
         )
         runSingleGetIntFromDecimalTest(values) { true }
+    }
+
+    @Test
+    fun testGetOrSet() {
+        // simple types
+        var int: Int? = 0
+        var intResult = getOrSet({ int }, { int = it }) { 8 }
+        assertEquals(0, int)
+        assertEquals(0, intResult)
+
+        int = null
+        intResult = getOrSet({ int }, { int = it }) { 8 }
+        assertEquals(8, int)
+        assertEquals(8, intResult)
+
+        var string: String? = ""
+        var stringResult = getOrSet({ string }, { string = it }) { (string ?: "placeholder").length.toString() }
+        assertEquals("", string)
+        assertEquals("", stringResult)
+
+        string = null
+        stringResult = getOrSet({ string }, { string = it }) { (string ?: "placeholder").length.toString() }
+        assertEquals("11", string)
+        assertEquals("11", stringResult)
+
+        string = "hello world"
+        stringResult = getOrSet({ string }, { string = it }) { "" }
+        assertEquals("hello world", string)
+        assertEquals("hello world", stringResult)
+
+        int = null
+        intResult = getOrSet({ int }, { int = it }) { string?.length ?: 0 }
+        assertEquals(11, int)
+        assertEquals(11, intResult)
+
+        // term
+        val ints = listOf(100, 4, 17, -1, -11, 0, 4, -17)
+        val factors = listOf(Pi(), Log(100, 2), Log(16, 2), Sqrt(100))
+        var term: Term? = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
+        var termExpected = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
+        var termResult = getOrSet({ term }, { term = it }) {
+            val coeff = ints.maxByOrNull { ints.countElement(it) }!!
+            val factor = factors.filter { it.isRational() }[0]
+            Term.fromValues(ExactFraction(coeff), listOf(factor))
+        }
+        assertEquals(termExpected, term)
+        assertEquals(termExpected, termResult)
+
+        term = null
+        termExpected = Term.fromValues(ExactFraction(4), listOf(Log(16, 2)))
+        termResult = getOrSet({ term }, { term = it }) {
+            val coeff = ints.maxByOrNull { ints.countElement(it) }!!
+            val factor = factors.filter { it.isRational() }[0]
+            Term.fromValues(ExactFraction(coeff), listOf(factor))
+        }
+        assertEquals(termExpected, term)
+        assertEquals(termExpected, termResult)
+
+        // multiple vars
+        int = null
+        string = "123"
+        intResult = getOrSet({ int }, { int = string!!.length }) {
+            string = "hello"
+            0
+        }
+        assertEquals(5, int)
+        assertEquals(5, intResult)
     }
 
     /**
