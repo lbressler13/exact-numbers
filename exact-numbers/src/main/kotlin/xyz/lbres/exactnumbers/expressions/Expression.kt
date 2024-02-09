@@ -13,10 +13,12 @@ sealed class Expression : Number() {
     abstract fun inverse(): Expression
     abstract fun getValue(): BigDecimal
 
-    // open operator fun plus(other: Expression): Expression = AdditiveExpression(constMultiSetOf(this, other))
-    // open operator fun minus(other: Expression): Expression = AdditiveExpression(constMultiSetOf(this, -other))
-    // open operator fun times(other: Expression): Expression = MultiplicativeExpression(constMultiSetOf(this, other))
-    // open operator fun div(other: Expression): Expression = MultiplicativeExpression(constMultiSetOf(this, other.inverse()))
+    // abstract fun isZero(): Boolean
+
+    // abstract operator fun plus(other: Expression): Expression
+    // abstract operator fun minus(other: Expression): Expression
+    // abstract operator fun times(other: Expression): Expression
+    // abstract operator fun div(other: Expression): Expression
 
     abstract fun toTerm(): Term
 

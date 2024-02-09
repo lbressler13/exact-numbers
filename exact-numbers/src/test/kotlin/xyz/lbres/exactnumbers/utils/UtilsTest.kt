@@ -11,6 +11,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class UtilsTest {
     @Test
@@ -69,6 +70,14 @@ class UtilsTest {
         assertEquals(8, int)
         assertEquals(8, intResult)
 
+        int = 123
+        intResult = getOrSet({ int }, { int = it }) { 1 / 0 }
+        assertEquals(123, int)
+        assertEquals(123, intResult)
+
+        int = null
+        assertFailsWith<ArithmeticException> { intResult = getOrSet({ int }, { int = it }) { 1 / 0 } }
+
         var string: String? = ""
         var stringResult = getOrSet({ string }, { string = it }) { (string ?: "placeholder").length.toString() }
         assertEquals("", string)
@@ -92,23 +101,21 @@ class UtilsTest {
         // term
         val ints = listOf(100, 4, 17, -1, -11, 0, 4, -17)
         val factors = listOf(Pi(), Log(100, 2), Log(16, 2), Sqrt(100))
-        var term: Term? = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
-        var termExpected = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
-        var termResult = getOrSet({ term }, { term = it }) {
+        val generateTerm: () -> Term = {
             val coeff = ints.maxByOrNull { ints.countElement(it) }!!
             val factor = factors.filter { it.isRational() }[0]
             Term.fromValues(ExactFraction(coeff), listOf(factor))
         }
+
+        var term: Term? = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
+        var termExpected = Term.fromValues(ExactFraction.EIGHT, listOf(Pi(), Pi().inverse()))
+        var termResult = getOrSet({ term }, { term = it }, generateTerm)
         assertEquals(termExpected, term)
         assertEquals(termExpected, termResult)
 
         term = null
         termExpected = Term.fromValues(ExactFraction(4), listOf(Log(16, 2)))
-        termResult = getOrSet({ term }, { term = it }) {
-            val coeff = ints.maxByOrNull { ints.countElement(it) }!!
-            val factor = factors.filter { it.isRational() }[0]
-            Term.fromValues(ExactFraction(coeff), listOf(factor))
-        }
+        termResult = getOrSet({ term }, { term = it }, generateTerm)
         assertEquals(termExpected, term)
         assertEquals(termExpected, termResult)
 

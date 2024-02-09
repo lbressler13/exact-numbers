@@ -32,11 +32,11 @@ internal fun getIntFromDecimal(decimal: BigDecimal, checkInt: (BigInteger) -> Bo
 }
 
 /**
- * Update a variable if `null`, and return current value
+ * Update value of a variable if the current value is `null`, and return updated version
  *
  * @param getValue () -> T?: function to get value of variable
  * @param setValue (T) -> Unit: function to update value of variable
- * @param generateValue () -> T: function to generate a new value if [getValue] returns `null`
+ * @param generateValue () -> T: function to generate a new value if [getValue] initially returns `null`
  * @return T: the result of [getValue] or [generateValue]
  */
 internal fun <T> getOrSet(getValue: () -> T?, setValue: (T) -> Unit, generateValue: () -> T): T {

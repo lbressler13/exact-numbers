@@ -5,7 +5,9 @@ import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.exactnumbers.utils.getOrSet
+import xyz.lbres.kotlinutils.bigdecimal.ext.isZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
+import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
@@ -14,12 +16,15 @@ import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
  * Expression which is the product of several other expressions
  */
 @Suppress("EqualsOrHashCode")
-internal class MultiplicativeExpression private constructor(private val expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
+internal class MultiplicativeExpression private constructor(expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
+    private val expressions: ConstMultiSet<Expression>
     private var term: Term? = null
 
     init {
-        if (expressions.isEmpty()) {
-            throw Exception("Invalid expression")
+        this.expressions = when {
+            expressions.isEmpty() -> throw Exception("Invalid expression")
+            expressions.anyConsistent { it.getValue().isZero() } -> constMultiSetOf(ZERO)
+            else -> expressions
         }
     }
 
