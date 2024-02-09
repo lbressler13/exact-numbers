@@ -1,6 +1,7 @@
 package xyz.lbres.exactnumbers.expressions.expression
 
 import xyz.lbres.exactnumbers.exactfraction.ExactFraction
+import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.irrationals.log.Log
 import xyz.lbres.exactnumbers.irrationals.pi.Pi
 import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
@@ -19,3 +20,8 @@ val piInverse = Pi().inverse()
 val testNumber1 = TestNumber(ExactFraction(3, 4))
 val testNumber2 = TestNumber(ExactFraction.SEVEN)
 val one = ExactFraction.ONE
+
+internal val simpleExpr1 = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(pi)))
+internal val simpleExpr2 = SimpleExpression(Term.fromValues(ExactFraction(8, 17), listOf(log4, sqrt2, piInverse, pi)))
+internal val simpleExpr3 = SimpleExpression(Term.fromValues(one, listOf(sqrt1)))
+internal val partialExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)

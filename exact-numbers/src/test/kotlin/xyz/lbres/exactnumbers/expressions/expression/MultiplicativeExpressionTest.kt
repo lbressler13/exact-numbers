@@ -1,9 +1,9 @@
 package xyz.lbres.exactnumbers.expressions.expression
 
-import xyz.lbres.exactnumbers.expressions.expression.simple.* // ktlint-disable no-wildcard-imports no-unused-imports
+import xyz.lbres.exactnumbers.expressions.expression.multiplicative.* // ktlint-disable no-wildcard-imports no-unused-imports
 import kotlin.test.Test
 
-class SimpleExpressionTest {
+class MultiplicativeExpressionTest {
     @Test fun testEquals() = runEqualsTests()
     @Test fun testToString() = runToStringTests()
 
