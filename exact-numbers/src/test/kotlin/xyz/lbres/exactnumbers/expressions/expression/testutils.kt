@@ -24,4 +24,5 @@ val one = ExactFraction.ONE
 internal val simpleExpr1 = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(pi)))
 internal val simpleExpr2 = SimpleExpression(Term.fromValues(ExactFraction(8, 17), listOf(log4, sqrt2, piInverse, pi)))
 internal val simpleExpr3 = SimpleExpression(Term.fromValues(one, listOf(sqrt1)))
-internal val partialExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)
+internal val partialMultExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)
+internal val partialAddExpr = AdditiveExpression(simpleExpr2, simpleExpr3)

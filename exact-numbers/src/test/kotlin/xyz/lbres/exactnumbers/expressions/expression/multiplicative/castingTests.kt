@@ -16,7 +16,7 @@ fun runToTermTests() {
     var expr = MultiplicativeExpression(Expression.ONE, Expression.ZERO)
     assertEquals(Term.ZERO, expr.toTerm())
 
-    expr = MultiplicativeExpression(partialExpr, partialExpr.inverse())
+    expr = MultiplicativeExpression(partialMultExpr, partialMultExpr.inverse())
     assertEquals(Term.ONE, expr.toTerm())
     assertEquals(Term.ONE, expr.toTerm())
 
@@ -24,7 +24,7 @@ fun runToTermTests() {
     var expected = Term.fromValues(ExactFraction.EIGHT, listOf(pi))
     assertEquals(expected, expr.toTerm())
 
-    expr = MultiplicativeExpression(simpleExpr1, partialExpr.inverse())
+    expr = MultiplicativeExpression(simpleExpr1, partialMultExpr.inverse())
     expected = Term.fromValues(one, listOf(sqrt1.inverse()))
     assertEquals(expected, expr.toTerm())
     assertEquals(expected, expr.toTerm())
@@ -33,7 +33,7 @@ fun runToTermTests() {
     expected = Term.fromValues(ExactFraction(512, 187), listOf(pi, log4))
     assertEquals(expected, expr.toTerm())
 
-    val expr1 = MultiplicativeExpression(-simpleExpr2, partialExpr.inverse())
+    val expr1 = MultiplicativeExpression(-simpleExpr2, partialMultExpr.inverse())
     val expr2 = MultiplicativeExpression(simpleExpr1.inverse(), MultiplicativeExpression(simpleExpr3, simpleExpr3))
     expr = MultiplicativeExpression(expr1, expr2)
     expected = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
@@ -58,11 +58,11 @@ fun runToCharTests() {
     expected = 25.toChar()
     assertEquals(expected, expr.toChar())
 
-    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expr = MultiplicativeExpression(partialMultExpr.inverse(), -simpleExpr2.inverse())
     expected = 0.toChar()
     assertEquals(expected, expr.toChar())
 
-    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expr = MultiplicativeExpression(partialMultExpr, simpleExpr2)
     assertCastingOverflow("Char", expr) { expr.toChar() }
 
     val maxExpr = SimpleExpression(Term.fromValues(ExactFraction(Char.MAX_VALUE.code), emptyList()))
@@ -115,11 +115,11 @@ private fun <T : Number> runWholeNumberCastingTests(castLong: (Long) -> T, castE
     expected = castLong(25)
     assertEquals(expected, castExpr(expr))
 
-    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expr = MultiplicativeExpression(partialMultExpr, simpleExpr2)
     expected = castLong(-58)
     assertEquals(expected, castExpr(expr))
 
-    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expr = MultiplicativeExpression(partialMultExpr.inverse(), -simpleExpr2.inverse())
     expected = castLong(0)
     assertEquals(expected, castExpr(expr))
 
@@ -163,11 +163,11 @@ private fun <T : Number> runDecimalNumberCastingTests(castDouble: (Double) -> T,
     expected = castDouble(25.132741228718345)
     assertEquals(expected, castExpr(expr))
 
-    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expr = MultiplicativeExpression(partialMultExpr, simpleExpr2)
     expected = castDouble(-58.61224322251436)
     assertEquals(expected, castExpr(expr))
 
-    expr = MultiplicativeExpression(partialExpr.inverse(), -simpleExpr2.inverse())
+    expr = MultiplicativeExpression(partialMultExpr.inverse(), -simpleExpr2.inverse())
     expected = castDouble(0.01706128182474811)
     assertEquals(expected, castExpr(expr))
 
