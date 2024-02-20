@@ -2,7 +2,6 @@ package xyz.lbres.exactnumbers.exactfraction
 
 import xyz.lbres.kotlinutils.general.simpleIf
 import xyz.lbres.kotlinutils.general.succeeds
-import xyz.lbres.kotlinutils.string.ext.isInt
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -87,5 +86,5 @@ internal fun checkIsEFString(s: String): Boolean {
     }
 
     val numbers = trimmed.substring(efPrefix.length, s.length - efSuffix.length).split(' ')
-    return numbers.size == 2 && numbers[0].isInt() && numbers[1].isInt()
+    return numbers.size == 2 && succeeds { BigInteger(numbers[0]) } && succeeds { BigInteger(numbers[1]) }
 }
