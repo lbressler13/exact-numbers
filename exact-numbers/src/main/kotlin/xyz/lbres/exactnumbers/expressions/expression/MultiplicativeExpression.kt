@@ -48,7 +48,7 @@ internal class MultiplicativeExpression private constructor(expressions: ConstMu
         }
     }
 
-    fun getSimplified(): Expression = SimpleExpression(toTerm())
+    override fun getSimplified(): Expression = SimpleExpression(toTerm())
     override fun getValue(): BigDecimal = getSimplified().getValue()
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "MultiplicativeExpression"))

@@ -21,6 +21,7 @@ sealed class Expression : Number() {
     // abstract operator fun div(other: Expression): Expression
 
     abstract fun toTerm(): Term
+    abstract fun getSimplified(): Expression
 
     companion object {
         val ZERO: Expression = SimpleExpression(Term.ZERO)

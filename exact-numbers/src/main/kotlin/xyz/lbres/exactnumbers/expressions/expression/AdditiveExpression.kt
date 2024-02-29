@@ -50,6 +50,8 @@ internal class AdditiveExpression private constructor(private val expressions: C
 
     // TODO
     override fun getValue(): BigDecimal = BigDecimal.ZERO
+    // TODO
+    override fun getSimplified(): Expression = this
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "AdditiveExpression"))
 

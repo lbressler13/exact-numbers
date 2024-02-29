@@ -19,7 +19,7 @@ internal class SimpleExpression(private val term: Term) : ExpressionImpl() {
     override fun inverse(): Expression = SimpleExpression(term.inverse())
 
     override fun toTerm(): Term = term
-    fun getSimplified(): Expression = getOrSet({ simplified }, { simplified = it }) { SimpleExpression(term.getSimplified()) }
+    override fun getSimplified(): Expression = getOrSet({ simplified }, { simplified = it }) { SimpleExpression(term.getSimplified()) }
     override fun getValue(): BigDecimal = term.getValue()
 
     override fun hashCode(): Int = createHashCode(listOf(term, "Expression"))
