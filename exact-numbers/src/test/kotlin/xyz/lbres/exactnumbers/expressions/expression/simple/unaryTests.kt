@@ -172,3 +172,25 @@ fun runGetValueTests() {
     expected = BigDecimal("85.33085748711055350")
     assertEquals(expected, expr.getValue())
 }
+
+fun runGetSimplifiedTests() {
+    var term = Term.fromValues(ExactFraction.EIGHT, listOf(pi, piInverse))
+    var expected = Term.fromValues(ExactFraction.EIGHT, emptyList())
+    assertEquals(expected, term.getSimplified())
+
+    term = Term.fromValues(ExactFraction(-3, 2), listOf(log1, pi, piInverse, pi))
+    expected = Term.fromValues(ExactFraction(-3, 2), listOf(log1, pi))
+    assertEquals(expected, term.getSimplified())
+
+    term = Term.fromValues(ExactFraction.TWO, listOf(Sqrt(64), Sqrt(ExactFraction(75, 98)), Sqrt(26)))
+    expected = Term.fromValues(ExactFraction(80, 7), listOf(Sqrt(ExactFraction(39))))
+    assertEquals(expected, term.getSimplified())
+
+    term = Term.fromValues(ExactFraction.EIGHT, emptyList())
+    expected = Term.fromValues(ExactFraction.EIGHT, emptyList())
+    assertEquals(expected, term.getSimplified())
+
+    term = Term.fromValues(ExactFraction.SEVEN, listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi))
+    expected = Term.fromValues(ExactFraction.SEVEN, listOf(log1, log1, log2.inverse(), Sqrt(5), pi, pi))
+    assertEquals(expected, term.getSimplified())
+}

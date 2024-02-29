@@ -10,6 +10,7 @@ import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
+import java.math.BigDecimal
 
 /**
  * Expression which is the sum of several other expressions.
@@ -46,6 +47,9 @@ internal class AdditiveExpression private constructor(private val expressions: C
             // TODO
         }
     }
+
+    // TODO
+    override fun getValue(): BigDecimal = BigDecimal.ZERO
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "AdditiveExpression"))
 

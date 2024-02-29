@@ -11,6 +11,7 @@ import xyz.lbres.kotlinutils.set.multiset.anyConsistent
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
+import java.math.BigDecimal
 
 /**
  * Expression which is the product of several other expressions
@@ -46,6 +47,9 @@ internal class MultiplicativeExpression private constructor(expressions: ConstMu
             expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()
         }
     }
+
+    fun getSimplified(): Expression = SimpleExpression(toTerm())
+    override fun getValue(): BigDecimal = getSimplified().getValue()
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "MultiplicativeExpression"))
 
