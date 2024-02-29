@@ -95,6 +95,10 @@ fun runParseDecimalTests() {
     expected = ExactFraction(BigInteger(n), BigInteger(d))
     assertEquals(expected, parseDecimal(s))
 
+    s = "4444444444444444444444444444444444444444444"
+    expected = ExactFraction(BigInteger(s), 1)
+    assertEquals(expected, parseDecimal(s))
+
     // e-notation
     s = "3.90E-3" // 0.00390
     expected = ExactFraction(39, 10000)
@@ -175,6 +179,10 @@ fun runParseEFStringTests() {
 
     s = "EF[-17 29]"
     expected = ExactFraction(-17, 29)
+    assertEquals(expected, parseEFString(s))
+
+    s = "EF[4444444444444444444444444444444444444444444 1]"
+    expected = ExactFraction(BigInteger("4444444444444444444444444444444444444444444"), 1)
     assertEquals(expected, parseEFString(s))
 
     // errors

@@ -26,6 +26,11 @@ class ExactFractionConstructorsTest {
         assertEquals(BigInteger("-7"), ef.numerator)
         assertEquals(BigInteger("3"), ef.denominator)
 
+        // large value
+        ef = ExactFraction("4444444444444444444444444444444444444444444")
+        assertEquals(BigInteger("4444444444444444444444444444444444444444444"), ef.numerator)
+        assertEquals(BigInteger.ONE, ef.denominator)
+
         // invalid
         assertFailsWithMessage<NumberFormatException>("Error parsing []") { ExactFraction("[]") }
     }
