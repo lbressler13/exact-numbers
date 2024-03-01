@@ -14,7 +14,7 @@ class SimpleExpressionTest {
     @Test fun testGetSimplified() = runGetSimplifiedTests()
     @Test fun isZero() = runIsZeroTests()
 
-    @Test fun testToTerm() = runToTermTests()
+    // @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()
     @Test fun testToShort() = runToShortTests()

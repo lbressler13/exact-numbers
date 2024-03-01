@@ -94,6 +94,7 @@ fun runGetValueTests() {
 
     expr = MultiplicativeExpression(partialMultExpr.inverse(), -simpleExpr2.inverse())
     expected = BigDecimal("0.017061281824748112795308108019747092438130381820126559258080078125")
+    // expected = BigDecimal("0.0170612818247481127955653165209070906353536211925663773027158203125")
     assertEquals(expected, expr.getValue())
 }
 
@@ -103,6 +104,7 @@ fun runGetSimplifiedTests() {
 
     expr = MultiplicativeExpression(partialMultExpr, partialMultExpr.inverse())
     assertEquals(Expression.ONE, expr.getSimplified())
+    assertEquals(Expression.ONE, expr.getSimplified())
 
     expr = MultiplicativeExpression(simpleExpr1, Expression.ONE)
     var term = Term.fromValues(ExactFraction.EIGHT, listOf(pi))
@@ -111,9 +113,11 @@ fun runGetSimplifiedTests() {
     expr = MultiplicativeExpression(simpleExpr1, partialMultExpr.inverse())
     term = Term.fromValues(one, listOf(sqrt1.inverse()))
     assertEquals(SimpleExpression(term), expr.getSimplified())
+    assertEquals(SimpleExpression(term), expr.getSimplified())
 
     expr = MultiplicativeExpression(simpleExpr2, simpleExpr1)
     term = Term.fromValues(ExactFraction(512, 187), listOf(pi, log4))
+    assertEquals(SimpleExpression(term), expr.getSimplified())
     assertEquals(SimpleExpression(term), expr.getSimplified())
 
     val expr1 = MultiplicativeExpression(-simpleExpr2, partialMultExpr.inverse())

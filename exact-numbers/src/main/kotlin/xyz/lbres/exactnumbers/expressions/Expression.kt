@@ -20,7 +20,7 @@ sealed class Expression : Number() {
     // abstract operator fun times(other: Expression): Expression
     // abstract operator fun div(other: Expression): Expression
 
-    abstract fun toTerm(): Term
+    // abstract fun toTerm(): Term
     abstract fun getSimplified(): Expression
 
     companion object {

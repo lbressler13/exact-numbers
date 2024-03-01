@@ -5,41 +5,40 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
 import xyz.lbres.exactnumbers.irrationals.log.Log
-import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.assertSucceeds
 import xyz.lbres.exactnumbers.testutils.getCastingOverflowAssertion
 import kotlin.test.assertEquals
 
 private val assertCastingOverflow = getCastingOverflowAssertion<MultiplicativeExpression>("Expression")
 
-fun runToTermTests() {
-    var expr = MultiplicativeExpression(Expression.ONE, Expression.ZERO)
-    assertEquals(Term.ZERO, expr.toTerm())
-
-    expr = MultiplicativeExpression(partialMultExpr, partialMultExpr.inverse())
-    assertEquals(Term.ONE, expr.toTerm())
-    assertEquals(Term.ONE, expr.toTerm())
-
-    expr = MultiplicativeExpression(simpleExpr1, Expression.ONE)
-    var expected = Term.fromValues(ExactFraction.EIGHT, listOf(pi))
-    assertEquals(expected, expr.toTerm())
-
-    expr = MultiplicativeExpression(simpleExpr1, partialMultExpr.inverse())
-    expected = Term.fromValues(one, listOf(sqrt1.inverse()))
-    assertEquals(expected, expr.toTerm())
-    assertEquals(expected, expr.toTerm())
-
-    expr = MultiplicativeExpression(simpleExpr2, simpleExpr1)
-    expected = Term.fromValues(ExactFraction(512, 187), listOf(pi, log4))
-    assertEquals(expected, expr.toTerm())
-
-    val expr1 = MultiplicativeExpression(-simpleExpr2, partialMultExpr.inverse())
-    val expr2 = MultiplicativeExpression(simpleExpr1.inverse(), MultiplicativeExpression(simpleExpr3, simpleExpr3))
-    expr = MultiplicativeExpression(expr1, expr2)
-    expected = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
-    assertEquals(expected, expr.toTerm())
-    assertEquals(expected, expr.toTerm())
-}
+// fun runToTermTests() {
+//    var expr = MultiplicativeExpression(Expression.ONE, Expression.ZERO)
+//    assertEquals(Term.ZERO, expr.toTerm())
+//
+//    expr = MultiplicativeExpression(partialMultExpr, partialMultExpr.inverse())
+//    assertEquals(Term.ONE, expr.toTerm())
+//    assertEquals(Term.ONE, expr.toTerm())
+//
+//    expr = MultiplicativeExpression(simpleExpr1, Expression.ONE)
+//    var expected = Term.fromValues(ExactFraction.EIGHT, listOf(pi))
+//    assertEquals(expected, expr.toTerm())
+//
+//    expr = MultiplicativeExpression(simpleExpr1, partialMultExpr.inverse())
+//    expected = Term.fromValues(one, listOf(sqrt1.inverse()))
+//    assertEquals(expected, expr.toTerm())
+//    assertEquals(expected, expr.toTerm())
+//
+//    expr = MultiplicativeExpression(simpleExpr2, simpleExpr1)
+//    expected = Term.fromValues(ExactFraction(512, 187), listOf(pi, log4))
+//    assertEquals(expected, expr.toTerm())
+//
+//    val expr1 = MultiplicativeExpression(-simpleExpr2, partialMultExpr.inverse())
+//    val expr2 = MultiplicativeExpression(simpleExpr1.inverse(), MultiplicativeExpression(simpleExpr3, simpleExpr3))
+//    expr = MultiplicativeExpression(expr1, expr2)
+//    expected = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
+//    assertEquals(expected, expr.toTerm())
+//    assertEquals(expected, expr.toTerm())
+// }
 
 fun runToByteTests() {
     runWholeNumberCastingTests(Long::toByte, MultiplicativeExpression::toByte, Byte.MIN_VALUE, Byte.MAX_VALUE, "Byte")

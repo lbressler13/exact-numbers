@@ -11,7 +11,9 @@ import xyz.lbres.exactnumbers.utils.castToShort
 // internal implementation of expression
 @Suppress("EqualsOrHashCode")
 internal abstract class ExpressionImpl : Expression() {
-    override fun equals(other: Any?): Boolean = other is Expression && getValue() == other.getValue()
+    override fun equals(other: Any?): Boolean {
+        return other is Expression && getSimplified().getValue() == other.getSimplified().getValue()
+    }
 
     override fun toByte(): Byte = castToByte(getValue(), this, "Expression")
     override fun toChar(): Char = castToChar(getValue(), this, "Expression")

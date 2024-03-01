@@ -13,24 +13,24 @@ import kotlin.test.assertEquals
 
 private val assertCastingOverflow = getCastingOverflowAssertion<SimpleExpression>("Expression")
 
-fun runToTermTests() {
-    var expr = SimpleExpression(Term.ZERO)
-    var expected = Term.ZERO
-    assertEquals(expected, expr.toTerm())
-
-    expr = SimpleExpression(Term.fromValues(ExactFraction(44, 7), emptyList()))
-    expected = Term.fromValues(ExactFraction(44, 7), emptyList())
-    assertEquals(expected, expr.toTerm())
-
-    expr = SimpleExpression(Term.fromValues(one, listOf(log2, log4, log1)))
-    expected = Term.fromValues(one, listOf(log4, log1, log2))
-    assertEquals(expected, expr.toTerm())
-
-    val factors = listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
-    expr = SimpleExpression(Term.fromValues(ExactFraction(-100, 333), factors))
-    expected = Term.fromValues(ExactFraction(-100, 333), factors)
-    assertEquals(expected, expr.toTerm())
-}
+// fun runToTermTests() {
+//    var expr = SimpleExpression(Term.ZERO)
+//    var expected = Term.ZERO
+//    assertEquals(expected, expr.toTerm())
+//
+//    expr = SimpleExpression(Term.fromValues(ExactFraction(44, 7), emptyList()))
+//    expected = Term.fromValues(ExactFraction(44, 7), emptyList())
+//    assertEquals(expected, expr.toTerm())
+//
+//    expr = SimpleExpression(Term.fromValues(one, listOf(log2, log4, log1)))
+//    expected = Term.fromValues(one, listOf(log4, log1, log2))
+//    assertEquals(expected, expr.toTerm())
+//
+//    val factors = listOf(log2, log2, log4, testNumber1, log1, sqrt1, sqrt2, piInverse, pi)
+//    expr = SimpleExpression(Term.fromValues(ExactFraction(-100, 333), factors))
+//    expected = Term.fromValues(ExactFraction(-100, 333), factors)
+//    assertEquals(expected, expr.toTerm())
+// }
 
 fun runToByteTests() {
     runWholeNumberCastingTests(Long::toByte, SimpleExpression::toByte, Byte.MIN_VALUE, Byte.MAX_VALUE, "Byte")
