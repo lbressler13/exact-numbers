@@ -13,6 +13,11 @@ class MultiplicativeExpressionTest {
     @Test fun testGetValue() = runGetValueTests()
     @Test fun testGetSimplified() = runGetSimplifiedTests()
 
+    // @Test fun testPlus() = runPlusTests() // TODO
+    // @Test fun testMinus() = runMinusTests() // TODO
+    // @Test fun testTimes() = runTimesTests() // TODO
+    // @Test fun testDiv() = runDivTests() // TODO
+
     @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests()
     @Test fun testToChar() = runToCharTests()

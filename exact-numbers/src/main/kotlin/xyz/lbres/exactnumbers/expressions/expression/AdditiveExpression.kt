@@ -17,7 +17,7 @@ import java.math.BigDecimal
  * Can also represent 1/sum
  */
 @Suppress("EqualsOrHashCode")
-internal class AdditiveExpression private constructor(private val expressions: ConstMultiSet<Expression>, private val isInverted: Boolean) : ExpressionImpl() {
+internal class AdditiveExpression private constructor(val expressions: ConstMultiSet<Expression>, private val isInverted: Boolean) : ExpressionImpl() {
     private var term: Term? = null
 
     init {
@@ -27,6 +27,7 @@ internal class AdditiveExpression private constructor(private val expressions: C
     }
 
     constructor(expr1: Expression, expr2: Expression) : this(constMultiSetOf(expr1, expr2), false)
+    constructor(expressions: ConstMultiSet<Expression>) : this(expressions, false)
 
     override fun unaryPlus(): Expression = this
     override fun unaryMinus(): Expression {
@@ -52,6 +53,17 @@ internal class AdditiveExpression private constructor(private val expressions: C
     override fun getValue(): BigDecimal = BigDecimal.ZERO
     // TODO
     override fun getSimplified(): Expression = this
+
+    override fun plus(other: Expression): AdditiveExpression {
+        if (other is AdditiveExpression && !isInverted && !other.isInverted) {
+            val newExpressions = (expressions + other.expressions).toConstMultiSet()
+            return AdditiveExpression(newExpressions, false)
+        }
+
+        return AdditiveExpression((expressions + constMultiSetOf(other)).toConstMultiSet(), false)
+    }
+
+    override fun times(other: Expression): Expression = MultiplicativeExpression(this, other)
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "AdditiveExpression"))
 

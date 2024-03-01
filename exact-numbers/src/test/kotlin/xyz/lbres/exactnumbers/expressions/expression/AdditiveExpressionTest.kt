@@ -12,6 +12,11 @@ class AdditiveExpressionTest {
     // @Test fun testInverse() = runInverseTests() // TODO
     // @Test fun testGetValue() = runGetValueTests() // TODO
 
+    // @Test fun testPlus() = runPlusTests() // TODO
+    // @Test fun testMinus() = runMinusTests() // TODO
+    // @Test fun testTimes() = runTimesTests() // TODO
+    // @Test fun testDiv() = runDivTests() // TODO
+
     // @Test fun testToTerm() = runToTermTests() // TODO
     // @Test fun testToByte() = runToByteTests() // TODO
     // @Test fun testToChar() = runToCharTests() // TODO

@@ -15,10 +15,10 @@ sealed class Expression : Number() {
 
     // abstract fun isZero(): Boolean
 
-    // abstract operator fun plus(other: Expression): Expression
-    // abstract operator fun minus(other: Expression): Expression
-    // abstract operator fun times(other: Expression): Expression
-    // abstract operator fun div(other: Expression): Expression
+    abstract operator fun plus(other: Expression): Expression
+    abstract operator fun minus(other: Expression): Expression
+    abstract operator fun times(other: Expression): Expression
+    abstract operator fun div(other: Expression): Expression
 
     abstract fun toTerm(): Term
     abstract fun getSimplified(): Expression
