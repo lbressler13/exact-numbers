@@ -21,6 +21,10 @@ internal class SimpleExpression(private val term: Term) : ExpressionImpl() {
     override fun getValue(): BigDecimal = term.getValue()
 
     override fun plus(other: Expression): Expression {
+        if (other == ZERO) {
+            return this
+        }
+
         if (other is SimpleExpression) {
             val simplified = term.getSimplified()
             val otherSimplified = other.term.getSimplified()
