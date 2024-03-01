@@ -8,6 +8,8 @@ import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigDecimal
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 fun runUnaryMinusTests() {
     var expr = SimpleExpression(Term.ZERO)
@@ -171,4 +173,20 @@ fun runGetValueTests() {
     expr = SimpleExpression(Term.fromValues(one, listOf(testNumber2, testNumber2, testNumber1, Log(5, 2))))
     expected = BigDecimal("85.33085748711055350")
     assertEquals(expected, expr.getValue())
+}
+
+fun runIsZeroTests() {
+    // zero
+    var expr = SimpleExpression(Term.ZERO)
+    assertTrue(expr.isZero())
+
+    // not zero
+    expr = SimpleExpression(Term.ONE)
+    assertFalse(expr.isZero())
+
+    expr = SimpleExpression(Term.fromValues(one, listOf(Sqrt.ONE)))
+    assertFalse(expr.isZero())
+
+    expr = SimpleExpression(Term.fromValues(ExactFraction(5, 4), listOf(log2, log4, Sqrt(12), piInverse)))
+    assertFalse(expr.isZero())
 }
