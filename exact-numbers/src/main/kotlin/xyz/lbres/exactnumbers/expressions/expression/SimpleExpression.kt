@@ -13,6 +13,7 @@ internal class SimpleExpression(private val term: Term) : ExpressionImpl() {
     override fun unaryPlus(): Expression = this
     override fun unaryMinus(): Expression = SimpleExpression(-term)
     override fun inverse(): Expression = SimpleExpression(term.inverse())
+    override fun isZero(): Boolean = term.isZero()
 
     override fun toTerm(): Term = term
 

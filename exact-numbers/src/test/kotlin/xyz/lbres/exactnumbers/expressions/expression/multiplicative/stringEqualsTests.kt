@@ -13,7 +13,7 @@ fun runEqualsTests() {
     expr1 = MultiplicativeExpression(simpleExpr1, simpleExpr1)
     assertEquals(expr1, expr1)
 
-    expr1 = MultiplicativeExpression(-simpleExpr2, partialExpr)
+    expr1 = MultiplicativeExpression(-simpleExpr2, multExpr1)
     assertEquals(expr1, expr1)
 
     expr1 = MultiplicativeExpression(simpleExpr2, simpleExpr3)
@@ -36,7 +36,7 @@ fun runEqualsTests() {
     assertEquals(expr1, expr2)
     assertEquals(expr2, expr1)
 
-    expr1 = MultiplicativeExpression(Expression.ZERO, partialExpr)
+    expr1 = MultiplicativeExpression(Expression.ZERO, multExpr1)
     expr2 = MultiplicativeExpression(simpleExpr2, MultiplicativeExpression(simpleExpr3, Expression.ZERO))
     assertEquals(expr1, expr2)
     assertEquals(expr2, expr1)
@@ -52,13 +52,13 @@ fun runEqualsTests() {
     assertNotEquals(expr1, expr2)
     assertNotEquals(expr2, expr1)
 
-    expr1 = MultiplicativeExpression(simpleExpr1, partialExpr)
-    expr2 = MultiplicativeExpression(simpleExpr1.inverse(), partialExpr)
+    expr1 = MultiplicativeExpression(simpleExpr1, multExpr1)
+    expr2 = MultiplicativeExpression(simpleExpr1.inverse(), multExpr1)
     assertNotEquals(expr1, expr2)
     assertNotEquals(expr2, expr1)
 
-    expr1 = MultiplicativeExpression(simpleExpr1, partialExpr)
-    expr2 = MultiplicativeExpression(simpleExpr1.inverse(), partialExpr.inverse())
+    expr1 = MultiplicativeExpression(simpleExpr1, multExpr1)
+    expr2 = MultiplicativeExpression(simpleExpr1.inverse(), multExpr1.inverse())
     assertNotEquals(expr1, expr2)
     assertNotEquals(expr2, expr1)
 }
@@ -72,7 +72,7 @@ fun runToStringTests() {
     expected = "(${simpleExpr1.inverse()}x$simpleExpr3)"
     assertEquals(expected, expr.toString())
 
-    expr = MultiplicativeExpression(partialExpr, simpleExpr2)
+    expr = MultiplicativeExpression(multExpr1, simpleExpr2)
     expected = "((${simpleExpr3}x$simpleExpr1)x$simpleExpr2)"
     assertEquals(expected, expr.toString())
 }

@@ -11,6 +11,7 @@ class MultiplicativeExpressionTest {
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     @Test fun testInverse() = runInverseTests()
     @Test fun testGetValue() = runGetValueTests()
+    @Test fun testIsZero() = runIsZeroTests()
 
     @Test fun testToTerm() = runToTermTests()
     @Test fun testToByte() = runToByteTests()
