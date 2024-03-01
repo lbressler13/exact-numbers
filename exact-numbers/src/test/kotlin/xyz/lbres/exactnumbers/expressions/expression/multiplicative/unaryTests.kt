@@ -113,6 +113,9 @@ fun runIsZeroTests() {
     expr = MultiplicativeExpression(simpleExpr1, -simpleExpr1)
     assertFalse(expr.isZero())
 
+    expr = MultiplicativeExpression(simpleExpr1.inverse(), simpleExpr1)
+    assertFalse(expr.isZero())
+
     partialExpr = MultiplicativeExpression(simpleExpr1, multExpr1)
     expr = MultiplicativeExpression(simpleExpr3, partialExpr)
     assertFalse(expr.isZero())

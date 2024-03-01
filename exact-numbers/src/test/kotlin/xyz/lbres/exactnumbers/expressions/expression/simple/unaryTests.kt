@@ -187,6 +187,9 @@ fun runIsZeroTests() {
     expr = SimpleExpression(Term.fromValues(one, listOf(Sqrt.ONE)))
     assertFalse(expr.isZero())
 
+    expr = SimpleExpression(Term.fromValues(ExactFraction(-1, Long.MAX_VALUE), emptyList()))
+    assertFalse(expr.isZero())
+
     expr = SimpleExpression(Term.fromValues(ExactFraction(5, 4), listOf(log2, log4, Sqrt(12), piInverse)))
     assertFalse(expr.isZero())
 }
