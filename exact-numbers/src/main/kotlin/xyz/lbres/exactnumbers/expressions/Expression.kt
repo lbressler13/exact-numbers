@@ -13,7 +13,7 @@ sealed class Expression : Number() {
     abstract fun inverse(): Expression
     abstract fun getValue(): BigDecimal
 
-    // abstract fun isZero(): Boolean
+    abstract fun isZero(): Boolean
 
     // abstract operator fun plus(other: Expression): Expression
     // abstract operator fun minus(other: Expression): Expression

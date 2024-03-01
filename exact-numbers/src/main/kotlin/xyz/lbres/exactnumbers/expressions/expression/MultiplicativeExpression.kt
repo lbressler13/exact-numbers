@@ -42,6 +42,8 @@ internal class MultiplicativeExpression private constructor(expressions: ConstMu
         return MultiplicativeExpression(newExpressions)
     }
 
+    override fun isZero(): Boolean = expressions.any { it.isZero() }
+
     override fun toTerm(): Term {
         return getOrSet({ term }, { term = it }) {
             expressions.fold(Term.ONE) { acc, expr -> acc * expr.toTerm() }.getSimplified()

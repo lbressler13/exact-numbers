@@ -8,6 +8,8 @@ import xyz.lbres.exactnumbers.irrationals.sqrt.Sqrt
 import xyz.lbres.exactnumbers.testutils.assertDivByZero
 import java.math.BigDecimal
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 fun runUnaryMinusTests() {
     var expr = MultiplicativeExpression(simpleExpr1, Expression.ZERO)
@@ -119,4 +121,32 @@ fun runGetSimplifiedTests() {
     expr = MultiplicativeExpression(expr1, expr2)
     term = Term.fromValues(ExactFraction(-3, 187), listOf(log4, Sqrt(11), piInverse, piInverse))
     assertEquals(SimpleExpression(term), expr.getSimplified())
+}
+
+fun runIsZeroTests() {
+    // zero
+    var expr = MultiplicativeExpression(Expression.ZERO, Expression.ZERO)
+    assertTrue(expr.isZero())
+
+    var partialExpr = MultiplicativeExpression(simpleExpr1, simpleExpr2)
+    expr = MultiplicativeExpression(partialExpr, Expression.ZERO)
+    assertTrue(expr.isZero())
+
+    partialExpr = MultiplicativeExpression(Expression.ZERO, partialMultExpr)
+    expr = MultiplicativeExpression(simpleExpr3, partialExpr)
+    assertTrue(expr.isZero())
+
+    // not zero
+    expr = MultiplicativeExpression(simpleExpr1, -simpleExpr1)
+    assertFalse(expr.isZero())
+
+    expr = MultiplicativeExpression(simpleExpr1.inverse(), simpleExpr1)
+    assertFalse(expr.isZero())
+
+    partialExpr = MultiplicativeExpression(simpleExpr1, partialMultExpr)
+    expr = MultiplicativeExpression(simpleExpr3, partialExpr)
+    assertFalse(expr.isZero())
+
+    expr = MultiplicativeExpression(partialExpr, Expression.ONE)
+    assertFalse(expr.isZero())
 }

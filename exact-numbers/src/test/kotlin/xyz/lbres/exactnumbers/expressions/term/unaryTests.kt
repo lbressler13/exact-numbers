@@ -92,8 +92,6 @@ fun runIsZeroTests() {
 
     term = Term.fromValues(ExactFraction(-1, 1000000), listOf(Sqrt(64), Sqrt(ExactFraction(1, 64))))
     assertFalse(term.isZero())
-
-    assertFalse(term.isZero())
 }
 
 fun runInverseTests() {
