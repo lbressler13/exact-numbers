@@ -21,6 +21,7 @@ import java.math.BigDecimal
 @Suppress("EqualsOrHashCode")
 internal class MultiplicativeExpression private constructor(expressions: ConstMultiSet<Expression>) : ExpressionImpl() {
     private val expressions: ConstMultiSet<Expression>
+    private var simplified: Expression? = null
 
     init {
         this.expressions = when {
@@ -65,11 +66,16 @@ internal class MultiplicativeExpression private constructor(expressions: ConstMu
     }
 
     override fun getSimplified(): Expression {
+        if (simplified != null) {
+            return simplified!!
+        }
+
         val split = getSplitExpressions()
         val simpleTerm = split.first.fold(Term.ONE) { acc, expr -> acc * expr.term }
         val simple: Expression = SimpleExpression(simpleTerm.getSimplified())
 
         if (split.second.isEmpty()) {
+            simplified = simple
             return simple
         }
 
@@ -82,7 +88,8 @@ internal class MultiplicativeExpression private constructor(expressions: ConstMu
             }
             distributed
         }
-        return AdditiveExpression(exprs.toConstMultiSet()).getSimplified()
+        simplified = AdditiveExpression(exprs.toConstMultiSet()).getSimplified()
+        return simplified!!
     }
 
     override fun getValue(): BigDecimal = getSimplified().getValue()
