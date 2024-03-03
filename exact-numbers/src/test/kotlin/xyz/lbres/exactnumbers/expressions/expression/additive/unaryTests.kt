@@ -5,6 +5,7 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 private val negOne = SimpleExpression(-Term.ONE)
@@ -92,4 +93,16 @@ fun runIsZeroTests() {
     assertTrue(expr.isZero())
 
     // not zero
+    expr = AdditiveExpression(SimpleExpression(Term.fromValues(ExactFraction("-0.0000000000000000001"), emptyList())), Expression.ZERO)
+    assertFalse(expr.isZero())
+
+    partialExpr = MultiplicativeExpression( // 1/2
+        SimpleExpression(Term.fromValues(ExactFraction(2), listOf(pi))),
+        SimpleExpression(Term.fromValues(ExactFraction(1, 4), listOf(piInverse)))
+    )
+    expr = AdditiveExpression(AdditiveExpression(partialExpr, partialExpr), MultiplicativeExpression(partialExpr, partialExpr))
+    assertFalse(expr.isZero())
+
+    expr = AdditiveExpression(AdditiveExpression(simpleExpr1, -simpleExpr3), simpleExpr3)
+    assertFalse(expr.isZero())
 }
