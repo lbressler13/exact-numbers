@@ -3,6 +3,7 @@ package xyz.lbres.exactnumbers.expressions.expression
 import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.utils.createHashCode
+import xyz.lbres.kotlinutils.bigdecimal.ext.isZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
@@ -33,9 +34,21 @@ internal class AdditiveExpression private constructor(val expressions: ConstMult
 
     override fun inverse(): Expression = AdditiveExpression(expressions, !isInverted)
 
-    override fun getValue(): BigDecimal = BigDecimal.ZERO // TODO
+    override fun getValue(): BigDecimal {
+        // TODO improve w/ simplification
+        return expressions.fold(BigDecimal.ZERO) { acc, expr ->
+            acc + expr.getValue()
+        }
+    }
     override fun getSimplified(): Expression = this // TODO
-    override fun isZero(): Boolean = false // TODO
+    override fun isZero(): Boolean = getValue().isZero()
+//    override fun isZero(): Boolean {
+//        val simplified = getSimplified()
+//        if (simplified is AdditiveExpression) {
+//            return simplified.expressions == constMultiSetOf(ZERO)
+//        }
+//        return simplified.isZero()
+//    }
 
     override fun hashCode(): Int = createHashCode(listOf(expressions, "AdditiveExpression"))
 

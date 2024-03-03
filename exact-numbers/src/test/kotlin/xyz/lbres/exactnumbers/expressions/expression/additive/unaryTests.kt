@@ -5,6 +5,9 @@ import xyz.lbres.exactnumbers.expressions.Expression
 import xyz.lbres.exactnumbers.expressions.expression.* // ktlint-disable no-wildcard-imports no-unused-imports
 import xyz.lbres.exactnumbers.expressions.term.Term
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+
+private val negOne = SimpleExpression(-Term.ONE)
 
 fun runUnaryMinusTests() {
     var expr = AdditiveExpression(simpleExpr1, Expression.ZERO)
@@ -31,15 +34,15 @@ fun runUnaryMinusTests() {
     assertEquals(expected, -expr)
 
     expr = AdditiveExpression(partialMultExpr, AdditiveExpression(partialMultExpr, Expression.ONE))
-    expected1 = MultiplicativeExpression(SimpleExpression(Term.fromValues(-one, listOf(sqrt1))), simpleExpr1)
-    expected2 = AdditiveExpression(SimpleExpression(Term.fromValues(-one, listOf(sqrt1))), -Expression.ONE)
+    expected1 = MultiplicativeExpression(negOne, MultiplicativeExpression(SimpleExpression(Term.fromValues(one, listOf(sqrt1))), simpleExpr1))
+    expected2 = AdditiveExpression(expected1, -Expression.ONE)
     expected = AdditiveExpression(expected1, expected2)
     assertEquals(expected, -expr)
 
     expr = AdditiveExpression(-simpleExpr2, partialAddExpr)
     expected1 = SimpleExpression(Term.fromValues(ExactFraction(-8, 17), listOf(log4, sqrt2, piInverse, pi)))
     expected2 = AdditiveExpression(
-        SimpleExpression(Term.fromValues(ExactFraction(-8, 17), listOf(log4, sqrt2, piInverse, pi))),
+        SimpleExpression(Term.fromValues(ExactFraction(8, 17), listOf(log4, sqrt2, piInverse, pi))),
         SimpleExpression(Term.fromValues(-one, listOf(sqrt1)))
     )
     expected = AdditiveExpression(expected1, expected2)
@@ -69,5 +72,24 @@ fun runUnaryPlusTests() {
 fun runInverseTests() {
 }
 
-fun runGetValueTests() {
+fun runIsZeroTests() {
+    // zero
+    var expr = AdditiveExpression(Expression.ZERO, Expression.ZERO)
+    assertTrue(expr.isZero())
+
+    expr = AdditiveExpression(simpleExpr1, -simpleExpr1)
+    assertTrue(expr.isZero())
+
+    var partialExpr: Expression = AdditiveExpression(simpleExpr1, AdditiveExpression(Expression.ZERO, -simpleExpr2))
+    expr = AdditiveExpression(AdditiveExpression(-simpleExpr1, simpleExpr2), partialExpr)
+    assertTrue(expr.isZero())
+
+    partialExpr = MultiplicativeExpression( // 1/2
+        SimpleExpression(Term.fromValues(ExactFraction(2), listOf(pi))),
+        SimpleExpression(Term.fromValues(ExactFraction(1, 4), listOf(piInverse)))
+    )
+    expr = AdditiveExpression(partialExpr, SimpleExpression(Term.fromValues(-ExactFraction.HALF, emptyList())))
+    assertTrue(expr.isZero())
+
+    // not zero
 }
