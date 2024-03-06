@@ -5,6 +5,7 @@ import xyz.lbres.exactnumbers.expressions.ExpressionImpl
 import xyz.lbres.exactnumbers.utils.createHashCode
 import xyz.lbres.kotlinutils.bigdecimal.ext.isZero
 import xyz.lbres.kotlinutils.collection.ext.toConstMultiSet
+import xyz.lbres.kotlinutils.general.tryOrDefault
 import xyz.lbres.kotlinutils.set.multiset.const.ConstMultiSet
 import xyz.lbres.kotlinutils.set.multiset.const.constMultiSetOf
 import xyz.lbres.kotlinutils.set.multiset.mapToSetConsistent
@@ -36,8 +37,11 @@ internal class AdditiveExpression private constructor(val expressions: ConstMult
 
     override fun getValue(): BigDecimal {
         // TODO improve w/ simplification
-        return expressions.fold(BigDecimal.ZERO) { acc, expr ->
+        val value = expressions.fold(BigDecimal.ZERO) { acc, expr ->
             acc + expr.getValue()
+        }
+        return tryOrDefault(value) {
+            value.toBigIntegerExact().toBigDecimal()
         }
     }
     override fun getSimplified(): Expression = this // TODO

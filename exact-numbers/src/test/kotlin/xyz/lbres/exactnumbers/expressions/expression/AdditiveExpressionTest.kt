@@ -10,7 +10,7 @@ class AdditiveExpressionTest {
     @Test fun testUnaryMinus() = runUnaryMinusTests()
     @Test fun testUnaryPlus() = runUnaryPlusTests()
     // @Test fun testInverse() = runInverseTests() // TODO
-    // @Test fun testGetValue() = runGetValueTests() // TODO
+    @Test fun testGetValue() = runGetValueTests()
     @Test fun testIsZero() = runIsZeroTests()
 
     // @Test fun testToTerm() = runToTermTests()

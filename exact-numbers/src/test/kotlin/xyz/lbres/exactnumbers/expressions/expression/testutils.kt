@@ -21,8 +21,11 @@ val testNumber1 = TestNumber(ExactFraction(3, 4))
 val testNumber2 = TestNumber(ExactFraction.SEVEN)
 val one = ExactFraction.ONE
 
+// 8*3.141592653589793
 internal val simpleExpr1 = SimpleExpression(Term.fromValues(ExactFraction.EIGHT, listOf(pi)))
+// 8/17*8/11*ln(25/121)/ln(10)
 internal val simpleExpr2 = SimpleExpression(Term.fromValues(ExactFraction(8, 17), listOf(log4, sqrt2, piInverse, pi)))
+// 99^0.5
 internal val simpleExpr3 = SimpleExpression(Term.fromValues(one, listOf(sqrt1)))
 internal val partialMultExpr = MultiplicativeExpression(simpleExpr3, simpleExpr1)
 internal val partialAddExpr = AdditiveExpression(simpleExpr2, simpleExpr3)
